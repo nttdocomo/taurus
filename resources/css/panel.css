@@ -1,0 +1,31 @@
+.table-panel .panel-body{
+	padding:0;
+}
+.panel .thumbnail {
+	border:none;
+}
+.table-panel .panel-body{
+	padding:0;
+}
+.panel-body table{
+	margin-bottom:0;
+}
+.scrollbar {
+	height:100%;
+	position:absolute;
+	right:0;
+	top:0;
+	width:16px;
+}
+.track{
+	background-color:#dddddd;
+	height:100%;
+}
+.thumb{
+	border-radius:6px;
+	width:12px;
+	background-color:#666666;
+	position:absolute;
+	left:2px;
+	cursor: default;
+}

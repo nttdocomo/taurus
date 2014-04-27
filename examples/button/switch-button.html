@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link type="text/css" rel="stylesheet" href="/resources/css/base.css"/>
+		<link type="text/css" rel="stylesheet" href="/resources/css/bootstrap.css"/>
+		<style>
+			.checkbox-button-on {
+				padding-right: 12px;
+			}
+			.checkbox-button-off {
+				padding-left: 12px;
+			}
+			.checkbox-button-off > .btn:first-child {
+				float:right;
+				margin-left:12px;
+			}
+			.checkbox-button-on > .btn {
+				margin-right:12px;
+			}
+			.status-text{
+				display:inline-block;
+			}
+		</style>
+		<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<!--<script type="text/javascript" src="/src/LAB.min.js"></script>
+		<script type="text/javascript" src="switch-button.js"></script>-->
+		<script type="text/javascript" language="Javascript" src="/src/sea-debug.js"></script>
+		<script type="text/javascript">
+			seajs.config({
+				base : "/src/",
+				alias : {
+					"jquery" : "jquery-2.0.0.js",
+					"underscore" : "underscore.js",
+					"modernizr" : "modernizr",
+					"moment" : "moment"
+				},
+				preload : ['jquery', 'underscore', 'modernizr', 'plugin-text']
+			})
+
+			// 加载入口模块
+			seajs.use("./switch-button")
+		</script>
+	</body>
+</html>

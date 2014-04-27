@@ -1,0 +1,15 @@
+.form-group > div{
+	position:relative;
+}
+.g-form-file-btn{
+	position:relative;
+	overflow:hidden;
+}
+.g-form-file-input {
+	position: absolute;
+	top: -4px;
+	right: -2px;
+	filter: alpha(opacity=0);
+	opacity: 0;
+	font-size: 1000px
+}

@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="author" content="Chomo" />
+		<link rel="start" href="http://www.14px.com" title="Home" />
+		<title>利用box-sizing实现div仿框架</title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			html {
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+				padding: 60px 0;
+				position: relative;
+				overflow: hidden;
+			}
+			html, body {
+				height: 100%;
+			}
+			.top {
+				position: relative;
+				margin-top: -60px;
+				height: 60px;
+				background: #f60;
+			}
+			.main {
+				position: relative;
+				overflow: hidden;
+				height: 100%;
+				background: #f30;
+				_margin-left: 0;
+				z-index: 2;
+			}
+			.main iframe {
+				height: 100%;
+				width: 100%;
+				background: #fff;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			.bottom {
+				position: relative;
+				height: 60px;
+				background: #f60;
+				clear: both;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="top">
+			top
+		</div>
+		<div class="main">
+			1231231231232
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+		</div>
+		<div class="bottom">
+			bottom
+		</div>
+	</body>
+</html>

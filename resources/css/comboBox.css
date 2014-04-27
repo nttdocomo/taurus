@@ -1,0 +1,13 @@
+.boundlist{
+	overflow-y:auto;
+}
+.boundlist li > a:hover{
+	color: #333333;
+	background-color: #eeeeee;
+	background-image: none;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#f9f9f9', GradientType=0);
+}
+.boundlist-item-over {
+	background-color: #eeeeee;
+	border-color: #a3bae9
+}

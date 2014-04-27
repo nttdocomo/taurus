@@ -1,0 +1,69 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link type="text/css" rel="stylesheet" href="/resources/css/base.css"/>
+		<link type="text/css" rel="stylesheet" href="/resources/css/form.css"/>
+		<link type="text/css" rel="stylesheet" href="/resources/css/bootstrap.css"/>
+		<link type="text/css" rel="stylesheet" href="/resources/css/file.css"/>
+		<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<style>
+		#ani1 {
+    width: 10em;
+    font-size: 2em;
+    font-weight: bold;
+    text-align:center;
+    padding: 1em;
+    margin: 50px auto 80px;
+    border-radius: 5px;
+    -webkit-animation:colorchange 5s linear 1s infinite alternate;
+       -moz-animation:colorchange 5s linear 1s infinite alternate;
+            animation:colorchange 5s linear 1s infinite alternate;
+}
+
+@-webkit-keyframes colorchange {
+    0%   { background-color: #00F; /* from: blue */ }
+    25%  { background-color: #F00; /* red        */ }
+    50%  { background-color: #0F0; /* green      */ }
+    75%  { background-color: #F0F; /* purple     */ }
+    100% { background-color: #00F; /* to: blue   */ }
+}
+			.spinner{
+				background-color:#000000;
+				height:20px;
+				width:20px;
+				-webkit-animation-name: rotate; 
+    -webkit-animation-duration: 0.5s; 
+    -webkit-animation-iteration-count:  infinite;
+    -webkit-animation-timing-function: linear;
+			}
+			@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to { 
+    -webkit-transform: rotate(360deg);
+  }
+}
+		</style>
+	</head>
+	<body>
+		<div id="wrap">
+			<header id="header">
+				header
+			</header>
+			<div id="main">
+				<form class="form-horizontal"></form>
+				<div class="spinner"></div>
+				<div id="ani1"></div>
+			</div>
+		</div>
+		<footer id="footer">
+			footer
+		</footer>
+		<script src="/src/sea.js" data-config="/src/config" data-main="/examples/form/file"></script>
+	</body>
+</html>
