@@ -14,41 +14,51 @@ define(function(require){
 			Base.prototype.initialize.apply(this,arguments);
 		},
 		getTplData : function() {
-			var data = Base.prototype.getTplData.apply(this,arguments)
+			var data = Base.prototype.getTplData.apply(this,arguments);
 			return $.extend(data,{
 				'title':this.title,
 				'content':this.content,
 				'footer':''
-			})
+			});
 		},
 		show:function(renderTo){
 			if(!this.isRendered){
 				this.render(renderTo || $(document.body));
 			}
-			this.$el.show().addClass('in');
-			$(document.body).addClass('modal-open')
+			this.$el.addClass('in').show();
+			$(document.body).addClass('modal-open');
+			var height = this.$el.find('.modal-dialog').height(),width = this.$el.find('.modal-dialog').width();
+			this.$el.find('.modal-dialog').css({
+				'margin-top':(height/2)*-1,
+				'margin-left':(width/2)*-1,
+				'position':'absolute',
+				'margin-right':0,
+				'margin-bottom':0,
+				'top':'50%',
+				'left':'50%'
+			});
 		},
 		close:function(){
 			this.$el.removeClass('in').hide().remove();
-			$(document.body).removeClass('modal-open')
+			$(document.body).removeClass('modal-open');
 			return false;
 		},
 		delegateEvents : function(events) {
 			var events = $.extend({}, this.events, {
 				'click [data-dismiss="modal"]' : 'close'
 			}, events);
-			Base.prototype.delegateEvents.call(this, events)
+			Base.prototype.delegateEvents.call(this, events);
 		},
 		applyChildEls:function(childEls){
 			childEls = $.extend(childEls || {},{
 				'modal':'.modal'
-			})
-			Base.prototype.applyChildEls.call(this,childEls)
+			});
+			Base.prototype.applyChildEls.call(this,childEls);
 		},
 		html : function() {
 			var html = Base.prototype.html.apply(this, arguments);
-			this.$el.find('.modal-dialog').width(this.width)
-			return html
+			this.$el.find('.modal-dialog').width(this.width);
+			return html;
 		}
-	}))
-})
+	}));
+});

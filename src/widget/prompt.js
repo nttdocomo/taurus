@@ -16,6 +16,9 @@ define(function(require) {
 			className:'btn-primary',
 			disabled:false
 		}],
+		getItemContainer:function(){
+			return this.$el.find('.modal-body');
+		},
 		confirm : function() {
 			this.close();
 			this.trigger('confirm')
@@ -36,10 +39,10 @@ define(function(require) {
 			Dialog.prototype.delegateEvents.call(this, events)
 		},
 		getTplData : function() {
-			var data = Dialog.prototype.getTplData.apply(this,arguments)
+			var data = Dialog.prototype.getTplData.apply(this,arguments);
 			return $.extend(data,{
 				'footer':'<div class="modal-footer">'+this.renderButttons()+'</div>'
-			})
+			});
 		},
 		afterRender : function() {
 			Dialog.prototype.afterRender.apply(this, arguments);
@@ -48,7 +51,7 @@ define(function(require) {
 		renderButttons:function(){
 			return _.template('<%_.each(buttons,function(button){%><button class="btn<%if(button){%> <%=button.className%><%}%>"<%if(button.disabled){%> disabled="disabled"<%}%>><%=button.text%></button><%})%>', {
 				buttons:this.buttons
-			})
+			});
 		},
 		disabledButtons:function(){
 			this.disabled = true;
@@ -57,19 +60,6 @@ define(function(require) {
 		enabledButtons:function(){
 			this.disabled = false;
 			this.renderButttons();
-		},
-		show:function(){
-			Dialog.prototype.show.apply(this,arguments);
-			var height = this.$el.find('.modal-dialog').height(),width = this.$el.find('.modal-dialog').height();
-			this.$el.find('.modal-dialog').css({
-				'margin-top':(height/2)*-1,
-				'margin-left':(width/2)*-1,
-				'position':'absolute',
-				'margin-right':0,
-				'margin-bottom':0,
-				'top':'50%',
-				'left':'50%'
-			});
 		}
 	}));
 });

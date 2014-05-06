@@ -8,7 +8,7 @@ define(function(require){
 		autoHeight:false,
 		header:true,
 		referTo:$(window),
-		tpl:'<%if(header){%><div class="panel-heading"><%=tool%><h3 class="panel-title"><%=title%></h3></div><%}%><div class="panel-body"><%=content%></div>',
+		tpl:'<%if(header){%><div class="panel-heading"><h4 class="panel-title"><%=title%></h4></div><%}%><div class="panel-body"><%=content%></div>',
 		className:'panel panel-default',
 		initialize:function(){
 			Base.prototype.initialize.apply(this,arguments);
@@ -19,7 +19,7 @@ define(function(require){
 		getTplData : function() {
 			return {
 				header:this.header,
-				title:this.title,
+				title:this.collapsible ? this.title + '<span class="tool-collapse-top"></span>' : this.title,
 				content:this.loading ? (new Spinner({
 					renderTo:this.$el
 				})).html() : this.content,
@@ -29,10 +29,30 @@ define(function(require){
 		delegateEvents:function(events){
 			var events = $.extend(events || {}, this.events/*, this.listeners*/);
 			if(this.refreshable){
-				events['click .refresh'] = 'refresh'
+				events['click .refresh'] = 'refresh';
+			};
+			if(this.collapsible){
+				events['click .tool-collapse-top, .tool-expand-bottom'] = 'toggleCollapse';
 			}
-			Base.prototype.delegateEvents.call(this, events)
+			Base.prototype.delegateEvents.call(this, events);
 		},
+
+	    /**
+	     * Shortcut for performing an {@link #method-expand} or {@link #method-collapse} based on the current state of the panel.
+	     * @return {Ext.panel.Panel} this
+	     */
+	    toggleCollapse: function(e) {
+	        this.collapsed ? this.expand() : this.collapse();
+	    	$(e.target).toggleClass('tool-collapse-top').toggleClass('tool-expand-bottom');
+	    	this.$el.toggleClass('collapsed');
+	    	return false;
+	    },
+	    expand:function(){
+	    	this.collapsed = false;
+	    },
+	    collapse:function(){
+	    	this.collapsed = true;
+	    },
 		refresh:function(){
 			this.onRefresh && this.onRefresh();
 			return false;

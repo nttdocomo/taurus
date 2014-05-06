@@ -19,16 +19,16 @@ define(function(require) {
 		renderTo:$(document.body),
 		itemSelector:'li',
 		initialize:function(){
-			this.$el.css('top',0)
+			this.$el.css('top',0);
 			taurus.views.View.prototype.initialize.apply(this,arguments);
-			console.log(this.displayField)
-			this.listenTo(this.collection,'reset',this.refresh)
+			console.log(this.displayField);
+			this.listenTo(this.collection,'reset',this.refresh);
 		},
 		onItemSelect:function(node){
-			node.addClass(this.selectedItemCls)
+			node.addClass(this.selectedItemCls);
 		},
 		onItemDeselect:function(node){
-			node.removeClass(this.selectedItemCls)
+			node.removeClass(this.selectedItemCls);
 		},
 		/**
 	     * A method that returns the inner template for displaying items in the list.
@@ -44,7 +44,7 @@ define(function(require) {
 			return this.getNodeByRecord(model);
 		},
 		getNodeByRecord:function(model){
-			return this.$el.find('li').eq(this.collection.indexOf(model))
+			return this.$el.find('li').eq(this.collection.indexOf(model));
 		},
 		clearHighlight:function(){
 			this.$el.find('li').removeClass(this.overItemCls);

@@ -3,6 +3,7 @@
  */
 define(function(require) {
 	require('../taurus');
+	require('../lang/number');
 	require('../jquery.ui.position');
 	return taurus.view("taurus.views.Base", Backbone.View.extend({
 		isRendered : false,
@@ -33,13 +34,16 @@ define(function(require) {
 			}
 			this.$el.data('component', this);
 			this.on(this.listeners);
+			this.setSize(this.width,this.height);
 		},
 		delegateEvents : function(events) {
 			var events = $.extend(events || {}, this.events/*, this.listeners*/);
 			Backbone.View.prototype.delegateEvents.call(this, events);
 		},
 		getTplData : function() {
-			return {};
+			return {
+				id:this.cid
+			};
 		},
 		show : function() {
 			this.$el.show();
@@ -92,6 +96,37 @@ define(function(require) {
 		getHeight : function() {
 			return this.$el.height();
 		},
+		setSize:function(width,height){
+	        var me = this;
+	
+	        // support for standard size objects
+	        if (width && typeof width == 'object') {
+	            height = width.height;
+	            width  = width.width;
+	        }
+
+	        // Constrain within configured maxima
+	        if (typeof width == 'number') {
+	            me.width = taurus.Number.constrain(width, me.minWidth, me.maxWidth);
+	        } else if (width === null) {
+	            delete me.width;
+	        }
+	        
+	        if (typeof height == 'number') {
+	            me.height = taurus.Number.constrain(height, me.minHeight, me.maxHeight);
+	        } else if (height === null) {
+	            delete me.height;
+	        }
+	        this.updateLayout();
+		},
+		updateLayout:function(){
+			if(this.width){
+				this.setWidth(this.width);
+			}
+			if(this.height){
+				this.setHeight(this.height);
+			}
+		},
 		setHeight : function(height) {
 			return this.$el.css('height',height);
 		},
@@ -124,11 +159,12 @@ define(function(require) {
 			var me = this, items = this.items.concat([]), len = items.length;
 			this.items = [];
 			_.each(items, function(item, i) {
+				var cmp = me.lookupComponent(item);
 				if ( item instanceof Backbone.View) {
 					me.onAdd(item, i, len);
 				}
-				if(_.has(item, 'cls')){
-					me.onAdd(new item['cls'](_.omit(item, 'cls')), i, len);
+				if(cmp){
+					me.onAdd(new cmp(_.omit(item, 'cls')), i, len);
 				} else {
 					require.async(taurus.itemPathPrefix + taurus.util.lowercase(item.xtype).replace(/\./ig, '/'), function(cls) {
 						delete item.className;
@@ -140,6 +176,13 @@ define(function(require) {
 					});
 				}
 			});
+		},
+		lookupComponent:function(cmp){
+			if(_.has(cmp,'cls')){
+				return item['cls'];
+			} else {
+				return this.defaultType;
+			}
 		},
 		onAdd : function(item, pos, len) {
 			this.items[pos] = item;

@@ -6,7 +6,107 @@ define(function(require) {
 	var Panel = require("../../src/panel/panel.js");
 	var Table = require("../../src/panel/table.js");
 	var $body = $("#main");
-	var collection = new Backbone.Collection([{
+	var Collection = Backbone.Collection.extend({
+		model : Backbone.Model,
+		perPage : 8,
+		currentPage : 1,
+		pager : function(options) {
+			var self = this, disp = this.perPage, start = (self.currentPage - 1) * disp, stop = start + disp;
+			if (!this.origModels) {
+				this.origModels = this.models;
+			}
+			this.models = this.origModels.slice();
+			this.reset(this.models.slice(start, stop));
+		},
+
+		nextPage : function(options) {
+			if (this.currentPage < this.information.totalPages) {
+				this.currentPage = ++this.currentPage;
+				this.pager(options);
+			}
+		},
+
+		previousPage : function(options) {
+			if (this.currentPage > 1) {
+				this.currentPage = --this.currentPage;
+				this.pager(options);
+			}
+		},
+		info : function() {
+			var me = this, info = {}, totalRecords = me.origModels.length, totalPages = Math.ceil(totalRecords / me.perPage);
+			info = {
+				totalUnfilteredRecords : totalRecords,
+				totalRecords : totalRecords,
+				currentPage : me.currentPage,
+				perPage : me.perPage,
+				totalPages : totalPages,
+				lastPage : totalPages,
+				previous : false,
+				next : false,
+				startRecord : totalRecords === 0 ? 0 : (me.currentPage - 1) * me.perPage + 1,
+				endRecord : Math.min(totalRecords, me.currentPage * me.perPage)
+			};
+			if (me.currentPage > 1) {
+				me.previous = self.currentPage - 1;
+			}
+			if (me.currentPage < info.totalPages) {
+				info.next = me.currentPage + 1;
+			}
+			info.pageSet = me.setPagination(info);
+			me.information = info;
+			return info;
+		},
+
+		// setPagination also is an internal function that shouldn't be called directly.
+		// It will create an array containing the pages right before and right after the
+		// actual page.
+		setPagination : function(info) {
+
+			var pages = [], i = 0, l = 0;
+
+			// How many adjacent pages should be shown on each side?
+			var ADJACENTx2 = this.pagesInRange * 2, LASTPAGE = Math.ceil(info.totalRecords / info.perPage);
+
+			if (LASTPAGE > 1) {
+
+				// not enough pages to bother breaking it up
+				if (LASTPAGE <= (1 + ADJACENTx2)) {
+					for ( i = 1, l = LASTPAGE; i <= l; i++) {
+						pages.push(i);
+					}
+				}
+
+				// enough pages to hide some
+				else {
+
+					//close to beginning; only hide later pages
+					if (info.currentPage <= (this.pagesInRange + 1)) {
+						for ( i = 1, l = 2 + ADJACENTx2; i < l; i++) {
+							pages.push(i);
+						}
+					}
+
+					// in middle; hide some front and some back
+					else if (LASTPAGE - this.pagesInRange > info.currentPage && info.currentPage > this.pagesInRange) {
+						for ( i = info.currentPage - this.pagesInRange; i <= info.currentPage + this.pagesInRange; i++) {
+							pages.push(i);
+						}
+					}
+
+					// close to end; only hide early pages
+					else {
+						for ( i = LASTPAGE - ADJACENTx2; i <= LASTPAGE; i++) {
+							pages.push(i);
+						}
+					}
+				}
+
+			}
+
+			return pages;
+
+		}
+	}), collection = new Collection([{
 		'company' : '3m Co',
 		'price' : 71.72,
 		'change' : 0.02,
@@ -182,6 +282,7 @@ define(function(require) {
 		'lastChange' : '9/1 12:00am'
 	}]);
 	new Table({
+		pager:true,
 		loading : true,
 		refreshable : true,
 		height : 350,
@@ -195,17 +296,17 @@ define(function(require) {
 		}, {
 			text : 'Price',
 			flex : 1,
-			sortable : true,
+			sortable : false,
 			dataIndex : 'price'
 		}, {
 			text : 'Change',
-			width : 85,
-			sortable : true,
+			width : 75,
+			sortable : false,
 			dataIndex : 'change'
 		}, {
 			text : '% Change',
-			width : 105,
-			sortable : true,
+			width : 95,
+			sortable : false,
 			dataIndex : 'pctChange'
 		}, {
 			text : 'Last Change',

@@ -10,7 +10,7 @@ define(function(require){
 		html:function(){
 			return Base.prototype.html.call(this,{
 				'items':_.map(this.columns,function(item){
-					return _.template('<th<%=width%>><%=text%></th>',{
+					return _.template('<th<%=width%>><div class="column-header-inner"><%=text%></div></th>',{
 						text:item.text,
 						width:item.width ? ' style="width:'+item.width+'px"':''
 					});

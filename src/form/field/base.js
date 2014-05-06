@@ -197,6 +197,7 @@ define(function(require) {
 			if(this.width){
 				controlsStyle += 'width:'+this.width+'px;';
 			}
+			delete this.width;
 			return controlsStyle;
 		},
 		isValid : function() {

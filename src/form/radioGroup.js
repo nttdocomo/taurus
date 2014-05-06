@@ -5,7 +5,7 @@ define(function(require) {
 	var Base = require('./checkboxGroup');
 	return taurus.view('taurus.form.RadioGroup', Base.extend({
 		blankText : 'You must select one item in this group',
-		fieldSubTpl : '<%_.each(fields,function(field){%><%if(vertical){%><div><%}%><%if(field.boxLabel){%><label id="<%=field.cmpId%>-boxLabelEl" class="radio-inline"><%}%><input id="<%=field.id%>" type="<%=field.type%>" name="<%=field.name%>"<%if(field.checked){console.log(field.checked)%> checked="checked"<%}%> value="<%=field.inputValue%>"/><%if(field.boxLabel){%><%=field.boxLabel%></label><%}%><%if(vertical){%></div><%}%><%})%>',
+		fieldSubTpl : '<div><%_.each(fields,function(field){%><%if(vertical){%><div><%}%><%if(field.boxLabel){%><label id="<%=field.cmpId%>-boxLabelEl" class="radio-inline"><%}%><input class="form-radio" id="<%=field.id%>" type="<%=field.type%>" name="<%=field.name%>"<%if(field.checked){%> checked="checked"<%}%> value="<%=field.inputValue%>"/><%if(field.boxLabel){%><%=field.boxLabel%></label><%}%><%if(vertical){%></div><%}%><%})%></div>',
 		getBoxes : function(query) {
 			return this.$el.find(':radio' + (query || ''));
 		},
@@ -14,11 +14,6 @@ define(function(require) {
 			return {
 				fields : _.map(this.fields, function(field) {
 					var cmpId = _.uniqueId('radiofield-');
-					if (me.value == field.inputValue) {
-						field.checked = true;
-					} else {
-						field.checked = false;
-					}
 					return $.extend({
 						id : cmpId + '-inputEl',
 						cmpId : cmpId,

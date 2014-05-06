@@ -19,20 +19,18 @@ define(function(require) {
 			if (this.labelAlign === 'top') {
 				labelStyle = 'margin-bottom:' + labelPad + 'px;';
 			} else {
+				this.$el.addClass('form-group-horizontal');
 				if (this.labelWidth) {
 					labelStyle = 'width:' + this.labelWidth + 'px;';
 				}
-				labelStyle += 'margin-right:' + labelPad + 'px;float:left;text-align:right;padding-top:5px;';
+				labelStyle += 'margin-right:' + labelPad + 'px;float:left;text-align:right;';
 			}
 			return labelStyle;
 		},
 		getControlsStyle:function(){
 			var controlsStyle='';
 			if (this.labelAlign !== 'top' && this.fieldLabel) {
-				controlsStyle = 'margin-left:15px;';
-				if (this.labelWidth) {
-					controlsStyle = 'margin-left:' + (this.labelWidth + 5) + 'px;';
-				}
+				controlsStyle = 'padding-left:15px;float:left;';
 			}
 			return controlsStyle;
 		},

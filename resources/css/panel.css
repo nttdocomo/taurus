@@ -1,14 +1,31 @@
 .table-panel .panel-body{
 	padding:0;
 }
+.tool-expand-bottom,.tool-collapse-top{
+	float:right;
+	text-decoration:none;
+}
+.tool-collapse-top:before,.tool-expand-bottom:before {
+    font-family: 'Glyphicons Halflings';
+    color: grey; 
+}
+.tool-collapse-top:before{
+    content: "\e113";
+}
+.tool-expand-bottom:before {
+    content: "\e114";
+}
+.collapsed .panel-heading{
+	border-bottom:none;
+}
+.collapsed .panel-body,.collapsed .panel-footer{
+	display:none;
+}
 .panel .thumbnail {
 	border:none;
 }
 .table-panel .panel-body{
 	padding:0;
-}
-.panel-body table{
-	margin-bottom:0;
 }
 .scrollbar {
 	height:100%;

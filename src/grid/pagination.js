@@ -11,10 +11,10 @@ define(function(require) {
 		className:'pagination',
 		events:{
 			'click .backward':function(){
-				this.collection.requestPreviousPage();
+				this.collection.requestPreviousPage ? this.collection.requestPreviousPage() : this.collection.previousPage();
 			},
 			'click .forward':function(){
-				this.collection.requestNextPage();
+				this.collection.requestNextPage ? this.collection.requestNextPage() : this.collection.nextPage();
 			},
 			'click .fast-backward':function(){
 				this.collection.goTo(1);
@@ -26,6 +26,7 @@ define(function(require) {
 		initialize : function() {
 			Base.prototype.initialize.apply(this,arguments);
 			this.collection.on('sync', this.html, this);
+			this.collection.on('reset', this.html, this);
 		},
 		delegateEvents:function(){
 			var events = $.extend({}, this.events, {
