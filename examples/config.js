@@ -24,6 +24,6 @@ seajs.config({
 	    }
 	},
 	preload:['jquery','underscore','modernizr'],
-	base : '/src/',
+	base : '/taurus/src/',
 	charset : 'utf-8'
 });
