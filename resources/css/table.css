@@ -1,0 +1,124 @@
+.grid .panel-body{
+	padding:0;
+}
+.panel-body table{
+	margin-bottom:0;
+}
+.table > tbody > tr:first-child > td{
+	border-top:none;
+}
+.header-ct .table > thead > tr > th {
+	border-bottom:0;
+}
+.grid .pagination{
+	margin:0;
+	display:block;
+}
+.pagination span {
+	display:inline-block;
+	vertical-align: middle;
+}
+.pagination .halflings{
+	padding-top:12px;
+	padding-left:12px;
+	margin:0 5px 3px;
+}
+.column-header .caret{
+	display:none;
+}
+.column-header-sort-DESC .caret,.column-header-sort-ASC .caret{
+	display:inline-block;
+}
+.column-header-sort-ASC .caret{
+	border-top: 0;
+	border-bottom: 4px solid;
+	content: "";
+}
+.table-bordered{
+	border-right:0;
+	border-left:1px solid #dddddd;
+}
+.table-bordered th, .table-bordered td{
+	border-left:0;
+	border-right:1px solid #dddddd;
+}
+.table th, .table td, table th, table td {
+	padding: 0;
+	overflow:hidden;
+}
+.table {
+	table-layout:fixed;
+	border-collapse:separate;
+}
+.column-header{
+	display:inline-block;
+	vertical-align:top;
+	border-left:1px;
+	border-top:0;
+	border-right:0;
+	border-bottom:1px;
+	border-color:#dddddd;
+	border-style:solid;
+}
+.header-ct .column-header:first-child{
+	border-left:0;
+}
+.column-header-inner, .grid-cell-inner {
+	cursor: default;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	padding:8px;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+	padding:0px;
+}
+.grid-ct{
+	border:1px solid #dddddd;
+	-webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+	position:relative;
+}
+.header-ct {
+	border-bottom:1px solid #dddddd;
+}
+.grid-body {
+	overflow:auto;
+}
+.grid-table,.grid-header{
+	table-layout:fixed;
+	word-break: break-all;
+	border-collapse: separate;
+	/*==max-width:none;==*/
+}
+.grid-table{
+	width:100%;
+}
+.grid-table td{
+	border-bottom:1px solid #dddddd;
+}
+.grid-table tr:last-child td{
+	border-bottom:0;
+}
+.grid-table tr td:last-child,.grid-header tr th:last-child{
+	border-right:0;
+}
+.grid-header th,.grid-table tr td{
+	border-right:1px solid #dddddd;
+}
+.grid-resize-marker{
+	position:absolute;
+	cursor: col-resize;
+	width:1px;
+}
+.grid-resize-marker:hover{
+	background-color:#666666;
+}
+.table-panel .table > tbody > tr > td{
+	border-top:none;
+}
+.panel-footer.pagination{
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}

@@ -1,0 +1,38 @@
+.g-slider-horz {
+	padding-left: 7px;
+	background: transparent no-repeat 0 -24px;
+	width: 100%;
+}
+.g-slider-horz .g-slider-inner {
+	background: transparent repeat-x 0 -2px;
+	height: 18px;
+}
+.g-slider-horz .g-slider-end {
+	padding-right: 7px;
+	zoom: 1;
+	background: transparent no-repeat right -46px;
+}
+.g-slider-horz, .g-slider-horz .g-slider-end, .g-slider-horz .g-slider-inner {
+	background-image: url('http://dev.sencha.com/deploy/ext-4.1.0-gpl/resources/themes/images/default/slider/slider-bg.png');
+}
+.g-slider-inner {
+	position: relative;
+	left: 0;
+	top: 0;
+	overflow: visible;
+	zoom: 1;
+}
+.g-slider-horz .g-slider-thumb {
+	width: 14px;
+	height: 15px;
+	margin-left: -7px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	background: transparent no-repeat 0 0;
+}
+.g-slider-horz .g-slider-thumb-over{background-position:-14px -15px}
+.g-slider-vert .g-slider-thumb-over{background-position:-15px -14px}
+.g-slider-horz .g-slider-thumb {
+	background-image: url('http://dev.sencha.com/deploy/ext-4.1.0-gpl/resources/themes/images/default/slider/slider-thumb.png');
+}

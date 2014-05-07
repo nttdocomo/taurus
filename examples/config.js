@@ -24,6 +24,6 @@ seajs.config({
 	    }
 	},
 	preload:['jquery','underscore','modernizr'],
-	base : 'https://raw.githubusercontent.com/nttdocomo/taurus/master/src/',
+	base : '/src/',
 	charset : 'utf-8'
 });

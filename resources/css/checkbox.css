@@ -1,0 +1,25 @@
+.g-form-checkbox, .g-form-radio {
+	margin-top:6px;
+	width: 13px;
+	height: 13px;
+	background: no-repeat;
+	overflow: hidden;
+	padding: 0;
+	border: 0
+}
+.g-form-checkbox {
+	background-image: url('../../resources/themes/images/default/form/checkbox.gif');
+}
+.g-form-radio {
+	background-image: url('../../resources/themes/images/default/form/radio.gif')
+}
+.g-form-cb-checked .g-form-checkbox, .g-form-cb-checked .g-form-radio {
+	background-position: 0 -13px
+}
+.g-form-cb-label{
+	margin-top:5px;
+}
+.g-form-cb-label-after{
+	margin-left: 4px;
+	float:left;
+}
