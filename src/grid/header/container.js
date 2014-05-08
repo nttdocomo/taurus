@@ -41,8 +41,7 @@ define(function(require) {
 			var headers = this.getGridColumns(), headersLn = headers.length, i = 0;
 
 			for (; i < headersLn; i++) {
-				headers[i].setSortState(null, true);
-				if (headers[i] !== activeHeader) {
+				if (headers[i] !== activeHeader && headers[i].sortable) {
 					// unset the sortstate and dont recurse
 					headers[i].setSortState(null, true);
 				}

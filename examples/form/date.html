@@ -3,27 +3,59 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
-		<link type="text/css" rel="stylesheet" href="/resources/css/base.css"/>
-		<link type="text/css" rel="stylesheet" href="/resources/css/form.css"/>
-		<link type="text/css" rel="stylesheet" href="/resources/css/bootstrap.css"/>
-		<link type="text/css" rel="stylesheet" href="/resources/css/comboBox.css"/>
-		<link type="text/css" rel="stylesheet" href="/resources/css/datepicker.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/base.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap.css"/>
+		<link href="../../resources/css/jumbotron-narrow.css" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="../../resources/css/glyphicons.css">
+		<link type="text/css" rel="stylesheet" href="../../resources/css/form.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/checkbox.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/datepicker.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/panel.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/table.css"/>
 		<!--[if IE]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
 	</head>
 	<body>
-		<div id="wrap">
-			<header id="header">
-				header
-			</header>
-			<div id="main">
-				<form class="form-horizontal"></form>
+
+		<div class="container">
+			<div class="header">
+				<ul class="nav nav-pills pull-right">
+					<li class="active">
+						<a href="#">Home</a>
+					</li>
+					<li>
+						<a href="#">About</a>
+					</li>
+					<li>
+						<a href="#">Contact</a>
+					</li>
+				</ul>
+				<h3 class="text-muted">Taurus</h3>
 			</div>
+
+			<div class="row marketing" id="main">
+				<h1>Dynamic Forms built with JavaScript</h1>
+
+				<p>
+					These forms do not do anything and have very little validation. They solely demonstrate
+					how you can use Ext Forms to build and layout forms on the fly.
+				</p>
+
+			</div>
+
+			<div class="footer">
+				<p>
+					&copy; Company 2014
+				</p>
+			</div>
+
 		</div>
-		<footer id="footer">
-			footer
-		</footer>
-		<script src="/src/sea.js" data-config="/src/config" data-main="/examples/form/date"></script>
+		<!-- /container -->
+
+		<!-- Bootstrap core JavaScript
+		================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="../../src/sea.js" data-config="../config" data-main="../form/date"></script>
 	</body>
 </html>

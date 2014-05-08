@@ -179,7 +179,7 @@ define(function(require) {
 		},
 		lookupComponent:function(cmp){
 			if(_.has(cmp,'cls')){
-				return item['cls'];
+				return cmp['cls'];
 			} else {
 				return this.defaultType;
 			}

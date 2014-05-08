@@ -27,9 +27,9 @@
 	display:none;
 }
 .column-header-sort-DESC .caret,.column-header-sort-ASC .caret{
-	display:block;
+	display:inline-block;
 }
-.column-header-sort-DESC .caret{
+.column-header-sort-ASC .caret{
 	border-top: 0;
 	border-bottom: 4px solid;
 	content: "";

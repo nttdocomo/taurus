@@ -21,7 +21,8 @@ define(function(require) {
 
 		doSort : function(state) {
 			var me = this, collection = this.$el.parents('.grid').data('component').collection;
-			collection.comparator = function(chapterA, chapterB) {
+			collection.setSort(me.getSortParam(), state.toLowerCase());
+			/*collection.comparator = function(chapterA, chapterB) {
 				if (chapterA.get(me.getSortParam()) > chapterB.get(me.getSortParam())) {
 					return state == 'ASC' ? -1 : 1;
 				}
@@ -32,7 +33,7 @@ define(function(require) {
 				return 0;
 				// equal
 			};
-			collection.sort();
+			collection.sort();*/
 		},
 
 		/**
@@ -94,7 +95,7 @@ define(function(require) {
 						me.$el.removeClass(descCls);
 						break;
 					default:
-						me.removeClass([ascCls, descCls]);
+						me.$el.removeClass([ascCls, descCls].join(" "));
 				}
 				if (ownerHeaderCt && !me.triStateSort && !skipClear) {
 					ownerHeaderCt.clearOtherSortStates(me);

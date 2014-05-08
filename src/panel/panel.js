@@ -10,6 +10,10 @@ define(function(require){
 		referTo:$(window),
 		tpl:'<%if(header){%><div class="panel-heading"><h4 class="panel-title"><%=title%></h4></div><%}%><div class="panel-body"><%=content%></div>',
 		className:'panel panel-default',
+		events:{
+			'click .refresh' : 'refresh',
+			'click .tool-collapse-top, .tool-expand-bottom' : 'toggleCollapse'
+		},
 		initialize:function(){
 			Base.prototype.initialize.apply(this,arguments);
 			if(this.header){
@@ -25,16 +29,6 @@ define(function(require){
 				})).html() : this.content,
 				tool:this.refreshable ? '<a href="" class="pull-right halflings refresh" data-name="refresh" data-type="" data-prefix="halflings" data-utf="E031"></a>':''
 			};
-		},
-		delegateEvents:function(events){
-			var events = $.extend(events || {}, this.events/*, this.listeners*/);
-			if(this.refreshable){
-				events['click .refresh'] = 'refresh';
-			};
-			if(this.collapsible){
-				events['click .tool-collapse-top, .tool-expand-bottom'] = 'toggleCollapse';
-			}
-			Base.prototype.delegateEvents.call(this, events);
 		},
 
 	    /**

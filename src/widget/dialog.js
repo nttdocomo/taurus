@@ -59,6 +59,8 @@ define(function(require){
 			var html = Base.prototype.html.apply(this, arguments);
 			this.$el.find('.modal-dialog').width(this.width);
 			return html;
-		}
+		},
+		setHeight : function(height) {},
+		setWidth : function(width) {}
 	}));
 });

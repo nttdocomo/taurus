@@ -57,11 +57,9 @@ define(function(require){
 	            var column = columns[i],header = headers.eq(i);
 	            // use headers getDesiredWidth if its there
 	            if (column.flex) {
-	            	console.log(header.width() || 0)
 	                fullWidth += header.width() || 0;
 	            // if injected a diff cmp use getWidth
 	            } else {
-	            	console.log(column.width)
 	                fullWidth += column.width;
 	            }
 	        }

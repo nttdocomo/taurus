@@ -3,10 +3,30 @@
  */
 define(function(require) {
 	require('backbone');
-	var Panel = require("../../src/panel/panel.js");
-	var Table = require("../../src/panel/table.js");
-	var $body = $("#main");
-	var collection = new Backbone.Collection([{
+	require('backbone.paginator');
+	var Panel = require("../../src/panel/panel.js"),
+		Table = require("../../src/panel/table.js"),
+		$body = $("#main"),
+		Collection = Backbone.Paginator.clientPager.extend({
+		paginator_ui : {
+			// the lowest page index your API allows to be accessed
+			firstPage : 1,
+
+			// which page should the paginator start from
+			// (also, the actual page the paginator is on)
+			currentPage : 1,
+
+			// how many items per page should be shown
+			perPage : 10000,
+
+			// a default number of total pages to query in case the API or
+			// service you are using does not support providing the total
+			// number of pages for us.
+			// 10 as a default in case your service doesn't return the total
+			totalPages : 10
+		}
+	}),
+		collection = new Collection([{
 		'company' : '3m Co',
 		'price' : 71.72,
 		'change' : 0.02,
@@ -184,6 +204,7 @@ define(function(require) {
 	new Table({
 		loading : true,
 		refreshable : true,
+		collapsible: true,
 		height : 350,
 		width : 600,
 		title : 'Array Grid',

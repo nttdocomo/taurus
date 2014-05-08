@@ -14,9 +14,9 @@ define(function(require) {
 		autoStripChars : false,
 		decimalPrecision : 2,
 		step: 1,
-		triggerTpl : '<div class="input-group-btn"><div class="btn-group-vertical"><button class="btn btn-default spinner-up"><span class="caret"></span></button><button class="btn btn-default spinner-down"><span class="caret"></span></button></div></div>',
+		triggerTpl : '<div class="input-group-btn"><button class="btn btn-default spinner"><span class="caret"></span><span class="caret"></span></button></div>',
 		initialize : function() {
-			taurus.form.field.Trigger.prototype.initialize.apply(this, arguments)
+			taurus.form.field.Trigger.prototype.initialize.apply(this, arguments);
 			if (this.disableKeyFilter !== true) {
 				allowed = this.baseChars + '';
 				if (this.allowDecimals) {
@@ -34,9 +34,9 @@ define(function(require) {
 		},
 		delegateEvents : function(events) {
 			var events = $.extend(events || {}, this.events, {
-				'click .btn-group-vertical' : 'onTriggerClick'
+				'click .spinner' : 'onTriggerClick'
 			});
-			taurus.form.field.Text.prototype.delegateEvents.call(this, events)
+			taurus.form.field.Text.prototype.delegateEvents.call(this, events);
 		},
 		/**
 		 * @private
@@ -49,11 +49,10 @@ define(function(require) {
 			} else if (!me.allowDecimals || precision <= 0) {
 				precision = 0;
 			}
-
 			return parseFloat(taurus.Number.toFixed(parseFloat(value), precision));
 		},
 		onTriggerClick : function(e) {
-			$(e.currentTarget).children().index($(e.target).closest('button')) ? this.spinDown() : this.spinUp();
+			$(e.currentTarget).children().index($(e.target).closest('.caret')) ? this.spinDown() : this.spinUp();
 			return false;
 		},
 		// private
@@ -74,5 +73,5 @@ define(function(require) {
 		spinDown : function() {
 			this.setValue(taurus.Number.constrain(this.getValue() - this.step, this.minValue, this.maxValue));
 		}
-	}))
-})
+	}));
+});

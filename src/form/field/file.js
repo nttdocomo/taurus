@@ -13,7 +13,7 @@ define(function(require) {
 		buttonText : 'Browse...',
 		childEls : {
 			'fileInputEl' : '#fileInputEl',
-			'inputEl' : '#inputEl',
+			'inputEl' : '#fileInputEl',
 			'buttonEl' : '#buttonEl',
 			'spinnerEl' : '.spinner',
 			'cancelEl' : '.qq-upload-cancel'
@@ -181,16 +181,16 @@ define(function(require) {
 			} else {
 				this.addFiles(input);
 			}
-			Trigger.prototype.setValue.call(this, this.fileInputEl.val());
+			Trigger.prototype.checkChange.call(this);
 			//this._button.reset();
 		},
 		onDisable : function() {
-			this.fileInputEl.prop('disabled', true);
-			this.buttonEl.prop('disabled', true);
+			this.fileInputEl.attr('disabled', true);
+			this.buttonEl.attr('disabled', true);
 		},
 		onEnable : function() {
-			this.fileInputEl.prop('disabled', false);
-			this.buttonEl.prop('disabled', false);
+			this.fileInputEl.attr('disabled', false);
+			this.buttonEl.attr('disabled', false);
 		},
 		onCancel : taurus.emptyFn,
 		onComplete : taurus.emptyFn,

@@ -3,35 +3,71 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
-		<link type="text/css" rel="stylesheet" href="/resources/css/base.css"/>
-		<link type="text/css" rel="stylesheet" href="/resources/css/bootstrap.css"/>
-		<link type="text/css" rel="stylesheet" href="/resources/css/glyphicons.css">
-		<link type="text/css" rel="stylesheet" href="/resources/css/form.css"/>
-		<link type="text/css" rel="stylesheet" href="/resources/css/checkbox.css"/>
-		<link type="text/css" rel="stylesheet" href="/resources/css/datepicker.css"/>
-		<link type="text/css" rel="stylesheet" href="/resources/css/panel.css"/>
-		<link type="text/css" rel="stylesheet" href="/resources/css/table.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/base.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap.css"/>
+		<link href="../../resources/css/jumbotron-narrow.css" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="../../resources/css/glyphicons.css">
+		<link type="text/css" rel="stylesheet" href="../../resources/css/form.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/checkbox.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/datepicker.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/panel.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/table.css"/>
 		<!--[if IE]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
 		<style>
-			.refresh{
-				padding-left:14px;
-				padding-top:14px;
+			.refresh {
+				padding-left: 14px;
+				padding-top: 14px;
 			}
 		</style>
 	</head>
 	<body>
-		<div id="wrap">
-			<header id="header">
-				header
-			</header>
-			<div id="main">
+
+		<div class="container">
+			<div class="header">
+				<ul class="nav nav-pills pull-right">
+					<li class="active">
+						<a href="#">Home</a>
+					</li>
+					<li>
+						<a href="#">About</a>
+					</li>
+					<li>
+						<a href="#">Contact</a>
+					</li>
+				</ul>
+				<h3 class="text-muted">Taurus</h3>
 			</div>
+
+			<div class="row marketing" id="main">
+				<h1>Stateful Array Grid Example</h1>
+				<p>
+					This example shows how to create a grid from Array data.
+				</p>
+				<p>
+					The grid is stateful so you can move or hide columns, reload the page, and come
+					back to the grid in the same state you left it in.
+				</p>
+				<p>
+					The cells are selectable due to use of the <code>
+						enableTextSelection</code>
+					option.
+				</p>
+			</div>
+
+			<div class="footer">
+				<p>
+					&copy; Company 2014
+				</p>
+			</div>
+
 		</div>
-		<footer id="footer">
-			footer
-		</footer>
-		<script src="/src/sea.js" data-config="/src/config" data-main="/examples/grid/grid"></script>
+		<!-- /container -->
+
+		<!-- Bootstrap core JavaScript
+		================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="../../src/sea.js" data-config="../config" data-main="../grid/grid"></script>
 	</body>
 </html>

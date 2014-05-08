@@ -30,7 +30,7 @@ define(function(require) {
 		getControlsStyle:function(){
 			var controlsStyle='';
 			if (this.labelAlign !== 'top' && this.fieldLabel) {
-				controlsStyle = 'padding-left:15px;float:left;';
+				controlsStyle = 'padding-left:15px;margin-left:'+(this.labelWidth + 5)+'px;';
 			}
 			return controlsStyle;
 		},
