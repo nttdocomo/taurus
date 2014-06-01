@@ -27,6 +27,9 @@ define(function(require){
 			}
 			this.$el.addClass('in').show();
 			$(document.body).addClass('modal-open');
+			this.position();
+		},
+		position:function(){
 			var height = this.$el.find('.modal-dialog').height(),width = this.$el.find('.modal-dialog').width();
 			this.$el.find('.modal-dialog').css({
 				'margin-top':(height/2)*-1,

@@ -50,9 +50,11 @@
 	table-layout:fixed;
 	border-collapse:separate;
 }
-.column-header{
+.column-header {
 	display:inline-block;
 	vertical-align:top;
+}
+.column-header .column-header-inner{
 	border-left:1px;
 	border-top:0;
 	border-right:0;
@@ -60,7 +62,7 @@
 	border-color:#dddddd;
 	border-style:solid;
 }
-.header-ct .column-header:first-child{
+.grid-header-ct .column-header:first-child .column-header-inner{
 	border-left:0;
 }
 .column-header-inner, .grid-cell-inner {

@@ -22,12 +22,15 @@ define(function(require) {
 		triggerTpl: '<div class="input-group-btn"><button class="btn form-trigger btn-default" type="button"><span class="caret"></span></button></div>',
 		initialize:function(){
 			Picker.prototype.initialize.apply(this,arguments);
+			if(!(this.collection instanceof Backbone.Collection)){
+				this.collection = new this.collection;
+			}
 			//this.collection.on('reset',_.bind(this.expand,this));
 		},
 		initField:function(){
 			this.displayTpl = this.getDisplayTpl();
 			if(this.collection){
-				if(this.value && !this.collection.length){
+				if(this.value && !_.isObject(this.value) && !this.collection.length){
 					this.collection.fetch({
 						success:_.bind(Picker.prototype.initField,this)
 					});
@@ -71,6 +74,9 @@ define(function(require) {
 				delete picker.height;
 				picker.updateLayout();
 			}*/
+			if (picker.$el.height() > space - 5) {
+	            picker.setHeight(space - 5); // have some leeway so we aren't flush against
+	        }
 			// Then ensure that vertically, the dropdown will fit into the space either above or below the inputEl.
 			me.doAlign(position);
 			//Picker.prototype.alignPicker.apply(this,arguments);
@@ -164,7 +170,7 @@ define(function(require) {
 			value = $.makeArray(value);
 			for (i = 0, len = value.length; i < len; i++) {
 				val = value[i];
-				if((_.isString(val) || _.isNumber(val) || _.isObject(val)) && this.collection){
+				if((_.isString(val) || _.isNumber(val) || _.isObject(val)) && this.collection.length){
 					if(_.isString(val) || _.isNumber(val)){
 						record =  this.collection.find(function(model){
 							return model.get(valueField) == val;
@@ -185,8 +191,11 @@ define(function(require) {
 					record = val;
 				}
 				if(record){
-					displayTplData.push(record.toJSON());
-					processedValue.push(record.get(valueField));
+					if(record instanceof Backbone.Model){
+						record = record.toJSON();
+					}
+					displayTplData.push(record);
+					processedValue.push(record[valueField]);
 				}else {
 					
 				}

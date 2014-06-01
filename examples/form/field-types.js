@@ -3,12 +3,9 @@
  */
 define(function(require) {
 	var Text = require("../../src/form/field/text"),
-		RadioGroup = require("../../src/form/radioGroup"),
 		FieldSet = require("../../src/form/fieldSet"),
 		$body = $("#main"),
 		Number = require("../../src/form/field/number"),
-		ComboBox = require("../../src/form/field/comboBox"),
-		Prompt = require("../../src/widget/prompt"),
 		Panel = require("../../src/form/panel"),
 		DateType = require("../../src/form/field/date"),
 		collection = new Backbone.Collection([{

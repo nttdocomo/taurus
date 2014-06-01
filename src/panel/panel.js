@@ -50,6 +50,9 @@ define(function(require){
 		refresh:function(){
 			this.onRefresh && this.onRefresh();
 			return false;
+		},
+		getItemContainer : function() {
+			return Base.prototype.getItemContainer.apply(this,arguments).find('.panel-body');
 		}
 	}));
 });
