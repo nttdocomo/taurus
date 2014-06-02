@@ -37,6 +37,7 @@ define(function(require){
 				height:height - this.$el.height()
 			}));
 			if(this.pager){
+				this.$el.addClass('has-pager');
 				new Pagination({
 					uiClass:'panel-footer',
 					collection:this.collection,
