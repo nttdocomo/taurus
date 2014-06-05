@@ -11,12 +11,14 @@ define(function(require){
 		pager:false,
 		className:'panel panel-default grid',
 		initialize:function(options){
-			var height = options.height;
+			var me = this, height = options.height;
 			options.height = null;
 			Base.prototype.initialize.apply(this,[options]);
 			var headerCtCfg = this.columns;
 			if(this.pager){
 				this.collection.pager();
+			}else{
+				this.collection.fetch();
 			}
 			if (_.isArray(headerCtCfg)) {
                 headerCtCfg = {
@@ -32,19 +34,36 @@ define(function(require){
 			this.table = new Table($.extend({
 				collection:this.collection,
 				columns:this.columns,
+				sortable:this.sortable,
 				renderTo:this.$el.find('.panel-body'),
 				height:height - this.$el.height()
 			}));
 			if(this.pager){
+				this.$el.addClass('has-pager');
 				new Pagination({
 					uiClass:'panel-footer',
 					collection:this.collection,
 					renderTo:this.$el
 				});
 			}
+			if(!options.width){
+				taurus.$win.on('resize',function(){
+					me.setSize();
+					me.table && me.table.setSize(me.$el.find('.panel-body').width());
+					me.headerCt && me.headerCt.setSize();
+				});
+			}
+			
 			/*this.collection.on('sync',function(){
 				this.html();
 			},this);*/
+		},
+		setSize:function(width, height){
+			var me = this;
+			if(!width){
+				width = this.renderTo.width();
+			}
+			Base.prototype.setSize.apply(this,[width,height]);
 		},
 		getTplData:function(){
 			return $.extend(Base.prototype.getTplData.apply(this,arguments),{

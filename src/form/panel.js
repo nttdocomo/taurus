@@ -2,8 +2,7 @@
  * @author nttdocomo
  */
 define(function(require){
-	var Panel = require('../panel/panel');
-	require('./base');
+	var Panel = require('../panel/panel'), BaseForm = require('./base');
 	return taurus.view("taurus.form.Panel", Panel.extend({
 		disabled:false,
 		/*tpl:'<div class="panel-heading"><%=tool%><h4 class="panel-title"><%=title%></h4></div><div class="panel-body"><%=content%></div><div class="panel-footer"></div>',*/
@@ -15,14 +14,22 @@ define(function(require){
 				this.form.$el.addClass('form-inline');
 			}
 		},
-		prepareItems:function(){},
 		createForm:function(){
 			delete this.initialConfig.width;
-			return new taurus.form.Base($.extend(this.initialConfig,{
-				renderTo:this.$el.find('.panel-body'),
+			return new BaseForm({
+				owner:this,
+				//renderTo:this.$el.find('.panel-body'),
 				operation:'prepend'
-			}));
+			});
 		},
+
+	    /**
+	     * Provides access to the {@link Ext.form.Basic Form} which this Panel contains.
+	     * @return {Ext.form.Basic} The {@link Ext.form.Basic Form} which this Panel contains.
+	     */
+	    getForm: function() {
+	        return this.form;
+	    },
 		confirm:function(){
 			if(!this.disabled){
 				this.form.submit();
@@ -33,7 +40,7 @@ define(function(require){
 		delegateEvents:function(events){
 			var events = events || {};
 			_.each(this.buttons,function(button,i){
-				events['click .form-actions > button:eq('+i+')'] = button.handler;
+				events['click .panel-footer > button:eq('+i+')'] = button.handler;
 			});
 			Panel.prototype.delegateEvents.call(this, events);
 		},
@@ -47,11 +54,20 @@ define(function(require){
 			});
 		},
 		renderButttons:function(){
-			return _.template('<%_.each(buttons,function(button){%><button class="btn<%if(button){%> <%=button.className%><%}%>"<%if(disabled){%> disabled="disabled"<%}%>><%=button.text%></button><%})%>', $.extend({
+			return _.template('<%_.each(buttons,function(button){%><button class="btn<%if(button){%> <%=button.className%><%}%>"<%if(disabled){%> disabled="disabled"<%}%>><%=button.text%></button>\n<%})%>', $.extend({
 				buttons:this.buttons
 			}, {
 				disabled : this.disabled
 			}));
-		}
+		},
+
+	    /**
+	     * This is a proxy for the underlying BasicForm's {@link Ext.form.Basic#submit} call.
+	     * @param {Object} options The options to pass to the action (see {@link Ext.form.Basic#submit} and
+	     * {@link Ext.form.Basic#doAction} for details)
+	     */
+	    submit: function(options) {
+	        this.form.submit(options);
+	    }
 	}));
 });

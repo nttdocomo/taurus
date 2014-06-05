@@ -7,7 +7,7 @@ define(function(require) {
 		tagName : 'form',
 		getValues : function() {
 			var values  = {},isArray = _.isArray;
-			_.each(this.items, function(item) {
+			_.each(this.owner.items, function(item) {
 				//obj[item.getName()] = item.getSubmitData();
 				var data = item.getSubmitData();
 				if (_.isObject(data)) {
@@ -35,6 +35,9 @@ define(function(require) {
                 }
 			});
 			return values;
+		},
+		getFields:function(){
+			return this.owner.items;
 		},/*
 		getItemContainer:function(){
 			return this.$el.find('.modal-body');
@@ -48,7 +51,7 @@ define(function(require) {
 	    isValid: function() {
 	        var me = this,
 	            invalid;
-	        invalid = _.filter(me.items,function(field) {
+	        invalid = _.filter(me.getFields(),function(field) {
 	            return !field.validate();
 	        });
 	        return invalid.length < 1;

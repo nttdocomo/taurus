@@ -8,6 +8,8 @@ define(function(require) {
 		defaultType : Column,
 		initialize : function() {
 			Base.prototype.initialize.apply(this, arguments);
+		},
+		setSize:function(){
 			var width = this.$el.width(), items = this.items, headers = this.$el.find('.column-header'), fullWidth = 0;
 			for (var i = 0, len = items.length; i < len; i++) {
 				var item = items[i], header = headers.eq(i);

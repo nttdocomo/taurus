@@ -13,7 +13,7 @@ define(function(require) {
 		buttonText : 'Browse...',
 		childEls : {
 			'fileInputEl' : '#fileInputEl',
-			'inputEl' : '#fileInputEl',
+			'inputEl' : '.form-control',
 			'buttonEl' : '#buttonEl',
 			'spinnerEl' : '.spinner',
 			'cancelEl' : '.qq-upload-cancel'
