@@ -35,6 +35,9 @@ define(function(require) {
 			this.$el.data('component', this);
 			this.on(this.listeners);
 			this.setSize(this.width, this.height);
+			if (this.cls) {
+	            this.$el.addClass(this.cls);
+	        }
 		},
 		initItems : function() {
 			var me = this, items = me.items;

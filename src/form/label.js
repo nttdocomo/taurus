@@ -78,8 +78,8 @@ define(function(require) {
 		applyChildEls : function(childEls) {
 			var childEls = $.extend(childEls || {}, {
 				'bodyEl' : '> div'
-			})
-			Base.prototype.applyChildEls.call(this, childEls)
+			});
+			Base.prototype.applyChildEls.call(this, childEls);
 		}
 	}));
 });

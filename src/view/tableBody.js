@@ -18,6 +18,9 @@ define(function(require){
 			this.collection.on('sort',function(){
 				this.html();
 			},this);
+			this.collection.on('remove',function(){
+				this.html();
+			},this);
 			if(this.sortable){
 				taurus.$doc.on('mousedown',_.bind(this.onMouseDown,this));
 			}

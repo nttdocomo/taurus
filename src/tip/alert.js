@@ -36,5 +36,5 @@ define(function(require) {
 				'dismissable' : this.dismissable
 			}
 		}
-	}))
-})
+	}));
+});

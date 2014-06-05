@@ -17,6 +17,8 @@ define(function(require){
 			var headerCtCfg = this.columns;
 			if(this.pager){
 				this.collection.pager();
+			}else{
+				this.collection.fetch();
 			}
 			if (_.isArray(headerCtCfg)) {
                 headerCtCfg = {

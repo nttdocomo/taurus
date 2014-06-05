@@ -22,14 +22,14 @@ define(function(require) {
 		triggerTpl: '<div class="input-group-btn"><button class="btn form-trigger btn-default" type="button"><span class="caret"></span></button></div>',
 		initialize:function(){
 			Picker.prototype.initialize.apply(this,arguments);
-			if(!(this.collection instanceof Backbone.Collection)){
-				this.collection = new this.collection;
-			}
 			//this.collection.on('reset',_.bind(this.expand,this));
 		},
 		initField:function(){
 			this.displayTpl = this.getDisplayTpl();
 			if(this.collection){
+				if(!(this.collection instanceof Backbone.Collection)){
+					this.collection = new this.collection;
+				}
 				if(this.value && !_.isObject(this.value) && !this.collection.length){
 					this.collection.fetch({
 						success:_.bind(Picker.prototype.initField,this)

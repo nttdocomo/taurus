@@ -18,10 +18,18 @@ define(function(require){
 			delete this.initialConfig.width;
 			return new BaseForm({
 				owner:this,
-				renderTo:this.$el.find('.panel-body'),
+				//renderTo:this.$el.find('.panel-body'),
 				operation:'prepend'
 			});
 		},
+
+	    /**
+	     * Provides access to the {@link Ext.form.Basic Form} which this Panel contains.
+	     * @return {Ext.form.Basic} The {@link Ext.form.Basic Form} which this Panel contains.
+	     */
+	    getForm: function() {
+	        return this.form;
+	    },
 		confirm:function(){
 			if(!this.disabled){
 				this.form.submit();
@@ -46,7 +54,7 @@ define(function(require){
 			});
 		},
 		renderButttons:function(){
-			return _.template('<%_.each(buttons,function(button){%><button class="btn<%if(button){%> <%=button.className%><%}%>"<%if(disabled){%> disabled="disabled"<%}%>><%=button.text%></button><%})%>', $.extend({
+			return _.template('<%_.each(buttons,function(button){%><button class="btn<%if(button){%> <%=button.className%><%}%>"<%if(disabled){%> disabled="disabled"<%}%>><%=button.text%></button>\n<%})%>', $.extend({
 				buttons:this.buttons
 			}, {
 				disabled : this.disabled
