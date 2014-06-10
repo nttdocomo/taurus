@@ -25,7 +25,10 @@ define(function(require) {
 			//this.collection.on('reset',_.bind(this.expand,this));
 		},
 		initField:function(){
-			this.displayTpl = this.getDisplayTpl();
+			//this.displayTpl = this.getDisplayTpl();
+			if(this.beforeInitField){
+				this.beforeInitField.apply(this,arguments);
+			}
 			if(this.collection){
 				if(!(this.collection instanceof Backbone.Collection)){
 					this.collection = new this.collection;
