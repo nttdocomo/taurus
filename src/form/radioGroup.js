@@ -2,8 +2,9 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Base = require('./checkboxGroup');
-	return taurus.view('taurus.form.RadioGroup', Base.extend({
+	var CheckboxGroup = require('./checkboxGroup');
+	var Base = require('./field/base');
+	return taurus.view('taurus.form.RadioGroup', CheckboxGroup.extend({
 		blankText : 'You must select one item in this group',
 		fieldSubTpl : '<div><%_.each(fields,function(field){%><%if(vertical){%><div><%}%><%if(field.boxLabel){%><label id="<%=field.cmpId%>-boxLabelEl" class="radio-inline"><%}%><input class="form-radio" id="<%=field.id%>" type="<%=field.type%>" name="<%=field.name%>"<%if(field.checked){%> checked="checked"<%}%> value="<%=field.inputValue%>"/><%if(field.boxLabel){%><%=field.boxLabel%></label><%}%><%if(vertical){%></div><%}%><%})%></div>',
 		getBoxes : function(query) {
@@ -14,16 +15,20 @@ define(function(require) {
 			return {
 				fields : _.map(this.fields, function(field) {
 					var cmpId = _.uniqueId('radiofield-');
+					if (me.value == field.inputValue) {
+						field.checked = true;
+					}
 					return $.extend({
 						id : cmpId + '-inputEl',
 						cmpId : cmpId,
-						type : 'radio'
+						type : 'radio',
+						name : field.name || me.name
 					}, field);
 				}),
 				vertical:this.vertical
 			};
 		},
-		checkChange : function(e) {
+		/*checkChange : function(e) {
 			var value = this.getValue(), key = _.keys(value)[0];
 			// If the value is an array we skip out here because it's during a change
 			// between multiple items, so we never want to fire a change
@@ -31,6 +36,16 @@ define(function(require) {
 				return;
 			}
 			Base.prototype.checkChange.apply(this, arguments);
+		},*/
+		getErrors : function() {
+			return Base.prototype.getErrors.apply(this,arguments);
+		},
+		setValue : function(value) {
+			Base.prototype.setValue.apply(this,arguments);
+		},
+		getValue : function() {
+			var values = {}, box = this.getBoxes(':checked');
+			return box.val();
 		},
 		getSubmitData:function(){
 			var values = {}, boxes = this.getBoxes(':checked'), b, bLen = boxes.length, box, name, inputValue, bucket;
