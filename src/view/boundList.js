@@ -12,7 +12,7 @@ define(function(require) {
 		tagName:'ul',
 		className:'dropdown-menu boundlist',
 		overItemCls : 'item-over',
-		selectedItemCls:'',
+		selectedItemCls:'boundlist-selected',
 		listItemCls : '',
 		itemCls: 'boundlist-item',
 		childEls : ['listEl'],
@@ -20,14 +20,15 @@ define(function(require) {
 		itemSelector:'li',
 		initialize:function(){
 			this.$el.css('top',0);
-			taurus.views.View.prototype.initialize.apply(this,arguments);
-			console.log(this.displayField);
-			this.listenTo(this.collection,'reset',this.refresh);
+			Base.prototype.initialize.apply(this,arguments);
+			this.collection.on('reset',_.bind(this.refresh,this));
 		},
-		onItemSelect:function(node){
+		onItemSelect:function(record){
+			var node = this.getNode(record);
 			node.addClass(this.selectedItemCls);
 		},
-		onItemDeselect:function(node){
+		onItemDeselect:function(record){
+			var node = this.getNode(record);
 			node.removeClass(this.selectedItemCls);
 		},
 		/**
@@ -64,7 +65,7 @@ define(function(require) {
 	            '<li role="option" class="' + itemCls + '">' + this.getInnerTpl(this.displayField) + '</li>',
 	            '<%})%>'].join('');
 	        }
-			return taurus.views.View.prototype.html.call(this,{results:this.collection.toJSON()});/*
+			return Base.prototype.html.call(this,{results:this.collection.toJSON()});/*
 			return taurus.views.Base.prototype.html.call(this,{
 				content:this.collection.map(function(model){
 					var boundListItem = new BoundListItem({
@@ -78,14 +79,15 @@ define(function(require) {
 		refresh:function(){
 			this.$el.empty();
 			this.html();
+			this.$el.css('height','auto');
+			this.trigger('refresh');
 		},
 		alignTo : function(element, position, offsets) {
 			this.$el.css('z-index','1051');
-			return Base.prototype.alignTo.apply(this,arguments)
+			return Base.prototype.alignTo.apply(this,arguments);
 		},
 		setHeight:function(height){
-			this.$el.css('height','auto')
-			return taurus.views.View.prototype.setHeight.call(this,Math.min(height,this.$el.height()));
+			return Base.prototype.setHeight.call(this,Math.min(height,this.$el.height()));
 		}
 	});
 });

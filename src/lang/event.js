@@ -228,5 +228,5 @@ define(function() {
 			this.stopPropagation();
 			this.preventDefault();
 		}
-	})
-})
+	});
+});

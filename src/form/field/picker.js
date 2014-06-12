@@ -53,16 +53,18 @@ define(function(require){
 		expand:function(){
 			var picker;
 			if (!this.isExpanded) {
+				this.expanding = true;
 				picker = this.getPicker();
 				picker.show();
 				this.isExpanded = true;
 				this.alignPicker();
-				taurus.$doc.one('mousedown',_.bind(this.onDocumentClick,this));
-			}
-		},
-		onDocumentClick : function(e){
-			if(this.triggerWrap[0] != e.target && !this.triggerWrap.has(e.target).length && !this.picker.$el.has(e.target).length && !this.picker.$el.is(e.target)){
-				this.collapse();
+				this.onDocumentClick = _.bind(function(e){
+					if(this.triggerWrap[0] != e.target && !this.triggerWrap.has(e.target).length && !this.picker.$el.has(e.target).length && !this.picker.$el.is(e.target)){
+						this.collapse();
+					}
+				},this);
+				taurus.$doc.on('mousedown',_.bind(this.onDocumentClick,this));
+				delete this.expanding;
 			}
 		},
 		initialize:function(){

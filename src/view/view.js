@@ -3,8 +3,7 @@
  */
 define(function(require){
 	var Base = require('./base');
-	taurus.augmentString('taurus.templates.views.view', '<%=html%>');
-	return taurus.view('taurus.views.View',Base.extend({
+	return Base.extend({
 		className:'row-fluid',
 		itemSelector:'.item-selector',
 		selectedItemCls:'item-selected',
@@ -13,29 +12,29 @@ define(function(require){
 			events['click ' + this.itemSelector] = 'onItemClick';
 			var events = $.extend({}, this.events, events);
 			Base.prototype.delegateEvents.call(this, events);
-			this.selection = new Backbone.Collection
+			this.selection = new Backbone.Collection;
 		},
 		onItemClick:function(e){
 			var node = $(e.target).closest(this.itemSelector);
 			var record = this.collection.at(this.$el.children().index((node)));
-			if(e.ctrlKey){
+			/*if(e.ctrlKey){
 				if(this.selection.contains(record)){
-					node.removeClass(this.selectedItemCls)
-					this.selection.remove(record)
+					node.removeClass(this.selectedItemCls);
+					this.selection.remove(record);
 				} else {
-					node.addClass(this.selectedItemCls)
+					node.addClass(this.selectedItemCls);
 					this.selection.add(record);
 				}
 			} else {
 				if(this.selection.length){
-					this.getNodeByRecord(this.selection.at(0)).removeClass(this.selectedItemCls)
+					this.getNodeByRecord(this.selection.at(0)).removeClass(this.selectedItemCls);
 				}
 				if(!this.selection.contains(record)){
-					node.addClass(this.selectedItemCls)
+					node.addClass(this.selectedItemCls);
 					this.selection.set([record]);
 				}
 			}
-			//console.log(this.selection)
+			//console.log(this.selection)*/
 			this.trigger('itemclick',e,record);
 			return false;
 		}/*,
@@ -49,5 +48,5 @@ define(function(require){
 				}).join('')
 			})
 		}*/
-	}))
-})
+	});
+});
