@@ -13,6 +13,13 @@ define(function(require){
 		initialize:function(options){
 			var me = this, height = options.height;
 			options.height = null;
+			if(!options.width){
+				taurus.$win.on('resize',function(){
+					me.setSize();
+					me.table && me.table.setSize(me.$el.find('.panel-body').width());
+					me.headerCt && me.headerCt.setSize();
+				});
+			}
 			Base.prototype.initialize.apply(this,[options]);
 			var headerCtCfg = this.columns;
 			if(this.pager){
@@ -36,7 +43,7 @@ define(function(require){
 				columns:this.columns,
 				sortable:this.sortable,
 				renderTo:this.$el.find('.panel-body'),
-				height:height - this.$el.height()
+				height:height ? height - this.$el.height() : undefined
 			}));
 			if(this.pager){
 				this.$el.addClass('has-pager');
@@ -44,13 +51,6 @@ define(function(require){
 					uiClass:'panel-footer',
 					collection:this.collection,
 					renderTo:this.$el
-				});
-			}
-			if(!options.width){
-				taurus.$win.on('resize',function(){
-					me.setSize();
-					me.table && me.table.setSize(me.$el.find('.panel-body').width());
-					me.headerCt && me.headerCt.setSize();
 				});
 			}
 			var top = 0,not_last_child = this.$el.find('.panel-body > div:not(:last-child)');

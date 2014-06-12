@@ -87,7 +87,7 @@ define(function(require){
 		getTplData:function(){
 			var columns = this.columns;
 			return $.extend(Base.prototype.getTplData.apply(this,arguments),{
-				styleWidth: 'style="width:'+this.width+'px"',
+				styleWidth: this.width ? ' style="width:'+this.width+'px"':'',
 				colgroup:_.map(columns,function(column,i){
 					return '<colgroup><col class="x-grid-cell-gridcolumn-1025" style="width:'+column.width+'px;"></colgroup>';
 				}).join(''),
