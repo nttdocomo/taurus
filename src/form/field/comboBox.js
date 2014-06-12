@@ -100,14 +100,21 @@ define(function(require) {
 		},
 		doAutoSelect : function() {
 			var me = this, picker = me.picker, lastSelected, itemNode, value = this.getValue();
-			lastSelected = this.collection.find(function(model) {
-				return model.get(me.displayField) == value;
-			});
-			itemNode = picker.getNode(lastSelected || 0);
-			if (itemNode) {
-				picker.highlightItem(itemNode);
-				itemNode.scrollIntoView(false);
+			if (value) {
+				value = $.makeArray(value);
+			} else {
+				value = [];
 			}
+			lastSelected = this.collection.filter(function(model) {
+				return _.indexOf(value,model.get(me.valueField)) > -1;
+			});
+			_.each(lastSelected,function(item){
+				itemNode = picker.getNode(item);
+				if (itemNode) {
+					picker.highlightItem(itemNode);
+					itemNode.scrollIntoView(false);
+				}
+			});
 			if (picker && me.autoSelect && me.collection.length > 0) {
 				// Highlight the last selected item and scroll it into view
 				lastSelected = picker.getSelectionModel().lastSelected;
@@ -120,21 +127,23 @@ define(function(require) {
 		},
 
 		doLocalQuery : function(queryString) {
-			var me = this, rawValue = queryString;
+			var me = this, rawValue = queryString, collection;
 
 			// Filter the Store according to the updated filter
 			if(queryString){
 				collection = me.collection.filter(function(model) {
 					return model.get(me.displayField).indexOf(me.getRawValue()) > -1;
 				});
+			} else {
+				collection = me.collection.clone().models;
+			}
 
-				// Expand after adjusting the filter unless there are no matches
-				if (this.collection.length) {
-					this.getPicker().collection.reset(collection);
-					this.expand();
-				} else {
-					this.collapse();
-				}
+			// Expand after adjusting the filter unless there are no matches
+			if (this.collection.length) {
+				this.getPicker().collection.reset(collection);
+				this.expand();
+			} else {
+				this.collapse();
 			}
 
 			me.afterQuery();
@@ -158,11 +167,12 @@ define(function(require) {
 				collection.fetch({
 					data : this.getParams(),
 					success : function() {
-						me.expand();
-						me.getPicker().collection.reset(collection.models);
-						if (!me.multiSelect){
+						//me.expand();
+						//me.getPicker().collection.reset(collection.models);
+						me.doLocalQuery(queryString);
+						/*if (!me.multiSelect){
 							me.doLocalQuery(queryString);
-						}
+						}*/
 					}
 				});
 			} else {
@@ -192,6 +202,7 @@ define(function(require) {
 				'itemclick': this.onItemClick,
 				'refresh': this.onListRefresh
 			}, this);
+			this.doAutoSelect();
 			return picker;
 		},
 		getDisplayTpl : function() {
@@ -264,6 +275,7 @@ define(function(require) {
 			if (!this.expanding) {
 				this.alignPicker();
 			}
+			this.doAutoSelect();
 			//this.syncSelection();
 		},
 		onTriggerClick : function() {
