@@ -28,8 +28,9 @@ define(function(require) {
 			node.addClass(this.selectedItemCls);
 		},
 		onItemDeselect:function(record){
-			var node = this.getNode(record);
-			node.removeClass(this.selectedItemCls);
+			if(record){
+				this.getNode(record).removeClass(this.selectedItemCls);
+			}
 		},
 		/**
 	     * A method that returns the inner template for displaying items in the list.
@@ -42,7 +43,7 @@ define(function(require) {
 	        return '<a href="#" class="boundlist-item"><%=item.' + displayField + '%></a>';
 	    },
 		getNode:function(model){
-			return this.getNodeByRecord(model);
+			return model ? this.getNodeByRecord(model):undefined;
 		},
 		getNodeByRecord:function(model){
 			return this.$el.find('li').eq(this.collection.indexOf(model));
@@ -53,7 +54,7 @@ define(function(require) {
 		highlightItem:function(item){
 			this.clearHighlight();
 			this.highlightedItem = item;
-			item.addClass(this.overItemCls);
+			item.addClass(this.selectedItemCls);
 			this.trigger('highlightitem', this, item);
 		},
 		html:function(){
