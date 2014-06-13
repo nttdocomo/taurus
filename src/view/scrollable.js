@@ -15,7 +15,7 @@ define(function(require) {
 		},
 		html : function(data) {
 			var html = Base.prototype.html.apply(this,arguments);
-			if(this.hasScrollbar && this.height){
+			if(this.hasScrollbar){
 				this.scrollbar = new Scrollbar({
 					oViewport:this.$el,
 					oContent:this.$el.find(' > :first-child'),

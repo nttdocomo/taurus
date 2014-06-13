@@ -8,6 +8,7 @@ define(function(require) {
 		Number = require("../../src/form/field/number"),
 		Panel = require("../../src/form/panel"),
 		DateType = require("../../src/form/field/date"),
+		DateTime = require("../../src/form/field/datetime"),
 		collection = new Backbone.Collection([{
 			name : "001",
 			age : 1
@@ -54,6 +55,10 @@ define(function(require) {
             allowBlank: false
         }, {
 			cls:DateType,
+            fieldLabel: 'DOB',
+            name: 'dob'
+        }, {
+			cls:DateTime,
             fieldLabel: 'DOB',
             name: 'dob'
         }, {

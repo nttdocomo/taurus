@@ -207,46 +207,17 @@ define(function(require) {
 		"abbr" : "WY",
 		"name" : "Wyoming",
 		"slogan" : "Like No Place on Earth"
-	}], collection = new Backbone.Collection(states), city = [[{
-		name : "广州",
-		age : 5
-	}, {
-		name : "珠海",
-		age : 26
-	}, {
-		name : "深圳",
-		age : 55
-	}], [{
-		name : "福州",
-		age : 5
-	}, {
-		name : "厦门",
-		age : 26
-	}], [{
-		name : "桂林",
-		age : 5
-	}, {
-		name : "南宁",
-		age : 26
-	}, {
-		name : "柳州",
-		age : 55
-	}]], comboBox = new ComboBox({
+	}], collection = new Backbone.Collection(states), comboBox = new ComboBox({
 		renderTo : $body,
 		queryMode : 'local',
 		name : 'textfield1',
 		id : 'textfield1',
 		displayField : 'name',
 		fieldLabel : 'country',
-		collection : collection,
-		listeners : {
-			'select' : function() {
-				var child = $('#textfield2').data('component');
-				child.clearValue();
-				var index = this.collection.indexOf(arguments[1]);
-				child.collection.reset(city[index]);
-			}
-		}
+		value:"AK",
+		valueField : 'abbr',
+		width:250,
+		collection : collection
 	});
 	new ComboBox({
 		renderTo : $body,
@@ -254,7 +225,11 @@ define(function(require) {
 		id : 'textfield2',
 		displayField : 'name',
 		fieldLabel : 'city',
-		collection : new Backbone.Collection()
+		multiSelect : true,
+		value : ['AK','WA'],
+		valueField : 'abbr',
+		width:250,
+		collection : collection
 	});
 	new ComboBox({
 		renderTo : $body,
