@@ -13,11 +13,12 @@ define(function(require){
 		initialize:function(options){
 			var me = this, height = options.height;
 			options.height = null;
+			this.collection.on('sync',function(){
+				me.headerCt.setColumnsWidth(me.table.getColumnsWidth());
+			},this);
 			if(!options.width){
 				taurus.$win.on('resize',function(){
-					me.setSize();
-					me.table && me.table.setSize(me.$el.find('.panel-body').width());
-					me.headerCt && me.headerCt.setSize();
+					me.headerCt.setColumnsWidth(me.table.getColumnsWidth());
 				});
 			}
 			Base.prototype.initialize.apply(this,[options]);
@@ -59,16 +60,10 @@ define(function(require){
 			});
 			this.$el.find('.panel-body').css('padding-top',top);
 			this.$el.find('.panel-body > div:first-child').css('margin-top',-1*top);
+			this.headerCt.setColumnsWidth(me.table.getColumnsWidth());
 			/*this.collection.on('sync',function(){
 				this.html();
 			},this);*/
-		},
-		setSize:function(width, height){
-			var me = this;
-			if(!width){
-				width = this.renderTo.width();
-			}
-			Base.prototype.setSize.apply(this,[width,height]);
 		},
 		getTplData:function(){
 			return $.extend(Base.prototype.getTplData.apply(this,arguments),{
