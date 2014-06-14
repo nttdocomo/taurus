@@ -6,7 +6,7 @@ define(function(require){
 	return taurus.view('taurus.view.TableBody',Base.extend({
 		hasScrollbar:true,
 		className:'grid-body',
-		tpl:'<table class="table"<%=styleWidth%>><%=colgroup%><tbody><%=tbody%></tbody></table>',
+		tpl:'<table class="table"><tbody><%=tbody%></tbody></table>',
 		initialize:function(){
 			Base.prototype.initialize.apply(this,arguments);
 			this.collection.on('sync',function(){
@@ -25,27 +25,10 @@ define(function(require){
 				taurus.$doc.on('mousedown',_.bind(this.onMouseDown,this));
 			}
 		},
-		setSize:function(width,height){
-			var table = this.$el,items = this.columns,cols = this.$el.find('col'),fullWidth = 0;
-			table.width(width);
-			for(var i = 0,len = items.length; i< len; i++){
-				var item = items[i],col = cols.eq(i);
-				if(!item.flex){
-					fullWidth += item.width;
-					col.width(item.width);
-				}
-			}
-			flexWidth = width - fullWidth;
-			var flexItems = _.filter(items,function(item){
-				return item.flex;
+		getColumnsWidth:function(){
+			return this.$el.find(' > table > tbody > tr:eq(0) td').map(function(i,td){
+				return $(td).width();
 			});
-			flexWidth = flexWidth/flexItems.length;
-			for(var i = 0,len = items.length; i< len; i++){
-				var item = items[i],col = cols.eq(i);
-				if(item.flex){
-					col.width(flexWidth);
-				}
-			}
 		},
 		onMouseDown:function(e){
 			var target = $(e.target).parents('tr').addClass('mousedown'),doc = $(e.currentTarget);
@@ -87,10 +70,6 @@ define(function(require){
 		getTplData:function(){
 			var columns = this.columns;
 			return $.extend(Base.prototype.getTplData.apply(this,arguments),{
-				styleWidth: this.width ? ' style="width:'+this.width+'px"':'',
-				colgroup:_.map(columns,function(column,i){
-					return '<colgroup><col class="x-grid-cell-gridcolumn-1025" style="width:'+column.width+'px;"></colgroup>';
-				}).join(''),
 				tbody:this.collection.map(function(model){
 					var item = model.toJSON();
 					return '<tr>'+_.map(columns,function(column,i){
