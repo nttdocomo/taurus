@@ -62,6 +62,11 @@ define(function(require) {
             fieldLabel: 'DOB',
             name: 'dob'
         }, {
+			cls:DateTime,
+            fieldLabel: 'DOB',
+            name: 'dob',
+            value:1402689600000
+        }, {
 			cls:Number,
             fieldLabel: 'Age',
             name: 'age',

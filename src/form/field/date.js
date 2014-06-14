@@ -41,7 +41,7 @@ define(function(require) {
 		},
 		getSubmitValue:function(){
 			var value = this.getValue();
-			return value ? value.format(this.format) : '';
+			return value ? value.utc().format(this.format) : '';
 		},
 		rawToValue : function(rawValue) {
 			return moment(rawValue,this.format) || rawValue || null;
