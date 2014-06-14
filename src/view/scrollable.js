@@ -7,7 +7,7 @@ define(function(require) {
 	return taurus.view("taurus.views.Scrollable", Base.extend({
 		initialize : function(options) {
 			Base.prototype.initialize.apply(this,arguments);
-			if(this.hasScrollbar && this.height){
+			if(this.hasScrollbar){
 				$(window).on('resize',_.throttle(_.bind(function(){
 					this.scrollbar.update();
 				},this),500));
@@ -15,7 +15,7 @@ define(function(require) {
 		},
 		html : function(data) {
 			var html = Base.prototype.html.apply(this,arguments);
-			if(this.hasScrollbar && this.height){
+			if(this.hasScrollbar){
 				this.scrollbar = new Scrollbar({
 					oViewport:this.$el,
 					oContent:this.$el.find(' > :first-child'),
