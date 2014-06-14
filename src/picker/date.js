@@ -2,13 +2,15 @@
  * @author nttdocomo
  */
 define(function(require) {
-	require('../jquery.ui.position');
 	var Base = require('../view/base');
+	require('../jquery.ui.position');
 	require("../lang/date");
 	require("../moment");
-	taurus.view("taurus.picker.Date", Base.extend({
-		tpl:'<div class="datepicker-days"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody></tbody></table></div><div class="datepicker-months"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody><tr><td colspan="7"></td></tr></tbody></table></div><div class="datepicker-years"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody><tr><td colspan="7"></td></tr></tbody></table></div>',
-		className : 'datepicker dropdown-menu',
+	return Base.extend({
+		tpl : '<ul><li class="collapse in"><div class="datepicker"><div class="datepicker-days"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody></tbody></table></div><div class="datepicker-months"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody><tr><td colspan="7"></td></tr></tbody></table></div><div class="datepicker-years"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody><tr><td colspan="7"></td></tr></tbody></table></div></div></li></ul>',
+		className : 'bootstrap-datetimepicker-widget dropdown-menu',
+		timeIcon:'halflings uni-calendar',
+		dateIcon : 'halflings time',
 		viewMode : 0,
 		modes : [{
 			clsName : 'days',
@@ -33,22 +35,25 @@ define(function(require) {
 		initialize : function(options) {
 			Base.prototype.initialize.apply(this, arguments);
 			this.weekStart = this.weekStart || 0;
-			this.fillDow();
-			this.fillMonths();
+			this.fillHtml();
 			this.update();
 			this.showMode();
 		},
+		fillHtml:function(){
+			this.fillDow();
+			this.fillMonths();
+		},
 		delegateEvents : function(events) {
 			var events = $.extend(events || {}, this.events, {
-				'click .switch' : function(){
-					this.showMode(1)
+				'click .switch' : function() {
+					this.showMode(1);
 				},
-				'click .prev,.next':function(e){
+				'click .prev,.next' : function(e) {
 					this.viewDate.year(this.viewDate.year() + this.modes[this.viewMode].navStep * (e.currentTarget.className == 'prev' ? -1 : 1));
 					//this.viewDate['set' + this.modes[this.viewMode].navFnc].call(this.viewDate, this.viewDate['get' + this.modes[this.viewMode].navFnc].call(this.viewDate) + this.modes[this.viewMode].navStep * (e.currentTarget.className == 'prev' ? -1 : 1));
 					this.fill();
 				},
-				'click td':function(e){
+				'click td' : function(e) {
 					var target = $(e.target);
 					if (target.is('.day')) {
 						var day = parseInt(target.text(), 10) || 1;
@@ -67,10 +72,10 @@ define(function(require) {
 							type : 'changeDate',
 							date : this.date
 						});
-						this.trigger('itemclick',e);
+						this.trigger('itemclick', e);
 					}
 				},
-				'click span':function(e){
+				'click span' : function(e) {
 					var target = $(e.target);
 					if (target.is('.month')) {
 						var month = target.parent().find('span').index(target);
@@ -88,13 +93,13 @@ define(function(require) {
 		setValue : function() {
 			this.pickerField.setValue(this.date);
 			/*if (!this.isInput) {
-				if (this.component) {
-					this.element.find('input').prop('value', formated);
-				}
-				this.element.data('date', formated);
-			} else {
-				this.element.prop('value', formated);
-			}*/
+			 if (this.component) {
+			 this.element.find('input').prop('value', formated);
+			 }
+			 this.element.data('date', formated);
+			 } else {
+			 this.element.prop('value', formated);
+			 }*/
 		},
 		fillDow : function() {
 			var dowCnt = this.weekStart;
@@ -103,11 +108,11 @@ define(function(require) {
 				html += '<th class="dow">' + this.dates.daysMin[(dowCnt++) % 7] + '</th>';
 			}
 			html += '</tr>';
+			return html;
 			this.$el.find('.datepicker-days thead').append(html);
 		},
 		fillMonths : function() {
-			var html = '';
-			var i = 0
+			var html = '', i = 0;
 			while (i < 12) {
 				html += '<span class="month">' + this.dates.monthsShort[i++] + '</span>';
 			}
@@ -166,18 +171,17 @@ define(function(require) {
 			this.viewDate = this.date;
 			this.fill();
 		},
-		isLeapYear:function(year){
+		isLeapYear : function(year) {
 			return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0))
 		},
-		getDaysInMonth:function(year, month){
+		getDaysInMonth : function(year, month) {
 			return [31, (this.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
 		},
-		setHeight:function(){},
 		showMode : function(dir) {
 			if (dir) {
 				this.viewMode = Math.max(0, Math.min(2, this.viewMode + dir));
 			}
-			this.$el.find('>div').hide().filter('.datepicker-' + this.modes[this.viewMode].clsName).show();
+			this.$el.find('.datepicker > div').hide().filter('.datepicker-' + this.modes[this.viewMode].clsName).show();
 		}
-	}));
+	});
 });
