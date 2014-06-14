@@ -135,8 +135,8 @@ define(function(require) {
 		doAction : function(e) {
 			e.stopPropagation();
 			e.preventDefault();
-			if (!this._date)
-				this._date = UTCDate(1970, 0, 0, 0, 0, 0, 0);
+			if (!this.date)
+				this.date = moment('1970-00-00',this.format);
 			var action = $(e.currentTarget).data('action');
 			var rv = this.actions[action].apply(this, arguments);
 			this.setValue();
@@ -215,7 +215,6 @@ define(function(require) {
 			var timeComponents = this.$el.find('.timepicker span[data-time-component]');
 			var table = timeComponents.closest('table');
 			var is12HourFormat = this.pick12HourFormat;
-			console.log(this.date);
 			var hour = this.date.hour();
 			var period = 'AM';
 			if (is12HourFormat) {
@@ -239,7 +238,7 @@ define(function(require) {
 			this.fillTime();
 		},
 		update : function() {
-			this.date = moment(this.pickerField.inputEl && this.pickerField.getValue('value') ? this.pickerField.getValue('value') : taurus.Date.formatDate(new Date(), this.format), this.format);
+			this.date = moment(this.pickerField.inputEl && this.pickerField.getValue('value') ? this.pickerField.getValue('value') : '');
 			this.viewDate = this.date;
 			this.fill();
 		},
