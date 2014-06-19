@@ -82,11 +82,11 @@ define(function(require){
 			return this;
 		},
 		onMouseLeave:function(){
-			this.opacity(0.5)
+			this.opacity(0.5);
 			return this;
 		},
 		opacity:function(value){
-			this.thumb.css('opacity',value)
+			this.thumb.css('opacity',value);
 		},
 		update:function(){
 			this.contentSize = this.oContent.height();
