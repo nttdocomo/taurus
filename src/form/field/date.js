@@ -5,7 +5,7 @@ define(function(require) {
 	var Picker = require("./picker"),
 	DatePicker = require("../../picker/date");
 	require("../../lang/date");
-	require("../../moment");
+	require("moment");
 	return taurus.view("taurus.form.field.Date", Picker.extend({
 		format : 'MM/DD/YYYY',
 		triggerTpl : '<div class="input-group-btn"><button class="btn form-trigger btn-default" type="button"><i class="halflings calendar"></i></button></div>',

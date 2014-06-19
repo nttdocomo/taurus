@@ -14,6 +14,8 @@ define(function(require) {
 			});
 			picker.on('itemclick', this.onItemClick, this);
 			return picker;
+		},
+		onItemClick:function(){
 		}
 	});
 });

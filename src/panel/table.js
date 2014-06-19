@@ -13,9 +13,6 @@ define(function(require){
 		initialize:function(options){
 			var me = this, height = options.height;
 			options.height = null;
-			this.collection.on('sync',function(){
-				me.headerCt.setColumnsWidth(me.table.getColumnsWidth());
-			},this);
 			if(!options.width){
 				taurus.$win.on('resize',function(){
 					me.headerCt.setColumnsWidth(me.table.getColumnsWidth());
@@ -23,11 +20,6 @@ define(function(require){
 			}
 			Base.prototype.initialize.apply(this,[options]);
 			var headerCtCfg = this.columns;
-			if(this.pager){
-				this.collection.pager();
-			}else{
-				this.collection.length || this.collection.fetch();
-			}
 			if (_.isArray(headerCtCfg)) {
                 headerCtCfg = {
                     items: headerCtCfg
@@ -46,6 +38,9 @@ define(function(require){
 				renderTo:this.$el.find('.panel-body'),
 				height:height ? height - this.$el.height() : undefined
 			}));
+			this.collection.on('sync',function(){
+				me.headerCt.setColumnsWidth(me.table.getColumnsWidth());
+			},this);
 			if(this.pager){
 				this.$el.addClass('has-pager');
 				new Pagination({
@@ -60,8 +55,12 @@ define(function(require){
 			});
 			this.$el.find('.panel-body').css('padding-top',top);
 			this.$el.find('.panel-body > div:first-child').css('margin-top',-1*top);
-			this.headerCt.setColumnsWidth(me.table.getColumnsWidth());
-			/*this.collection.on('sync',function(){
+			/*if(this.pager){
+				this.collection.pager();
+			}else{
+				this.collection.fetch();
+			}
+			this.collection.on('sync',function(){
 				this.html();
 			},this);*/
 		},
