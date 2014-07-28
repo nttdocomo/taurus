@@ -8,9 +8,10 @@ define(function(require){
 		tpl:'<tr><%=head%></tr>',
 		html:function(){
 			var html = [];
-			_.each(this.columns,function(column){
-				html.push(_.template('<th width="<%=width%>"></th>',{
-					width:column.width
+			_.each(this.items,function(column){
+				html.push(_.template('<th><%=text%></th>',{
+					width:column.text.width,
+					text:column.text
 				}))
 			});
 			return Base.prototype.html.apply(this,[{head:html.join('')}])

@@ -3,7 +3,7 @@
  */
 define(function(require){
 	var Base = require('./panel');
-	var Table = require('../view/tableBody');
+	var Table = require('../view/table');
 	var Header = require('../grid/header/container');
 	var Pagination = require('../grid/pagination');
 	var Spinner = require('../spinner/wave');
@@ -11,36 +11,14 @@ define(function(require){
 		pager:false,
 		className:'panel panel-default grid',
 		initialize:function(options){
-			var me = this, height = options.height;
-			options.height = null;
-			if(!options.width){
-				taurus.$win.on('resize',function(){
-					me.headerCt.setColumnsWidth(me.table.getColumnsWidth());
-				});
-			}
+			var me = this;
 			Base.prototype.initialize.apply(this,[options]);
-			var headerCtCfg = this.columns;
-			if (_.isArray(headerCtCfg)) {
-                headerCtCfg = {
-                    items: headerCtCfg
-                };
-            }
-            // Create our HeaderCOntainer from the generated configuration
-            if (!this.headerCt) {
-                this.headerCt = new Header($.extend(headerCtCfg,{
-                	renderTo:this.$el.find('.panel-body')
-                }));
-            }
 			this.table = new Table($.extend({
 				collection:this.collection,
 				columns:this.columns,
 				sortable:this.sortable,
-				renderTo:this.$el.find('.panel-body'),
-				height:height ? height - this.$el.height() : undefined
+				renderTo:this.$el.find('.panel-body')
 			}));
-			this.collection.on('sync',function(){
-				me.headerCt.setColumnsWidth(me.table.getColumnsWidth());
-			},this);
 			if(this.pager){
 				this.$el.addClass('has-pager');
 				new Pagination({

@@ -63,7 +63,7 @@ define(function(require){
 						this.collapse();
 					}
 				},this);
-				taurus.$doc.on('mousedown',_.bind(this.onDocumentClick,this));
+				taurus.$doc.on('mousedown',this.onDocumentClick,this);
 				delete this.expanding;
 			}
 		},
