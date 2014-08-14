@@ -13,7 +13,7 @@ define(function(require){
 		initialize:function(options){
 			var me = this;
 			Base.prototype.initialize.apply(this,[options]);
-			this.table = new Table($.extend({
+			this.table = new Table($.extend(options,{
 				collection:this.collection,
 				columns:this.columns,
 				sortable:this.sortable,

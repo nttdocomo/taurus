@@ -16,13 +16,13 @@ define(function(require){
 		},
 		initialize:function(){
 			Base.prototype.initialize.apply(this,arguments);
-			if(this.header){
+			if(this.title){
 				this.$el.addClass('has-header');
 			}
 		},
 		getTplData : function() {
 			return {
-				header:this.header,
+				header:this.title,
 				title:this.collapsible ? this.title + '<span class="tool-collapse-top"></span>' : this.title,
 				content:this.loading ? (new Spinner({
 					renderTo:this.$el
