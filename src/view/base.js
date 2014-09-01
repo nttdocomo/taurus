@@ -82,7 +82,7 @@ define(function(require) {
 			if(this.innerHtml){
 				this.el.innerHTML = this.innerHtml;
 			} else {
-				var html = this._html = this.el.innerHTML = this.tpl ? _.template(this.tpl, (data || this.getTplData() || this)) : "";
+				this.$el.html(this.tpl ? _.template(this.tpl, (data || this.getTplData() || this)) : "");
 			}
 			
 			var el = document.createElement('div');
