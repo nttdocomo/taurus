@@ -2,31 +2,84 @@
  * @author nttdocomo
  */
 define(function(require){
-	var Picker = require('../form/field/picker');
-	var BoundList = require("../view/boundList");
-	taurus.augmentString('taurus.templates.button.buttondropdown', 'Action <span class="caret"></span>');
-	return taurus.view('taurus.button.ButtonDropdown',Picker.extend({
-		className:'btn dropdown-toggle',
+	var Button = require('./button'),
+	Menu = require("../menu/menu");
+	return Button.extend({
+		tpl:'<button type="button" class="btn btn-danger"><%=text%></button><button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>',
+		className:'btn-group',
+		tagName : 'div',
+		initialize:function(){
+			Button.prototype.initialize.apply(this, arguments);
+			if(this.menu){
+				this.setMenu();
+			}
+		},
 		delegateEvents : function(events) {
 			var events = $.extend(events || {}, this.events, {
-				'click' : 'onTriggerClick'
+				'click .dropdown-toggle' : 'onTriggerClick'
 			});
-			Picker.prototype.delegateEvents.call(this, events)
+			Button.prototype.delegateEvents.call(this, events)
 		},
 		applyChildEls:function(childEls){
-			Picker.prototype.applyChildEls.call(this,childEls);
+			Button.prototype.applyChildEls.call(this,childEls);
 			this.triggerWrap = this.$el;
 		},
 		getAlignEl:function(){
 			return this.$el
 		},
-		createPicker:function(){
-			var picker = this.picker = new BoundList({
-				displayField:this.displayField,
-				collection:this.collection
+		onTriggerClick:function(){
+			var me = this;
+	        if (me.menu) {
+	            me.showMenu(true);
+	        }
+		},
+		showMenu:function(fromEvent){
+	        var me = this,
+	        menu = me.menu,
+	        onDocumentClick = function(){
+	        	menu.hide();
+	        	taurus.$doc.off('mousedown',onDocumentClick);
+	        }
+			if (menu.isVisible()) {
+                menu.hide();
+            } else {
+            	menu.show();
+            	taurus.$doc.on('mousedown',onDocumentClick);
+				this.alignMenu();
+            }
+		},
+		setMenu:function(){
+			this.menu = new Menu({
+				menu:this.menu,
+				width:this.$el.width(),
+				renderTo:$(document.body)
 			})
-			picker.on('itemclick', this.onItemClick, this);
-			return picker;
+		},
+		alignMenu:function(){
+			var me = this, menu = me.menu,position = {
+					"my" : "left top",
+					"at" : "left bottom",
+			"collision" : "none none"
+				},
+			heightAbove = taurus.getPositionAbove(this.$el),
+			heightBelow = taurus.getPositionBelow(this.$el),
+			space = Math.max(heightAbove, heightBelow);
+
+			// Allow the picker to height itself naturally.
+			/*if (picker.height) {
+				delete picker.height;
+				picker.updateLayout();
+			}*/
+			// Then ensure that vertically, the dropdown will fit into the space either above or below the inputEl.
+			if (menu.getHeight() > heightBelow - 5 && heightAbove > heightBelow) {
+				position = {
+					"my" : "left bottom",
+					"at" : "left top",
+			"collision" : "none none"
+				};
+				// have some leeway so we aren't flush against
+			}
+			menu.alignTo(this.$el, position);
 		}
-	}))
+	})
 })

@@ -179,7 +179,8 @@ define(function(require) {
 				attributes : {
 					style:this.getInputStyle(),
 					type : this.inputType,
-					value : this.value
+					value : this.value,
+					readonly : (this.readOnly || !this.editable)
 				},
 				tagName : this.editable ? 'input':'div'
 			})).render().el);

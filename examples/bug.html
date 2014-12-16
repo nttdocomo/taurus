@@ -3,62 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <style>
+    #console {
+        background-color: yellow;
+    }
+    #element1 {
+        width: 500px;
+        height: 500px;
+        background-color: lightblue;
+        overflow-y: auto;
+        margin: 45px;
+    }
+    
+    #element2 {
+        margin-left: 510px;
+        margin-right: 510px;
+        margin-top: 100px;
+        width: 400px;
+        height: 320px;
+        background-color: green;
+    }
+    </style>
 </head>
 <body>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-    <p>123</p>
-<script type="text/javascript" src="jquery.js">
-</script>
-<script type="text/javascript">
-    
-$(window).on('load', function(){
-    console.log('scrollTop')
-    var b = $(document)
-    b.scrollTop(100)
-})
-</script>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <div id="console"></div>
+    <div id="element1">
+        <div id="element2"></div>
+    </div>
+    <script type="text/javascript">
+        var offset = 50
+        var visibleY = function(el){
+            var top = el.getBoundingClientRect().top, bottom = el.getBoundingClientRect().bottom, rect, el = el.parentNode;
+            do {
+                rect = el.getBoundingClientRect();
+                if (top + offset <= rect.bottom === false || bottom - offset >= rect.top === false)
+                    return false;
+                el = el.parentNode;
+            } while (el != document.body);
+            // Check its within the document viewport
+            return top <= document.documentElement.clientHeight;
+        };
+        var visibleX = function(el){
+            var left = el.getBoundingClientRect().left, right = el.getBoundingClientRect().right, rect, el = el.parentNode;
+            do {
+                rect = el.getBoundingClientRect();
+                if (left + offset <= rect.right === false || right - offset >= rect.left === false)
+                    return false;
+                el = el.parentNode;
+            } while (el != document.body);
+            // Check its within the document viewport
+            return left <= document.documentElement.clientWidth;
+        };
+
+        // Stuff only for the demo
+        function attachEvent(element, event, callbackFunction) {
+            if (element.addEventListener) {
+                element.addEventListener(event, callbackFunction, false);
+            } else if (element.attachEvent) {
+                element.attachEvent('on' + event, callbackFunction);
+            }
+        };
+
+        var update = function(){
+            document.getElementById('console').innerHTML = visibleY(document.getElementById('element2')) && visibleX(document.getElementById('element2')) 
+                ? "Inner element is visible" : "Inner element is not visible";
+        };
+        attachEvent(document.getElementById('element1'), "scroll", update);
+        attachEvent(window, "resize", update);
+        update();
+    </script>
 </body>
 </html>

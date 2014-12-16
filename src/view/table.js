@@ -26,6 +26,7 @@ define(function(require){
 			this.table = new TableBody($.extend({
 				collection:this.collection,
 				columns:this.columns,
+				rowTemplate:this.rowTemplate,
 				sortable:this.sortable,
 				renderTo:this.$el
 			}));

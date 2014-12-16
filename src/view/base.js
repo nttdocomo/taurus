@@ -14,7 +14,7 @@ define(function(require) {
 				if (this.id)
 					attrs.id = _.result(this, 'id');
 				else
-					attrs.id = _.result(this, 'cid');
+					this.id = attrs.id = _.result(this, 'cid');
 				if (this.className)
 					attrs['class'] = _.result(this, 'className');
 				var $el = Backbone.$('<' + _.result(this, 'tagName') + '>').attr(attrs);
@@ -32,6 +32,9 @@ define(function(require) {
 			if (this.renderTo) {
 				this.render(this.renderTo, this.operation);
 			}
+			if (this.autoShow && !this.isContained) {
+	            this.show();
+	        }
 			this.$el.data('component', this);
 			this.on(this.listeners);
 			this.setSize(this.width, this.height);
@@ -50,6 +53,40 @@ define(function(require) {
 				me.add(items);
 			}
 		},
+
+	    /**
+	     * Method to determine whether this Component is currently disabled.
+	     * @return {Boolean} the disabled state of this Component.
+	     */
+	    isDisabled : function() {
+	        return this.disabled;
+	    },
+
+	    /**
+	     * Returns `true` if this component is visible.
+	     *
+	     * @param {Boolean} [deep=false] Pass `true` to interrogate the visibility status of all parent Containers to
+	     * determine whether this Component is truly visible to the user.
+	     *
+	     * Generally, to determine whether a Component is hidden, the no argument form is needed. For example when creating
+	     * dynamically laid out UIs in a hidden Container before showing them.
+	     *
+	     * @return {Boolean} `true` if this component is visible, `false` otherwise.
+	     *
+	     * @since 1.1.0
+	     */
+	    isVisible: function(deep) {
+	        var me = this,
+	            hidden = !this.$el.is(':visible');
+
+	        /*if (me.hidden || !me.rendered || me.isDestroyed) {
+	            hidden = true;
+	        } else if (deep) {
+	            hidden = me.isHierarchicallyHidden();
+	        }*/
+
+	        return !hidden;
+	    },
 		delegateEvents : function(events) {
 			var events = $.extend(events || {}, this.events/*, this.listeners*/);
 			Backbone.View.prototype.delegateEvents.call(this, events);
@@ -61,6 +98,7 @@ define(function(require) {
 		},
 		show : function() {
 			this.$el.show();
+			this.trigger('show',this);
 			return this;
 		},
 		hide : function() {
@@ -69,13 +107,14 @@ define(function(require) {
 		},
 		render : function(renderTo, operation) {
 			this.operation = operation || "append";
-			renderTo = renderTo || this.renderTo;
+			renderTo = renderTo || this.renderTo || $(document.body);
 			/*run html brfore append el because the el must has html*/
 			if (renderTo) {
 				$(renderTo)[this.operation](this.$el);
 			}
 			this.html();
 			this.isRendered = true;
+			this.rendered = true;
 			return this;
 		},
 		html : function(data) {
@@ -155,6 +194,46 @@ define(function(require) {
 			var borderWidth = parseInt(this.$el.css('borderLeftWidth').replace('px', '')) + parseInt(this.$el.css('borderLeftWidth').replace('px', ''));
 			return this.$el.width(width - borderWidth);
 		},
+
+	    /**
+	     * Shows this component by the specified {@link Ext.Component Component} or {@link Ext.dom.Element Element}.
+	     * Used when this component is {@link #floating}.
+	     * @param {Ext.Component/Ext.dom.Element} component The {@link Ext.Component} or {@link Ext.dom.Element} to show the component by.
+	     * @param {String} [position] Alignment position as used by {@link Ext.util.Positionable#getAlignToXY}.
+	     * Defaults to `{@link #defaultAlign}`. See {@link #alignTo} for possible values.
+	     * @param {Number[]} [offsets] Alignment offsets as used by {@link Ext.util.Positionable#getAlignToXY}. See {@link #alignTo} for possible values.
+	     * @return {Ext.Component} this
+	     */
+	    showBy: function(cmp, pos, off) {
+	        var me = this;
+
+	        //<debug>
+	        /*if (!me.floating) {
+	            Ext.log.warn('Using showBy on a non-floating component');
+	        }*/
+	        //</debug>
+
+	        /*if (me.floating && cmp) {
+	            me.alignTarget = cmp;
+
+	            if (pos) {
+	                me.defaultAlign = pos;
+	            }
+
+	            if (off) {
+	                me.alignOffset = off;
+	            }*/
+
+	            me.show();
+
+	            // Could have been vetoed.
+	            if (!me.hidden) {
+	                me.alignTo(cmp.$el, pos || me.defaultAlign, off || me.alignOffset);
+	            }
+	        //}
+
+	        return me;
+	    },
 		alignTo : function(element, position, offsets) {
 
 			// element may be a Component, so first attempt to use its el to align to.

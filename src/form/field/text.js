@@ -36,6 +36,12 @@ define(function(require) {
 					len : this.minLength
 				}));
 			}
+
+			if (value.length < this.maxLength) {
+				errors.push(_.template(this.maxLengthText, {
+					len : this.maxLength
+				}));
+			}
 			if (value && regex && !regex.test(value)) {
 				errors.push(this.regexText || this.invalidText);
 			}

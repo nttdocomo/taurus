@@ -26,11 +26,11 @@ define(function(require){
 			}
 		},
 		getTplData:function(){
-			var columns = this.columns;
+			var columns = this.columns,me = this;
 			return $.extend(Base.prototype.getTplData.apply(this,arguments),{
 				tbody:this.collection.map(function(model){
 					var item = model.toJSON();
-					return '<tr>'+_.map(columns,function(column,i){
+					return _.template((me.rowTemplate || '<tr>')+_.map(columns,function(column,i){
 						var value = item[column.dataIndex];
 						if(column.renderer){
 							value = column.renderer(item[column.dataIndex],item);
@@ -38,7 +38,7 @@ define(function(require){
 						return _.template('<td role="gridcell"><%=value%></td>',{
 							value:value
 						});
-					}).join('')+'</tr>';
+					}).join('')+'</tr>',item);
 				}).join('')
 			});
 		}

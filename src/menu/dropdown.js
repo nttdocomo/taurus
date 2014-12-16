@@ -3,8 +3,7 @@
  */
 define(function(require) {
 	var Base = require('../view/base');
-	var Dropdown = Base.extend({
-		tpl:'<%=html%>',
+	return Base.extend({
 		type : 'warning',
 		tagName:'ul',
 		className:'dropdown-menu',
@@ -15,24 +14,13 @@ define(function(require) {
 			this.$el.css('top',0);
 			Base.prototype.initialize.apply(this,arguments);
 		},
-		getTplData : function() {
-			return {
-				html:_.map(this.menus,function(item){
-					if(item.menus){
-						item.menus = (new Dropdown({
-							menus:item.menus
-						})).html();
-						item.cls = ' class = "dropdown-submenu"'
-					} else {
-						item.menus = '';
-						item.cls = ""
-					}
-					return _.template('<li<%=cls%> role="presentation"><a role="menuitem" tabindex="-1" href="<%=href%>"><%=text%><%=menus%></a></li>',$.extend({
-						href:''
-					},item));
-				}).join('')
-			};
+		html:function(){
+			if (!this.tpl) {
+	            this.tpl = ['<%_.each(results,function(item){%>',
+	            '<li role="option"><a href="#"><%=item.text%></a></li>',
+	            '<%})%>'].join('');
+	        }
+			return Base.prototype.html.call(this,{results:this.menu});
 		}
 	});
-	return Dropdown;
 });
