@@ -138,7 +138,6 @@ define(function(require) {
 			if (!me.disabled) {
 				target.addClass(me.pressedCls);
 				var onMouseUp = _.bind(function(e) {
-					console.log('mouseup')
 					var me = this;
 					if (!this.pressed) {
 						target.removeClass(me.pressedCls);
