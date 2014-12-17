@@ -23,7 +23,6 @@ seajs.config({
 	    	exports: 'Modernizr'
 	    }
 	},
-	preload:['jquery','underscore','modernizr'],
 	base : 'http://battle.ship.com/src/',
 	charset : 'utf-8'
 });

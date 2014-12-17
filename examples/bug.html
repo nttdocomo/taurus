@@ -1,77 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-    <style>
-    #console {
-        background-color: yellow;
-    }
-    #element1 {
-        width: 500px;
-        height: 500px;
-        background-color: lightblue;
-        overflow-y: auto;
-        margin: 45px;
-    }
-    
-    #element2 {
-        margin-left: 510px;
-        margin-right: 510px;
-        margin-top: 100px;
-        width: 400px;
-        height: 320px;
-        background-color: green;
-    }
-    </style>
-</head>
-<body>
-    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-    <div id="console"></div>
-    <div id="element1">
-        <div id="element2"></div>
-    </div>
-    <script type="text/javascript">
-        var offset = 50
-        var visibleY = function(el){
-            var top = el.getBoundingClientRect().top, bottom = el.getBoundingClientRect().bottom, rect, el = el.parentNode;
-            do {
-                rect = el.getBoundingClientRect();
-                if (top + offset <= rect.bottom === false || bottom - offset >= rect.top === false)
-                    return false;
-                el = el.parentNode;
-            } while (el != document.body);
-            // Check its within the document viewport
-            return top <= document.documentElement.clientHeight;
-        };
-        var visibleX = function(el){
-            var left = el.getBoundingClientRect().left, right = el.getBoundingClientRect().right, rect, el = el.parentNode;
-            do {
-                rect = el.getBoundingClientRect();
-                if (left + offset <= rect.right === false || right - offset >= rect.left === false)
-                    return false;
-                el = el.parentNode;
-            } while (el != document.body);
-            // Check its within the document viewport
-            return left <= document.documentElement.clientWidth;
-        };
-
-        // Stuff only for the demo
-        function attachEvent(element, event, callbackFunction) {
-            if (element.addEventListener) {
-                element.addEventListener(event, callbackFunction, false);
-            } else if (element.attachEvent) {
-                element.attachEvent('on' + event, callbackFunction);
+<!DOCTYPE HTML>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap.css"/>
+        <link type="text/css" rel="stylesheet" href="../../resources/css/menu.css"/>
+        <style type="text/css">
+            .dropdown-menu{
+                display: block;
+                top:0;
             }
-        };
+            .dropdown-menu .caret {
+                float：right;
+                border-left: 4px solid;
+                border-right: 0;
+                border-top: 4px solid transparent;
+                border-bottom: 4px solid transparent;
+            }
+        </style>
+        <!--[if IE]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <!-- /container -->
 
-        var update = function(){
-            document.getElementById('console').innerHTML = visibleY(document.getElementById('element2')) && visibleX(document.getElementById('element2')) 
-                ? "Inner element is visible" : "Inner element is not visible";
-        };
-        attachEvent(document.getElementById('element1'), "scroll", update);
-        attachEvent(window, "resize", update);
-        update();
-    </script>
-</body>
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/labjs/2.0.3/LAB.min.js"></script>
+        <script type="text/javascript">
+            $LAB.script('../src/jquery-2.0.0.js','http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js').wait(function(){
+                $(document).on('mousedown',_.defer(function(){
+                    console.log('mousedown')
+                }))
+            });
+        </script>
+        <!--<script src="../../src/sea.js" data-config="../config" data-main="../menu/menus"></script>-->
+    </body>
 </html>

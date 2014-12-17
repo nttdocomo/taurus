@@ -16,6 +16,9 @@ define(function(require) {
 			var item = {
 				text:chance.word()
 			};
+			if(chance.bool()){
+				item.href = chance.url();
+			}
 			if(chance.bool({likelihood:likelihood})){
 				item.menu = {
 					items:randomMenu()

@@ -68,6 +68,11 @@ define(function(require) {
 	            activeMenuCount = active.length,
 	            lastShow = me.lastShow,
 	            i;
+	        for (i = 0; i < activeMenuCount; i++) {
+                if (active[i].$el.has(e.target).length) {
+                    return;
+                }
+            }
 
 	        /*if (Ext.Date.getElapsed(lastShow) > 50 && activeMenuCount) {
 	            // Because we use a buffer in IE, the target may have been removed from the
@@ -98,6 +103,7 @@ define(function(require) {
 	        active.push(m);
 	        if (!attached) {
 	        	$(document).on('mousedown',_.bind(me.onMouseDown,me))
+	        	//$.gevent.subscribe($({}), 'mousedown', _.bind(me.onMouseDown,me));
 	            me.attached = true;
 	        }
 	        //m.toFront();
