@@ -99,6 +99,7 @@ define(function(require) {
 		show : function() {
 			this.$el.show();
 			this.trigger('show',this);
+			this.hidden = false;
 			return this;
 		},
 		hide : function() {
@@ -155,6 +156,12 @@ define(function(require) {
 		},
 		getHeight : function() {
 			return this.$el.height();
+		},
+		getOuterHeight : function() {
+			return this.$el.outerHeight();
+		},
+		getOuterWidth : function() {
+			return this.$el.outerWidth();
 		},
 		setSize : function(width, height) {
 			var me = this;
@@ -223,13 +230,14 @@ define(function(require) {
 	            if (off) {
 	                me.alignOffset = off;
 	            }*/
+            if (!me.isVisible()) {
+            	me.show();
+	        }
 
-	            me.show();
-
-	            // Could have been vetoed.
-	            if (!me.hidden) {
-	                me.alignTo(cmp.$el, pos || me.defaultAlign, off || me.alignOffset);
-	            }
+            // Could have been vetoed.
+            if (!me.hidden) {
+                me.alignTo(cmp, pos || me.defaultAlign, off || me.alignOffset);
+            }
 	        //}
 
 	        return me;
