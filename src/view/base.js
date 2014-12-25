@@ -23,12 +23,51 @@ define(function(require) {
 				this.setElement(_.result(this, 'el'), false);
 			}
 		},
+
+	    /**
+	     * Retrieves the `id` of this component. Will auto-generate an `id` if one has not already been set.
+	     * @return {String}
+	     */
+	    getId: function() {
+	        var me = this,
+	            xtype;
+
+	        // If we have no id, attempt to gather it from our configuration.
+	        // Autogenerate it if none was configured.
+	        if (!(me.id || (me.id = me.initialConfig.id))) {
+	            xtype = me.getXType();
+	            if (xtype) {
+	                xtype = xtype.replace(Ext.Component.INVALID_ID_CHARS_Re, '-');
+	            } else {
+	                xtype = Ext.name.toLowerCase() + '-comp';
+	            }
+	            me.id = xtype + '-' + me.getAutoId();
+	        }
+	        return me.id;
+	    },
+
+	    /**
+	     * Gets the xtype for this component as registered with {@link Ext.ComponentManager}. For a list of all available
+	     * xtypes, see the {@link Ext.Component} header. Example usage:
+	     *
+	     *     var t = new Ext.form.field.Text();
+	     *     alert(t.getXType());  // alerts 'textfield'
+	     *
+	     * @return {String} The xtype
+	     */
+	    getXType: function() {
+	        return this.xtype;
+	    },
 		initialize : function(options) {
 			this.initialConfig = options;
 			_.extend(this, options);
+			this.initComponent()
+		},
+		initComponent:function(){
 			/*
 			 * if has selector then render, for let the user see the ui as soon as possible
 			 */
+			this.setSize(this.width, this.height);
 			if (this.renderTo) {
 				this.render(this.renderTo, this.operation);
 			}
@@ -37,11 +76,18 @@ define(function(require) {
 	        }
 			this.$el.data('component', this);
 			this.on(this.listeners);
-			this.setSize(this.width, this.height);
 			if (this.cls) {
 	            this.$el.addClass(this.cls);
 	        }
 		},
+
+        /**
+         * This is used to determine where to insert the 'html', 'contentEl' and 'items' in this component.
+         * @private
+         */
+        getTargetEl: function() {
+            return this.frameBody || this.$el;
+        },
 		initItems : function() {
 			var me = this, items = me.items;
 			me.items = [];
@@ -119,12 +165,7 @@ define(function(require) {
 			return this;
 		},
 		html : function(data) {
-			if(this.innerHtml){
-				this.el.innerHTML = this.innerHtml;
-			} else {
-				this.$el.html(this.tpl ? _.template(this.tpl, (data || this.getTplData() || this)) : "");
-			}
-			
+			this.inserHtml(data)
 			var el = document.createElement('div');
 			if (this.uiClass) {
 				this.$el.addClass(this.uiClass);
@@ -137,6 +178,13 @@ define(function(require) {
 			}
 			this.initItems();
 			return el.innerHTML;
+		},
+		inserHtml:function(data){
+			if(this.innerHtml){
+				this.el.innerHTML = this.innerHtml;
+			} else {
+				this.$el.html(this.tpl ? _.template(this.tpl, (data || this.getTplData() || this)) : "");
+			}
 		},
 		$html : function(options) {
 			return $(this.html());
@@ -279,10 +327,13 @@ define(function(require) {
 						items[i] = item;
 						me.onAdd(item, i, len);
 					} else {
+						item.initOwnerCt = me;
+						//item.renderTo = me.$el;
 						item = me.lookupComponent(item);
 						if (item) {
 							items[i] = item;
 						}
+						delete item.initOwnerCt;
 					}
 				}
 			}/*
@@ -307,12 +358,15 @@ define(function(require) {
 			}
 			if(Cls){
 				return new Cls($.extend(_.omit(cmp, 'cls'),{
-					renderTo:this.getItemContainer()
+					//renderTo:this.getItemContainer()
 				}));
 			}
 			return false;
 		},
 		onAdd : function(item, pos, len) {
+		},
+		onAdded:function(container){
+			this.ownerCt = container;
 		},
 		getLayout:function(){
 			return this.layout;
@@ -342,18 +396,26 @@ define(function(require) {
 					me.floatingItems.add(item);
 					item.onAdded(me, pos);
 				} else {
-					me.items.splice(pos, 0, item);
-					//item.onAdded(me, pos);
+					//me.items.splice(pos, 0, item);
+					item.onAdded(me, pos);
 					me.onAdd(item, pos);
 					layout && layout.onAdd(item, pos);
 				}
 			}
+			me.items = items;
+			this.updateItems();
 			return ret;
 			/*var me = this, len = this.items.length;
 			 _.each(this.items, function(item, i) {
 			 me.getItemContainer().append(item.render().$el);
 			 });
 			 this.afterRender();*/
+		},
+		updateItems:function(){
+			var me = this;
+			_.each(this.items,function(item){
+				item.render(me.getTargetEl())
+			})
 		},
 		insert : function(index, comp) {
 			var compIdx;
@@ -401,5 +463,7 @@ define(function(require) {
 
 			return c;
 		}
+	},{
+		INVALID_ID_CHARS_Re: /[\.,\s]/g
 	}));
 });

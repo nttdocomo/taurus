@@ -4,7 +4,8 @@
 define(function(require) {
 	var Base = require('../view/base'),
 	Menu = require('../menu/menu'),
-	Manager = require('../menu/manager');
+	MenuManager = require('../menu/manager'),
+	ButtonManager = require('./manager');
 	return Base.extend({
 		/*
 	     * @property {Boolean}
@@ -118,7 +119,7 @@ define(function(require) {
 	            return;
 	        }
 	        if (!me.disabled) {
-	            me.doToggle();
+	            me.doToggle(e);
 	            me.maybeShowMenu();
 	            me.fireHandler(e);
 	        }
@@ -146,6 +147,10 @@ define(function(require) {
 				}, me)
 				me.doc.on('mouseup', onMouseUp);
 			}
+		},
+		render:function(){
+			Base.prototype.render.apply(this,arguments);
+			ButtonManager.register(this);
 		},
 
 	    /**
@@ -208,14 +213,14 @@ define(function(require) {
 		 * @param {Boolean} [suppressEvent=false] True to stop events being fired when calling this method.
 		 * @return {Ext.button.Button} this
 		 */
-		toggle : function(btn, state, suppressEvent) {
+		toggle : function(state, suppressEvent) {
 			var me = this;
 			state = state === undefined ? !me.pressed : !!state;
 			if (state !== me.pressed) {
-				btn[state ? 'addClass': 'removeClass'](me.pressedCls);
+				me.$el[state ? 'addClass': 'removeClass'](me.pressedCls);
 				me.pressed = state;
 				if (!suppressEvent) {
-					me.trigger('toggle', btn, state);
+					me.trigger('toggle', me, state);
 					me.toggleHandler && me.toggleHandler.apply(me, [state]);
 				}
 			}

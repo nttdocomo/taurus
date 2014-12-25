@@ -2,7 +2,6 @@
  * @author nttdocomo
  */
 define(function(require) {
-	require('backbone');
 	if(!$.browser){
 		$.browser = {};
 		$.browser.mozilla = /firefox/.test(navigator.userAgent.toLowerCase());

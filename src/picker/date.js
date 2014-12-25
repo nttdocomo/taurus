@@ -49,7 +49,7 @@ define(function(require) {
 					this.showMode(1);
 				},
 				'click .prev,.next' : function(e) {
-					this.viewDate.year(this.viewDate.year() + this.modes[this.viewMode].navStep * (e.currentTarget.className == 'prev' ? -1 : 1));
+					this.viewDate.month(this.viewDate.month() + this.modes[this.viewMode].navStep * (e.currentTarget.className == 'prev' ? -1 : 1));
 					//this.viewDate['set' + this.modes[this.viewMode].navFnc].call(this.viewDate, this.viewDate['get' + this.modes[this.viewMode].navFnc].call(this.viewDate) + this.modes[this.viewMode].navStep * (e.currentTarget.className == 'prev' ? -1 : 1));
 					this.fill();
 				},

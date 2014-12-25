@@ -15,3 +15,7 @@
 	background-color: #eeeeee;
 	border-color: #a3bae9
 }
+.dropdown-menu > li > a{
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

@@ -44,26 +44,26 @@ define(function(require){
 			if (this.isExpanded) {
 				this.picker.hide();
 				this.isExpanded = false;
-				taurus.$doc.off('mousedown',this.onDocumentClick);
 			}
 		},
 		doAlign:function(position){
 			this.picker.alignTo(this.getAlignEl(), $.extend(this.pickerAlign,position), this.pickerOffset);
 		},
 		expand:function(){
-			var picker;
+			var me = this,picker;
 			if (!this.isExpanded) {
 				this.expanding = true;
 				picker = this.getPicker();
 				picker.show();
 				this.isExpanded = true;
 				this.alignPicker();
-				this.onDocumentClick = _.bind(function(e){
-					if(this.triggerWrap[0] != e.target && !this.triggerWrap.has(e.target).length && !this.picker.$el.has(e.target).length && !this.picker.$el.is(e.target)){
-						this.collapse();
+				var onDocumentClick = function(e){
+					if(me.triggerWrap[0] != e.target && !me.triggerWrap.has(e.target).length && !me.picker.$el.has(e.target).length && !me.picker.$el.is(e.target)){
+						me.collapse();
+						taurus.$doc.off('mousedown',onDocumentClick);
 					}
-				},this);
-				taurus.$doc.on('mousedown',this.onDocumentClick,this);
+				};
+				taurus.$doc.on('mousedown',onDocumentClick);
 				delete this.expanding;
 			}
 		},

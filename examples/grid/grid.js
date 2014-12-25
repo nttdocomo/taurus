@@ -2,8 +2,6 @@
  * @author nttdocomo
  */
 define(function(require) {
-	require('backbone');
-	require('backbone.paginator');
 	var Panel = require("../../src/panel/panel.js"),
 		Table = require("../../src/panel/table.js"),
 		$body = $("#main"),
@@ -202,6 +200,7 @@ define(function(require) {
 		'lastChange' : '9/1 12:00am'
 	}]);
 	new Table({
+		hideHeaders:true,
 		loading : true,
 		refreshable : true,
 		collapsible: true,
@@ -212,7 +211,10 @@ define(function(require) {
 			text : 'Company',
 			flex : 1,
 			sortable : false,
-			dataIndex : 'company'
+			dataIndex : 'company',
+			renderer:function(value){
+				return value;
+			}
 		}, {
 			text : 'Price',
 			flex : 1,
