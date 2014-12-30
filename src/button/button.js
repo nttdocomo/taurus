@@ -68,7 +68,7 @@ define(function(require) {
 	    },
 		getTplData:function(){
 			return $.extend({
-				text:this.text,
+				text:this.text || '',
 				menu:!_.isUndefined(this.menu)
 			},Base.prototype.getTplData.apply(this,arguments))
 		},

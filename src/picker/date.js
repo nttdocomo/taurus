@@ -12,6 +12,7 @@ define(function(require) {
 		timeIcon:'halflings uni-calendar',
 		dateIcon : 'halflings time',
 		viewMode : 0,
+		endDate:Infinity,
 		modes : [{
 			clsName : 'days',
 			navFnc : 'Month',
@@ -34,10 +35,16 @@ define(function(require) {
 		},
 		initialize : function(options) {
 			Base.prototype.initialize.apply(this, arguments);
+			this.setEndDate();
 			this.weekStart = this.weekStart || 0;
 			this.fillHtml();
 			this.update();
 			this.showMode();
+		},
+		setEndDate:function(){
+			if(_.isString(this.endDate)){
+				this.endDate = moment(this.endDate)
+			}
 		},
 		fillHtml:function(){
 			this.fillDow();
@@ -53,7 +60,7 @@ define(function(require) {
 					//this.viewDate['set' + this.modes[this.viewMode].navFnc].call(this.viewDate, this.viewDate['get' + this.modes[this.viewMode].navFnc].call(this.viewDate) + this.modes[this.viewMode].navStep * (e.currentTarget.className == 'prev' ? -1 : 1));
 					this.fill();
 				},
-				'click td' : function(e) {
+				'click td:not(".disabled")' : function(e) {
 					var target = $(e.target);
 					if (target.is('.day')) {
 						var day = parseInt(target.text(), 10) || 1;
@@ -138,6 +145,9 @@ define(function(require) {
 					clsName += ' old';
 				} else if (prevMonth.getMonth() > month) {
 					clsName += ' new';
+				}
+				if (prevMonth.valueOf() > this.endDate) {
+					clsName += ' disabled';
 				}
 				if (prevMonth.valueOf() == currentDate) {
 					clsName += ' active';

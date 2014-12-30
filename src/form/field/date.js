@@ -11,6 +11,7 @@ define(function(require) {
 		triggerTpl : '<div class="input-group-btn"><button class="btn form-trigger btn-default" type="button"><i class="halflings calendar"></i></button></div>',
 		createPicker : function() {
 			var picker = new DatePicker({
+				endDate:this.endDate,
 				pickerField : this,
 				format:this.format,
 				renderTo : $(document.body)
