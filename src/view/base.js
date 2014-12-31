@@ -205,6 +205,9 @@ define(function(require) {
 		getHeight : function() {
 			return this.$el.height();
 		},
+		getWidth:function(){
+			return this.$el.width();
+		},
 		getOuterHeight : function() {
 			return this.$el.outerHeight();
 		},

@@ -43,17 +43,6 @@
 	-moz-border-radius: 4px;
 	border-radius: 4px
 }
-.bootstrap-datetimepicker-widget:before {
-	content: '';
-	display: inline-block;
-	border-left: 7px solid transparent;
-	border-right: 7px solid transparent;
-	border-bottom: 7px solid #ccc;
-	border-bottom-color: rgba(0,0,0,0.2);
-	position: absolute;
-	top: -7px;
-	left: 6px
-}
 .bootstrap-datetimepicker-widget:after {
 	content: '';
 	display: inline-block;
@@ -72,10 +61,6 @@
 	left: auto;
 	right: 7px
 }
-.bootstrap-datetimepicker-widget > ul {
-	list-style-type: none;
-	margin: 0
-}
 .bootstrap-datetimepicker-widget .timepicker-hour, .bootstrap-datetimepicker-widget .timepicker-minute, .bootstrap-datetimepicker-widget .timepicker-second {
 	width: 100%;
 	font-weight: bold;
@@ -86,7 +71,7 @@
 	padding: 0;
 	margin: 0
 }
-.bootstrap-datetimepicker-widget .datepicker > div {
+.bootstrap-datetimepicker-widget > div {
 	display: none
 }
 .bootstrap-datetimepicker-widget .picker-switch {

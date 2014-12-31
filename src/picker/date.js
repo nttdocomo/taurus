@@ -7,7 +7,7 @@ define(function(require) {
 	require("../lang/date");
 	require("moment");
 	return Base.extend({
-		tpl : '<ul><li class="collapse in"><div class="datepicker"><div class="datepicker-days"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody></tbody></table></div><div class="datepicker-months"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody><tr><td colspan="7"></td></tr></tbody></table></div><div class="datepicker-years"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody><tr><td colspan="7"></td></tr></tbody></table></div></div></li></ul>',
+		tpl : '<div class="datepicker-days"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody></tbody></table></div><div class="datepicker-months"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody><tr><td colspan="7"></td></tr></tbody></table></div><div class="datepicker-years"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody><tr><td colspan="7"></td></tr></tbody></table></div>',
 		className : 'bootstrap-datetimepicker-widget dropdown-menu',
 		timeIcon:'halflings uni-calendar',
 		dateIcon : 'halflings time',
@@ -71,6 +71,14 @@ define(function(require) {
 							month += 1;
 						}
 						var year = this.viewDate.year();
+						if(month > 11){
+							year++;
+							month = 0;
+						}
+						if(month < 0){
+							year--;
+							month = 11;
+						}
 						this.date = moment([year, month, day, 0, 0, 0, 0]);
 						this.viewDate = moment([year, month, day, 0, 0, 0, 0]);
 						this.fill();
@@ -141,10 +149,20 @@ define(function(require) {
 					html.push('<tr>');
 				}
 				clsName = '';
+				console.log('prevMonth:'+prevMonth.getMonth())
+				console.log('month:'+month)
 				if (prevMonth.getMonth() < month) {
-					clsName += ' old';
+					if(year < prevMonth.getFullYear()){
+						clsName += ' new';
+					} else {
+						clsName += ' old';
+					}
 				} else if (prevMonth.getMonth() > month) {
-					clsName += ' new';
+					if(year > prevMonth.getFullYear()){
+						clsName += ' old';
+					} else {
+						clsName += ' new';
+					}
 				}
 				if (prevMonth.valueOf() > this.endDate) {
 					clsName += ' disabled';
@@ -191,7 +209,7 @@ define(function(require) {
 			if (dir) {
 				this.viewMode = Math.max(0, Math.min(2, this.viewMode + dir));
 			}
-			this.$el.find('.datepicker > div').hide().filter('.datepicker-' + this.modes[this.viewMode].clsName).show();
+			this.$el.find('> div').hide().filter('.datepicker-' + this.modes[this.viewMode].clsName).show();
 		}
 	});
 });

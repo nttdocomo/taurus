@@ -19,6 +19,34 @@ define(function(require) {
 			picker.on('itemclick', this.onItemClick, this);
 			return picker;
 		},
+		alignPicker:function(){
+			var me = this, picker = me.getPicker(),position,
+			positionLeft = taurus.getPositionLeft(this.getAlignEl()),
+			positionRight = taurus.getPositionRight(this.getAlignEl()),
+			space = Math.max(positionLeft, positionRight);
+
+			// Allow the picker to height itself naturally.
+			/*if (picker.height) {
+				delete picker.height;
+				picker.updateLayout();
+			}*/
+			// Then ensure that vertically, the dropdown will fit into the space either above or below the inputEl.
+			if((picker.getWidth() + positionLeft) > $(window).width()){
+				position = {
+					"my" : "right top",
+					"at" : "right bottom"
+				};
+			} else {
+				position = {
+					"my" : "left top",
+					"at" : "left bottom"
+				};
+			}
+			me.doAlign(position);
+		},
+		getAlignEl:function(){
+			return this.$el.find('.input-group');
+		},
 		initValue:function(){
 			var value = this.value;
 			if(!value){

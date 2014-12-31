@@ -148,9 +148,6 @@ define(function(require) {
 			return $(window).width() - taurus.getPositionLeft(el) - el.width()
 		},
 		getPositionLeft:function(el){
-			console.log(el)
-			console.log(el.offset())
-			console.log(taurus.$body.scrollLeft())
 			return el.offset().left - taurus.$body.scrollLeft()
 		}
 	});
