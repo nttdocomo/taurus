@@ -8,6 +8,9 @@ define(function(require) {
 	return Base.extend({
 		className : 'grid-header-ct',
 		defaultType : Column,
+		events:{
+			'click .column-header':'onHeaderCtEvent'
+		},
 		initComponent : function() {
 			var me = this;
 	        me.headerCounter = 0;
@@ -100,6 +103,10 @@ define(function(require) {
 	        return result;
 	    },
 
+	    getHeaderElByEvent: function(e) {
+	        return $(e.currentTarget);
+	    },
+
 	    /**
 	     * Returns an array of the **visible** columns in the grid. This goes down to the lowest column header
 	     * level, and does not return **grouped** headers which contain sub headers.
@@ -132,6 +139,49 @@ define(function(require) {
 	        me.gridVisibleColumns = result;
 
 	        return result;
+	    },
+
+	    onHeaderCtEvent: function(e, t) {
+	        var me = this,
+	            headerEl = me.getHeaderElByEvent(e),
+	            header,
+	            targetEl,
+	            activeHeader;
+
+	        if (me.longPressFired) {
+	            // if we just showed the menu as a result of a longpress, do not process
+	            // the click event and sort the column.
+	            me.longPressFired = false;
+	            return;
+	        }
+
+	        if (headerEl/* && !me.ddLock*/) {
+	            header = headerEl.data('component');
+	            if (header) {
+	            	activeHeader = header.onTitleElClick(e, targetEl, me.sortOnClick);
+	                /*targetEl = header[header.clickTargetName];
+	                // If there's no possibility that the mouseEvent was on child header items,
+	                // or it was definitely in our titleEl, then process it
+	                if ((!header.isGroupHeader && !header.isContainer) || e.within(targetEl)) {
+	                    if (e.type === 'click' || e.type === 'tap') {
+	                        // The header decides which header to activate on click
+	                        // on Touch, anywhere in the splitter zone activates
+	                        // the left header.
+	                        activeHeader = header.onTitleElClick(e, targetEl, me.sortOnClick);
+	                        if (activeHeader) {
+	                            me.onHeaderTriggerClick(activeHeader, e, Ext.supports.Touch ? activeHeader.el : activeHeader.triggerEl);
+	                        } else {
+	                            me.onHeaderClick(header, e, t);
+	                        }
+	                    }
+	                    else if (e.type === 'contextmenu') {
+	                        me.onHeaderContextMenu(header, e, t);
+	                    } else if (e.type === 'dblclick' && header.resizable) {
+	                        header.onTitleElDblClick(e, targetEl.dom);
+	                    }
+	                }*/
+	            }
+	        }
 	    },
 		setColumnsWidth:function(widths){
 			var headers = this.$el.find('.column-header');

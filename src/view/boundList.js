@@ -77,11 +77,23 @@ define(function(require) {
 				}).join('')
 			})*/
 		},
-		refresh:function(){
+		clearViewEl:function(){
 			this.$el.empty();
-			this.html();
+			this.emptyEl = null;
+		},
+		refresh:function(){
+			var me = this;
+			me.clearViewEl();
+			if (me.collection.length < 1) {
+                // Process empty text unless the store is being cleared.
+                if (me.emptyText) {
+                    me.emptyEl = $('<li>').text(me.emptyText).appendTo(me.getTargetEl());
+                }
+            } else {
+				me.html();
+            }
 			this.$el.css('height','auto');
-			this.trigger('refresh');
+			me.trigger('refresh');
 		},
 		alignTo : function(element, position, offsets) {
 			this.$el.css('z-index','1051');

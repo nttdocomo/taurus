@@ -139,7 +139,7 @@ define(function(require) {
 			}
 
 			// Expand after adjusting the filter unless there are no matches
-			if (this.collection.length) {
+			if (collection.length || me.getPicker().emptyText) {
 				this.getPicker().collection.reset(collection);
 				this.expand();
 			} else {

@@ -11,16 +11,16 @@ define(function(require) {
 		className:'pagination',
 		events:{
 			'click .backward':function(){
-				this.collection.requestPreviousPage ? this.collection.requestPreviousPage() : this.collection.previousPage();
+				this.collection.hasPreviousPage() && this.collection.getPreviousPage();
 			},
 			'click .forward':function(){
-				this.collection.requestNextPage ? this.collection.requestNextPage() : this.collection.nextPage();
+				this.collection.hasNextPage() && this.collection.getNextPage();
 			},
 			'click .fast-backward':function(){
-				this.collection.goTo(1);
+				this.collection.getPage(1);
 			},
 			'click .fast-forward':function(){
-				this.collection.goTo(this.collection.info().totalPages);
+				this.collection.getPage(this.collection.state.totalPages);
 			}
 		},
 		initialize : function() {
@@ -52,7 +52,7 @@ define(function(require) {
 		},
 		html:function(){
 			if(this.collection.length){
-				var info = this.collection.info();
+				var info = this.collection.state;
 				return Base.prototype.html.call(this,$.extend({
 					fastBackward : '<a href="" class="halflings fast-backward" data-name="fast-backward" data-type="" data-prefix="halflings" data-utf="E070"></a>',
 					backward : '<a href="" class="halflings backward" data-name="backward" data-type="" data-prefix="halflings" data-utf="E071"></a>',

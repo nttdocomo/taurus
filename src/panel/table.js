@@ -74,8 +74,20 @@ define(function(require){
             },viewConfig));
 			Panel.prototype.initComponent.apply(this,[options]);
 
-			/*if(this.pager){
+
+			if(this.collection instanceof Backbone.PageableCollection){
 				this.$el.addClass('has-pager');
+				this.paging = new Pagination({
+					uiClass:'panel-footer',
+					collection:this.collection,
+					renderTo:this.$el
+				});
+				this.$el.css({
+					'padding-bottom':this.paging.$el.outerHeight()
+				})
+			}
+
+			/*if(this.pager){
 				new Pagination({
 					uiClass:'panel-footer',
 					collection:this.collection,

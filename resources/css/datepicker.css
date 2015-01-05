@@ -43,16 +43,6 @@
 	-moz-border-radius: 4px;
 	border-radius: 4px
 }
-.bootstrap-datetimepicker-widget:after {
-	content: '';
-	display: inline-block;
-	border-left: 6px solid transparent;
-	border-right: 6px solid transparent;
-	border-bottom: 6px solid #fff;
-	position: absolute;
-	top: -6px;
-	left: 7px
-}
 .bootstrap-datetimepicker-widget.pull-right:before {
 	left: auto;
 	right: 6px

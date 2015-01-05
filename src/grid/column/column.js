@@ -13,12 +13,12 @@ define(function(require) {
 		initialize : function() {
 			Base.prototype.initialize.apply(this, arguments);
 		},
-		delegateEvents : function(events) {
+		/*delegateEvents : function(events) {
 			var events = $.extend(events || {}, this.events, {
 				'click' : 'onTitleElClick'
 			});
 			Base.prototype.delegateEvents.call(this, events);
-		},
+		},*/
 
 		doSort : function(state) {
 			var me = this, collection = this.$el.parents('.grid').data('component').collection;
@@ -57,19 +57,38 @@ define(function(require) {
 			var me = this;
 			return me.$el.parents('.grid-header-ct').data('component');
 		},
+
+	    isSortable: function() {
+	        var sortable = this.sortable;
+	        return sortable;
+	    },
 		onTitleElClick : function() {
 			this.toggleSortState();
 		},
 
+	    sort: function(direction) {
+	        var me = this,
+	            grid = me.ownerCt.grid,
+	            collection = grid.collection;
+
+	        // Maintain backward compatibility.
+	        // If the grid is NOT configured with multi column sorting, then specify "replace".
+	        // Only if we are doing multi column sorting do we insert it as one of a multi set.
+	        // Suspend layouts in case multiple views depend upon this grid's store (eg lockable assemblies)
+	        //Ext.suspendLayouts();
+	        me.sorting = true;
+	        collection.setSorting(me.getSortParam(), direction ? direction : collection.state.order*-1, {side: "client"});
+	        collection.fullCollection.sort();
+	        console.log(collection)
+	        //store.sort(me.getSortParam(), direction, grid.multiColumnSort ? 'multi' : 'replace');
+	        delete me.sorting;
+	        //Ext.resumeLayouts(true);
+	    },
+
 		toggleSortState : function() {
-			var me = this, idx, nextIdx;
-
-			if (me.sortable) {
-				idx = _.indexOf(me.possibleSortStates, me.sortState);
-
-				nextIdx = (idx + 1) % me.possibleSortStates.length;
-				me.setSortState(me.possibleSortStates[nextIdx]);
-			}
+	        if (this.isSortable()) {
+	            this.sort();
+	        }
 		},
 
 		setSortState : function(state, skipClear, initial) {

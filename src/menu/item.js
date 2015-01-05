@@ -21,14 +21,15 @@ define(function(require) {
 	    menuExpandDelay: 200,
 	    menuHideDelay:200,
 	    clickHideDelay:0,
+	    activeCls:'active',
 		tpl:'<a href="<%if(href){%><%=href%><%}else{%>#<%}%>"><%=text%><%if(menu){%> <span class="caret"></span><%}%></a>',
 		activate: function(skipCheck) {
 	        var me = this;
 
 	        if (skipCheck || (!me.activated && me.canActivate && me.rendered && !me.isDisabled() && me.isVisible())) {
-	            /*if (!me.plain) {
-	                me.el.addCls(me.activeCls);
-	            }*/
+	            if (!me.plain) {
+	                me.$el.addClass(me.activeCls);
+	            }
 
 	            // Delay focus so as not to focus/blur during mousemoves, and keyboard navigation
 	            // This was the cause of perf problems on IE: https://sencha.jira.com/browse/EXTJSIV-7488

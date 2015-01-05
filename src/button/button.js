@@ -148,7 +148,18 @@ define(function(require) {
 				me.doc.on('mouseup', onMouseUp);
 			}
 		},
+
+	    beforeRender: function() {
+			if (this.disabled) {
+	            this.$el.attr('disabled',true);
+	        }
+
+			if (this.pressed) {
+	            this.$el.addClass(this.pressedCls);
+	        }
+	    },
 		render:function(){
+			this.beforeRender()
 			Base.prototype.render.apply(this,arguments);
 			ButtonManager.register(this);
 		},
