@@ -25,7 +25,7 @@ define(function(require) {
 		fieldCls : taurus.baseCSSPrefix + 'form-field',
 		invalidText : 'The value in this field is invalid',
 		checkChangeBuffer : 50,
-		fieldSubTpl:'<input id="<%=id%>" type="<%=type%>" class="form-control <%=fieldCls%>"<%if(typeof(placeholder) !== "undefined"){%> placeholder="<%=placeholder%>"<%}%><%if(typeof(value) !== "undefined"){%> value="<%=value%>"<%}%><%if(typeof(checked) !== "undefined"){%> checked="<%=checked%>"<%}%> />',
+		fieldSubTpl:'<input id="<%=id%>" type="<%=type%>" class="form-control <%=fieldCls%>"<%if(typeof(placeholder) !== "undefined"){%> placeholder="<%=placeholder%>"<%}%><%if(typeof(value) !== "undefined"){%> value="<%=value%>"<%}%><%if(typeof(checked) !== "undefined"){%> checked="<%=checked%>"<%}%><%if(readOnly){%> readonly="readonly"<%}%> />',
 		checkChangeEvents : !Modernizr.hasEvent('dragdrop',document.createElement('input')) && (!document.documentMode || document.documentMode < 9) ? ['change', 'propertychange'] : ['change', 'input', 'textInput', 'keyup', 'dragdrop'],
 		/**
 		 * @private
@@ -90,6 +90,7 @@ define(function(require) {
 		},
 		delegateEvents : function(events) {
 			var events = events || {}, me = this;
+			events['blur' + ' #'+me.inputId] = 'onFocusLeave';
 			_.each(this.checkChangeEvents, function(item) {
 				events[item + ' #'+me.inputId] = taurus.util.throttle(me.checkChange, me.checkChangeBuffer, me);
 			});
@@ -98,6 +99,9 @@ define(function(require) {
 		},
 		isFileUpload: function() {
 	        return this.inputType === 'file';
+	    },
+	    onFocusLeave:function(){
+	    	//this.completeEdit();
 	    },
 		setValue : function(value) {
 			this.setRawValue(this.valueToRaw(value));
@@ -158,7 +162,7 @@ define(function(require) {
 	            cmpId      : me.cid,
 	            name       : me.name || inputId,
 	            disabled   : me.disabled,
-	            readOnly   : me.readOnly,
+	            readOnly   : me.readOnly || !me.editable,
 	            value      : me.getRawValue(),
 	            type       : type,
 	            fieldCls   : me.fieldCls,

@@ -139,7 +139,7 @@ define(function(require){
 
 	        // If disabled, moving within the current target, ignore the mouseout
 	        // e.within is the only correct way to determine this.
-	        if (me.disabled || !triggerEl || target.$el.has(e.target).length) {
+	        if (me.disabled || !triggerEl || target.has(e.target).length) {
 	            return;
 	        }
 	        if (me.showTimer) {
@@ -157,12 +157,12 @@ define(function(require){
 	     */
 	    setTarget: function(target) {
 	        var me = this,
-	            t = target,
+	            t = taurus.get(target),
 	            tg;
 
 	        if (me.target) {
-	            tg = target;
-	            target.$el.off({
+	            tg = taurus.get(target);
+	            tg.off({
 	            	mouseenter: _.bind(me.onTargetEnter,me),
 	            	mouseleave: _.bind(me.onTargetOut,me)
 	            })
@@ -170,7 +170,7 @@ define(function(require){
 
 	        me.target = t;
 	        if (t) {
-	            target.$el.on({
+	            t.on({
 	            	mouseenter: _.bind(me.onTargetEnter,me),
 	            	mouseout: _.bind(me.onTargetOut,me)
 	            })
@@ -198,6 +198,7 @@ define(function(require){
 	                // If the caller was this.showFromDelay(), the XY coords may have been cached.
 	                //me.showAt(xy || me.getTargetXY());
 	                me.showBy(me.target, me.getAnchorAlign());
+	                me.$el.css('opacity',1);
 	            }
 
 	            /*if (me.anchor) {

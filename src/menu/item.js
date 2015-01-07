@@ -51,9 +51,9 @@ define(function(require) {
 
 	        if (me.activated) {
 	            //parent = me.up('');
-	            /*if (!me.plain) {
-	                me.el.removeCls(me.activeCls);
-	            }*/
+	            if (!me.plain) {
+	                me.$el.removeClass(me.activeCls);
+	            }
 
 	            // Delay focus of parent so as not to focus/blur during mousemoves, and keyboard navigation
 	            // This was the cause of perf problems on IE: https://sencha.jira.com/browse/EXTJSIV-7488

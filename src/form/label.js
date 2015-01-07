@@ -46,6 +46,9 @@ define(function(require) {
 	        delete this.activeErrors;
 	        this.renderActiveError();
 	    },
+	    setActiveError: function(msg) {
+           this.setActiveErrors(msg);
+        },
 		setActiveErrors: function(errors) {
 	        errors = $.makeArray(errors);
 	        this.activeError = errors[0];

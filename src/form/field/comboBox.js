@@ -264,9 +264,9 @@ define(function(require) {
 		},
 		onKeyUp : function(e) {
 			var key = e.getKey();
-			console.log(key);
 			//if (!e.isSpecialKey() && key !== 229) {
 			this.doQuery(this.getRawValue(), false, true);
+			Picker.prototype.onKeyUp.call(this,arguments);
 			//}
 		},
 

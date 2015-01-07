@@ -29,6 +29,11 @@ define(function(require) {
 		renderTo : $body,
 		text:chance.word()
 	});
+	var questionSign = $('<span class="halflings halflings-question-sign" aria-hidden="true"></span>').appendTo($body);
+	new Tip({
+		target: questionSign,
+		text: '累计收入和报表中没有当日收入。当日收入次日凌晨结算，可隔天查看'
+	})
 	new Tip({
 		target: button1,
 		text: 'My Tip Title'

@@ -149,7 +149,13 @@ define(function(require) {
 		},
 		getPositionLeft:function(el){
 			return el.offset().left - taurus.$body.scrollLeft()
-		}
+		},
+		get:function(cmp){
+			if(cmp instanceof Backbone.View){
+				return cmp.$el
+			}
+			return cmp
+		},
 	});
 	/*(function() {
 		var check = function(regex) {

@@ -69,6 +69,18 @@ define(function(require) {
 				placeholder : placeholder
 			});
 		},
+
+	    onKeyDown: function(e) {
+	        this.trigger('keydown', e);
+	    },
+
+	    onKeyUp: function(e) {
+	        this.trigger('keyup', e);
+	    },
+
+	    onKeyPress: function(e) {
+	        this.trigger('keypress', e);
+	    },
 		processRawValue : function(value) {
 			var me = this, stripRe = me.stripCharsRe, newValue;
 			if (stripRe) {
@@ -79,6 +91,16 @@ define(function(require) {
 				}
 			}
 			return value;
+		},
+		delegateEvents : function(events) {
+			if (this.enableKeyEvents) {
+	            $.extend(events,{
+	                'keyup': 'onKeyUp',
+	                'keydown': 'onKeyDown',
+	                'keypress': 'onKeyPress'
+	            });
+	        }
+			Base.prototype.delegateEvents.call(this, events);
 		}
 	}));
 });
