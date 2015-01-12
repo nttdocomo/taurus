@@ -222,7 +222,6 @@ define(function(require){
 	        }
 		},
 		reset:function(){
-			console.log(this)
 			this.html();
 		},
 		childEls:{

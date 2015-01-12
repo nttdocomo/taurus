@@ -27,8 +27,6 @@ define(function(require) {
 			return {
 				buttons : _.map(this.buttons,function(button,i){
 					button.pressed = false;
-					console.log(me.activeItem)
-					console.log(i)
 					if(me.activeItem == i){
 						button.pressed = true
 					}

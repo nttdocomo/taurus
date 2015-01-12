@@ -66,7 +66,8 @@ define(function(require) {
 	            '<li role="option" class="' + itemCls + '">' + this.getInnerTpl(this.displayField) + '</li>',
 	            '<%})%>'].join('');
 	        }
-			return Base.prototype.html.call(this,{results:this.collection.toJSON()});/*
+			return Base.prototype.html.call(this,{results:this.collection.toJSON()});
+			/*
 			return taurus.views.Base.prototype.html.call(this,{
 				content:this.collection.map(function(model){
 					var boundListItem = new BoundListItem({
@@ -97,10 +98,18 @@ define(function(require) {
 		},
 		alignTo : function(element, position, offsets) {
 			this.$el.css('z-index','1051');
+			if(this.lazyload){
+				this.$el.find("img.lazy").lazyload({
+					container: this.$el
+				});
+			}
 			return Base.prototype.alignTo.apply(this,arguments);
 		},
 		setHeight:function(height){
 			return Base.prototype.setHeight.call(this,Math.min(height,this.$el.height()));
+		},
+		show:function(){
+			Base.prototype.show.apply(this,arguments);
 		}
 	});
 });

@@ -21,6 +21,7 @@ define(function(require) {
 			}
 			if(chance.bool({likelihood:likelihood})){
 				item.menu = {
+					showMenuEvent:'click',
 					items:randomMenu()
 				}
 				if(likelihood > 0){
@@ -39,6 +40,7 @@ define(function(require) {
 
 	new Navbar({
 		renderTo : $('.navbar-collapse'),
+		showMenuEvent:'click',
 		items: randomMenu()
 	});
 })

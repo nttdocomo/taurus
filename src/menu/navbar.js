@@ -8,7 +8,7 @@ define(function(require) {
 		isNav:true,
 		className:'nav navbar-nav',
 		initialize:function(){
-	        Base.prototype.initialize.apply(this,arguments);
+	        Menu.prototype.initialize.apply(this,arguments);
 	        $(document).on('mousedown',_.bind(this.deactivateActiveItem,this))
 		}
 	});

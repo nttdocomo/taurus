@@ -3,7 +3,7 @@
  */
 define(function(require) {
 	require("backbone");
-	var ComboBox = require("../../src/form/field/comboBox.js"), $body = $("#main"), states = [{
+	var ComboBox = require("../../src/form/field/comboBox.js"), $body = $("#main"), data_with_src=[],states = [{
 		"abbr" : "AL",
 		"name" : "Alabama",
 		"slogan" : "The Heart of Dixie"
@@ -218,6 +218,33 @@ define(function(require) {
 		valueField : 'abbr',
 		width:250,
 		collection : collection
+	});
+	types = ['abstract','animals','business','cats','city','food','nightlife','fashion','people','nature','sports','technics','transport']
+	for (var i = chance.natural({min: 1, max: 100}); i >= 0; i--) {
+		data_with_src.push({
+			"src":'http://lorempixel.com/20/20/'+[types[chance.natural({min: 0, max: 12})],chance.natural({min: 1, max: 10})].join('/'),
+			"name" : chance.word(),
+			"value" : chance.word({length: 5})
+		})
+	};http://lorempixel.com/output/sports-q-c-640-480-6.jpg
+	new ComboBox({
+		renderTo : $body,
+		name : 'textfield2',
+		id : 'textfield2',
+		displayField : 'name',
+		fieldLabel : 'image',
+		multiSelect : true,
+		valueField : 'value',
+		listConfig:{
+			emptyText:'手欠了吧23333',
+			lazyload:true,
+			getInnerTpl:function(displayField){
+				console.log(this)
+				return '<a href="#" class="boundlist-item"><%if(item.src){%><img class="lazy" '+(this.lazyload ?' data-original':'src') +'="<%=item.src%>" height="20" width="20"> <%}%><%=item.' + displayField + '%></a>';
+			}
+		},
+		width:250,
+		collection : new Backbone.Collection(data_with_src)
 	});
 	new ComboBox({
 		renderTo : $body,

@@ -79,7 +79,6 @@ define(function(require) {
 	        me.sorting = true;
 	        collection.setSorting(me.getSortParam(), direction ? direction : collection.state.order*-1, {side: "client"});
 	        collection.fullCollection.sort();
-	        console.log(collection)
 	        //store.sort(me.getSortParam(), direction, grid.multiColumnSort ? 'multi' : 'replace');
 	        delete me.sorting;
 	        //Ext.resumeLayouts(true);

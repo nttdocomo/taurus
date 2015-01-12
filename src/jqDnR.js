@@ -45,7 +45,6 @@
 	var J = $.jqDnR, M = J.dnr, E = J.e, i = function(e, h, k) {
 		return e.each(function() {
 			h = (h) ? $(h, e) : e;
-			console.log(h.selector)
 		});
 	}, f = function(k) {
 		return parseInt(E.css(k)) || false;

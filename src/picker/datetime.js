@@ -260,7 +260,6 @@ define(function(require) {
 					return;
 				expanded.hide().removeClass('in');
 				closed.show().addClass('in');
-				console.log($this);
 				$this.find('i').toggleClass(this.timeIcon + ' ' + this.dateIcon);
 				this.$el.find('.add-on i').toggleClass(this.timeIcon + ' ' + this.dateIcon);
 			}

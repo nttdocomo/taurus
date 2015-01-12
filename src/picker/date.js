@@ -149,8 +149,6 @@ define(function(require) {
 					html.push('<tr>');
 				}
 				clsName = '';
-				console.log('prevMonth:'+prevMonth.getMonth())
-				console.log('month:'+month)
 				if (prevMonth.getMonth() < month) {
 					if(year < prevMonth.getFullYear()){
 						clsName += ' new';

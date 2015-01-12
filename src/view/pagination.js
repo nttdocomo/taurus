@@ -37,7 +37,6 @@ define(function(require) {
 		},
 		html:function(){
 			var info = this.collection.info();
-			console.log(info)
 			info.paginator_number='';
 			info.currentPage = info.currentPage || 0
 			if (!info.totalPages || info.totalPages <= 10){
