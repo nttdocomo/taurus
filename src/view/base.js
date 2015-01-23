@@ -183,7 +183,12 @@ define(function(require) {
 			if(this.innerHtml){
 				this.el.innerHTML = this.innerHtml;
 			} else {
-				this.$el.html(this.tpl ? _.template(this.tpl, (data || this.getTplData() || this)) : "");
+				data = data || this.getTplData();
+				if(!data){
+					this.$el.html("");
+				} else {
+					this.$el.html(this.tpl ? _.template(this.tpl, (data || this.getTplData() || this)) : "");
+				}
 			}
 		},
 		$html : function(options) {
