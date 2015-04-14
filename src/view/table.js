@@ -189,6 +189,10 @@ define(function(require){
 			cellValues.align = column.align;
 			cellValues.column = column;
 			cellValues.tdCls = cellValues.tdStyle = cellValues.tdAttr = cellValues.style = "";
+			if(column.cellWidth){
+				cellValues.tdStyle = 'width:'+column.cellWidth+'px;';
+				cellValues.style = 'width:'+column.cellWidth+'px;';
+			}
 			if (column.renderer && column.renderer.call) {
 	            fullIndex = me.ownerCt.columnManager.getHeaderIndex(column);
 	            value = column.renderer.call(column.usingDefaultRenderer ? column : column.scope || me.ownerCt, fieldValue, cellValues, record, recordIndex, fullIndex, me.dataSource, me);

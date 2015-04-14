@@ -4,7 +4,6 @@
 
 define(function(require) {
 	var Base = require('./view');
-	require('../jquery.ui.position');
 	var BoundListItem = require('./boundListItem');
 	return Base.extend({
 		//tpl:'<%=content%>',

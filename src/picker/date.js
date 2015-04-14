@@ -3,7 +3,6 @@
  */
 define(function(require) {
 	var Base = require('../view/base');
-	require('../jquery.ui.position');
 	require("../lang/date");
 	require("moment");
 	return Base.extend({

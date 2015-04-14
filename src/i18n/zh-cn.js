@@ -6,7 +6,9 @@ define(function(require){
 	return new i18n({
 		locales:[[
 		'zh-cn',{
-			"Page %d of %d" : "%2$d页中的第%1$d页"
+			"Page %d of %d" : "%2$d页中的第%1$d页",
+			"Cancel" : "取消",
+			"Confirm" : "确定"
 		}]]
 	});
 });

@@ -2,16 +2,17 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Dialog = require('./dialog');
+	var Dialog = require('./dialog'),
+	i18n = require('../i18n/zh-cn');
 	return taurus.view("taurus.widget.Prompt", Dialog.extend({
 		disabled:false,
 		buttons:[{
-			text:'Cancel',
+			text:i18n.__('Cancel'),
 			handler:'cancel',
 			className:'btn-default',
 			disabled:false
 		},{
-			text:'Confirm',
+			text:i18n.__('Confirm'),
 			handler:'confirm',
 			className:'btn-primary',
 			disabled:false

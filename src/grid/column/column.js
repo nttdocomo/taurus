@@ -69,6 +69,7 @@ define(function(require) {
 	    sort: function(direction) {
 	        var me = this,
 	            grid = me.ownerCt.grid,
+	            oldDirection = me.direction || -1,
 	            collection = grid.collection;
 
 	        // Maintain backward compatibility.
@@ -77,10 +78,11 @@ define(function(require) {
 	        // Suspend layouts in case multiple views depend upon this grid's store (eg lockable assemblies)
 	        //Ext.suspendLayouts();
 	        me.sorting = true;
-	        collection.setSorting(me.getSortParam(), direction ? direction : collection.state.order*-1, {side: "client"});
+	        collection.setSorting(me.getSortParam(), direction ? direction : oldDirection*-1, {side: "client"});
 	        collection.fullCollection.sort();
 	        //store.sort(me.getSortParam(), direction, grid.multiColumnSort ? 'multi' : 'replace');
 	        delete me.sorting;
+	        me.setSortState()
 	        //Ext.resumeLayouts(true);
 	    },
 
@@ -91,11 +93,26 @@ define(function(require) {
 		},
 
 		setSortState : function(state, skipClear, initial) {
-			var me = this, ascCls = me.ascSortCls, descCls = me.descSortCls, ownerHeaderCt = me.getOwnerHeaderCt(), oldSortState = me.sortState;
+			var me = this, ascCls = me.ascSortCls, descCls = me.descSortCls, ownerHeaderCt = me.getOwnerHeaderCt(), oldSortState = me.sortState,oldDirection = me.direction,
+	            grid = me.ownerCt.grid,
+			collection = grid.collection,direction = collection.state.sortKey == me.dataIndex ? collection.state.order : null;
 
-			state = state || null;
+			switch (direction) {
+				case -1:
+					me.$el.addClass(descCls);
+					me.$el.removeClass(ascCls);
+					break;
+				case 1:
+					me.$el.addClass(ascCls);
+					me.$el.removeClass(descCls);
+					break;
+				default:
+					me.$el.removeClass([ascCls, descCls].join(" "));
+			}
+			me.direction = direction;
+			/*state = state || null;
 
-			if (!me.sorting && oldSortState !== state && (me.getSortParam() != null)) {
+			if (!me.sorting && oldDirection !== direction && (me.getSortParam() != null)) {
 				// don't trigger a sort on the first time, we just want to update the UI
 				if (state && !initial) {
 					// when sorting, it will call setSortState on the header again once
@@ -104,27 +121,28 @@ define(function(require) {
 					me.doSort(state);
 					me.sorting = false;
 				}
-				switch (state) {
-					case 'DESC':
+				switch (direction) {
+					case -1:
 						me.$el.addClass(descCls);
 						me.$el.removeClass(ascCls);
 						break;
-					case 'ASC':
+					case 1:
 						me.$el.addClass(ascCls);
 						me.$el.removeClass(descCls);
 						break;
 					default:
 						me.$el.removeClass([ascCls, descCls].join(" "));
 				}
+				me.direction = direction;
 				if (ownerHeaderCt && !me.triStateSort && !skipClear) {
 					ownerHeaderCt.clearOtherSortStates(me);
 				}
 				me.sortState = state;
 				// we only want to fire the event if we have a null state when using triStateSort
-				/*if (me.triStateSort || state != null) {
+				if (me.triStateSort || state != null) {
 				 ownerHeaderCt.fireEvent('sortchange', ownerHeaderCt, me, state);
-				 }*/
-			}
+				 }
+			}*/
 		}
 	});
 });

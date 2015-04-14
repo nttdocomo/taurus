@@ -4,7 +4,6 @@
 define(function(require) {
 	require('../taurus');
 	require('../lang/number');
-	require('../jquery.ui.position');
 	return taurus.view("taurus.views.Base", Backbone.View.extend({
 		isRendered : false,
 		doc : taurus.$doc,

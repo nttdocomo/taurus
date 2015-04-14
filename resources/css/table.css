@@ -44,7 +44,7 @@
 .column-header-sort-DESC .caret,.column-header-sort-ASC .caret{
 	display:inline-block;
 }
-.column-header-sort-ASC .caret{
+.column-header-sort-DESC .caret{
 	border-top: 0;
 	border-bottom: 4px solid;
 	content: "";

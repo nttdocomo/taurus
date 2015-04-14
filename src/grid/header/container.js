@@ -146,6 +146,8 @@ define(function(require) {
 	            headerEl = me.getHeaderElByEvent(e),
 	            header,
 	            targetEl,
+	            allColumns = me.getGridColumns(),
+	            len = allColumns.length,
 	            activeHeader;
 
 	        if (me.longPressFired) {
@@ -181,6 +183,11 @@ define(function(require) {
 	                    }
 	                }*/
 	            }
+	        };
+	        for (i = 0; i < len; i++) {
+	            column = allColumns[i];
+
+	            column.setSortState();
 	        }
 	    },
 		setColumnsWidth:function(widths){
