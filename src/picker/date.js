@@ -206,7 +206,7 @@ define(function(require) {
 			if (dir) {
 				this.viewMode = Math.max(0, Math.min(2, this.viewMode + dir));
 			}
-			this.$el.find('> div').hide().filter('.datepicker-' + this.modes[this.viewMode].clsName).show();
+			this.$el.find('.datepicker > div').hide().filter('.datepicker-' + this.modes[this.viewMode].clsName).show();
 		}
 	});
 });

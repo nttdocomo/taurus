@@ -5,25 +5,13 @@ define(function(require) {
 	var Panel = require("../../src/panel/panel.js"),
 		Table = require("../../src/panel/table.js"),
 		$body = $("#main"),
-		Collection = Backbone.Paginator.clientPager.extend({
-		paginator_ui : {
-			// the lowest page index your API allows to be accessed
-			firstPage : 1,
-
-			// which page should the paginator start from
-			// (also, the actual page the paginator is on)
-			currentPage : 1,
-
-			// how many items per page should be shown
-			perPage : 10000,
-
-			// a default number of total pages to query in case the API or
-			// service you are using does not support providing the total
-			// number of pages for us.
-			// 10 as a default in case your service doesn't return the total
-			totalPages : 10
-		}
-	}),
+		Collection = Backbone.PageableCollection.extend({
+			//url: "json/pageable-territories.json",
+			mode: "client",
+			state: {
+				pageSize: 10000
+			}
+		}),
 		collection = new Collection([{
 		'company' : '3m Co',
 		'price' : 71.72,

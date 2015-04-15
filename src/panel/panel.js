@@ -43,9 +43,11 @@ define(function(require){
 	    },
 	    expand:function(){
 	    	this.collapsed = false;
+	    	this.setHeight(this.height)
 	    },
 	    collapse:function(){
 	    	this.collapsed = true;
+	    	this.setHeight('')
 	    },
 		refresh:function(){
 			this.onRefresh && this.onRefresh();

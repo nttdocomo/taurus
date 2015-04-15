@@ -5,19 +5,29 @@ define(function(require){
 	var Panel = require('../panel/panel'), BaseForm = require('./base');
 	return taurus.view("taurus.form.Panel", Panel.extend({
 		disabled:false,
+		childEls:{
+			'body':'.panel-body'
+		},
 		/*tpl:'<div class="panel-heading"><%=tool%><h4 class="panel-title"><%=title%></h4></div><div class="panel-body"><%=content%></div><div class="panel-footer"></div>',*/
 		initialize:function(){
 			Panel.prototype.initialize.apply(this,arguments);
-			this.form = this.createForm();
+		},
+		initComponent:function(){
+			var items = this.items;
+			delete this.items;
+			Panel.prototype.initComponent.apply(this,arguments);
+			this.form = this.createForm(items);
 			this.renderButttons();
 			if(this.inline){
 				this.form.$el.addClass('form-inline');
 			}
 		},
-		createForm:function(){
+		createForm:function(items){
 			delete this.initialConfig.width;
 			return new BaseForm({
 				owner:this,
+				renderTo:this.body,
+				items:items,
 				//renderTo:this.$el.find('.panel-body'),
 				operation:'prepend'
 			});

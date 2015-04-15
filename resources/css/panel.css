@@ -19,7 +19,10 @@
 	border-bottom:none;
 }
 .collapsed .panel-body,.collapsed .panel-footer{
-	display:none;
+	display:none !important;
+}
+.collapsed.grid{
+	padding-bottom: 0 !important;
 }
 .panel .thumbnail {
 	border:none;

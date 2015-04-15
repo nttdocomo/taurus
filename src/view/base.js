@@ -155,9 +155,7 @@ define(function(require) {
 			this.operation = operation || "append";
 			renderTo = renderTo || this.renderTo || $(document.body);
 			/*run html brfore append el because the el must has html*/
-			if (renderTo) {
-				$(renderTo)[this.operation](this.$el);
-			}
+			$(renderTo)[this.operation](this.$el);
 			this.html();
 			this.isRendered = true;
 			this.rendered = true;
