@@ -115,6 +115,7 @@ define(function(require) {
 			var me = this, cfg = item.tabConfig || {}, defaultConfig = {
 				cls : Tab,
 				card : item,
+				title: item.title,
 				disabled : item.disabled,
 				closable : item.closable,
 				hidden : item.hidden && !item.hiddenByLayout, // only hide if it wasn't hidden by the layout itself

@@ -1,41 +1,54 @@
-<!DOCTYPE HTML>
-<html lang="en-US">
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-        <link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap.css"/>
-        <link type="text/css" rel="stylesheet" href="../../resources/css/menu.css"/>
-        <style type="text/css">
-            .dropdown-menu{
-                display: block;
-                top:0;
-            }
-            .dropdown-menu .caret {
-                float：right;
-                border-left: 4px solid;
-                border-right: 0;
-                border-top: 4px solid transparent;
-                border-bottom: 4px solid transparent;
-            }
-        </style>
-        <!--[if IE]>
-        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-    </head>
-    <body>
-        <!-- /container -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>iPad input focus</title>
+  <style type="text/css">
 
-        <!-- Bootstrap core JavaScript
-        ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/labjs/2.0.3/LAB.min.js"></script>
-        <script type="text/javascript">
-            $LAB.script('../src/jquery-2.0.0.js','http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js').wait(function(){
-                $(document).on('mousedown',_.defer(function(){
-                    console.log('mousedown')
-                }))
-            });
-        </script>
-        <!--<script src="../../src/sea.js" data-config="../config" data-main="../menu/menus"></script>-->
-    </body>
+    body, body * { margin: 0; padding: 0; }
+
+    #page{ width: 100%; height: 200px; text-align: center;
+      position: absolute; top:50%; margin-top: -100px; }
+
+    #page .input, #page .button {
+      font-size: 48px; border-radius: 10px; padding: 5px;
+    }
+
+    #page .input {
+      border: 3px solid orange; outline-style: none; text-align: center;
+    }
+
+    #page p { margin-bottom: 60px; }
+  </style>
+  <script type="text/javascript">
+    window.addEventListener('DOMContentLoaded', function() {
+      var button = document.querySelector('#button');
+      var input = document.querySelector('#input');
+      var focus = function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var clone = input.cloneNode(true);
+        var parent = input.parentElement;
+        parent.appendChild(clone);
+        parent.replaceChild(clone, input);
+        input = clone;
+        window.setTimeout(function() {
+          input.value = input.value || "";
+          input.focus();
+        }, 0);
+      }
+      button.addEventListener('mousedown', focus);
+      button.addEventListener('touchstart', focus);
+    }, false);
+  </script>
+</head>
+<body>
+  <div id="page">
+    <p>
+      <input id="input" type="text" class="input" />
+    </p>
+    <p>
+      <div id="button" class="button">Focus</div>
+    </p>
+  </div>
+</body>
 </html>

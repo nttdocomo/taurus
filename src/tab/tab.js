@@ -5,7 +5,7 @@ define(function(require) {
 	var Base = require('../view/base');
 	return Base.extend({
 		tagName : 'li',
-		tpl : '<a href="#"></a>',
+		tpl : '<a href="#"><%=title%></a>',
 		activeCls : 'active',
 		initialize : function() {
 			Base.prototype.initialize.apply(this, arguments);
@@ -32,9 +32,9 @@ define(function(require) {
 			this.$el.find('a').text(text);
 		},
 		getTplData : function() {
-			return $.extend(Base.prototype.getTplData.apply(this, arguments), {
+			return Base.prototype.getTplData.apply(this, [{
 				title : this.title
-			});
+			}]);
 		},
 		// @private
 		activate : function(supressEvent) {

@@ -136,10 +136,10 @@ define(function(require) {
 			var events = $.extend(events || {}, this.events/*, this.listeners*/);
 			Backbone.View.prototype.delegateEvents.call(this, events);
 		},
-		getTplData : function() {
-			return {
+		getTplData : function(data) {
+			return _.extend({
 				id : this.cid
-			};
+			},data);
 		},
 		show : function() {
 			this.$el.show();
@@ -184,7 +184,7 @@ define(function(require) {
 				if(!data){
 					this.$el.html("");
 				} else {
-					this.$el.html(this.tpl ? _.template(this.tpl, (data || this.getTplData() || this)) : "");
+					this.$el.html(this.tpl ? _.template(this.tpl, (data || this)) : "");
 				}
 			}
 		},

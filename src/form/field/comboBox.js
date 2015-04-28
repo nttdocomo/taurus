@@ -52,8 +52,11 @@ define(function(require) {
 				}
 			}
 		},
+		getPickerWidth:function(){
+			return this.triggerWrap.width()
+		},
 		alignPicker : function() {
-			this.picker.setWidth(this.triggerWrap.width());
+			this.picker.setWidth(this.getPickerWidth());
 			var me = this, picker = me.getPicker(), position, heightAbove = taurus.getPositionAbove(this.$el), heightBelow = taurus.getPositionBelow(this.$el), height = picker.getHeight();
 			space = heightBelow;
 			position = {
@@ -149,30 +152,42 @@ define(function(require) {
 			me.afterQuery();
 		},
 		doQuery : function(queryString, forceAll, rawQuery) {
-			var isLocalMode = this.queryMode === 'local', collection = this.collection;
+			var me = this, isLocalMode = this.queryMode === 'local', collection = this.collection;
 			if (isLocalMode) {
-				this.expand();
+				if(!collection.length){
+					collection.fetch({
+						success:function(){
+							me.expand()
+						}
+					})
+				} else {
+					if (!this.multiSelect){
+						this.doLocalQuery(queryString);
+					}
+				}
 			} else {
 				this.doRemoteQuery(queryString);
-			}
-			if (isLocalMode) {
-				if (!this.multiSelect){
-					this.doLocalQuery(queryString);
-				}
 			}
 		},
 		doRemoteQuery : function(queryString) {
 			var me = this, collection = this.collection;
-			if (!collection.length) {
+			console.log(this.getParams(queryString))
+			collection.fetch({
+				data : this.getParams(queryString),
+				success : function() {
+					//me.getPicker().collection.reset(collection.models);
+					me.expand();
+					me.doLocalQuery(queryString);
+					if (!me.multiSelect){
+						me.doLocalQuery(queryString);
+					}
+				}
+			});
+			/*if (!collection.length) {
 				collection.fetch({
 					data : this.getParams(),
 					success : function() {
-						//me.expand();
-						//me.getPicker().collection.reset(collection.models);
 						me.doLocalQuery(queryString);
-						/*if (!me.multiSelect){
-							me.doLocalQuery(queryString);
-						}*/
 					}
 				});
 			} else {
@@ -180,7 +195,7 @@ define(function(require) {
 				if (!me.multiSelect){
 					me.doLocalQuery(queryString);
 				}
-			}
+			}*/
 		},
 		getParams : function(queryString) {
 			var params = {}, param = this.queryParam;

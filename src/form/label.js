@@ -4,8 +4,8 @@
 define(function(require) {
 	var Base = require("../view/base");
 	var ActiveErrors = require("../view/activeErrors");
-	taurus.view("taurus.form.Label", Base.extend({
-		tpl:'<%if(fieldLabel){%><label class="control-label" for="<%=inputId%>"<%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%=fieldLabel%></label><%}%><div style="<%=controlsStyle%>"><%=field%></div>',
+	return Base.extend({
+		tpl:'<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%=fieldLabel%></label><%}%><div style="<%=controlsStyle%>"><%=field%></div>',
 		className : "form-group",
 		labelWidth : 100,
 		labelAlign : 'left',
@@ -34,12 +34,15 @@ define(function(require) {
 			}
 			return controlsStyle;
 		},
-		html : function(data) {
-			$.extend(data, {
+		getTplData : function(data) {
+			data = $.extend({
+				field:'',
+				inputId : this.cid,
+				fieldLabel : this.fieldLabel,
 				labelStyle : this.getLabelStyle(),
 				controlsStyle : this.getControlsStyle()
-			});
-			Base.prototype.html.call(this, data)
+			},data);
+			return Base.prototype.getTplData.call(this, data)
 		},
 		unsetActiveError: function() {
 	        delete this.activeError;
@@ -84,5 +87,5 @@ define(function(require) {
 			});
 			Base.prototype.applyChildEls.call(this, childEls);
 		}
-	}));
+	});
 });

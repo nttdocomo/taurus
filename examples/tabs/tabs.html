@@ -57,29 +57,7 @@
 					option.
 				</p>
 			</div>
-			<div id="script">
-				<p>
-					Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed metus nibh, sodales a, porta at, vulputate
-					eget, dui. Pellentesque ut nisl. Maecenas tortor turpis, interdum non, sodales non, iaculis ac, lacus.
-					<br/>
-					<br/>
-					Vestibulum auctor, tortor quis iaculis malesuada, libero lectus bibendum purus, sit amet tincidunt quam turpis
-					vel lacus. In pellentesque nisl non sem. Suspendisse nunc sem, pretium eget, cursus a, fringilla vel, urna.
-				</p>
-			</div>
-			<div id="markup">
-				<p>
-					Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed metus nibh, sodales a, porta at, vulputate
-					eget, dui. Pellentesque ut nisl. Maecenas tortor turpis, interdum non, sodales non, iaculis ac, lacus.
-					Vestibulum auctor, tortor quis iaculis malesuada, libero lectus bibendum purus, sit amet tincidunt quam turpis
-					vel lacus. In pellentesque nisl non sem. Suspendisse nunc sem, pretium eget, cursus a, fringilla vel, urna.
-					<br/>
-					<br/>
-					Aliquam commodo ullamcorper erat. Nullam vel justo in neque porttitor laoreet. Aenean lacus dui, consequat eu,
-					adipiscing eget, nonummy non, nisi. Morbi nunc est, dignissim non, ornare sed, luctus eu, massa. Vivamus eget
-					quam. Vivamus tincidunt diam nec urna. Curabitur velit.
-				</p>
-			</div>
+			
 
 			<div class="footer">
 				<p>
@@ -93,6 +71,11 @@
 		<!-- Bootstrap core JavaScript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="../../src/sea.js" data-config="../config" data-main="../tabs/tabs"></script>
+		<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/labjs/2.0.3/LAB.min.js"></script>
+		<script type="text/javascript">
+			$LAB.script('../../src/sea-debug.js','../../src/jquery-2.0.0.js','http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js','http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.min.js').wait().script('http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone.js','../../src/jquery.ui.position.js','http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js').wait().script('../config.js').wait(function(){
+				seajs.use("../tabs/tabs");
+			});
+		</script>
 	</body>
 </html>

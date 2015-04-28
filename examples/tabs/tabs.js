@@ -11,31 +11,19 @@ define(function(require) {
             bodyPadding: 10
         },
         items: [{
-            contentEl:'script', 
-            title: 'Short Text',
-            closable: true
-        },{
-            contentEl:'markup', 
-            title: 'Long Text'
-        }],
-		renderTo : $body
-	});new Panel({
-		width: 450,
-        activeTab: 0,
-        defaults :{
-            bodyPadding: 10
-        },
-        items: [{
-            innerHtml: "My content was added during construction.", 
+            contentHtml: "My content was added during construction.", 
             title: 'Short Text'
         },{
+            contentHtml: "My content was added during construction.",
+            title: 'Long Text'
+        }/*,{
             title: 'Long Text',
             loader: {
                 url: 'ajax1.htm',
                 contentType: 'html',
                 loadMask: true
             }
-        }],
+        }*/],
 		renderTo : $body
 	});
 });

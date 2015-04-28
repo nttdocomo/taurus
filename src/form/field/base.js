@@ -11,8 +11,8 @@
  * 		})
  */
 define(function(require) {
-	require("../label");
-	return taurus.view("taurus.form.field.Base", taurus.form.Label.extend({
+	var Label = require("../label");
+	return Label.extend({
 		inputType : 'text',
 		readOnly:false,
 		editable:true,
@@ -45,7 +45,7 @@ define(function(require) {
 		},
 		render : function() {
 			this.initField();
-			var me = taurus.form.Label.prototype.render.apply(this, arguments);
+			var me = Label.prototype.render.apply(this, arguments);
 			return me;
 		},
 		initField:function(){
@@ -95,7 +95,7 @@ define(function(require) {
 				events[item + ' #'+me.inputId] = taurus.util.throttle(me.checkChange, me.checkChangeBuffer, me);
 			});
 			events = $.extend({}, this.events, events);
-			taurus.form.Label.prototype.delegateEvents.apply(this, [events]);
+			Label.prototype.delegateEvents.apply(this, [events]);
 		},
 		isFileUpload: function() {
 	        return this.inputType === 'file';
@@ -124,13 +124,12 @@ define(function(require) {
 		valueToRaw : function(value) {
 			return '' + value ? value : "";
 		},
-		html : function() {
-			var me = this, data = {
+		getTplData : function(data) {
+			data = $.extend({
 				inputId : this.cid,
-				fieldLabel : this.fieldLabel,
 				field : this.getSubTplMarkup()
-			};
-			taurus.form.Label.prototype.html.apply(this, [data]);
+			},data);
+			return Label.prototype.getTplData.call(this, data);
 		},
 
 	    /**
@@ -198,7 +197,7 @@ define(function(require) {
 			return style
 		},
 		getControlsStyle:function(){
-			var controlsStyle = taurus.form.Label.prototype.getControlsStyle.apply(this,arguments);
+			var controlsStyle = Label.prototype.getControlsStyle.apply(this,arguments);
 			if(this.width){
 				controlsStyle += 'width:'+this.width+'px;';
 			}
@@ -246,7 +245,7 @@ define(function(require) {
 			return [];
 		},
 		afterRender:function(){
-			taurus.form.Label.prototype.afterRender.apply(this,arguments);
+			Label.prototype.afterRender.apply(this,arguments);
 		},
 		validate : function() {
 			var me = this, isValid = me.isValid();
@@ -256,5 +255,5 @@ define(function(require) {
 			}
 			return isValid;
 		}
-	}));
+	});
 });
