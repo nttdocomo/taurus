@@ -156,12 +156,12 @@ define(function(require) {
 			renderTo = renderTo || this.renderTo || $(document.body);
 			/*run html brfore append el because the el must has html*/
 			$(renderTo)[this.operation](this.$el);
-			this.html();
+			this.renderHtml();
 			this.isRendered = true;
 			this.rendered = true;
 			return this;
 		},
-		html : function(data) {
+		renderHtml : function(data) {
 			this.inserHtml(data)
 			var el = document.createElement('div');
 			if (this.uiClass) {
@@ -177,19 +177,22 @@ define(function(require) {
 			return el.innerHTML;
 		},
 		inserHtml:function(data){
+			var html = '';
 			if(this.innerHtml){
 				this.el.innerHTML = this.innerHtml;
 			} else {
 				data = data || this.getTplData();
-				if(!data){
-					this.$el.html("");
-				} else {
-					this.$el.html(this.tpl ? _.template(this.tpl, (data || this)) : "");
+				if(data){
+					html = this.tpl ? _.template(this.tpl, (data || this)) : "";
 				}
 			}
+			if(this.html){
+				html = this.html + html;
+			}
+			this.$el.html(html)
 		},
 		$html : function(options) {
-			return $(this.html());
+			return $(this.renderHtml());
 		},
 		afterRender : function() {
 			this.applyChildEls();
@@ -401,13 +404,13 @@ define(function(require) {
 					me.floatingItems.add(item);
 					item.onAdded(me, pos);
 				} else {
-					//me.items.splice(pos, 0, item);
+					me.items.splice(pos, 0, item);
 					item.onAdded(me, pos);
 					me.onAdd(item, pos);
 					layout && layout.onAdd(item, pos);
 				}
 			}
-			me.items = items;
+			//me.items = items;
 			this.updateItems();
 			return ret;
 			/*var me = this, len = this.items.length;
@@ -467,6 +470,9 @@ define(function(require) {
 			}
 
 			return c;
+		},
+		up: function (selector, limit) {
+			return this.$el.parentsUntil(selector).parent().data('component');
 		}
 	},{
 		INVALID_ID_CHARS_Re: /[\.,\s]/g

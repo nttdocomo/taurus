@@ -35,7 +35,7 @@ define(function(require) {
 			}
 			return false;
 		},
-		html:function(){
+		renderHtml:function(){
 			var info = this.collection.info();
 			info.paginator_number='';
 			info.currentPage = info.currentPage || 0
@@ -76,7 +76,7 @@ define(function(require) {
 					});
 				}
 			})
-			return Base.prototype.html.apply(this,[info])
+			return Base.prototype.renderHtml.apply(this,[info])
 		}
 	}))
 })

@@ -20,7 +20,7 @@ define(function(require) {
 		initialize:function(){
 			this.$el.css('top',0);
 			Base.prototype.initialize.apply(this,arguments);
-			this.collection.on('reset',_.bind(this.refresh,this));
+			this.collection.on('sync',_.bind(this.refresh,this));
 		},
 		onItemSelect:function(record){
 			var node = this.getNode(record);
@@ -56,7 +56,7 @@ define(function(require) {
 			item.addClass(this.selectedItemCls);
 			this.trigger('highlightitem', this, item);
 		},
-		html:function(){
+		renderHtml:function(){
 			var itemCls = this.itemCls;
 			if (!this.tpl) {
 	            // should be setting aria-posinset based on entire set of data
@@ -65,7 +65,7 @@ define(function(require) {
 	            '<li role="option" class="' + itemCls + '">' + this.getInnerTpl(this.displayField) + '</li>',
 	            '<%})%>'].join('');
 	        }
-			return Base.prototype.html.call(this,{results:this.collection.toJSON()});
+			return Base.prototype.renderHtml.call(this,{results:this.collection.toJSON()});
 			/*
 			return taurus.views.Base.prototype.html.call(this,{
 				content:this.collection.map(function(model){
@@ -90,7 +90,7 @@ define(function(require) {
                     me.emptyEl = $('<li>').text(me.emptyText).appendTo(me.getTargetEl());
                 }
             } else {
-				me.html();
+				me.renderHtml();
             }
 			this.$el.css('height','auto');
 			me.trigger('refresh');

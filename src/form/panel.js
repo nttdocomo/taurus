@@ -54,9 +54,9 @@ define(function(require){
 			});
 			Panel.prototype.delegateEvents.call(this, events);
 		},
-		html:function(){
+		renderHtml:function(){
 			this.tpl += '<div class="panel-footer"><%=buttons%></div>';
-			return Panel.prototype.html.apply(this,arguments);
+			return Panel.prototype.renderHtml.apply(this,arguments);
 		},
 		getTplData:function(){
 			return $.extend(Panel.prototype.getTplData.apply(this,arguments),{

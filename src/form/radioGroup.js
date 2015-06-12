@@ -2,11 +2,13 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var CheckboxGroup = require('./checkboxGroup');
-	var Base = require('./field/base');
-	return taurus.view('taurus.form.RadioGroup', CheckboxGroup.extend({
+	var Base = require('./field/base'),
+	CheckboxGroup = require('./checkboxGroup'),
+	Radio = require('./field/radio');
+	return CheckboxGroup.extend({
 		blankText : 'You must select one item in this group',
-		fieldSubTpl : '<div><%_.each(fields,function(field){%><%if(vertical){%><div><%}%><%if(field.boxLabel){%><label id="<%=field.cmpId%>-boxLabelEl" class="radio-inline"><%}%><input class="form-radio" id="<%=field.id%>" type="<%=field.type%>" name="<%=field.name%>"<%if(field.checked){%> checked="checked"<%}%> value="<%=field.inputValue%>"/><%if(field.boxLabel){%><%=field.boxLabel%></label><%}%><%if(vertical){%></div><%}%><%})%></div>',
+		defaultType:Radio,
+		//fieldSubTpl : '<div><%_.each(fields,function(field){%><%if(vertical){%><div><%}%><%if(field.boxLabel){%><label id="<%=field.cmpId%>-boxLabelEl" class="radio-inline"><%}%><input class="form-radio" id="<%=field.id%>" type="<%=field.type%>" name="<%=field.name%>"<%if(field.checked){%> checked="checked"<%}%> value="<%=field.inputValue%>"/><%if(field.boxLabel){%><%=field.boxLabel%></label><%}%><%if(vertical){%></div><%}%><%})%></div>',
 		getBoxes : function(query) {
 			return this.$el.find(':radio' + (query || ''));
 		},
@@ -65,5 +67,5 @@ define(function(require) {
 			});
 			return values;
 		}
-	}));
+	});
 });

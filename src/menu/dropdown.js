@@ -14,13 +14,13 @@ define(function(require) {
 			this.$el.css('top',0);
 			Base.prototype.initialize.apply(this,arguments);
 		},
-		html:function(){
+		renderHtml:function(){
 			if (!this.tpl) {
 	            this.tpl = ['<%_.each(results,function(item){%>',
 	            '<li role="option"><a href="#"><%=item.text%></a></li>',
 	            '<%})%>'].join('');
 	        }
-			return Base.prototype.html.call(this,{results:this.menu});
+			return Base.prototype.renderHtml.call(this,{results:this.menu});
 		}
 	});
 });

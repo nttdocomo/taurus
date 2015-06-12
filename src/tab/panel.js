@@ -1,5 +1,9 @@
 define(function(require) {
-	var Base = require('../view/base'), Bar = require('./bar'), Tab = require('./tab'), Card = require('../view/card'), TabContent = require('../view/tabContent');
+	var Base = require('../view/base'),
+	Bar = require('./bar'),
+	Tab = require('./tab'),
+	Card = require('../view/card'),
+	TabContent = require('../view/tabContent');
 	return Base.extend({
 		tpl : '',
 		defaultType:Card,
@@ -13,6 +17,7 @@ define(function(require) {
 				renderTo : this.$el,
 				activeItem: activeTab
 			});
+			this.frameBody = this.layout.$el;
 			this.tabBar = new Bar({
 				operation : 'prepend',
 				renderTo : this.$el,
@@ -24,6 +29,9 @@ define(function(require) {
 			if (activeTab !== 'undefined') {
 				this.tabBar.setActiveTab(activeTab, true);
 			}
+		},
+		getTabBar:function(){
+			return this.tabBar;
 		},
 
 		/**

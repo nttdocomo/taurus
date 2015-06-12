@@ -26,7 +26,7 @@ define(function(require){
 				title:this.collapsible ? this.title + '<span class="tool-collapse-top"></span>' : this.title,
 				content:this.loading ? (new Spinner({
 					renderTo:this.$el
-				})).html() : this.content,
+				})).renderHtml() : this.content,
 				tool:this.refreshable ? '<a href="" class="pull-right halflings refresh" data-name="refresh" data-type="" data-prefix="halflings" data-utf="E031"></a>':''
 			};
 		},

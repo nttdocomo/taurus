@@ -2,13 +2,16 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Base = require('./field/base');
-	return taurus.view('taurus.form.CheckboxGroup', Base.extend({
+	var Base = require('./field/base'),
+	Checkbox = require('./field/checkbox');
+	return Base.extend({
 		events : {
 			'change input' : 'checkChange'
 		},
+		defaultType:Checkbox,
 		blankText : "You must select at least one item in this group",
-		fieldSubTpl : '<%_.each(fields,function(field){%><%if(vertical){%><div><%}%><%if(field.boxLabel){%><label id="<%=field.cmpId%>-boxLabelEl" class="checkbox-inline"><%}%><input id="<%=field.id%>" type="<%=field.type%>" /><%if(field.boxLabel){%><%=field.boxLabel%></label><%}%><%if(vertical){%></div><%}%><%})%>',
+		//fieldSubTpl : '<%_.each(fields,function(field){%><%if(vertical){%><div><%}%><%if(field.boxLabel){%><label id="<%=field.cmpId%>-boxLabelEl" class="checkbox-inline"><%}%><input id="<%=field.id%>" type="<%=field.type%>" /><%if(field.boxLabel){%><%=field.boxLabel%></label><%}%><%if(vertical){%></div><%}%><%})%>',
+		fieldSubTpl : '',
 		vertical : false,
 		getSubTplData : function() {
 			var me = this;
@@ -76,7 +79,30 @@ define(function(require) {
 				values[name] = box.val();
 			});
 			return values;
-		}, /**
+		},
+
+	    /**
+	     * When a checkbox is added to the group, monitor it for changes
+	     * @param {Object} field The field being added
+	     * @protected
+	     */
+	    onAdd: function(field) {
+	        var me = this,
+	            items,
+	            len, i;
+
+	        if (field.isCheckbox) {
+	            field.on('change', me.checkChange, me);
+	        } else if (field.isContainer) {
+	            items = field.items.items;
+	            for (i = 0, len = items.length; i < len; i++) {
+	                me.onAdd(items[i]);
+	            }
+	        }
+	        Base.prototype.onAdd.apply(this,arguments);
+	    },
+
+		/**
 		 * Sets the value(s) of all checkboxes in the group. The expected format is an Object of name-value pairs
 		 * corresponding to the names of the checkboxes in the group. Each pair can have either a single or multiple values:
 		 *
@@ -172,6 +198,9 @@ define(function(require) {
 			}
 
 			return isValid;
+		},
+		getTargetEl:function(){
+			return this.$el.find('> div');
 		}
-	}));
+	});
 });

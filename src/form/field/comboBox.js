@@ -177,11 +177,12 @@ define(function(require) {
 				success : function() {
 					//me.getPicker().collection.reset(collection.models);
 					me.expand();
-					me.doLocalQuery(queryString);
+					//me.doLocalQuery(queryString);
 					if (!me.multiSelect){
-						me.doLocalQuery(queryString);
+						//me.doLocalQuery(queryString);
 					}
-				}
+				},
+				reset:true
 			});
 			/*if (!collection.length) {
 				collection.fetch({
@@ -211,7 +212,7 @@ define(function(require) {
 		createPicker : function() {
 			var picker = this.picker = new BoundList($.extend({
 				displayField : this.displayField,
-				collection : this.collection.clone()
+				collection : this.collection
 			}, this.listConfig)), me = this;
 			picker.on({
 				'itemclick': this.onItemClick,

@@ -6,7 +6,7 @@ define(function(require){
 	return taurus.view('taurus.views.TableCell',Base.extend({
 		tpl:'<div class="grid-cell-inner"><%=text%></div>',
 		tagName:'td',
-		html:function(data){
+		renderHtml:function(data){
 			var me = this,text,column = me.column;
 			if(!column.dataIndex && !column.renderer){
 				text = '';
@@ -20,7 +20,7 @@ define(function(require){
 			} else {
 				text = data[column.dataIndex]
 			}
-			return Base.prototype.html.apply(this,[{'text':text}]);
+			return Base.prototype.renderHtml.apply(this,[{'text':text}]);
 		},
 		getItemContainer:function(){
 			return this.$el.find('.grid-cell-inner')

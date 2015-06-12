@@ -138,9 +138,9 @@ define(function(require){
 	    getVisibleColumnManager: function() {
 	        return this.columns;
 	    },
-		html:function(){
+		renderHtml:function(){
 			this.$el.find('.panel-body').empty();
-			var html = Panel.prototype.html.apply(this,arguments);
+			var html = Panel.prototype.renderHtml.apply(this,arguments);
 			return html;
 		}
 	});

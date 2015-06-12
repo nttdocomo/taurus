@@ -11,10 +11,10 @@ define(function(require) {
             bodyPadding: 10
         },
         items: [{
-            contentHtml: "My content was added during construction.", 
+            html: "My content was added during construction.", 
             title: 'Short Text'
         },{
-            contentHtml: "My content was added during construction.",
+            html: "Long My content was added during construction.",
             title: 'Long Text'
         }/*,{
             title: 'Long Text',

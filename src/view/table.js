@@ -226,7 +226,7 @@ define(function(require){
 	        }
 		},
 		reset:function(){
-			this.html();
+			this.renderHtml();
 		},
 		childEls:{
 			'gridBody':'.grid-body',

@@ -19,8 +19,8 @@ define(function(require){
 				text:this.status ? this.onText:this.offText,
 			}
 		},
-		html:function(){
-			var html = Button.prototype.html.apply(this,arguments);
+		renderHtml:function(){
+			var html = Button.prototype.renderHtml.apply(this,arguments);
 			this.$el.toggleClass('checkbox-button-' + (this.status ? 'on':'off'))
 			return html
 		},
@@ -30,7 +30,7 @@ define(function(require){
 			this.status = status = !status;
 			events = status ? 'on':'off';
 			this.trigger(events)
-			this.html()
+			this.renderHtml();
 		}
 	}))
 })

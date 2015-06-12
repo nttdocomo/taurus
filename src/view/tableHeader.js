@@ -6,7 +6,7 @@ define(function(require){
 	return taurus.view('taurus.views.TableHeader',Base.extend({
 		tagName:'thead',
 		tpl:'<tr><%=head%></tr>',
-		html:function(){
+		renderHtml:function(){
 			var html = [];
 			_.each(this.items,function(column){
 				html.push(_.template('<th><%=text%></th>',{
@@ -14,7 +14,7 @@ define(function(require){
 					text:column.text
 				}))
 			});
-			return Base.prototype.html.apply(this,[{head:html.join('')}])
+			return Base.prototype.renderHtml.apply(this,[{head:html.join('')}])
 		}
 	}))
 })

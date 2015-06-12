@@ -10,16 +10,16 @@ define(function(require){
 		initialize:function(){
 			Base.prototype.initialize.apply(this,arguments);
 			this.collection.on('sync',function(){
-				this.html();
+				this.renderHtml();
 			},this);
 			this.collection.on('reset',function(){
-				this.html();
+				this.renderHtml();
 			},this);
 			this.collection.on('sort',function(){
-				this.html();
+				this.renderHtml();
 			},this);
 			this.collection.on('remove',function(){
-				this.html();
+				this.renderHtml();
 			},this);
 			if(this.sortable){
 				taurus.$doc.on('mousedown',_.bind(this.onMouseDown,this));

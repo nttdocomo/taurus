@@ -7,7 +7,7 @@ define(function(require) {
 	return taurus.view("taurus.views.BoundListItem", Base.extend({
 		tpl:'<a href="#"><%=displayField%></a>',
 		tagName:'li',
-		html:function(){
+		renderHtml:function(){
 			var json = this.model.toJSON();
 			json.displayField = json[this.displayField];
 			delete json[this.displayField];

@@ -2,12 +2,12 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Base = require('./base')
-	return taurus.view('taurus.form.field.Checkbox', Base.extend({
-		fieldSubTpl : '<%if(boxLabel){%><label id="<%=cmpId%>-boxLabelEl"><%}%><input id="<%=id%>" type="<%=type%>"<%if(checked){%> checked="<%=checked%>"<%}%> /><%if(boxLabel){%><%=boxLabel%></label><%}%>',
+	var Base = require('./base'),
+	Svg = require('../../svg');
+	return Base.extend({
+		fieldSubTpl : '<div class="<%=type%>"><%if(boxLabel){%><label id="<%=cmpId%>-boxLabelEl" for="<%=id%>"><%}%><input id="<%=id%>" type="<%=type%>"<%if(checked){%> checked="<%=checked%>"<%}%> name="<%=name%>" value="<%=value%>"/><%if(boxLabel){%><%=boxLabel%></label><%}%></div>',
 		inputType : 'checkbox',
 		checked : false,
-		className : 'checkbox',
 		checkedCls : taurus.baseCSSPrefix + 'form-cb-checked',
 		onRe : /^on$/i,
 
@@ -17,9 +17,47 @@ define(function(require) {
 		 * value when submitting as part of a form.
 		 */
 		inputValue : 'on',
-		events : {
-			'change :checkbox' : 'onBoxClick'
+
+		initComponent: function() {
+	        var me = this,
+	            value = me.value;
+	            
+	        if (value !== undefined) {
+	            me.checked = me.isChecked(value, me.inputValue);
+	        }
+	        
+	        Base.prototype.initComponent.apply(this,arguments);
+	        me.getManager().add(me);
+	    },
+		
+		afterRender:function(){
+			Base.prototype.afterRender.apply(this,arguments);
+			this.draw = SVG(this.boxLabelEl.parent().get(0)).size(0, 0);
 		},
+		applyChildEls : function(childEls) {
+			var childEls = $.extend(this.childEls, childEls);
+			childEls['boxLabelEl'] = '#' + this.cid + '-boxLabelEl';
+			Base.prototype.applyChildEls.call(this,childEls);
+		},
+
+		delegateEvents:function(events){
+			var events = events || {};
+			events['change input:'+this.inputType] = 'onBoxClick';
+			Base.prototype.delegateEvents.call(this,events);
+		},
+
+	    getFormId: function(){
+	        var me = this,
+	            form;
+
+	        if (!me.formId) {
+	            form = me.up('form');
+	            if (form) {
+	                me.formId = form.id;
+	            }
+	        }
+	        return me.formId;
+	    },
 
 		/**
 		 * Returns the checked state of the checkbox.
@@ -66,7 +104,7 @@ define(function(require) {
 		 * @private Handle click on the checkbox button
 		 */
 		onBoxClick : function(e) {
-			var me = this;
+			var me = this,draw = this.draw;
 			if (!me.disabled && !me.readOnly) {
 				this.setValue(!this.checked);
 			}
@@ -131,5 +169,5 @@ define(function(require) {
 
 			return me;
 		}
-	}))
+	})
 })

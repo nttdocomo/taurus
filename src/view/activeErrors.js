@@ -7,9 +7,9 @@ define(function(require) {
 		tpl:'<%=errors%>',
 		tagName:'span',
 		className:'help-block',
-		html:function(errors){
+		renderHtml:function(errors){
 			var me = this;
-			return Base.prototype.html.apply(this,[{
+			return Base.prototype.renderHtml.apply(this,[{
 				errors:errors.join('')
 			}])
 		}

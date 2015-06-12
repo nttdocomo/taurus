@@ -76,10 +76,12 @@ define(function(require) {
         },{
 			cls:RadioGroup,
 			fieldLabel : '应用平台:',
-			fields:[{
+			items:[{
 				boxLabel:'iOS',
+				name:'type'
 			},{
-				boxLabel:'Android'
+				boxLabel:'Android',
+				name:'type'
 			}],
 			name : 'platform'
 		}],

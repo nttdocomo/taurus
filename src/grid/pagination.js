@@ -50,10 +50,10 @@ define(function(require) {
 			}
 			return false;
 		},
-		html:function(){
+		renderHtml:function(){
 			if(this.collection.length){
 				var info = this.collection.state;
-				return Base.prototype.html.call(this,$.extend({
+				return Base.prototype.renderHtml.call(this,$.extend({
 					fastBackward : '<a href="" class="halflings fast-backward" data-name="fast-backward" data-type="" data-prefix="halflings" data-utf="E070"></a>',
 					backward : '<a href="" class="halflings backward" data-name="backward" data-type="" data-prefix="halflings" data-utf="E071"></a>',
 					fastForward : '<a href="" class="halflings fast-forward" data-name="fast-forward" data-type="" data-prefix="halflings" data-utf="E076"></a>',

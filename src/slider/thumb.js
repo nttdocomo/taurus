@@ -87,7 +87,7 @@ define(function(require){
 	            cls : this.cls
 	        };
 	    },
-	    html:function(){
+	    renderHtml:function(){
 	    	var el = document.createElement('div');
 			el.appendChild(this.el.cloneNode(true))
 			return el.innerHTML

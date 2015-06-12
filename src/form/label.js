@@ -5,7 +5,7 @@ define(function(require) {
 	var Base = require("../view/base");
 	var ActiveErrors = require("../view/activeErrors");
 	return Base.extend({
-		tpl:'<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%=fieldLabel%></label><%}%><div style="<%=controlsStyle%>"><%=field%></div>',
+		tpl:'<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%=fieldLabel%></label><div style="<%=controlsStyle%>"><%}%><%=field%><%if(fieldLabel){%></div><%}%>',
 		className : "form-group",
 		labelWidth : 100,
 		labelAlign : 'left',
@@ -19,7 +19,9 @@ define(function(require) {
 			if (this.labelAlign === 'top') {
 				labelStyle = 'margin-bottom:' + labelPad + 'px;';
 			} else {
-				this.$el.addClass('form-group-horizontal');
+				if(this.fieldLabel){
+					this.$el.addClass('form-group-horizontal');
+				}
 				if (this.labelWidth) {
 					labelStyle = 'width:' + this.labelWidth + 'px;';
 				}
@@ -56,7 +58,7 @@ define(function(require) {
 	        errors = $.makeArray(errors);
 	        this.activeError = errors[0];
 	        this.activeErrors = errors;
-	        this.activeError = (new ActiveErrors).html(errors);
+	        this.activeError = (new ActiveErrors).renderHtml(errors);
 	        this.renderActiveError();
 	    },
 		renderActiveError:function(){
