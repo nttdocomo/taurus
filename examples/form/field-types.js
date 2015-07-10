@@ -4,6 +4,7 @@
 define(function(require) {
 	var Text = require("../../src/form/field/text"),
 	RadioGroup = require("../../src/form/radioGroup"),
+	CheckboxGroup = require("../../src/form/checkboxGroup"),
 	FieldSet = require("../../src/form/fieldSet"),
 	$body = $("#main"),
 	Number = require("../../src/form/field/number"),
@@ -136,6 +137,17 @@ define(function(require) {
 				name : 'fax',
 				id:'textfield4',
 				collection:collection
+			},{
+				cls:CheckboxGroup,
+				fieldLabel : '应用平台:',
+				items:[{
+					boxLabel:'iOS',
+					name:'type'
+				},{
+					boxLabel:'Android',
+					name:'type'
+				}],
+				name : 'platform'
 			}]
 		}],
 		buttons: [{

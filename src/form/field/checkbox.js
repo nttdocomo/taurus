@@ -3,6 +3,7 @@
  */
 define(function(require) {
 	var Base = require('./base'),
+	CheckboxManager = require('../checkboxManager'),
 	Svg = require('../../svg');
 	return Base.extend({
 		fieldSubTpl : '<div class="<%=type%>"><%if(boxLabel){%><label id="<%=cmpId%>-boxLabelEl" for="<%=id%>"><%}%><input id="<%=id%>" type="<%=type%>"<%if(checked){%> checked="<%=checked%>"<%}%> name="<%=name%>" value="<%=value%>"/><%if(boxLabel){%><%=boxLabel%></label><%}%></div>',
@@ -32,7 +33,19 @@ define(function(require) {
 		
 		afterRender:function(){
 			Base.prototype.afterRender.apply(this,arguments);
-			this.draw = SVG(this.boxLabelEl.parent().get(0)).size(0, 0);
+			this.initShadowInputEl();
+		},
+		initShadowInputEl:function(){
+			var checked = this.checked;
+			this.checkbox = SVG(this.boxLabelEl.parent().get(0)).size(0, 0);
+			this.shadowInputEl = SVG(this.boxLabelEl.parent().get(0)).size(0, 0);
+			this.checkbox.viewbox(0, 0, 15, 15)
+			this.shadowInputEl.viewbox(0, 0, 15, 15)
+			this.checkbox.path('M13.33,1.67v11.67H1.67V1.67H13.33 M13.33,0H1.67C0.75,0,0,0.75,0,1.67v11.67c0,0.92,0.75,1.67,1.67,1.67h11.67c0.92,0,1.67-0.75,1.67-1.67V1.67C15,0.75,14.25,0,13.33,0z')
+			this.shadowInputEl.path('M5.83,11.67l-4.167-4.167l1.167-1.167 l3,3l6.33-6.33L13.33,4.167L5.83,11.667z')
+			this.shadowInputEl.style({
+				opacity:checked ? 1:0
+			})
 		},
 		applyChildEls : function(childEls) {
 			var childEls = $.extend(this.childEls, childEls);
@@ -57,6 +70,11 @@ define(function(require) {
 	            }
 	        }
 	        return me.formId;
+	    },
+
+	    // inherit docs
+	    getManager: function() {
+	        return CheckboxManager;
 	    },
 
 		/**
@@ -133,10 +151,13 @@ define(function(require) {
 		 */
 		setRawValue : function(value) {
 			var me = this, inputEl = me.inputEl, checked = me.isChecked(value, me.inputValue);
-			/*if (inputEl) {
-				this.inputEl.prop('checked', checked);
+			if (this.shadowInputEl) {
+				//this.inputEl.prop('checked', checked);
 				//me.inputEl[checked ? 'addClass' : 'removeClass'](me.checkedCls);
-			}*/
+				me.shadowInputEl.style({
+					opacity:checked ? 1:0
+				})
+			}
 
 			me.checked = me.rawValue = checked;
 			return checked;

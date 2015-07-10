@@ -145,21 +145,30 @@ input.trigger-noedit, input.trigger-noedit:focus {
 	min-width: 0;
 }
 
-.radio input{
-	display: none;
+.radio input,.checkbox input{
+	visibility: hidden;
 }
-.radio > svg path,.checkbox > svg path {
+/*.radio > svg path,.checkbox > svg path {
 	stroke-width: 8px;
 	stroke: #000000;
 	stroke-width: 13px;
 	stroke-linecap: round;
 	stroke-linejoin: round;
 	fill: none;
-}
+}*/
 .radio > svg,.checkbox > svg {
-	height: 15px;
-	width: 15px;
+	/*height: 15px;
+	width: 15px;*/
 	position: absolute;
 	top: 10px;
 	left: 0px;
+	height: 15px;
+	width: 15px;
+	-webkit-user-select: none;
+	fill: #ccc;
+	opacity: 1;
+}
+.radio label, .checkbox label{
+	position: relative;
+	z-index: 10;
 }
