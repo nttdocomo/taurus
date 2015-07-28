@@ -79,6 +79,7 @@ define(function(require) {
 			fieldLabel : '应用平台:',
 			items:[{
 				boxLabel:'iOS',
+				checked:true,
 				name:'type'
 			},{
 				boxLabel:'Android',
@@ -90,13 +91,13 @@ define(function(require) {
             text: 'Save',
             className:'btn-primary',
             handler: function() {
-                this.up('form').getForm().isValid();
+                this.form.getForm().isValid();
             }
         },{
             text: 'Cancel',
             className:'btn-default',
             handler: function() {
-                this.up('form').getForm().reset();
+                this.getForm().reset();
             }
         }]
 	});
@@ -160,7 +161,7 @@ define(function(require) {
             text: 'Cancel',
             className:'btn-default',
             handler: function() {
-                this.up('form').getForm().reset();
+                this.getForm().reset();
             }
         }]
 	});

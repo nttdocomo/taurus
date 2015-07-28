@@ -3,6 +3,7 @@
  */
 define(function(require) {
 	var Base = require('./base'),
+	_ = require('underscore'),
 	CheckboxManager = require('../checkboxManager'),
 	Svg = require('../../svg');
 	return Base.extend({
@@ -18,6 +19,9 @@ define(function(require) {
 		 * value when submitting as part of a form.
 		 */
 		inputValue : 'on',
+		childEls: {
+			'inputEl' : ':checkbox'
+		},
 
 		initComponent: function() {
 	        var me = this,
@@ -183,9 +187,11 @@ define(function(require) {
 				for ( i = 0; i < len; ++i) {
 					box = boxes[i];
 					box.setValue(Ext.Array.contains(checked, box.inputValue));
+					this.inputEl.attr('checked',Ext.Array.contains(checked, box.inputValue))
 				}
 			} else {
 				Base.prototype.setValue.apply(this, arguments);
+				this.inputEl.attr('checked',checked)
 			}
 
 			return me;

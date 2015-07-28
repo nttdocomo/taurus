@@ -2,9 +2,10 @@
  * @author nttdocomo
  */
 define(function(require){
-	var Base = require('./base');
-	var Thead = require('./tableHeader');
-	var TableBody = require('./tableBody');
+	var Base = require('./base'),
+	Thead = require('./tableHeader'),
+	TableBody = require('./tableBody'),
+	_ = require('underscore');
 	return Base.extend({
 		header:true,
 		tpl:'<div class="grid-item-container"><table><%=rows%></table></div>',

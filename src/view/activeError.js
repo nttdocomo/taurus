@@ -3,7 +3,7 @@
  */
 define(function(require) {
 	var Base = require("./base");
-	return taurus.view("taurus.views.ActiveError", Base.extend({
+	return Base.extend({
 		tpl:'<span class="help-inline"><%=error%></span>',
-	}));
+	});
 });

@@ -268,6 +268,12 @@ define(function(require) {
 			if(!this.pickerType){
 				this.showMode()
 			}
+		},
+		showMode : function(dir) {
+			if (dir) {
+				this.viewMode = Math.max(0, Math.min(2, this.viewMode + dir));
+			}
+			this.$el.find('.datepicker > div').hide().filter('.datepicker-' + this.modes[this.viewMode].clsName).show();
 		}
 	});
 });

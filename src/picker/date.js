@@ -2,7 +2,8 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Base = require('../view/base');
+	var Base = require('../view/base'),
+	_ = require('underscore');
 	require("../lang/date");
 	require("moment");
 	return Base.extend({
@@ -206,7 +207,7 @@ define(function(require) {
 			if (dir) {
 				this.viewMode = Math.max(0, Math.min(2, this.viewMode + dir));
 			}
-			this.$el.find('.datepicker > div').hide().filter('.datepicker-' + this.modes[this.viewMode].clsName).show();
+			this.$el.find(' > div').hide().filter('.datepicker-' + this.modes[this.viewMode].clsName).show();
 		}
 	});
 });

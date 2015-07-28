@@ -2,10 +2,11 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Panel = require("../../src/panel/panel.js");
-	var Table = require("../../src/panel/table.js");
-	var $body = $("#main");
-	var Collection = Backbone.PageableCollection.extend({
+	var PageableCollection = require("backbone-pageable"),
+	Panel = require("../../src/panel/panel.js"),
+	Table = require("../../src/panel/table.js"),
+	$body = $("#main"),
+	Collection =PageableCollection.extend({
 		//url: "json/pageable-territories.json",
 		mode: "client",
 		state: {

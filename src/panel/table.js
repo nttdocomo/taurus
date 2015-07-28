@@ -2,11 +2,12 @@
  * @author nttdocomo
  */
 define(function(require){
-	var Panel = require('./panel');
-	var Table = require('../view/table');
-	var Header = require('../grid/header/container');
-	var Pagination = require('../grid/pagination');
-	var Spinner = require('../spinner/wave');
+	var Panel = require('./panel'),
+	Table = require('../view/table'),
+	Header = require('../grid/header/container'),
+	Pagination = require('../grid/pagination'),
+	Spinner = require('../spinner/wave'),
+	_ = require('underscore');
 	return Panel.extend({
 		pager:false,
 		className:'panel panel-default grid',

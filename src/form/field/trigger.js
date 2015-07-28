@@ -2,7 +2,8 @@
  * @author nttdocomo
  */
 define(function(require){
-	var Text = require("./text");
+	var Text = require("./text"),
+	_ = require('underscore');
 	return taurus.view("taurus.form.field.Trigger", Text.extend({
 		editable:true,
 		/**

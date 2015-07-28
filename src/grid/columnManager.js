@@ -1,5 +1,6 @@
 define(function(require){
-	var Class = require('../class');
+	var Class = require('../class'),
+	_ = require('underscore');
 	return Class.extend({
 
 	    init: function(visibleOnly, headerCt, secondHeaderCt) {

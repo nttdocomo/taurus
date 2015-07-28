@@ -1,5 +1,6 @@
 define(function(require){
 	var Class = require('../class'),
+	_ = require('underscore'),
 	array = [],
 	slice = array.slice,
 	Collection = Class.extend({

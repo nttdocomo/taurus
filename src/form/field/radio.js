@@ -3,10 +3,14 @@
  */
 define(function(require) {
 	var Base = require('./checkbox'),
+	_ = require('underscore'),
 	RadioManager = require('../radioManager');
 	return Base.extend({
 		inputType : 'radio',
 		formId: null,
+		childEls: {
+			'inputEl' : ':radio'
+		},
 		initShadowInputEl:function(){
 			var checked = this.checked;
 			this.checkbox = SVG(this.boxLabelEl.parent().get(0)).size(0, 0);
@@ -75,6 +79,9 @@ define(function(require) {
 
 	        if (_.isBoolean(value)) {
 	            Base.prototype.setValue.call(this,value);
+	            if(this.inputEl){
+	            	this.inputEl.attr('checked',value);
+	            }
 	        } else {
 	            active = me.getManager().getWithValue(me.name, value, me.getFormId()).getAt(0);
 	            if (active) {

@@ -11,7 +11,9 @@
  * 		})
  */
 define(function(require) {
-	var Label = require("../label");
+	var Label = require("../label"),
+	_ = require('underscore'),
+	Field = require("./field");
 	return Label.extend({
 		inputType : 'text',
 		readOnly:false,
@@ -44,8 +46,8 @@ define(function(require) {
 			return this.name;
 		},
 		render : function() {
-			this.initField();
 			var me = Label.prototype.render.apply(this, arguments);
+			this.initField();
 			return me;
 		},
 		initField:function(){
@@ -103,6 +105,24 @@ define(function(require) {
 	    onFocusLeave:function(){
 	    	//this.completeEdit();
 	    },
+	    /**
+	     * Resets the current field value to the originally loaded value and clears any validation messages. See {@link
+	     * Ext.form.Basic}.{@link Ext.form.Basic#trackResetOnLoad trackResetOnLoad}
+	     */
+	    reset: function(){
+	        var me = this;
+
+	        me.beforeReset();
+	        me.setValue(me.originalValue);
+	        me.clearInvalid();
+	        // delete here so we reset back to the original state
+	        delete me.wasValid;
+	    },
+	    /**
+	     * Template method before a field is reset.
+	     * @protected
+	     */
+	    beforeReset: taurus.emptyFn,
 		setValue : function(value) {
 			this.setRawValue(this.valueToRaw(value));
 			this.value = value;
@@ -255,5 +275,5 @@ define(function(require) {
 			}
 			return isValid;
 		}
-	});
+	}).mixins(Field);
 });

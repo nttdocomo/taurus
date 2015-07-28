@@ -2,7 +2,8 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Base = require('../view/base');
+	var Base = require('../view/base'),
+	_ = require('underscore');
 	return taurus.view("taurus.form.Base", Base.extend({
 		tagName : 'form',
 		getValues : function() {
@@ -37,7 +38,20 @@ define(function(require) {
 			return values;
 		},
 		getFields:function(){
-			return this.owner.items;
+			var fields = [];
+			function filterField(items){
+				_.each(items,function(item){
+					if(item.isFormField){
+						fields.push(item)
+					} else {
+						if(item.items && item.items.length){
+							filterField(item.items)
+						}
+					}
+				})
+			}
+			filterField(this.items);
+			return fields;
 		},/*
 		getItemContainer:function(){
 			return this.$el.find('.modal-body');
@@ -55,6 +69,32 @@ define(function(require) {
 	            return !field.validate();
 	        });
 	        return invalid.length < 1;
+	    },
+	    /**
+	     * Resets all fields in this form. By default, any record bound by {@link #loadRecord}
+	     * will be retained.
+	     * @param {Boolean} [resetRecord=false] True to unbind any record set
+	     * by {@link #loadRecord}
+	     * @return {Ext.form.Basic} this
+	     */
+	    reset: function(resetRecord) {
+	        //Ext.suspendLayouts();
+
+	        var me     = this,
+	            fields = me.getFields(),
+	            f,
+	            fLen   = fields.length;
+
+	        for (f = 0; f < fLen; f++) {
+	            fields[f].reset();
+	        }
+
+	        /*Ext.resumeLayouts(true);
+	        
+	        if (resetRecord === true) {
+	            delete me._record;
+	        }*/
+	        return me;
 	    },
 		submit : function(options) {
 			if (this.model) {

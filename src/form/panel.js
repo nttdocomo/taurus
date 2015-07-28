@@ -2,7 +2,9 @@
  * @author nttdocomo
  */
 define(function(require){
-	var Panel = require('../panel/panel'), BaseForm = require('./base');
+	var Panel = require('../panel/panel'),
+	_ = require('underscore'),
+	BaseForm = require('./base');
 	return taurus.view("taurus.form.Panel", Panel.extend({
 		disabled:false,
 		childEls:{
