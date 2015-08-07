@@ -2,7 +2,8 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Class = require('../class');
+	var Class = require('../class'),
+	_ = require('underscore');
 	return new (Class.extend({
 		menus: {},
 		init: function() {

@@ -3,7 +3,8 @@
  */
 define(function(require) {
 	var Base = require('../view/base'),
-	Manager = require('./manager');
+	Manager = require('./manager'),
+	_ = require('underscore');
 	return Base.extend({
 		isMenuItem: true,
 		canActivate:true,

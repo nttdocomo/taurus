@@ -13,6 +13,7 @@
 define(function(require) {
 	require("../../lang/event");
 	require("../../jquery.scrollIntoView");
+	var _ = require("underscore");
 	var Picker = require("./picker"), BoundList = require("../../view/boundList");
 	return Picker.extend({
 		allQuery: '',
@@ -161,9 +162,9 @@ define(function(require) {
 						}
 					})
 				} else {
-					if (!this.multiSelect){
+					//if (!this.multiSelect){
 						this.doLocalQuery(queryString);
-					}
+					//}
 				}
 			} else {
 				this.doRemoteQuery(queryString);

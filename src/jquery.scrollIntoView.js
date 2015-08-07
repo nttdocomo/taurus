@@ -11,7 +11,16 @@
  * @author Arwid Bancewicz http://arwid.ca
  * @version 0.2
  */
- (function($) {
+ (function(factory) {
+    if (typeof define === 'function' && define.cmd) {
+        define(function(require, exports, module){
+          var $ = require('jquery');
+          factory($);
+        })
+
+      // Finally, as a browser global.
+    }
+}(function($) {
     $.fn.scrollIntoView = function(duration, easing, complete) {
         // The arguments are optional.
         // The first argment can be false for no animation or a duration.
@@ -134,4 +143,4 @@
         return $([]);
     }
 
-})(jQuery);
+}));

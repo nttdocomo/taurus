@@ -7,6 +7,7 @@ define(function(require){
 	Header = require('../grid/header/container'),
 	Pagination = require('../grid/pagination'),
 	Spinner = require('../spinner/wave'),
+	PageableCollection = require("backbone-pageable");
 	_ = require('underscore');
 	return Panel.extend({
 		pager:false,
@@ -76,7 +77,7 @@ define(function(require){
 			Panel.prototype.initComponent.apply(this,[options]);
 
 
-			if(this.collection instanceof Backbone.PageableCollection){
+			if(this.collection instanceof PageableCollection){
 				this.$el.addClass('has-pager');
 				this.paging = new Pagination({
 					uiClass:'panel-footer',

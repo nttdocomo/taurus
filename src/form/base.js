@@ -8,7 +8,7 @@ define(function(require) {
 		tagName : 'form',
 		getValues : function() {
 			var values  = {},isArray = _.isArray;
-			_.each(this.owner.items, function(item) {
+			_.each(this.items, function(item) {
 				//obj[item.getName()] = item.getSubmitData();
 				var data = item.getSubmitData();
 				if (_.isObject(data)) {

@@ -16,8 +16,6 @@
 	    })
 
 	  // Finally, as a browser global.
-	} else {
-	    root.Backbone = factory(root, {}, root._, (root.jQuery || root.Zepto || root.ender || root.$));
 	}
 }(function( $, undefined ) {
 
