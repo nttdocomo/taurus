@@ -3,6 +3,7 @@
  */
 define(function(require) {
 	var Base = require('./field/base'),
+	_ = require('underscore'),
 	Checkbox = require('./field/checkbox');
 	return Base.extend({
 		events : {
@@ -35,7 +36,14 @@ define(function(require) {
 		 * @param {String} [query] An additional query to add to the selector.
 		 */
 		getBoxes : function(query) {
-			return this.$el.find(':checkbox' + (query || ''));
+			var me = this,boxes = this.items;/*$el.find(':radio' + (query || ''))*/;
+			if(query){
+				return _.filter(boxes,function(item,i){
+					return item.inputEl.is(query)
+				})
+			}
+			return boxes;
+			//return this.$el.find(':checkbox' + (query || '')).data('component');
 		},
 
 		/**
@@ -73,8 +81,8 @@ define(function(require) {
 		 */
 		getValue : function() {
 			var values = {}, boxes = this.getBoxes(':checked'), b, bLen = boxes.length, box, name, inputValue, bucket;
-			boxes.each(function(i) {
-				box = $(this);
+			_.each(boxes,function(box,i) {
+				box = box.inputEl;
 				name = box.attr('name');
 				values[name] = box.val();
 			});
@@ -100,6 +108,41 @@ define(function(require) {
 	            }
 	        }
 	        Base.prototype.onAdd.apply(this,arguments);
+	    },
+	    /**
+	     * Resets the checked state of all {@link Ext.form.field.Checkbox checkboxes} in the group to their originally
+	     * loaded values and clears any validation messages.
+	     * See {@link Ext.form.Basic}.{@link Ext.form.Basic#trackResetOnLoad trackResetOnLoad}
+	     */
+	    reset: function() {
+	        var me = this/*,
+	            hadError = me.hasActiveError(),
+	            preventMark = me.preventMark*/;
+	        //me.preventMark = true;
+	        /*me.batchChanges(function() {
+	            var boxes = me.getBoxes(),
+	                b,
+	                bLen  = boxes.length;
+
+	            for (b = 0; b < bLen; b++) {
+	                boxes[b].reset();
+	            }
+	        });*/
+	        //me.preventMark = preventMark;
+	        var boxes = me.getBoxes(),
+                b,
+                bLen  = boxes.length;
+
+            for (b = 0; b < bLen; b++) {
+            	boxes[b].reset();
+            	console.log(boxes[b].inputEl)
+            	console.log(boxes[b].inputEl.is(':checked'))
+	        }
+               
+	        me.unsetActiveError();
+	        /*if (hadError) {
+	            me.updateLayout();
+	        }*/
 	    },
 
 		/**

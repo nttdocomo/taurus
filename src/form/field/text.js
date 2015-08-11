@@ -11,8 +11,9 @@
  * 		})
  */
 define(function(require) {
-	var Base = require("./base");
-	return taurus.view("taurus.form.field.Text", Base.extend({
+	var Base = require("./base"),
+	_ = require('underscore');
+	return Base.extend({
 		allowBlank : true,
 		blankText : 'This field is required',
 		minLengthText : 'The minimum length for this field is <%=len%>',
@@ -102,5 +103,5 @@ define(function(require) {
 	        }
 			Base.prototype.delegateEvents.call(this, events);
 		}
-	}));
+	});
 });

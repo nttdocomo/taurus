@@ -8,7 +8,16 @@
  *
  * http://api.jqueryui.com/position/
  */
-(function( $, undefined ) {
+(function(factory) {
+	if (typeof define === 'function' && define.cmd) {
+	    define(function(require, exports, module){
+	      var $ = require('jquery');
+	      factory($);
+	    })
+
+	  // Finally, as a browser global.
+	}
+}(function( $, undefined ) {
 
 $.ui = $.ui || {};
 
@@ -494,4 +503,4 @@ $.ui.position = {
 	testElementParent.removeChild( testElement );
 })();
 
-}( jQuery ) );
+}) );

@@ -4,7 +4,8 @@
 define(function(require) {
 	var Base = require('../view/base'),
 	MenuItem = require('./item'),
-	Manager = require('./manager');
+	Manager = require('./manager'),
+	_ = require('underscore');
 	return taurus.augmentString('taurus.menu.Menu',Base.extend({
 		isMenu: true,
 		tagName:'ul',

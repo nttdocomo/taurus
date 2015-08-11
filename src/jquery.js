@@ -9550,6 +9550,8 @@ window.jQuery = window.$ = jQuery;
 // noConflict to hide this version of jQuery, it will work.
 if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 	define( "jquery", [], function () { return jQuery; } );
+} else if ( typeof define === "function" && define.cmd ) {
+	define(function () { return jQuery; } );
 }
 
 })( window );

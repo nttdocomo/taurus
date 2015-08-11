@@ -2,10 +2,10 @@
  * @author nttdocomo
  */
 define(function(require) {
-	require("./trigger");
+	var Trigger = require("./trigger");
 	require("../../lang/number");
 	require("../../lang/string");
-	return taurus.view("taurus.form.field.Number", taurus.form.field.Trigger.extend({
+	return Trigger.extend({
 		baseChars : '0123456789',
 		allowDecimals : true,
 		decimalSeparator : '.',
@@ -16,7 +16,7 @@ define(function(require) {
 		step: 1,
 		triggerTpl : '<div class="input-group-btn"><button class="btn btn-default spinner"><span class="caret"></span><span class="caret"></span></button></div>',
 		initialize : function() {
-			taurus.form.field.Trigger.prototype.initialize.apply(this, arguments);
+			Trigger.prototype.initialize.apply(this, arguments);
 			if (this.disableKeyFilter !== true) {
 				allowed = this.baseChars + '';
 				if (this.allowDecimals) {
@@ -36,7 +36,7 @@ define(function(require) {
 			var events = $.extend(events || {}, this.events, {
 				'click .spinner' : 'onTriggerClick'
 			});
-			taurus.form.field.Text.prototype.delegateEvents.call(this, events);
+			Trigger.prototype.delegateEvents.call(this, events);
 		},
 		/**
 		 * @private
@@ -73,5 +73,5 @@ define(function(require) {
 		spinDown : function() {
 			this.setValue(taurus.Number.constrain(this.getValue() - this.step, this.minValue, this.maxValue));
 		}
-	}));
+	});
 });

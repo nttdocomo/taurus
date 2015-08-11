@@ -2,11 +2,13 @@
  * @author nttdocomo
  */
 define(function(require){
-	var Panel = require('./panel');
-	var Table = require('../view/table');
-	var Header = require('../grid/header/container');
-	var Pagination = require('../grid/pagination');
-	var Spinner = require('../spinner/wave');
+	var Panel = require('./panel'),
+	Table = require('../view/table'),
+	Header = require('../grid/header/container'),
+	Pagination = require('../grid/pagination'),
+	Spinner = require('../spinner/wave'),
+	PageableCollection = require("backbone-pageable");
+	_ = require('underscore');
 	return Panel.extend({
 		pager:false,
 		className:'panel panel-default grid',
@@ -75,7 +77,7 @@ define(function(require){
 			Panel.prototype.initComponent.apply(this,[options]);
 
 
-			if(this.collection instanceof Backbone.PageableCollection){
+			if(this.collection instanceof PageableCollection){
 				this.$el.addClass('has-pager');
 				this.paging = new Pagination({
 					uiClass:'panel-footer',

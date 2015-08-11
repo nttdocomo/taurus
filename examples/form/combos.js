@@ -3,6 +3,7 @@
  */
 define(function(require) {
 	require("backbone");
+	var chance = require('chance');
 	var ComboBox = require("../../src/form/field/comboBox.js"), $body = $("#main"), data_with_src=[],states = [{
 		"abbr" : "AL",
 		"name" : "Alabama",
@@ -231,6 +232,7 @@ define(function(require) {
 		renderTo : $body,
 		name : 'textfield2',
 		id : 'textfield2',
+		queryMode : 'local',
 		displayField : 'name',
 		fieldLabel : 'image',
 		multiSelect : true,
@@ -250,6 +252,7 @@ define(function(require) {
 		renderTo : $body,
 		name : 'textfield2',
 		id : 'textfield2',
+		queryMode : 'local',
 		displayField : 'name',
 		fieldLabel : 'city',
 		multiSelect : true,
@@ -262,6 +265,7 @@ define(function(require) {
 		renderTo : $body,
 		name : 'textfield3',
 		id : 'textfield3',
+		queryMode : 'local',
 		width : 250,
 		displayField : 'name',
 		valueField : 'abbr',
@@ -273,6 +277,7 @@ define(function(require) {
 		editable : false,
 		name : 'textfield4',
 		id : 'textfield4',
+		queryMode : 'local',
 		width : 250,
 		multiSelect : true,
 		displayField : 'name',

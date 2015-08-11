@@ -3,7 +3,8 @@
  */
 define(function(require) {
 	var Menu = require('./menu'),
-	Base = require('../view/base');
+	Base = require('../view/base'),
+	_ = require('underscore');
 	return Menu.extend({
 		isNav:true,
 		className:'nav navbar-nav',

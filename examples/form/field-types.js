@@ -4,6 +4,7 @@
 define(function(require) {
 	var Text = require("../../src/form/field/text"),
 	RadioGroup = require("../../src/form/radioGroup"),
+	CheckboxGroup = require("../../src/form/checkboxGroup"),
 	FieldSet = require("../../src/form/fieldSet"),
 	$body = $("#main"),
 	Number = require("../../src/form/field/number"),
@@ -78,6 +79,7 @@ define(function(require) {
 			fieldLabel : '应用平台:',
 			items:[{
 				boxLabel:'iOS',
+				checked:true,
 				name:'type'
 			},{
 				boxLabel:'Android',
@@ -89,13 +91,13 @@ define(function(require) {
             text: 'Save',
             className:'btn-primary',
             handler: function() {
-                this.up('form').getForm().isValid();
+                this.form.getForm().isValid();
             }
         },{
             text: 'Cancel',
             className:'btn-default',
             handler: function() {
-                this.up('form').getForm().reset();
+                this.getForm().reset();
             }
         }]
 	});
@@ -136,6 +138,17 @@ define(function(require) {
 				name : 'fax',
 				id:'textfield4',
 				collection:collection
+			},{
+				cls:CheckboxGroup,
+				fieldLabel : '应用平台:',
+				items:[{
+					boxLabel:'iOS',
+					name:'type'
+				},{
+					boxLabel:'Android',
+					name:'type'
+				}],
+				name : 'platform'
 			}]
 		}],
 		buttons: [{
@@ -148,7 +161,7 @@ define(function(require) {
             text: 'Cancel',
             className:'btn-default',
             handler: function() {
-                this.up('form').getForm().reset();
+                this.getForm().reset();
             }
         }]
 	});

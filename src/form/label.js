@@ -58,7 +58,7 @@ define(function(require) {
 	        errors = $.makeArray(errors);
 	        this.activeError = errors[0];
 	        this.activeErrors = errors;
-	        this.activeError = (new ActiveErrors).renderHtml(errors);
+	        this.activeError = (new ActiveErrors({})).renderHtml(errors);
 	        this.renderActiveError();
 	    },
 		renderActiveError:function(){

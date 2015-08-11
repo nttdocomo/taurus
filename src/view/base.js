@@ -4,7 +4,10 @@
 define(function(require) {
 	require('../taurus');
 	require('../lang/number');
-	return taurus.view("taurus.views.Base", Backbone.View.extend({
+	require('../mixins');
+	require('jquery.ui.position');
+	var _ = require('underscore');
+	return Backbone.View.extend({
 		isRendered : false,
 		doc : taurus.$doc,
 		_ensureElement : function() {
@@ -21,6 +24,11 @@ define(function(require) {
 			} else {
 				this.setElement(_.result(this, 'el'), false);
 			}
+		},
+		setElement: function(element) {
+      		this.undelegateEvents();
+			this._setElement(element);
+			return this;
 		},
 
 	    /**
@@ -78,6 +86,7 @@ define(function(require) {
 			if (this.cls) {
 	            this.$el.addClass(this.cls);
 	        }
+	        this.delegateEvents();
 		},
 
         /**
@@ -476,5 +485,5 @@ define(function(require) {
 		}
 	},{
 		INVALID_ID_CHARS_Re: /[\.,\s]/g
-	}));
+	});
 });

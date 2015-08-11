@@ -1397,4 +1397,7 @@
             return moment;
         });
     }
+    if ( typeof define === "function" && define.cmd ) {
+        define(function () { return moment; } );
+    }
 }).call(this);

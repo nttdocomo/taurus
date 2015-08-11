@@ -65,6 +65,8 @@
       exports = module.exports = _;
     }
     exports._ = _;
+  } else if ( typeof define === "function" && define.cmd ) {
+    define(function () { return _; } );
   } else {
     root._ = _;
   }

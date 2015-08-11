@@ -3,6 +3,8 @@
  */
 define(function(require) {
 	var Base = require('./base'),
+	_ = require('underscore'),
+	CheckboxManager = require('../checkboxManager'),
 	Svg = require('../../svg');
 	return Base.extend({
 		fieldSubTpl : '<div class="<%=type%>"><%if(boxLabel){%><label id="<%=cmpId%>-boxLabelEl" for="<%=id%>"><%}%><input id="<%=id%>" type="<%=type%>"<%if(checked){%> checked="<%=checked%>"<%}%> name="<%=name%>" value="<%=value%>"/><%if(boxLabel){%><%=boxLabel%></label><%}%></div>',
@@ -17,6 +19,9 @@ define(function(require) {
 		 * value when submitting as part of a form.
 		 */
 		inputValue : 'on',
+		childEls: {
+			'inputEl' : ':checkbox'
+		},
 
 		initComponent: function() {
 	        var me = this,
@@ -32,24 +37,19 @@ define(function(require) {
 		
 		afterRender:function(){
 			Base.prototype.afterRender.apply(this,arguments);
-			this.drawInput();
+			this.initShadowInputEl();
 		},
-		drawInput:function(){
-			var draw = this.draw = SVG(this.boxLabelEl.parent().get(0)).size(0, 0);
-			var path = draw.path('M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z');
-			draw.style({
-				'display': 'inline-block',
-				'height': '24px',
-				'width': '24px',
-				'user-select': 'none',
-				'fill': 'rgba(0, 0, 0, 0.870588)',
-				'transition': 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
-				'transition': 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
-				'position': 'absolute',
-				'opacity': 1,
-				'transform': 'scale(1)'
+		initShadowInputEl:function(){
+			var checked = this.checked;
+			this.checkbox = SVG(this.boxLabelEl.parent().get(0)).size(0, 0);
+			this.shadowInputEl = SVG(this.boxLabelEl.parent().get(0)).size(0, 0);
+			this.checkbox.viewbox(0, 0, 15, 15)
+			this.shadowInputEl.viewbox(0, 0, 15, 15)
+			this.checkbox.path('M13.33,1.67v11.67H1.67V1.67H13.33 M13.33,0H1.67C0.75,0,0,0.75,0,1.67v11.67c0,0.92,0.75,1.67,1.67,1.67h11.67c0.92,0,1.67-0.75,1.67-1.67V1.67C15,0.75,14.25,0,13.33,0z')
+			this.shadowInputEl.path('M5.83,11.67l-4.167-4.167l1.167-1.167 l3,3l6.33-6.33L13.33,4.167L5.83,11.667z')
+			this.shadowInputEl.style({
+				opacity:checked ? 1:0
 			})
-			
 		},
 		applyChildEls : function(childEls) {
 			var childEls = $.extend(this.childEls, childEls);
@@ -74,6 +74,11 @@ define(function(require) {
 	            }
 	        }
 	        return me.formId;
+	    },
+
+	    // inherit docs
+	    getManager: function() {
+	        return CheckboxManager;
 	    },
 
 		/**
@@ -150,10 +155,13 @@ define(function(require) {
 		 */
 		setRawValue : function(value) {
 			var me = this, inputEl = me.inputEl, checked = me.isChecked(value, me.inputValue);
-			/*if (inputEl) {
-				this.inputEl.prop('checked', checked);
+			if (this.shadowInputEl) {
+				//this.inputEl.prop('checked', checked);
 				//me.inputEl[checked ? 'addClass' : 'removeClass'](me.checkedCls);
-			}*/
+				me.shadowInputEl.style({
+					opacity:checked ? 1:0
+				})
+			}
 
 			me.checked = me.rawValue = checked;
 			return checked;
@@ -179,9 +187,11 @@ define(function(require) {
 				for ( i = 0; i < len; ++i) {
 					box = boxes[i];
 					box.setValue(Ext.Array.contains(checked, box.inputValue));
+					this.inputEl.attr('checked',Ext.Array.contains(checked, box.inputValue))
 				}
 			} else {
 				Base.prototype.setValue.apply(this, arguments);
+				this.inputEl.attr('checked',checked)
 			}
 
 			return me;

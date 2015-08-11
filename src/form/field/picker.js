@@ -2,8 +2,8 @@
  * @author nttdocomo
  */
 define(function(require){
-	require("./trigger");
-	return taurus.view("taurus.form.field.Picker", taurus.form.field.Trigger.extend({
+	var Trigger = require("./trigger");
+	return Trigger.extend({
 		alignPicker:function(){
 			var me = this, picker = me.getPicker(),position,
 			heightAbove = taurus.getPositionAbove(this.$el),
@@ -38,7 +38,7 @@ define(function(require){
 				'triggerWrap':'.input-group',
 				'triggerEl' : '.btn'
 			}, childEls);
-			taurus.form.field.Text.prototype.applyChildEls.call(this,childEls);
+			Trigger.prototype.applyChildEls.call(this,childEls);
 		},
 		collapse:function(){
 			if (this.isExpanded) {
@@ -68,7 +68,7 @@ define(function(require){
 			}
 		},
 		initialize:function(){
-			taurus.form.field.Trigger.prototype.initialize.apply(this,arguments);
+			Trigger.prototype.initialize.apply(this,arguments);
 			var me = this;
 		},
 		getAlignEl:function(){
@@ -94,5 +94,5 @@ define(function(require){
 			"at" : "left bottom",
 			"collision" : "none none"
 		}
-	}));
+	});
 });

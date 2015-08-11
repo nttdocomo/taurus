@@ -4,6 +4,7 @@
 
 define(function(require) {
 	var Base = require('./view');
+	var _ = require("underscore");
 	var BoundListItem = require('./boundListItem');
 	return Base.extend({
 		//tpl:'<%=content%>',
@@ -96,11 +97,14 @@ define(function(require) {
 			me.trigger('refresh');
 		},
 		alignTo : function(element, position, offsets) {
+			var me = this;
 			this.$el.css('z-index','1051');
 			if(this.lazyload){
-				this.$el.find("img.lazy").lazyload({
-					container: this.$el
-				});
+				require.async('jquery.lazyload',function(){
+					me.$el.find("img.lazy").lazyload({
+						container: me.$el
+					});
+				})
 			}
 			return Base.prototype.alignTo.apply(this,arguments);
 		},

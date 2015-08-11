@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>Framework7</title>
+<link rel="stylesheet" href="http://www.idangero.us/framework7/dist/css/framework7.min.css">
+<link rel="stylesheet" href="http://www.idangero.us/framework7/dist/css/framework7.themes.min.css">
+<link rel="stylesheet" href="http://www.idangero.us/framework7/kitchen-sink/css/kitchen-sink.css">
+<!--<style>
+	@font-face {
+	    font-family: 'icomoon';
+	    src: url('../../styles/fonts/icomoon.eot?iczp1');
+	    src: url('../../styles/fonts/icomoon.eot?#iefixiczp1') format('embedded-opentype'), url('../../styles/fonts/icomoon.ttf?iczp1') format('truetype'), url('../../styles/fonts/icomoon.woff?iczp1') format('woff'), url('../../styles/fonts/icomoon.svg?iczp1#icomoon') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+
+	[class^="icon-"],
+	[class*=" icon-"] {
+	    font-family: 'icomoon';
+	    speak: none;
+	    font-style: normal;
+	    font-weight: normal;
+	    font-variant: normal;
+	    text-transform: none;
+	    line-height: 1;
+	    /* Better Font Rendering =========== */
+	    
+	    -webkit-font-smoothing: antialiased;
+	    -moz-osx-font-smoothing: grayscale;
+	}
+	.searchbar .searchbar-cancel {
+		opacity: 1;
+		margin-left: 8px;
+		pointer-events:auto;
+	}
+	.icon-close:before {
+		content: "\e608";
+	}
+	.page-from-bottom-to-top {
+		-webkit-animation:pageFromBottomToTop 400ms forwards;
+		animation:pageFromBottomToTop 400ms forwards
+	}
+	@-webkit-keyframes pageFromBottomToTop {
+	    from {
+	        -webkit-transform: translate3d(0, 100%, 0)
+	    }
+	    to {
+	        -webkit-transform: translate3d(0, 0, 0)
+	    }
+	}
+	@keyframes pageFromBottomToTop {
+	    from {
+	        transform: translate3d(0, 100%, 0)
+	    }
+	    to {
+	        transform: translate3d(0, 0, 0)
+	    }
+	}
+	.page-from-top-to-bottom {
+		-webkit-animation:pageFromTopToBottom 400ms forwards;
+		animation:pageFromTopToBottom 400ms forwards
+	}
+	@-webkit-keyframes pageFromTopToBottom {
+	    from {
+	        -webkit-transform: translate3d(0, 0, 0)
+	    }
+	    to {
+	        -webkit-transform: translate3d(0, 100%, 0)
+	    }
+	}
+	@keyframes pageFromTopToBottom {
+	    from {
+	        transform: translate3d(0, 0, 0)
+	    }
+	    to {
+	        transform: translate3d(0, 100%, 0)
+	    }
+	}
+</style>-->
+</head>
+<body>
+<div class="views">
+	<div class="view view-main">
+		<div class="navbar">
+			<div class="navbar-inner navbar-on-left">
+			<div class="center sliding" style="left: 152px; transform: translate3d(-133px, 0px, 0px); -webkit-transform: translate3d(-133px, 0px, 0px);">Framework7</div>
+			<div class="right"><a href="#" class="open-panel link icon-only"><i class="icon icon-bars"></i></a></div>
+			</div>
+			<div class="navbar-inner navbar-on-center">
+			<div class="left sliding" style="transform: translate3d(0px, 0px, 0px); -webkit-transform: translate3d(0px, 0px, 0px);"><a href="index.html" class="back link"><i class="icon icon-back" style="transform: translate3d(0px, 0px, 0px); -webkit-transform: translate3d(0px, 0px, 0px);"></i><span>Back</span></a></div>
+			<div class="center sliding" style="left: -6.5px; transform: translate3d(0px, 0px, 0px); -webkit-transform: translate3d(0px, 0px, 0px);">Search Bar</div>
+			<div class="right"><a href="#" class="link open-panel icon-only"><i class="icon icon-bars"></i></a></div>
+			</div>
+		</div>
+		<div class="pages navbar-through toolbar-through">
+			<div data-page="searchbar" class="page page-from-right-to-center">
+				<form data-search-list=".search-here" data-search-in=".item-title" class="searchbar searchbar-init">
+					<div class="searchbar-input">
+						<input type="search" placeholder="Search"><a href="#" class="searchbar-clear"></a>
+					</div>
+					<a href="#" class="searchbar-cancel" style="display: block; margin-right: -53px;">Cancel</a>
+				</form>
+				<div class="searchbar-overlay"></div>
+				<div class="page-content">
+				<div class="list-block searchbar-not-found">
+				<ul>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Nothing found</div>
+				</div>
+				</li>
+				</ul>
+				</div>
+				<div class="list-block search-here searchbar-found">
+				<ul>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Acura</div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Audi</div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">BMW</div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Cadillac </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Chevrolet </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Chrysler </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Dodge </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Ferrari </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Ford </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">GMC </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Honda</div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Hummer</div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Hyundai</div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Infiniti </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Isuzu </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Jaguar </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Jeep </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Kia</div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Lamborghini </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Land Rover</div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Lexus </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Lincoln </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Lotus </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Mazda</div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Mercedes-Benz</div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Mercury </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Mitsubishi</div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Nissan </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Oldsmobile </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Peugeot </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Pontiac </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Porsche</div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Regal</div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Saab </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Saturn </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Subaru </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Suzuki </div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Toyota</div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Volkswagen</div>
+				</div>
+				</li>
+				<li class="item-content">
+				<div class="item-inner">
+				<div class="item-title">Volvo</div>
+				</div>
+				</li>
+				</ul>
+				</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	<!--<script src="../../js/require.js"></script>
+	<script src="../../js/jquery.js"></script>
+	<script src="../../js/config.development.js"></script>
+	<script>
+		require(['searchBar.js']);
+	</script>-->
+</body>
+</html>

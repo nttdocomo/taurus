@@ -3,6 +3,7 @@
  */
 define(function(require) {
 	var Picker = require("./picker"),
+	_ = require('underscore'),
 	DatePicker = require("../../picker/date");
 	require("../../lang/date");
 	require("moment");
