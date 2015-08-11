@@ -32,7 +32,24 @@ define(function(require) {
 		
 		afterRender:function(){
 			Base.prototype.afterRender.apply(this,arguments);
-			this.draw = SVG(this.boxLabelEl.parent().get(0)).size(0, 0);
+			this.drawInput();
+		},
+		drawInput:function(){
+			var draw = this.draw = SVG(this.boxLabelEl.parent().get(0)).size(0, 0);
+			var path = draw.path('M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z');
+			draw.style({
+				'display': 'inline-block',
+				'height': '24px',
+				'width': '24px',
+				'user-select': 'none',
+				'fill': 'rgba(0, 0, 0, 0.870588)',
+				'transition': 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+				'transition': 'all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms',
+				'position': 'absolute',
+				'opacity': 1,
+				'transform': 'scale(1)'
+			})
+			
 		},
 		applyChildEls : function(childEls) {
 			var childEls = $.extend(this.childEls, childEls);
