@@ -5,23 +5,10 @@
 	</head>
 	<body>
 		<div id="fortune"></div>
-		<script src="../../src/jquery.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mockjax/1.6.2/jquery.mockjax.min.js"></script>
+		<script type="text/javascript" src="../../src/LAB.min.js"></script>
 		<script type="text/javascript">
-			$.mockjax({
-				url: '/restful/fortune',
-				responseTime: 750,
-				responseText: {
-					status: 'success',
-					fortune: 'Are you a turtle?'
-				}
-			});
-			$.getJSON('/restful/fortune', function(response) {
-				if ( response.status == 'success') {
-					$('#fortune').html( 'Your fortune is: ' + response.fortune );
-				} else {
-					$('#fortune').html( 'Things do not look good, no fortune was told' );
-				}
+			$LAB.script('../../src/sea-debug.js','../../src/jquery-2.0.0.js','../../src/modernizr.js').wait().script('../../src/moment.js').wait().script('../config.js').wait(function(){
+				seajs.use("../mock/index");
 			});
 		</script>
 	</body>
