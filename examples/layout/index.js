@@ -37,7 +37,7 @@ define(function(require) {
 	});*/
 
 	new Navbar({
-		renderTo : $('.navbar-collapse'),
+		renderTo : $('.top'),
 		showMenuEvent:'click',
 		items: randomMenu()
 	});

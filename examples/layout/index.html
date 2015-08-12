@@ -5,6 +5,8 @@
 		<meta name="author" content="Chomo" />
 		<link rel="start" href="http://www.14px.com" title="Home" />
 		<title>利用box-sizing实现div仿框架</title>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/menu.css"/>
 		<style type="text/css">
 			* {
 				margin: 0;
@@ -55,89 +57,18 @@
 		<div class="top">
 			top
 		</div>
-		<div class="main">
-			1231231231232
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
-			<br />
+		<div class="main" style="padding-top:100px;">
+			<div class="row" style="height:100px;margin-top:-100px;">aaaaa</div>
+			<div class="row" style="height:100%">aaaaa</div>
 		</div>
 		<div class="bottom">
 			bottom
 		</div>
+		<script type="text/javascript" src="../../src/LAB.min.js"></script>
+		<script type="text/javascript">
+			$LAB.script('../../src/sea-debug.js','../../src/modernizr.js').wait().script('../../src/moment.js').wait().script('../config.js').wait(function(){
+				seajs.use("../layout/index");
+			});
+		</script>
 	</body>
 </html>
