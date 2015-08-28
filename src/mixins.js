@@ -1,5 +1,5 @@
 define(function(require){
-	require('./backbone');
+	var Backbone = require('backbone');
 	var mixins = function(givingClass) {
 		var receivingClass = this;
 

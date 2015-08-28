@@ -14,6 +14,7 @@ define(function(require) {
 	var Label = require("../label"),
 	_ = require('underscore'),
 	Field = require("./field");
+	Backbone = require("backbone");
 	return Label.extend({
 		inputType : 'text',
 		readOnly:false,

@@ -6,7 +6,8 @@ define(function(require) {
 	require('../lang/number');
 	require('../mixins');
 	require('jquery.ui.position');
-	var _ = require('underscore');
+	var _ = require('underscore'),
+	Backbone = require('backbone');
 	return Backbone.View.extend({
 		isRendered : false,
 		doc : taurus.$doc,
@@ -375,7 +376,7 @@ define(function(require) {
 			}
 			if(Cls){
 				return new Cls($.extend(_.omit(cmp, 'cls'),{
-					//renderTo:this.getItemContainer()
+					//renderTo:this.getItemContainer(cmp)
 				}));
 			}
 			return false;
@@ -431,7 +432,7 @@ define(function(require) {
 		updateItems:function(){
 			var me = this;
 			_.each(this.items,function(item){
-				item.render(me.getTargetEl())
+				item.render(me.getTargetEl(item))
 			})
 		},
 		insert : function(index, comp) {

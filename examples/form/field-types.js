@@ -11,6 +11,7 @@ define(function(require) {
 	Panel = require("../../src/form/panel"),
 	DateType = require("../../src/form/field/date"),
 	DateTime = require("../../src/form/field/datetime"),
+	Backbone = require("../../src/backbone"),
 	collection = new Backbone.Collection([{
 		name : "001",
 		age : 1
