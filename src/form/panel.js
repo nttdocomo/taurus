@@ -66,7 +66,7 @@ define(function(require){
 			});
 		},
 		renderButttons:function(){
-			return _.template('<%_.each(buttons,function(button){%><button class="btn<%if(button){%> <%=button.className%><%}%>"<%if(disabled){%> disabled="disabled"<%}%>><%=button.text%></button>\n<%})%>', $.extend({
+			return _.template('<%_.each(buttons,function(button){%><button class="btn<%if(button){%> <%=button.className%><%}%>"<%if(disabled){%> disabled="disabled"<%}%>><%=button.text%></button>\n<%})%>')($.extend({
 				buttons:this.buttons
 			}, {
 				disabled : this.disabled

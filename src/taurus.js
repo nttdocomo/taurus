@@ -349,4 +349,5 @@ define(function(require) {
 			return me;
 		}
 	});
+	return window.taurus;
 })

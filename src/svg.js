@@ -1,7 +1,12 @@
 /* svg.js 1.1.0 - svg selector inventor polyfill regex default color array pointarray patharray number viewbox bbox rbox element parent container fx relative event defs group arrange mask clip gradient pattern doc shape symbol use rect ellipse line poly path image text textpath nested hyperlink marker sugar set data memory helpers - svgjs.com/license */
 ;(function(root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    define(factory);
+  if (typeof define === 'function') {
+    if(define.amd){
+      define(factory);
+    }
+    if(define.cmd){
+      define(factory);
+    }
   } else if (typeof exports === 'object') {
     module.exports = factory();
   } else {

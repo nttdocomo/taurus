@@ -20,7 +20,7 @@ define(function(require){
 		},
 		getSubTplMarkup:function(){
 			var inputHtml = Text.prototype.getFieldHtml.apply(this,arguments);
-			return _.template((this.buttonOnly ? '' : (this.hideTrigger ? '' : '<div class="input-group">') + Text.prototype.getSubTplMarkup.apply(this,arguments)) + (this.hideTrigger ? '' : this.getTriggerMarkup())+(this.hideTrigger || this.buttonOnly ? '' : '</div>'),{
+			return _.template((this.buttonOnly ? '' : (this.hideTrigger ? '' : '<div class="input-group">') + Text.prototype.getSubTplMarkup.apply(this,arguments)) + (this.hideTrigger ? '' : this.getTriggerMarkup())+(this.hideTrigger || this.buttonOnly ? '' : '</div>'))({
 				editableClass:(this.readOnly || !this.editable) ? 'trigger-noedit':'',
 				readOnly: !this.editable || this.readOnly
 			});
@@ -28,7 +28,7 @@ define(function(require){
 		},
 		getFieldHtml : function() {
 			var inputHtml = Text.prototype.getFieldHtml.apply(this,arguments);
-			return _.template((this.buttonOnly ? '' : (this.hideTrigger ? '' : '<div class="input-group">') + Text.prototype.getSubTplMarkup.apply(this,arguments)) + (this.hideTrigger ? '' : this.getTriggerMarkup())+(this.hideTrigger || this.buttonOnly ? '' : '</div>'),{
+			return _.template((this.buttonOnly ? '' : (this.hideTrigger ? '' : '<div class="input-group">') + Text.prototype.getSubTplMarkup.apply(this,arguments)) + (this.hideTrigger ? '' : this.getTriggerMarkup())+(this.hideTrigger || this.buttonOnly ? '' : '</div>'))({
 				editableClass:(this.readOnly || !this.editable) ? 'trigger-noedit':'',
 				readOnly: !this.editable || this.readOnly
 			});

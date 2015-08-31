@@ -13,7 +13,8 @@
 define(function(require) {
 	var Label = require("../label"),
 	_ = require('underscore'),
-	Field = require("./field");
+	Modernizr = require('modernizr'),
+	Field = require("./field"),
 	Backbone = require("backbone");
 	return Label.extend({
 		inputType : 'text',
@@ -164,7 +165,7 @@ define(function(require) {
 	     * Gets the markup to be inserted into the outer template's bodyEl. For fields this is the actual input element.
 	     */
 	    getSubTplMarkup: function() {
-	        return _.template(this.fieldSubTpl,this.getSubTplData());
+	        return _.template(this.fieldSubTpl)(this.getSubTplData());
 	    },
 	    /**
 	     * Creates and returns the data object to be used when rendering the {@link #fieldSubTpl}.

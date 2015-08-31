@@ -12,6 +12,7 @@
  */
 define(function(require) {
 	var Base = require("./base"),
+	Modernizr = require('modernizr'),
 	_ = require('underscore');
 	return Base.extend({
 		allowBlank : true,

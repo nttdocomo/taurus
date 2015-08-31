@@ -4,7 +4,8 @@
 define(function(require) {
 	var Base = require('./checkbox'),
 	_ = require('underscore'),
-	RadioManager = require('../radioManager');
+	RadioManager = require('../radioManager'),
+	Svg = require('../../svg');
 	return Base.extend({
 		inputType : 'radio',
 		formId: null,

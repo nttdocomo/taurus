@@ -4,8 +4,9 @@
  * A collection of useful static methods to deal with numbers
  * @singleton
  */
-define(function() {
-	var me = this,
+define(function(require) {
+	var taurus = require('../taurus'),
+    me = this,
 	isToFixedBroken = (0.9).toFixed() !== '1',
 	math = Math;
 	return taurus.Number = {

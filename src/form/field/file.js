@@ -157,7 +157,7 @@ define(function(require) {
 				type : 'file',
 				disabled : this.disabled,
 				size : 1
-			})).html() + '</div>' + (this.buttonOnly ? '' : '</span>'), {
+			})).html() + '</div>' + (this.buttonOnly ? '' : '</span>'))({
 				id : 'buttonEl',
 				cls : taurus.baseCSSPrefix + 'form-file-btn',
 				text : this.buttonText,

@@ -21,8 +21,31 @@
  * Authors        Faruk Ates, Paul Irish, Alex Sexton
  * Contributors   Ryan Seddon, Ben Alman
  */
-
-window.Modernizr = (function( window, document, undefined ) {
+(function (root, factory) {
+  if(typeof define === "function") {
+    if(define.amd){
+      // Now we're wrapping the factory and assigning the return
+      // value to the root (window) and returning it as well to
+      // the AMD loader.
+      define(function(postal){
+        return (root.Modernizr = factory(root, root.document));
+      });
+    }
+    if(define.cmd){
+      define(function(require, exports, module){
+        return factory(root, root.document);
+      })
+    }
+  } else if(typeof module === "object" && module.exports) {
+    // I've not encountered a need for this yet, since I haven't
+    // run into a scenario where plain modules depend on CommonJS
+    // *and* I happen to be loading in a CJS browser environment
+    // but I'm including it for the sake of being thorough
+    module.exports = (root.Modernizr = factory(root, root.document));
+  } else {
+    root.Modernizr = factory(root, root.document);
+  }
+}(this,function( window, document, undefined ) {
 
     var version = '2.6.2',
 
@@ -1390,4 +1413,4 @@ window.Modernizr = (function( window, document, undefined ) {
 
     return Modernizr;
 
-})(this, this.document);
+}));

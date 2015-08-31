@@ -229,7 +229,7 @@ define(function(require) {
 			return '<%_.each(value,function(item,index){%><%=item.' + this.displayField + '%><%if(index < value.length - 1){%>' + this.delimiter + '<%}%><%})%>';
 		},
 		getDisplayValue : function() {
-			return _.template(this.getDisplayTpl(), {
+			return _.template(this.getDisplayTpl())({
 				value : this.displayTplData
 			});
 		},

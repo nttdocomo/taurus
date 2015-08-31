@@ -5,8 +5,8 @@ define(function(require) {
 	require('../taurus');
 	require('../lang/number');
 	require('../mixins');
-	require('jquery.ui.position');
-	var _ = require('underscore'),
+	require('../jquery.ui.position');
+	var _ = require('../underscore'),
 	Backbone = require('backbone');
 	return Backbone.View.extend({
 		isRendered : false,
@@ -193,7 +193,7 @@ define(function(require) {
 			} else {
 				data = data || this.getTplData();
 				if(data){
-					html = this.tpl ? _.template(this.tpl, (data || this)) : "";
+					html = this.tpl ? _.template(this.tpl)(data || this) : "";
 				}
 			}
 			if(this.html){
