@@ -11,6 +11,6 @@ seajs.config({
 	paths: {
 		'taurus':'./'
 	},
-	base : 'http://dev.taurus.com/src/',
+	base : '/src/',
 	charset : 'utf-8'
 });
