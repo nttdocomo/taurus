@@ -29,8 +29,13 @@
 	return Base.extend({
 		fieldSubTpl:'',
 		uiClass:'form-fieldcontainer',
+		direction:'row',
 		getTargetEl: function() {
             return this.frameBody || this.$el.find('>div');
+        },
+        render:function(){
+        	this.$el.addClass('form-fieldcontainer-' + this.direction)
+        	Base.prototype.render.apply(this,arguments)
         }
 	});
 }));

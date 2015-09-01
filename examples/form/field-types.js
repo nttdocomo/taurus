@@ -87,13 +87,17 @@ define(function(require) {
         },{
         	cls:FieldContainer,
             fieldLabel: 'Container',
+            direction:'column',
             items:[{
 				cls:Time,
 	            name: 'time',
+	            width:100,
+	            editable:false,
 	            minValue: '6:00 AM',
 	            maxValue: '8:00 PM',
 	        },{
 				cls:Text,
+	            width:200,
 	            name: 'age'
 	        }]
         },{
