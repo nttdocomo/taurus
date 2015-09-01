@@ -1,7 +1,8 @@
 /**
  * @author nttdocomo
  */
-define(function() {
+define(function(require) {
+	var taurus = require('../taurus');
 	return taurus.augmentObject('taurus.Date', {
 		parse : function(input, format, strict) {
 			var p = taurus.Date.parseFunctions;

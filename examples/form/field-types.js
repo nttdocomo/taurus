@@ -11,6 +11,8 @@ define(function(require) {
 	Panel = require("../../src/form/panel"),
 	DateType = require("../../src/form/field/date"),
 	DateTime = require("../../src/form/field/datetime"),
+	Time = require("../../src/form/field/time"),
+	FieldContainer = require("../../src/form/fieldContainer"),
 	Backbone = require("../../src/backbone"),
 	collection = new Backbone.Collection([{
 		name : "001",
@@ -58,6 +60,7 @@ define(function(require) {
             allowBlank: false
         }, {
 			cls:DateType,
+			width:200,
             fieldLabel: 'DOB',
             name: 'dob'
         }, {
@@ -75,6 +78,24 @@ define(function(require) {
             name: 'age',
             minValue: 0,
             maxValue: 100
+        }, {
+			cls:Time,
+            fieldLabel: 'Time Field',
+            name: 'time',
+            minValue: '6:00 AM',
+            maxValue: '8:00 PM',
+        },{
+        	cls:FieldContainer,
+            fieldLabel: 'Container',
+            items:[{
+				cls:Time,
+	            name: 'time',
+	            minValue: '6:00 AM',
+	            maxValue: '8:00 PM',
+	        },{
+				cls:Text,
+	            name: 'age'
+	        }]
         },{
 			cls:RadioGroup,
 			fieldLabel : '应用平台:',

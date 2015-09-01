@@ -5,7 +5,7 @@ define(function(require) {
 	var Base = require("../view/base");
 	var ActiveErrors = require("../view/activeErrors");
 	return Base.extend({
-		tpl:'<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%=fieldLabel%></label><div style="<%=controlsStyle%>"><%}%><%=field%><%if(fieldLabel){%></div><%}%>',
+		tpl:'<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%=fieldLabel%></label><%}%><div style="<%=controlsStyle%>"><%=field%></div><%if(fieldLabel){%><%}%>',
 		className : "form-group",
 		labelWidth : 100,
 		labelAlign : 'left',

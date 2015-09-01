@@ -13,8 +13,10 @@
 define(function(require) {
 	require("../../lang/event");
 	require("../../jquery.scrollIntoView");
-	var _ = require("underscore");
-	var Picker = require("./picker"), BoundList = require("../../view/boundList");
+	var _ = require("underscore"),
+	Backbone = require("backbone"),
+	Picker = require("./picker"),
+	BoundList = require("../../view/boundList");
 	return Picker.extend({
 		allQuery: '',
 		delimiter : ', ',
