@@ -1,12 +1,22 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Picker = require("./picker"),
-	_ = require('underscore'),
-	DatePicker = require("../../picker/date");
-	require("../../lang/date");
-	require("moment");
+(function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(["./picker","../../picker/date",'../../underscore','../../moment','../../lang/date'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+		        return factory(require('./picker'),require("../../picker/date"),require('../../underscore'),require('../../moment'),require("../../lang/date"));
+		     })
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require("./picker"),require("../../picker/date"),require('../../underscore'),require('../../moment'),require("../../lang/date"));
+	} else {
+		root.myModule = factory();
+	}
+}(this,function(Picker,DatePicker,_,moment) {
 	return taurus.view("taurus.form.field.Date", Picker.extend({
 		format : 'MM/DD/YYYY',
 		triggerTpl : '<div class="input-group-btn"><button class="btn form-trigger btn-default" type="button"><i class="halflings calendar"></i></button></div>',
@@ -81,4 +91,4 @@ define(function(require) {
 			return value.format(this.format);
 		}
 	}));
-});
+}));

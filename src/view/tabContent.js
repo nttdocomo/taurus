@@ -2,7 +2,8 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Base = require('./base'), TabPanel = require('./card');
+	var Base = require('./base'), TabPanel = require('./card'),
+	Backbone = require('backbone');
 	return Base.extend({
 		defaultType : TabPanel,
 		className : 'tab-content',

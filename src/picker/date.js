@@ -1,11 +1,22 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Base = require('../view/base'),
-	_ = require('underscore');
-	require("../lang/date");
-	require("moment");
+(function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(["../view/base",'underscore','moment','../lang/date'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+		        return factory(require('../view/base'),require("underscore"),require('moment'),require('../lang/date'));
+		     })
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../view/base'),require("underscore"),require('moment'),require('../lang/date'));
+	} else {
+		root.myModule = factory();
+	}
+}(this,function(Base,_,moment) {
 	return Base.extend({
 		tpl : '<div class="datepicker-days"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody></tbody></table></div><div class="datepicker-months"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody><tr><td colspan="7"></td></tr></tbody></table></div><div class="datepicker-years"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody><tr><td colspan="7"></td></tr></tbody></table></div>',
 		className : 'bootstrap-datetimepicker-widget dropdown-menu',
@@ -210,4 +221,4 @@ define(function(require) {
 			this.$el.find(' > div').hide().filter('.datepicker-' + this.modes[this.viewMode].clsName).show();
 		}
 	});
-});
+}));

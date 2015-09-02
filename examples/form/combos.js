@@ -2,7 +2,7 @@
  * @author nttdocomo
  */
 define(function(require) {
-	require("backbone");
+	var Backbone = require("backbone");
 	var chance = require('chance');
 	var ComboBox = require("../../src/form/field/comboBox.js"), $body = $("#main"), data_with_src=[],states = [{
 		"abbr" : "AL",

@@ -16,7 +16,7 @@ define(function(require){
 	            // check to make sure the receiving class doesn't
 	            // have a method of the same name as the one currently
 	            // being processed
-	            if ( !Object.hasOwnProperty(receivingClass.prototype, methodName) ) {
+	            if ( !Object.hasOwnProperty.call(receivingClass.prototype, methodName) ) {
 	                receivingClass.prototype[methodName] = givingClass.prototype[methodName];
 	            }
 

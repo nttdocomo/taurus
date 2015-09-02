@@ -4,7 +4,31 @@
 // license : MIT
 // momentjs.com
 
-(function (undefined) {
+(function (root, factory) {
+  if(typeof define === "function") {
+    if(define.amd){
+      // Now we're wrapping the factory and assigning the return
+      // value to the root (window) and returning it as well to
+      // the AMD loader.
+      define(function(){
+        return (root.moment = factory());
+      });
+    }
+    if(define.cmd){
+      define(function(require, exports, module){
+        return factory();
+      })
+    }
+  } else if(typeof module === "object" && module.exports) {
+    // I've not encountered a need for this yet, since I haven't
+    // run into a scenario where plain modules depend on CommonJS
+    // *and* I happen to be loading in a CJS browser environment
+    // but I'm including it for the sake of being thorough
+    module.exports = (root.moment = factory());
+  } else {
+    root.moment = factory();
+  }
+}(this,function (undefined) {
 
     /************************************
         Constants
@@ -1380,24 +1404,5 @@
     ************************************/
 
 
-    // CommonJS module is defined
-    if (hasModule) {
-        module.exports = moment;
-    }
-    /*global ender:false */
-    if (typeof ender === 'undefined') {
-        // here, `this` means `window` in the browser, or `global` on the server
-        // add `moment` as a global object via a string identifier,
-        // for Closure Compiler "advanced" mode
-        this['moment'] = moment;
-    }
-    /*global define:false */
-    if (typeof define === "function" && define.amd) {
-        define("moment", [], function () {
-            return moment;
-        });
-    }
-    if ( typeof define === "function" && define.cmd ) {
-        define(function () { return moment; } );
-    }
-}).call(this);
+    return moment
+}));

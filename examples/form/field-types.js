@@ -13,6 +13,7 @@ define(function(require) {
 	DateTime = require("../../src/form/field/datetime"),
 	Time = require("../../src/form/field/time"),
 	FieldContainer = require("../../src/form/fieldContainer"),
+	Splitter = require("../../src/resizer/splitter"),
 	Backbone = require("../../src/backbone"),
 	collection = new Backbone.Collection([{
 		name : "001",
@@ -99,6 +100,44 @@ define(function(require) {
 				cls:Text,
 	            width:200,
 	            name: 'age'
+	        }]
+        }, {
+			cls:FieldContainer,
+            fieldLabel: '有效日期',
+            direction:'column',
+            items:[{
+            	cls:DateType,
+            	width:150,
+	            name: 'start'
+            },{
+	        	cls:Splitter,
+	        	text:'至'
+	        },{
+            	cls:DateType,
+            	width:150,
+	            name: 'end'
+            }]
+        },{
+        	cls:FieldContainer,
+            fieldLabel: 'Container',
+            direction:'column',
+            items:[{
+				cls:Time,
+	            name: 'start',
+	            width:100,
+	            editable:false,
+	            minValue: '6:00 AM',
+	            maxValue: '8:00 PM',
+	        },{
+	        	cls:Splitter,
+	        	text:'至'
+	        },{
+				cls:Time,
+	            name: 'end',
+	            width:100,
+	            editable:false,
+	            minValue: '6:00 AM',
+	            maxValue: '8:00 PM',
 	        }]
         },{
 			cls:RadioGroup,

@@ -3,7 +3,7 @@
  */
 define(function(require){
 	var Base = require('./base'),
-	Backbone = require('../backbone');
+	Backbone = require('backbone');
 	return Base.extend({
 		className:'row-fluid',
 		itemSelector:'.item-selector',

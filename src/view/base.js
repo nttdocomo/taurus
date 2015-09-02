@@ -11,6 +11,7 @@ define(function(require) {
 	return Backbone.View.extend({
 		isRendered : false,
 		doc : taurus.$doc,
+		baseCls:'component',
 		_ensureElement : function() {
 			if (!this.el) {
 				var attrs = _.extend({}, _.result(this, 'attributes'));
@@ -26,9 +27,40 @@ define(function(require) {
 				this.setElement(_.result(this, 'el'), false);
 			}
 		},
+		initCls: function() {
+            var me = this,
+                cls = [me.baseCls];/*,
+                targetCls = me.getComponentLayout().targetCls;
+
+            if (targetCls) {
+                cls.push(targetCls);
+            }
+
+            //<deprecated since=0.99>
+            if (Ext.isDefined(me.cmpCls)) {
+                if (Ext.isDefined(Ext.global.console)) {
+                    Ext.global.console.warn('Ext.Component: cmpCls has been deprecated. Please use componentCls.');
+                }
+                me.componentCls = me.cmpCls;
+                delete me.cmpCls;
+            }
+            //</deprecated>
+
+            if (me.componentCls) {
+                cls.push(me.componentCls);
+            } else {
+                me.componentCls = me.baseCls;
+            }*/
+
+            return cls;
+        },
 		setElement: function(element) {
+			var cls = this.initCls();
+
       		this.undelegateEvents();
 			this._setElement(element);
+
+            this.$el.addClass(cls.join(' '));
 			return this;
 		},
 
@@ -186,6 +218,47 @@ define(function(require) {
 			this.initItems();
 			return el.innerHTML;
 		},
+		setUI:function(){
+			var classes = me.addClsWithUI(uiCls, true);
+		},
+		addClsWithUI:function(classes, skip){
+			var clsArray = [];
+			for (; i < length; i++) {
+		        cls = classes[i];
+		        clsArray = clsArray.concat(me.addUIClsToElement(cls));
+		    }
+		    return clsArray;
+		},
+		/**
+	     * Method which adds a specified UI + `uiCls` to the components element. Can be overridden
+	     * to add the UI to more than just the component's element.
+	     * @param {String} uiCls The UI class to add to the element.
+	     * @protected
+	     */
+	    addUIClsToElement: function (uiCls) {
+	        var me = this,
+	            baseClsUI = me.baseCls + '-' + me.ui + '-' + uiCls,
+	            result = [ Ext.baseCSSPrefix + uiCls, me.baseCls + '-' + uiCls, baseClsUI ],
+	            childEls, childElName, el, suffix;
+
+	        if (me.rendered && me.frame && !Ext.supports.CSS3BorderRadius) {
+	            // Loop through each frame element, and if they are defined add the ui:
+	            baseClsUI += '-';
+	            childEls = me.getChildEls();
+
+	            for (childElName in childEls) {
+	                suffix = childEls[childElName].frame;
+	                if (suffix && suffix !== true) {
+	                    el = me[childElName];
+	                    if (el) {
+	                        el.addCls(baseClsUI + suffix);
+	                    }
+	                }
+	            }
+	        }
+
+	        return result;
+	    },
 		inserHtml:function(data){
 			var html = '';
 			if(this.innerHtml){

@@ -175,10 +175,14 @@ input.trigger-noedit, input.trigger-noedit:focus {
 .form-fieldcontainer-column {
 	display: table;
 }
-.form-fieldcontainer-column .form-group {
+.form-fieldcontainer-column .splitter{
+	padding: 0 5px;
+	vertical-align: middle;
+}
+.form-fieldcontainer-column .form-group,.form-fieldcontainer-column .splitter {
 	display: table-cell;
 }
-.form-fieldcontainer-column .form-group:last-child .form-control {
+.form-fieldcontainer-column .form-group+.form-group .form-control {
 	border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     border-left:none;

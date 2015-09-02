@@ -2,7 +2,7 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Panel = require("../../src/tab/panel.js"),
+	var Panel = require("../../src/tab/panel"),
 		$body = $("#main");
 	new Panel({
 		width: 450,
