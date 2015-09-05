@@ -52,10 +52,9 @@ define(function(require) {
 		},*/
 		getSubmitData:function(){
 			var values = {}, boxes = this.getBoxes(':checked'), b, bLen = boxes.length, box, name, inputValue, bucket;
-			boxes.each(function(i) {
-				box = $(this);
-				name = box.attr('name');
-				inputValue = box.val();
+			_.each(boxes,function(box,i) {
+				name = box.getName();
+				inputValue = box.getValue();
 				if (values.hasOwnProperty(name)) {
                     bucket = values[name];
                     if (!_.isArray(bucket)) {

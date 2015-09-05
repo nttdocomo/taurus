@@ -44,15 +44,15 @@ define(function(require) {
 		collapsible: true,
 		items:[{
 			cls:Text,
-			name : 'textfield1',
+			name : 'first_name',
 			fieldLabel : 'First Name:'
 		},{
 			cls:Text,
-			name : 'textfield1',
+			name : 'last_name',
 			fieldLabel : 'Last Name:'
 		},{
 			cls:Text,
-			name : 'textfield1',
+			name : 'company',
 			fieldLabel : 'Company:'
 		}, {
 			cls:Text,
@@ -62,10 +62,6 @@ define(function(require) {
         }, {
 			cls:DateType,
 			width:200,
-            fieldLabel: 'DOB',
-            name: 'dob'
-        }, {
-			cls:DateTime,
             fieldLabel: 'DOB',
             name: 'dob'
         }, {
@@ -156,7 +152,9 @@ define(function(require) {
             text: 'Save',
             className:'btn-primary',
             handler: function() {
-                this.form.getForm().isValid();
+                if(this.getForm().isValid()){
+                	console.log(this.getForm().getValues());
+                }
             }
         },{
             text: 'Cancel',
