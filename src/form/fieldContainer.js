@@ -13,15 +13,15 @@
 (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(["./field/base"], factory);
+			define(["./label"], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-		        return factory(require('./field/base'));
+		        return factory(require('./label'));
 		     })
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require("./field/base"));
+		module.exports = factory(require("./label"));
 	} else {
 		root.myModule = factory();
 	}

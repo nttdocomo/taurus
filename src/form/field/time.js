@@ -28,14 +28,16 @@
 }(this, function(Base,Time,_,moment) {
 	return Base.extend({
 		format:'H:mm',
-		initDateParts: [2008, 0, 1],
+		initDateParts: [2008, 1, 1],
 		increment: 15,
 		queryMode: 'local',
 		displayField: 'disp',
 		valueField: 'date',
 		createPicker : function() {
 			var picker = this.picker = new Time($.extend({
-				collection : this.collection
+				collection : this.collection,
+				minValue:this.minValue,
+				maxValue:this.maxValue
 			}, this.listConfig)), me = this;
 			picker.on({
 				'itemclick': this.onItemClick,
@@ -83,7 +85,7 @@
 	        }
 
 	        // Create a store of times.
-	        me.collection = Time.createStore(me.format, me.increment);
+	        me.collection = Time.createStore(me.format, me.increment,me.minValue,me.maxValue);
 
 	        Base.prototype.initComponent.apply(this,arguments);
 
@@ -158,6 +160,20 @@
 
 		valueToRaw: function(value) {
 		    return this.formatDate(this.parseDate(value));
-		}
+		},
+		getValue:function(){
+			return this.value
+		},
+
+	    /**
+	     * @private
+	     */
+	    getSubmitValue: function() {
+	        var me = this,
+	            format = me.submitFormat || me.format,
+	            value = me.getValue();
+
+	        return value ? value.format(format) : null;
+	    }
 	});
 }));

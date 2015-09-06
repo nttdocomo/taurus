@@ -6,9 +6,15 @@ define(function(require) {
 	_ = require('underscore');
 	return taurus.view("taurus.form.Base", Base.extend({
 		tagName : 'form',
+		getFields:function(){
+			return this.$el.find('.form-field').map(function(i,item){
+				return item.data('component')
+			})
+		},
 		getValues : function() {
 			var values  = {},isArray = _.isArray;
-			_.each(this.items, function(item) {
+			items = this.getFields();
+			_.each(items, function(item) {
 				//obj[item.getName()] = item.getSubmitData();
 				var data = item.getSubmitData();
 				if (_.isObject(data)) {

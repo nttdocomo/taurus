@@ -198,6 +198,9 @@ define(function(require) {
 			renderTo = renderTo || this.renderTo || $(document.body);
 			/*run html brfore append el because the el must has html*/
 			$(renderTo)[this.operation](this.$el);
+			if(this.isRendered){
+				return this;
+			}
 			this.renderHtml();
 			this.isRendered = true;
 			this.rendered = true;

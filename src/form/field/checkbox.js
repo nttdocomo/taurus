@@ -90,7 +90,7 @@ define(function(require) {
 		},
 		getSubTplData : function() {
 			return $.extend(Base.prototype.getSubTplData.apply(this, arguments), {
-				boxLabel : this.boxLabel,
+				boxLabel : this.boxLabel || false,
 				checked:this.checked
 			})
 		},

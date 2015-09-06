@@ -79,6 +79,9 @@
 	        var value = taurus.Date.parseDate(value, this.format);
 			return value ? value : null;
 		},
+		getValue:function(){
+			return Picker.prototype.getValue.apply(this,arguments)
+		},
 		getSubmitValue:function(){
 			var value = this.getValue();
 			return value ? value.utc().format(this.format) : '';

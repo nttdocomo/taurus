@@ -27,15 +27,20 @@ define(function(require) {
 	     */
 	    submitValue: true,
 		fieldCls : taurus.baseCSSPrefix + 'form-field',
+		baseCls:'form-field',
 		invalidText : 'The value in this field is invalid',
 		checkChangeBuffer : 50,
-		fieldSubTpl:'<input id="<%=id%>" type="<%=type%>" class="form-control <%=fieldCls%>"<%if(typeof(placeholder) !== "undefined"){%> placeholder="<%=placeholder%>"<%}%><%if(typeof(value) !== "undefined"){%> value="<%=value%>"<%}%><%if(typeof(checked) !== "undefined"){%> checked="<%=checked%>"<%}%><%if(readOnly){%> readonly="readonly"<%}%> />',
+		fieldSubTpl:'<input id="<%=id%>" type="<%=type%>" class="form-control <%=fieldCls%>"<%if(typeof(placeholder) !== "undefined"){%> placeholder="<%=placeholder%>"<%}%><%if(typeof(value) !== "undefined"){%> value="<%=value%>"<%}%><%if(typeof(checked) !== "undefined"){%> checked="<%=checked%>"<%}%><%if(readOnly){%> readonly="readonly"<%}%> name="<%=name%>" />',
 		checkChangeEvents : !Modernizr.hasEvent('dragdrop',document.createElement('input')) && (!document.documentMode || document.documentMode < 9) ? ['change', 'propertychange'] : ['change', 'input', 'textInput', 'keyup', 'dragdrop'],
 		/**
 		 * @private
 		 */
 		suspendCheckChange : 0,
 		validateOnChange : true,
+		initComponent:function(){
+			this.getInputId();
+			Label.prototype.initComponent.apply(this,arguments);
+		},
 		disable:function(){
 			this.inputEl.prop('disabled',true);
 			this.inputEl.addClass('disabled');
@@ -223,7 +228,6 @@ define(function(require) {
 			if(this.width){
 				controlsStyle += 'width:'+this.width+'px;';
 			}
-			delete this.width;
 			return controlsStyle;
 		},
 		isValid : function() {

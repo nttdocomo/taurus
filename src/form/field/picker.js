@@ -35,7 +35,7 @@ define(function(require){
 		},
 		applyChildEls:function(childEls){
 			childEls = $.extend({
-				'triggerWrap':'.input-group',
+				'triggerWrap':'> div',
 				'triggerEl' : '.btn'
 			}, childEls);
 			Trigger.prototype.applyChildEls.call(this,childEls);

@@ -28,6 +28,7 @@ define(function(require) {
 		initialize : function() {
 			Picker.prototype.initialize.apply(this, arguments);
 			//this.collection.on('reset',_.bind(this.expand,this));
+			console.log(this)
 		},
 		initField : function() {
 			//this.displayTpl = this.getDisplayTpl();

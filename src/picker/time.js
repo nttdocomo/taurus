@@ -28,7 +28,40 @@
 }(this, function(Base,moment,Backbone) {
 	return Base.extend({
 		initDate:'2008-01-01',
-		displayField: 'disp'
+		displayField: 'disp',
+
+	    initComponent: function() {
+	        var me = this,
+	            initDate = me.initDate;
+
+	        // Set up absolute min and max for the entire day
+            me.absMin = moment(initDate),
+            me.absMax = moment(initDate).add(24*60-1,'m');
+
+	        // Updates the range filter's filterFn according to our configured min and max
+	        me.updateList();
+
+	        Base.prototype.initComponent.apply(this,arguments);
+	    },
+
+	    /**
+	     * Set the {@link #minValue} and update the list of available times. This must be a Date object (only the time
+	     * fields will be used); no parsing of String values will be done.
+	     * @param {Date} value
+	     */
+	    setMinValue: function(value) {
+	        this.minValue = value;
+	        this.updateList();
+	    },
+	    updateList:function(){
+	    	var me = this,
+            min = me.minValue || me.absMin,
+            max = me.maxValue || me.absMax;
+	    	console.log(this.collection.filter(function(item){
+	    		//console.log(item);
+	    		return item.get('date') >= min && item.get('date') <= max;
+	    	}))
+	    }
 	},{
 		/**
          * @private

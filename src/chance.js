@@ -2495,7 +2495,7 @@
     // Register as an anonymous AMD module
     if (typeof define === 'function' && define.amd) {
         define([], function () {
-            return Chance;
+            return new Chance;
         });
     }
 
