@@ -1,5 +1,6 @@
 define(function(require) {
-	var formatRe = /\{(\d+)\}/g,escapeRegexRe = /([-.*+?\^${}()|\[\]\/\\])/g;
+	var taurus = require('../taurus'),
+	formatRe = /\{(\d+)\}/g,escapeRegexRe = /([-.*+?\^${}()|\[\]\/\\])/g;
 	taurus.augmentObject('taurus.String.prototype', $.extend({}, String.prototype, {
 		format : function(format) {
 			var args = aries.Array.toArray(arguments, 1);

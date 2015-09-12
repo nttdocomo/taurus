@@ -23,6 +23,7 @@
 		createPicker : function() {
 			var picker = new DatePicker({
 				endDate:this.endDate,
+				startDate:this.startDate,
 				pickerField : this,
 				format:this.format,
 				renderTo : $(document.body)

@@ -172,7 +172,7 @@ define(function(require){
 	        if (t) {
 	            t.on({
 	            	mouseenter: _.bind(me.onTargetEnter,me),
-	            	mouseout: _.bind(me.onTargetOut,me)
+	            	mouseleave: _.bind(me.onTargetOut,me)
 	            })
 	        }
 	        if (me.anchor) {

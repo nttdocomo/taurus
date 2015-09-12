@@ -62,6 +62,7 @@ define(function(require) {
         }, {
 			cls:DateType,
 			width:200,
+            startDate:'09/08/2015',
             fieldLabel: 'DOB',
             name: 'dob'
         }, {

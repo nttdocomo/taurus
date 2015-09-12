@@ -7,11 +7,13 @@ define(function(require){
 	Header = require('../grid/header/container'),
 	Pagination = require('../grid/pagination'),
 	Spinner = require('../spinner/wave'),
-	PageableCollection = require("backbone-pageable");
-	_ = require('underscore');
+	PageableCollection = require("backbone-pageable"),
+	_ = require('underscore'),
+	taurus = require('../taurus');
 	return Panel.extend({
 		pager:false,
 		className:'panel panel-default grid',
+		colLinesCls: taurus.baseCSSPrefix + 'grid-with-col-lines',
 		applyChildEls:function(childEls){
 			childEls = $.extend({
 				'headEl' : '.panel-heading',
@@ -33,14 +35,18 @@ define(function(require){
                     items: headerCtCfg
                 };
             }
+            me.features = me.features || [];
+            if (!_.isArray(me.features)) {
+                me.features = [me.features];
+            }
 
             _.extend(headerCtCfg, {
-                grid: me/*,
+                grid: me,
+                columnLines: me.columnLines/*,
                 forceFit: me.forceFit,
                 sortable: me.sortableColumns,
                 enableColumnMove: me.enableColumnMove,
                 enableColumnResize: me.enableColumnResize,
-                columnLines: me.columnLines,
                 sealed: me.sealedColumns*/
             });
 
@@ -51,6 +57,8 @@ define(function(require){
             }
             me.headerCt = new Header(headerCtCfg);
             me.items = [me.headerCt];
+            //me.items = [me.headerCt];
+            //me.columnManager = me.headerCt.columnManager;
 
 			/*this.table = new Table($.extend(options,{
 				collection:this.collection,
@@ -58,22 +66,26 @@ define(function(require){
 				sortable:this.sortable,
 				renderTo:this.$el.find('.panel-body')
 			}));*/
-			viewConfig = _.extend({
+			me.viewConfig = me.viewConfig || {};
+			/*viewConfig = _.extend({
                 // TableView injects the view reference into this grid so that we have a reference as early as possible
                 // and Features need a reference to the grid.
                 // For these reasons, we configure a reference to this grid into the View
                 grid: me,
+                cls:Table,
                 renderTo:me.bodyEl,
                 collection:me.collection,
                 ownerGrid: me.ownerGrid,
                 headerCt: me.headerCt,
                 panel: me,
                 emptyText: me.emptyText || ''
-            }, me.viewConfig);
+            }, me.viewConfig);*/
 
-            me.items.push(_.extend({
-            	cls:Table
-            },viewConfig));
+            if (!me.hasView) {
+            	view = me.getView();
+            }
+
+            me.items.push(view);
 			Panel.prototype.initComponent.apply(this,[options]);
 
 
@@ -110,13 +122,24 @@ define(function(require){
 			this.collection.on('sync',function(){
 				this.html();
 			},this);*/
-			var headElHeight = me.headEl.outerHeight();
-			me.$el.css('padding-top',headElHeight+'px');
-			me.headEl.css('margin-top','-' + headElHeight+'px')
+			var headEl = me.headEl;
+			if(headEl){
+				var headElHeight = me.headEl.outerHeight();
+				me.$el.css('padding-top',headElHeight+'px');
+				me.headEl.css('margin-top','-' + headElHeight+'px')
+			}
 			if (me.hideHeaders) {
                 me.bodyEl.css('padding-top',0)
             }
 		},
+
+	    getColumnManager: function() {
+	        return this.columnManager;
+	    },
+
+	    getVisibleColumnManager: function() {
+	        return this.visibleColumnManager;
+	    },
 		getTplData:function(){
 			return $.extend(Panel.prototype.getTplData.apply(this,arguments),{
 				content:''
@@ -136,9 +159,53 @@ define(function(require){
 	        }
 	        return fullWidth;
 		},
+		getView:function(){
+			var me = this,
+            scroll, scrollable, viewConfig;
+            if (!me.view) {
+            	viewConfig = me.viewConfig;
+            	viewConfig = _.extend({
+	                // TableView injects the view reference into this grid so that we have a reference as early as possible
+	                // and Features need a reference to the grid.
+	                // For these reasons, we configure a reference to this grid into the View
+	                grid: me,
+	                cls:Table,
+	                renderTo:me.bodyEl,
+	                collection:me.collection,
+	                ownerGrid: me.ownerGrid,
+                	columnLines: me.columnLines,
+	                headerCt: me.headerCt,
+	                panel: me,
+	                features: me.features,
+	                emptyText: me.emptyText || ''
+	            }, me.viewConfig);
 
-	    getVisibleColumnManager: function() {
-	        return this.columns;
+				taurus.create(viewConfig);
+
+				me.view.on({
+	                uievent: me.processEvent,
+	                scope: me
+	            });
+            }
+            return me.view;
+		},
+
+	    /**
+	     * @private
+	     * Processes UI events from the view. Propagates them to whatever internal Components need to process them.
+	     * @param {String} type Event type, eg 'click'
+	     * @param {Ext.view.Table} view TableView Component
+	     * @param {HTMLElement} cell Cell HTMLElement the event took place within
+	     * @param {Number} recordIndex Index of the associated Store Model (-1 if none)
+	     * @param {Number} cellIndex Cell index within the row
+	     * @param {Ext.event.Event} e Original event
+	     */
+	    processEvent: function(type, view, cell, recordIndex, cellIndex, e, record, row) {
+	        var header = e.position.column;
+
+	        if (header) {
+	            return header.processEvent.apply(header, arguments);
+	        }
 	    },
 		renderHtml:function(){
 			this.$el.find('.panel-body').empty();

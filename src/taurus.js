@@ -31,7 +31,7 @@ define(function(require) {
 	};
 	d("taurus", {
 		itemPathPrefix:'',
-		baseCSSPrefix : "g-",
+		baseCSSPrefix : "",
 		BLANK_IMAGE_URL : "data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
 		copyTo : function(dest, source, names, usePrototypeKeys) {
 			if ( typeof names == "string") {
@@ -157,6 +157,24 @@ define(function(require) {
 			}
 			return cmp
 		},
+		isDbcCase:function(c){
+			// 基本拉丁字母（即键盘上可见的，空格、数字、字母、符号）  
+		    if (c >= 32 && c <= 127) {  
+		        return true;
+		    }   
+		    // 日文半角片假名和符号  
+		    else if (c >= 65377 && c <= 65439) {  
+		        return true;
+		    }  
+		},
+		create:function(){
+			var cls;
+			if(arguments.length == 1){
+				cls = arguments[0].cls;
+				delete arguments[0].cls;
+			}
+			new cls(arguments[0]);
+		}
 	});
 	/*(function() {
 		var check = function(regex) {

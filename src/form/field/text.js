@@ -13,11 +13,13 @@
 define(function(require) {
 	var Base = require("./base"),
 	Modernizr = require('modernizr'),
+	taurus = require('../../taurus'),
 	_ = require('underscore');
 	return Base.extend({
 		allowBlank : true,
 		blankText : 'This field is required',
 		minLengthText : 'The minimum length for this field is <%=len%>',
+		maxLengthText:'The maximum length for this field is <%=len%>',
 		getErrors : function(value) {
 			var errors = Base.prototype.getErrors.apply(this, arguments), regex = this.regex, validator = this.validator;
 			if (value.length < 1 || value === this.emptyText) {
@@ -33,14 +35,14 @@ define(function(require) {
 	            }
 	        }
 
-			if (value.length < this.minLength) {
-				errors.push(_.template(this.minLengthText, {
+			if (this.getStrLen(value) < this.minLength) {
+				errors.push(_.template(this.minLengthText)({
 					len : this.minLength
 				}));
 			}
 
-			if (value.length < this.maxLength) {
-				errors.push(_.template(this.maxLengthText, {
+			if (this.getStrLen(value) > this.maxLength) {
+				errors.push(_.template(this.maxLengthText)({
 					len : this.maxLength
 				}));
 			}
@@ -48,6 +50,20 @@ define(function(require) {
 				errors.push(this.regexText || this.invalidText);
 			}
 			return errors;
+		},
+		getStrLen:function(str){
+			var len = 0;  
+		    var i;  
+		    var c;  
+		    for (var i=0;i<str.length;i++){  
+		        c = str.charCodeAt(i);  
+		        if (taurus.isDbcCase(c)) { //半角  
+		            len = len + 1;  
+		        } else { //全角  
+		            len = len + 2;  
+		        }  
+		    }  
+		    return len;  
 		},
 		getRawValue : function() {
 			var v = Base.prototype.getRawValue.apply(this, arguments);

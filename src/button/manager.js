@@ -2,7 +2,8 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Class = require('../class');
+	var Class = require('../class'),
+	taurus = require('../taurus');
 	return new (Class.extend({
 		groups: {},
 		init: function() {

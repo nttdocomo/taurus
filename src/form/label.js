@@ -5,12 +5,14 @@ define(function(require) {
 	var Base = require("../view/base");
 	var ActiveErrors = require("../view/activeErrors");
 	return Base.extend({
-		tpl:'<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%=fieldLabel%></label><%}%><div style="<%=controlsStyle%>"><%=field%></div><%if(fieldLabel){%><%}%>',
+		tpl:'<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%=fieldLabel%><%if(labelSeparator){%><%=labelSeparator%><%}%></label><%}%><div style="<%=controlsStyle%>"><%=field%></div><%if(fieldLabel){%><%}%>',
 		className : "form-group",
 		labelWidth : 100,
 		labelAlign : 'left',
 		labelPad : 5,
+		msgTarget : 'under',
 		showLabel:true,
+		labelSeparator : ':',
 		childEls: {
 			'inputEl' : '.form-control'
 		},
@@ -37,14 +39,16 @@ define(function(require) {
 			return controlsStyle;
 		},
 		getTplData : function(data) {
+			var me = this;
 			data = $.extend({
 				field:'',
-				inputId : this.cid,
-				fieldLabel : this.fieldLabel,
-				labelStyle : this.getLabelStyle(),
-				controlsStyle : this.getControlsStyle()
+				inputId : me.cid,
+				fieldLabel : me.fieldLabel,
+				labelStyle : me.getLabelStyle(),
+				controlsStyle : me.getControlsStyle(),
+				labelSeparator: me.labelSeparator
 			},data);
-			return Base.prototype.getTplData.call(this, data)
+			return Base.prototype.getTplData.call(me, data)
 		},
 		unsetActiveError: function() {
 	        delete this.activeError;
@@ -61,8 +65,20 @@ define(function(require) {
 	        this.activeError = (new ActiveErrors({})).renderHtml(errors);
 	        this.renderActiveError();
 	    },
+
+	    /**
+	     * Tells whether the field currently has an active error message. This does not trigger validation on its own, it
+	     * merely looks for any message that the component may already hold.
+	     * @return {Boolean}
+	     */
+	    hasActiveError: function() {
+	        return !!this.getActiveError();
+	    },
 		renderActiveError:function(){
-			var activeError = this.getActiveError();
+			var activeError = this.getActiveError(),
+			sideError = this.msgTarget === 'side',
+            underError = this.msgTarget === 'under',
+            renderError = sideError || underError;
 			if(this.$el.hasClass('has-error')){
 				this.bodyEl.find('.help-block').remove();
 			}
@@ -70,7 +86,7 @@ define(function(require) {
 	            this.trigger('errorchange', activeError);
 	            this.lastActiveError = activeError;
 			}
-			if(activeError){
+			if(activeError && renderError){
 				this.bodyEl.append(activeError);
 				this.$el.addClass('has-error');
 			} else {
@@ -80,6 +96,16 @@ define(function(require) {
 		hasActiveError: function() {
 	        return !!this.getActiveError();
 	    },
+
+	    /**
+	     * Gets an Array of any active error messages currently applied to the field. This does not trigger validation on
+	     * its own, it merely returns any messages that the component may already hold.
+	     * @return {String[]} The active error messages on the component; if there are no errors, an empty Array is
+	     * returned.
+	     */
+	    getActiveErrors: function() {
+	        return this.activeErrors || [];
+	    },
 		getActiveError : function() {
 			return this.activeError || '';
 		},
@@ -88,6 +114,30 @@ define(function(require) {
 				'bodyEl' : '> div'
 			});
 			Base.prototype.applyChildEls.call(this, childEls);
-		}
+		},
+
+	    /**
+	     * Returns the label for the field. Defaults to simply returning the {@link #fieldLabel} config. Can be overridden
+	     * to provide a custom generated label.
+	     * @template
+	     * @return {String} The configured field label, or empty string if not defined
+	     */
+	    getFieldLabel: function() {
+	        return this.trimLabelSeparator();
+	    },
+
+	    /**
+	     * Returns the trimmed label by slicing off the label separator character. Can be overridden.
+	     * @return {String} The trimmed field label, or empty string if not defined
+	     */
+	    trimLabelSeparator: function() {
+	        var me = this,
+	            separator = me.labelSeparator,
+	            label = me.fieldLabel || '',
+	            lastChar = label.substr(label.length - 1);
+
+	        // if the last char is the same as the label separator then slice it off otherwise just return label value
+	        return lastChar === separator ? label.slice(0, -1) : label;
+	    }
 	});
 });

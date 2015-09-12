@@ -55,6 +55,13 @@ define(function(require){
 		},
 		getItemContainer : function() {
 			return Base.prototype.getItemContainer.apply(this,arguments).find('.panel-body');
-		}
+		},
+		/**
+         * This is used to determine where to insert the 'html', 'contentEl' and 'items' in this component.
+         * @private
+         */
+        getTargetEl: function() {
+            return this.frameBody || this.$el.find('>.panel-body');
+        }
 	}));
 });

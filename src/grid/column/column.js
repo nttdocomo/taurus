@@ -9,9 +9,19 @@ define(function(require) {
 		ascSortCls : 'column-header-sort-ASC',
 		descSortCls : 'column-header-sort-DESC',
 		sortable:false,
+		rendererNames: {
+	        column: 'renderer',
+	        edit: 'editRenderer',
+	        summary: 'summaryRenderer'
+	    },
 		tpl : '<div id="<%=id%>-titleEl" class="column-header-inner"><span id="<%=id%>-textEl" class="column-header-text"><%=text%></span><%if(sortable){%> <span class="caret"></span><%}%></div>',
 		initialize : function() {
 			Base.prototype.initialize.apply(this, arguments);
+		},
+		initComponent:function(){
+			var me = this;
+			me.setupRenderer();
+			Base.prototype.initComponent.apply(this, arguments);
 		},
 		/*delegateEvents : function(events) {
 			var events = $.extend(events || {}, this.events, {
@@ -19,7 +29,6 @@ define(function(require) {
 			});
 			Base.prototype.delegateEvents.call(this, events);
 		},*/
-
 		doSort : function(state) {
 			var me = this, collection = this.$el.parents('.grid').data('component').collection;
 			collection.setSort(me.getSortParam(), state.toLowerCase());
@@ -62,10 +71,48 @@ define(function(require) {
 	        var sortable = this.sortable;
 	        return sortable;
 	    },
+
+	    isColumnHidden: function(rootHeader) {
+	        var owner = this.getRefOwner();
+	        while (owner && owner !== rootHeader) {
+	            if (owner.$el.is(':hidden')) {
+	                return true;
+	            }
+	            owner = owner.getRefOwner();
+	        }
+	        return false;
+	    },
 		onTitleElClick : function() {
 			this.toggleSortState();
 		},
 
+	    /**
+	     * @private
+	     * Process UI events from the view. The owning TablePanel calls this method, relaying events from the TableView
+	     * @param {String} type Event type, eg 'click'
+	     * @param {Ext.view.Table} view TableView Component
+	     * @param {HTMLElement} cell Cell HTMLElement the event took place within
+	     * @param {Number} recordIndex Index of the associated Store Model (-1 if none)
+	     * @param {Number} cellIndex Cell index within the row
+	     * @param {Ext.event.Event} e Original event
+	     */
+	    processEvent: function(type, view, cell, recordIndex, cellIndex, e) {
+	        /*return this.trigger.apply(this, arguments);*/
+	    },
+	    setupRenderer:function(type){
+	        type = type || 'column';
+
+	        var me = this,
+	            //format   = me[me.formatterNames[type]],
+	            renderer = me[me.rendererNames[type]],
+	            isColumnRenderer = type === 'column',
+	            scoped;
+
+	        if (isColumnRenderer && me.defaultRenderer) {
+                me.renderer = me.defaultRenderer;
+                me.usingDefaultRenderer = true;
+            }
+	    },
 	    sort: function(direction) {
 	        var me = this,
 	            grid = me.ownerCt.grid,

@@ -23,6 +23,19 @@ define(function(require) {
 			Base.prototype.initialize.apply(this,arguments);
 			this.collection.on('sync',_.bind(this.refresh,this));
 		},
+		initComponent:function(){
+			var me = this,
+			itemCls = me.itemCls;
+			me.itemSelector = "." + itemCls;
+			Base.prototype.initComponent.apply(this,arguments);
+		},
+		delegateEvents : function(events) {
+			events = events || {};
+			events['click ' + this.itemSelector] = 'onItemClick';
+			var events = $.extend({}, this.events, events);
+			Base.prototype.delegateEvents.call(this, events);
+			this.selection = new Backbone.Collection;
+		},
 		onItemSelect:function(record){
 			var node = this.getNode(record);
 			node.addClass(this.selectedItemCls);

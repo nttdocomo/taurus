@@ -13,22 +13,22 @@
 (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(["./comboBox","../../picker/time",'../../underscore','../../moment'], factory);
+			define(["./comboBox","./picker","../../picker/time",'../../underscore','../../moment','../../backbone'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-		        return factory(require('./comboBox'),require("../../picker/time"),require('../../underscore'),require('../../moment'));
+		        return factory(require('./comboBox'),require("./picker"),require("../../picker/time"),require('../../underscore'),require('../../moment'),require('../../backbone'));
 		     })
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require("./comboBox"),require("../../picker/time"),require('../../underscore'),require('../../moment'));
+		module.exports = factory(require("./comboBox"),require("./picker"),require("../../picker/time"),require('../../underscore'),require('../../moment'),require('../../backbone'));
 	} else {
 		root.myModule = factory();
 	}
-}(this, function(Base,Time,_,moment) {
+}(this, function(Base,Picker,Time,_,moment,Backbone) {
 	return Base.extend({
 		format:'H:mm',
-		initDateParts: [2008, 1, 1],
+		initDateParts: [2008, 0, 1],
 		increment: 15,
 		queryMode: 'local',
 		displayField: 'disp',
@@ -115,7 +115,7 @@
 	            d = me.parseDate(value);
 	        }
 	        else if (_.isDate(value)) {
-	            d = value;
+	            d = moment(value);
 	        }
 	        console.log(d)
 	        if (d) {
@@ -174,6 +174,54 @@
 	            value = me.getValue();
 
 	        return value ? value.format(format) : null;
+	    },
+
+		rawToValue: function (item) {
+		    var me = this,
+		        items, values, i, len;
+
+		    if (me.multiSelect) {
+		        values = [];
+		        items = Ext.Array.from(item);
+
+		        for (i = 0, len = items.length; i < len; i++) {
+		            values.push(me.parseDate(items[i]));
+		        }
+
+		        return values;
+		    }
+
+		    return me.parseDate(item);
+		},
+
+	    setValue: function (v) {
+	        var me = this;
+
+	        // The timefield can get in a loop when creating its picker. For instance, when creating the picker, the
+	        // timepicker will add a filter (see TimePicker#updateList) which will then trigger the checkValueOnChange
+	        // listener which in turn calls into here, rinse and repeat.
+	        // if (me.creatingPicker) {
+	        //     return;
+	        // }
+
+	        // Store MUST be created for parent setValue to function.
+	        me.getPicker();
+
+	        if (_.isString(v)) {
+	            v = me.parseDate(v);
+	        }
+
+	        if (_.isDate(v)) {
+	        	v = moment(v);
+	        }
+
+	        if(v instanceof Backbone.Model){
+	        	v = v.get('date')
+	        }
+	        v = me.getInitDate(v.hour(), v.minute(), v.second());
+	        v = v.format(this.format);
+
+	        return Picker.prototype.setValue.apply(this,arguments);
 	    }
 	});
 }));

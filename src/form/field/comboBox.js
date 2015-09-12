@@ -372,7 +372,7 @@ define(function(require) {
 				}
 			}
 			this.displayTplData = displayTplData;
-			this.value = this.multiSelect ? processedValue : processedValue[0];
+			this.value = this.multiSelect ? processedValue : processedValue[0] || '';
 			return Picker.prototype.setValue.apply(this, [this.value]);
 		},
 		clearValue : function() {
@@ -386,6 +386,14 @@ define(function(require) {
 		},
 		valueToRaw : function(value) {
 			return Picker.prototype.valueToRaw.apply(this, [this.getDisplayValue()]);
-		}
+		},
+		disable:function(){
+			Picker.prototype.disable.apply(this,arguments);
+			this.$el.find('.form-trigger').attr('disabled',true);
+		},
+		enable:function(){
+			Picker.prototype.enable.apply(this,arguments);
+			this.$el.find('.form-trigger').attr('disabled',false);
+   		}
 	});
 });

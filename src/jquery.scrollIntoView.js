@@ -12,11 +12,18 @@
  * @version 0.2
  */
  (function(factory) {
-    if (typeof define === 'function' && define.cmd) {
-        define(function(require, exports, module){
-          var $ = require('jquery');
-          factory($);
-        })
+    if (typeof define === 'function') {
+        if(define.amd){
+            define(['jquery'],function($){
+                factory($);
+            })
+        }
+        if(define.cmd){
+            define(function(require, exports, module){
+              var $ = require('jquery');
+              factory($);
+            })
+        }
 
       // Finally, as a browser global.
     }

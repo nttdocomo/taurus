@@ -27,6 +27,13 @@ define(function(require) {
 				this.setElement(_.result(this, 'el'), false);
 			}
 		},
+		getRefOwner: function () {
+	        var me = this;
+	        
+	        // Look for both ownerCt (classic toolkit) and parent (modern toolkit)
+	        // Look for ownerCmp before floatParent for scenarios like a button menu inside a floating window.
+	        return me.ownerCt || me.parent || me.$initParent || me.ownerCmp || me.floatParent;
+	    },
 		initCls: function() {
             var me = this,
                 cls = [me.baseCls];/*,
@@ -288,7 +295,7 @@ define(function(require) {
 			}
 		},
 		applyChildEls : function(childEls) {
-			var childEls = $.extend(this.childEls, childEls);
+			var childEls = $.extend({},this.childEls, childEls);
 			for (var k in childEls) {
 				this[k] = this.$el.find(childEls[k]);
 			}
@@ -504,6 +511,26 @@ define(function(require) {
 			 me.getItemContainer().append(item.render().$el);
 			 });
 			 this.afterRender();*/
+		},
+		removeItem:function(component, autoDestroy){
+	        var me = this,
+	            c = me.getComponent(component);
+	        me.doRemove(c,autoDestroy);
+			me.updateItems();
+			return c;
+		},
+		doRemove:function(component,doDestroy){
+			var me = this,
+			doDestroy = doDestroy === true || (doDestroy !== false && this.autoDestroy),
+			isDestroying = component.destroying || doDestroy,
+			index = _.indexOf(me.items,component);
+			me.items.splice(index,1)
+			component.onRemoved(isDestroying);
+		},
+		onRemoved:function(destroying){
+			if(destroying){
+				this.remove()
+			}
 		},
 		updateItems:function(){
 			var me = this;

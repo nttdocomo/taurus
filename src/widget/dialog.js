@@ -4,9 +4,10 @@
 define(function(require){
 	var Base = require('../view/base');
 	return taurus.view("taurus.widget.Dialog", Base.extend({
-		tpl:'<div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title"><%=title%></h4></div><div class="modal-body"><%=content%></div><%=footer%></div></div>',
+		tpl:'<div class="modal-dialog"><div class="modal-content"><%if(header){%><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title"><%=title%></h4></div><%}%><div class="modal-body"><%=content%></div><%=footer%></div></div>',
 		className:'modal fade',
 		content:null,
+		header:true,
 		events:{
 			'click [data-dismiss="modal"]' : 'close'
 		},
@@ -16,6 +17,7 @@ define(function(require){
 		getTplData : function() {
 			var data = Base.prototype.getTplData.apply(this,arguments);
 			return $.extend(data,{
+				'header':this.header,
 				'title':this.title,
 				'content':this.content,
 				'footer':''
@@ -58,10 +60,9 @@ define(function(require){
 			});
 			Base.prototype.applyChildEls.call(this,childEls);
 		},
-		html : function() {
-			var html = Base.prototype.html.apply(this, arguments);
+		render : function() {
+			Base.prototype.render.apply(this, arguments);
 			this.$el.find('.modal-dialog').width(this.width);
-			return html;
 		},
 		setHeight : function(height) {},
 		setWidth : function(width) {}

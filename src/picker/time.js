@@ -37,12 +37,19 @@
 	        // Set up absolute min and max for the entire day
             me.absMin = moment(initDate),
             me.absMax = moment(initDate).add(24*60-1,'m');
+			this.collection.on('reset',_.bind(this.refresh,this));
 
 	        // Updates the range filter's filterFn according to our configured min and max
 	        me.updateList();
 
 	        Base.prototype.initComponent.apply(this,arguments);
 	    },
+		refresh:function(){
+			var me = this;
+			me.renderHtml();
+			//this.$el.css('height','auto');
+			me.trigger('refresh');
+		},
 
 	    /**
 	     * Set the {@link #minValue} and update the list of available times. This must be a Date object (only the time
@@ -57,9 +64,9 @@
 	    	var me = this,
             min = me.minValue || me.absMin,
             max = me.maxValue || me.absMax;
-	    	console.log(this.collection.filter(function(item){
+	    	this.collection.reset(this.collection.filter(function(item){
 	    		//console.log(item);
-	    		return item.get('date') >= min && item.get('date') <= max;
+	    		return item.get('date').isAfter(min) && item.get('date').isBefore(max);
 	    	}))
 	    }
 	},{

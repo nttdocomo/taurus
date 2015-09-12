@@ -46,6 +46,7 @@
 		},
 		initialize : function(options) {
 			Base.prototype.initialize.apply(this, arguments);
+			this.setStartDate();
 			this.setEndDate();
 			this.weekStart = this.weekStart || 0;
 			this.fillHtml();
@@ -55,6 +56,11 @@
 		setEndDate:function(){
 			if(_.isString(this.endDate)){
 				this.endDate = moment(this.endDate)
+			}
+		},
+		setStartDate:function(){
+			if(_.isString(this.startDate)){
+				this.startDate = moment(this.startDate)
 			}
 		},
 		fillHtml:function(){
@@ -173,7 +179,7 @@
 						clsName += ' new';
 					}
 				}
-				if (prevMonth.valueOf() > this.endDate) {
+				if (prevMonth.valueOf() > this.endDate || prevMonth.valueOf() < this.startDate) {
 					clsName += ' disabled';
 				}
 				if (prevMonth.valueOf() == currentDate) {

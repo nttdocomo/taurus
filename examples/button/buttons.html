@@ -29,6 +29,11 @@
 		<!-- Bootstrap core JavaScript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="../../src/sea.js" data-config="../config" data-main="../button/buttons"></script>
+		<script type="text/javascript" src="../../src/LAB.min.js"></script>
+		<script type="text/javascript">
+			$LAB.script('../../src/sea-debug.js').wait().script('../config.js').wait(function(){
+				seajs.use("../button/buttons");
+			});
+		</script>
 	</body>
 </html>

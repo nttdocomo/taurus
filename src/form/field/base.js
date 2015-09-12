@@ -31,7 +31,7 @@ define(function(require) {
 		invalidText : 'The value in this field is invalid',
 		checkChangeBuffer : 50,
 		fieldSubTpl:'<input id="<%=id%>" type="<%=type%>" class="form-control <%=fieldCls%>"<%if(typeof(placeholder) !== "undefined"){%> placeholder="<%=placeholder%>"<%}%><%if(typeof(value) !== "undefined"){%> value="<%=value%>"<%}%><%if(typeof(checked) !== "undefined"){%> checked="<%=checked%>"<%}%><%if(readOnly){%> readonly="readonly"<%}%> name="<%=name%>" />',
-		checkChangeEvents : !Modernizr.hasEvent('dragdrop',document.createElement('input')) && (!document.documentMode || document.documentMode < 9) ? ['change', 'propertychange'] : ['change', 'input', 'textInput', 'keyup', 'dragdrop'],
+		checkChangeEvents : !Modernizr.hasEvent('dragdrop',document.createElement('input')) && (!document.documentMode || document.documentMode < 9) ? ['change', 'propertychange','keyup'] : ['change', 'input', 'textInput', 'keyup', 'dragdrop'],
 		/**
 		 * @private
 		 */
@@ -59,10 +59,6 @@ define(function(require) {
 		},
 		initField:function(){
 			this.initValue();
-		},
-		initValue : function() {
-			this.originalValue = this.lastValue = this.value;
-			if(!_.isUndefined(this.value)) this.setValue(this.value);
 		},
 		rawToValue : function(rawValue) {
 			return rawValue;
@@ -139,14 +135,6 @@ define(function(require) {
 		setRawValue : function(value) {
 			this.rawValue = value;
 			this.inputEl && this.inputEl.val(value);
-		},
-		checkChange : function() {
-			var newVal = this.getValue(), oldVal = this.lastValue;
-			if (!_.isEqual(newVal, oldVal)) {
-				this.lastValue = newVal;
-				this.trigger('change', newVal, oldVal);
-				this.onChange(newVal, oldVal);
-			}
 		},
 		valueToRaw : function(value) {
 			return '' + value ? value : "";

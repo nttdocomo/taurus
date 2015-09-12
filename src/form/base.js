@@ -4,8 +4,14 @@
 define(function(require) {
 	var Base = require('../view/base'),
 	_ = require('underscore');
-	return taurus.view("taurus.form.Base", Base.extend({
+	return Base.extend({
 		tagName : 'form',
+		initialize:function(){
+			Base.prototype.initialize.apply(this,arguments);
+			this.$el.on('submit',function(){
+				return false;
+			});
+		},
 		getFields:function(){
 			return this.$el.find('.form-field').map(function(i,item){
 				return item.data('component')
@@ -120,5 +126,5 @@ define(function(require) {
 			}
 			return false;
 		},
-	}));
+	});
 });

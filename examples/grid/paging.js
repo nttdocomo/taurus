@@ -5,6 +5,8 @@ define(function(require) {
 	var PageableCollection = require("backbone-pageable"),
 	Panel = require("../../src/panel/panel.js"),
 	Table = require("../../src/panel/table.js"),
+	ActionColumn = require("../../src/grid/column/action"),
+	NumberColumn = require("../../src/grid/column/rowNumberer"),
 	$body = $("#main"),
 	Collection =PageableCollection.extend({
 		//url: "json/pageable-territories.json",
@@ -194,8 +196,11 @@ define(function(require) {
 		refreshable : true,
 		height : 350,
 		width : 600,
+		columnLines:true,
 		title : 'Array Grid',
 		columns : [{
+			cls:NumberColumn
+		},{
 			text : 'Company',
 			flex : 1,
 			sortable : false,
@@ -220,6 +225,19 @@ define(function(require) {
 			width : 105,
 			sortable : false,
 			dataIndex : 'lastChange'
+		}, {
+			text : 'Action',
+			width : 105,
+			sortable : false,
+			cls:ActionColumn,
+			items: [{
+                iconCls: 'array-grid-sell-col',
+                tooltip: 'Sell stock',
+                handler: function(grid, rowIndex, colIndex) {
+                    var rec = grid.getStore().getAt(rowIndex);
+                    Ext.Msg.alert('Sell', 'Sell ' + rec.get('name'));
+                }
+            }]
 		}],
 		collection : collection,
 		renderTo : $body

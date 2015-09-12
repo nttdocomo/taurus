@@ -2,23 +2,25 @@
  * @author nttdocomo
  */
 define(function(require){
-	var Base = require('./base'),
+	var Base = require('./view'),
 	Thead = require('./tableHeader'),
 	TableBody = require('./tableBody'),
+	Backbone = require('backbone'),
 	_ = require('underscore');
 	return Base.extend({
 		header:true,
 		tpl:'<div class="grid-item-container"><table><%=rows%></table></div>',
-		rowTpl:['<tr>',
+		rowTpl:['<tr class="<%=itemClasses.join(" ")%>" data-item-id="<%=record.cid%>">',
             '<%=cell%>',
         '</tr>'].join(''),
         cellTpl: [
-	        '<td class="<%=tdCls%>" <%=tdAttr%> style="<%if(tdStyle){%><%=tdStyle%><%}%>" tabindex="-1">',
+	        '<td class="<%=tdCls%>" <%=tdAttr%> style="<%if(tdStyle){%><%=tdStyle%><%}%>" tabindex="-1" data-column-id="<%=column.cid%>">',
 	            '<div class="grid-cell-inner" ',
 	                'style="text-align:<%=align%>;<%if(style){%><%=style%><%}%>"><%=value%></div>',
 	        '</td>'].join(''),
 		className:'grid-view',
-
+		itemCls: 'grid-item',
+		cellSelector: 'td.' + taurus.baseCSSPrefix + 'grid-cell',
 	    // Private properties used during the row and cell render process.
 	    // They are allocated here on the prototype, and cleared/re-used to avoid GC churn during repeated rendering.
 	    rowValues: {
@@ -41,7 +43,7 @@ define(function(require){
 	        var me = this;
 
 	        if (me.columnLines) {
-	            me.addCls(me.grid.colLinesCls);
+	            me.$el.addClass(me.grid.colLinesCls);
 	        }
 	        if (me.rowLines) {
 	            me.addCls(me.grid.rowLinesCls);
@@ -75,6 +77,7 @@ define(function(require){
 	        Base.prototype.initComponent.apply(this,arguments);
 	        me.collection.on('sync',_.bind(me.reset,me));
 	        me.collection.on('reset',_.bind(me.reset,me));
+	        me.collection.on('update',_.bind(me.reset,me));
 	        $(window).on('resize',function(){
 	        	me.headerCt.setColumnsWidth(me.getCellsWidth())
 	        });
@@ -141,9 +144,108 @@ define(function(require){
 		getTplData:function(){
 			return {
 				//THead:this.renderTHead(),
-				rows:this.renderRows(this.collection.toJSON())
+				rows:this.renderRows(this.collection)
 			}
 		},
+
+	    /**
+	     * Returns a CSS selector which selects a particular column if the desired header is passed,
+	     * or a general cell selector is no parameter is passed.
+	     *
+	     * @param {Ext.grid.column.Column} [header] The column for which to return the selector. If
+	     * omitted, the general cell selector which matches **ant cell** will be returned.
+	     *
+	     */
+	    getCellSelector: function(header) {
+	        return header ? header.getCellSelector() : this.cellSelector;
+	    },
+
+	    getHeaderByCell: function(cell) {
+	        if (cell) {
+	            return this.ownerCt.getVisibleColumnManager().getHeaderById(cell.attr('data-column-id'));
+	        }
+	        return false;
+	    },
+		processItemEvent:function(record, item, rowIndex, e){
+	        var me = this,
+	            self = me.self,
+	            //map = self.EventMap,
+	            type = e.type,
+	            //features = me.features,
+	            //len = features.length,
+	            i, cellIndex, result, feature, column,
+	            eventPosition = e.position = me.eventPosition || {},//(me.eventPosition = new Ext.grid.CellContext()),
+	            row, cell/*,
+	            navModel = me.getNavigationModel()*/;
+	        if (me.indexInStore(item) !== -1) {
+	        	row = item;
+		        cell = e.getTarget(me.getCellSelector(), row);
+		        if(cell){
+		        	column = me.getHeaderByCell(cell);
+		        	cellIndex = me.ownerCt.getColumnManager().getHeaderIndex(column);
+		        }
+		        eventPosition.column = column;
+	        }
+			var result = me.trigger('uievent', type, me, cell, rowIndex, cellIndex, e, record, row);
+		},
+
+	    processSpecialEvent: function(e) {
+	        var me = this,
+	            features = me.features,
+	            ln = features.length,
+	            type = e.type,
+	            i, feature, prefix, featureTarget,
+	            beforeArgs, args,
+	            panel = me.ownerCt;
+
+	        Base.prototype.processSpecialEvent.apply(this,arguments);
+
+	        if (type === 'mouseover' || type === 'mouseout') {
+	            return;
+	        }
+
+	        type = me.constructor.TouchEventMap[type] || type;
+	        for (i = 0; i < ln; i++) {
+	            feature = features[i];
+	            if (feature.hasFeatureEvent) {
+	                featureTarget = e.getTarget(feature.eventSelector, me.getTargetEl());
+	                if (featureTarget) {
+	                    prefix = feature.eventPrefix;
+	                    // allows features to implement getFireEventArgs to change the
+	                    // fireEvent signature
+	                    beforeArgs = feature.getFireEventArgs('before' + prefix + type, me, featureTarget, e);
+	                    args = feature.getFireEventArgs(prefix + type, me, featureTarget, e);
+
+	                    if (
+	                        // before view event
+	                        (me.fireEvent.apply(me, beforeArgs) === false) ||
+	                        // panel grid event
+	                        (panel.fireEvent.apply(panel, beforeArgs) === false) ||
+	                        // view event
+	                        (me.fireEvent.apply(me, args) === false) ||
+	                        // panel event
+	                        (panel.fireEvent.apply(panel, args) === false)
+	                    ) {
+	                        return false;
+	                    }
+	                }
+	            }
+	        }
+	        return true;
+	    },
+
+	    indexInStore: function(node) {
+	        // We cannot use the stamped in data-recordindex because that is the index in the original configured store
+	        // NOT the index in the dataSource that is being used - that may be a GroupStore.
+	        return node ? this.collection.indexOf(this.getRecord(node)) : -1;
+	    },
+	    getRecord:function(node){
+	    	if(node instanceof Backbone.Model){
+	    		return node;
+	    	} else {
+	    		return Base.prototype.getRecord.call(this,node)
+	    	}
+	    },
 		renderRows:function(rows, viewStartIndex){
 	        var rowValues = this.rowValues,
 	            rowCount = rows.length,
@@ -155,7 +257,7 @@ define(function(require){
 	        //rowValues.columns = columns;
 	        for (i = 0; i < rowCount; i++, viewStartIndex++) {
 	            rowValues.itemClasses.length = rowValues.rowClasses.length = 0;
-	            html += this.renderRow(rows[i], i, viewStartIndex);
+	            html += this.renderRow(rows.at(i), i, viewStartIndex);
 	        }
 
 	        // Dereference objects since rowValues is a persistent on our prototype
@@ -165,14 +267,18 @@ define(function(require){
 		renderRow:function(record, recordIndex, rowIndex){
 			var me = this,
 			columns,
-			rowValues = me.rowValues;
-			rowValues.record = record
+	        itemCls = me.itemCls,
+			rowValues = me.rowValues,
+	        itemClasses = rowValues.itemClasses;
+			rowValues.record = record;
+	        rowValues.itemCls = rowValues.rowCls = '';
 			if (!rowValues.columns) {
-	            columns = rowValues.columns = me.ownerCt.getVisibleColumnManager()//.getColumns();
+	            columns = rowValues.columns = me.ownerCt.getVisibleColumnManager().getColumns();
 	        } else {
 	        	columns = rowValues.columns;
 	        }
-			return _.template(this.rowTpl,_.extend(rowValues,{
+	        itemClasses[0] = itemCls;
+			return _.template(this.rowTpl)(_.extend(rowValues,{
 				cell:me.renderCells(columns, record, recordIndex, rowIndex)
 			},me.tableValues));
 		},
@@ -186,7 +292,8 @@ define(function(require){
 			var me = this,
 			cellValues = me.cellValues,
 			classes = cellValues.classes,
-			fieldValue = record[column.dataIndex];
+			clsInsertPoint,
+			fieldValue = record.get(column.dataIndex);
 			cellValues.align = column.align;
 			cellValues.column = column;
 			cellValues.tdCls = cellValues.tdStyle = cellValues.tdAttr = cellValues.style = "";
@@ -194,9 +301,10 @@ define(function(require){
 				cellValues.tdStyle = 'width:'+column.cellWidth+'px;';
 				cellValues.style = 'width:'+column.cellWidth+'px;';
 			}
+			clsInsertPoint = 2;
 			if (column.renderer && column.renderer.call) {
 	            fullIndex = me.ownerCt.columnManager.getHeaderIndex(column);
-	            value = column.renderer.call(column.usingDefaultRenderer ? column : column.scope || me.ownerCt, fieldValue, cellValues, record, recordIndex, fullIndex, me.dataSource, me);
+	            value = column.renderer.call(column.usingDefaultRenderer ? column : column.scope || me.ownerCt, fieldValue, cellValues, record, recordIndex, fullIndex, me.collection, me);
 	            if (cellValues.css) {
 	                // This warning attribute is used by the compat layer
 	                // TODO: remove when compat layer becomes deprecated
@@ -214,7 +322,7 @@ define(function(require){
 	        }
 	        cellValues.tdCls = classes.join(' ');
 			cellValues.value = (value == null || value === '') ? column.emptyCellText : value;
-			return _.template(this.cellTpl,_.extend(cellValues));
+			return _.template(this.cellTpl)(_.extend(cellValues));
 		},
 		renderTHead:function(){
 	        var headers = this.headerFns,

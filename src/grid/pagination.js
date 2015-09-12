@@ -4,7 +4,7 @@
 define(function(require) {
 	var Base = require('../view/base'),
 	i18n = require('../i18n/zh-cn');
-	return taurus.view('taurus.view.Pagination', Base.extend({
+	return Base.extend({
 		//tpl:'<ul><li<% if (currentPage <= firstPage) { %> class="disabled"<%}%>><a href="#">Prev</a></li><% for(p=1;p<=totalPages;p++){%><li<% if (currentPage == p) { %> class="disabled"<% } %>><a href="#"><%= p %></a></li><%}%><li<% if (currentPage == totalPages) { %> class="disabled"<%}%>><a href="#">Next</a></li></ul>',
 		tpl:'<%=fastBackward%><%=backward%><span><%=pageDesc%></span><%=forward%><%=fastForward%>',
 		tagName:'div',
@@ -25,8 +25,10 @@ define(function(require) {
 		},
 		initialize : function() {
 			Base.prototype.initialize.apply(this,arguments);
-			this.collection.on('sync', this.html, this);
-			this.collection.on('reset', this.html, this);
+			this.collection.on('sync', this.renderHtml, this);
+			this.collection.on('reset', this.renderHtml, this);
+			this.collection.on('update', this.renderHtml, this);
+			this.collection.on('sort', this.renderHtml, this);
 		},
 		delegateEvents:function(){
 			var events = $.extend({}, this.events, {
@@ -64,5 +66,5 @@ define(function(require) {
 			}
 			return '';
 		}
-	}));
+	});
 });

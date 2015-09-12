@@ -5,7 +5,7 @@ define(function(require) {
 	var Base = require('../../view/base'),
 	Column = require('../column/column'),
 	ColumnManager = require('../columnManager');
-	return Base.extend({
+	return taurus.view('taurus.grid.header.Container',Base.extend({
 		className : 'grid-header-ct',
 		defaultType : Column,
 		events:{
@@ -16,7 +16,7 @@ define(function(require) {
 	        me.headerCounter = 0;
 	        me.plugins = me.plugins || [];
 	        me.defaults = me.defaults || {};
-
+	        me.defaults.columnLines = me.columnLines;
 	        if (!me.isGroupHeader) {
                 me.isRootHeader = true;
 
@@ -103,6 +103,12 @@ define(function(require) {
 	        return result;
 	    },
 
+	    // Find the topmost HeaderContainer
+	    getRootHeaderCt: function() {
+	        var me = this;
+	        return me.isRootHeader ? me : undefined;
+	    },
+
 	    getHeaderElByEvent: function(e) {
 	        return $(e.currentTarget);
 	    },
@@ -139,7 +145,18 @@ define(function(require) {
 	        me.gridVisibleColumns = result;
 
 	        return result;
-	    },
+	    }/*,
+
+	    isColumnHidden: function(rootHeader) {
+	        var owner = this.getRefOwner();
+	        while (owner && owner !== rootHeader) {
+	            if (owner.$el.is(':hidden')) {
+	                return true;
+	            }
+	            owner = owner.getRefOwner();
+	        }
+	        return false;
+	    }*/,
 
 	    onHeaderCtEvent: function(e, t) {
 	        var me = this,
@@ -236,5 +253,5 @@ define(function(require) {
 				}
 			}
 		}
-	});
+	}));
 });
