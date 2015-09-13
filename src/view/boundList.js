@@ -3,9 +3,10 @@
  */
 
 define(function(require) {
-	var Base = require('./view');
-	var _ = require("underscore");
-	var BoundListItem = require('./boundListItem');
+	var Base = require('./view'),
+	BoundListItem = require('./boundListItem'),
+	_ = require("underscore"),
+	Backbone = require('backbone');
 	return Base.extend({
 		//tpl:'<%=content%>',
 		id : 'listEl',
