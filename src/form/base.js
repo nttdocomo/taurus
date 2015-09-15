@@ -12,11 +12,6 @@ define(function(require) {
 				return false;
 			});
 		},
-		getFields:function(){
-			return this.$el.find('.form-field').map(function(i,item){
-				return item.data('component')
-			})
-		},
 		getValues : function() {
 			var values  = {},isArray = _.isArray;
 			items = this.getFields();
@@ -49,8 +44,23 @@ define(function(require) {
 			});
 			return values;
 		},
+	    query:function(queryString){
+	    	var query = queryString.match(/\[(.+?)\]/),
+	    	items = [];
+	    	_.each(this.items,function(item){
+	    		if(item[query[1]]){
+	    			items.push(item)
+	    		} else {
+		    		if(item.query){
+		    			items = items.concat(item.query(queryString))
+		    		}
+	    		}
+	    	})
+	    	return items;
+	    },
 		getFields:function(){
-			var fields = [];
+			return this.query('[isFormField]')
+			/*var fields = [];
 			function filterField(items){
 				_.each(items,function(item){
 					if(item.isFormField){
@@ -63,7 +73,7 @@ define(function(require) {
 				})
 			}
 			filterField(this.items);
-			return fields;
+			return fields;*/
 		},/*
 		getItemContainer:function(){
 			return this.$el.find('.modal-body');

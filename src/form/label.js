@@ -5,15 +5,15 @@ define(function(require) {
 	var Base = require("../view/base");
 	var ActiveErrors = require("../view/activeErrors");
 	return Base.extend({
-		tpl:'<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%=fieldLabel%><%if(labelSeparator){%><%=labelSeparator%><%}%></label><%}%><div style="<%=controlsStyle%>"><%=field%></div><%if(fieldLabel){%><%}%>',
+		tpl:'<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%=fieldLabel%><%if(labelSeparator){%><%=labelSeparator%><%}%></label><%}%><div style="<%=controlsStyle%>" id="<%=id%>-bodyEl"><%=field%></div><%if(fieldLabel){%><%}%><%if(renderError){%><div class="help-block" id="<%=id%>-errorEl" style="<%=controlsStyle%>"></div><%}%>',
 		className : "form-group",
 		labelWidth : 100,
 		labelAlign : 'left',
 		labelPad : 5,
-		msgTarget : 'under',
+		msgTarget : 'qtip',
 		showLabel:true,
 		labelSeparator : ':',
-		childEls: {
+		childEls:{
 			'inputEl' : '.form-control'
 		},
 		getLabelStyle : function() {
@@ -34,18 +34,21 @@ define(function(require) {
 		getControlsStyle:function(){
 			var controlsStyle='';
 			if (this.labelAlign !== 'top' && this.fieldLabel) {
-				controlsStyle = 'padding-left:15px;margin-left:'+(this.labelWidth + 5)+'px;';
+				controlsStyle = 'margin-left:'+(this.labelWidth + 5)+'px;';
 			}
 			return controlsStyle;
 		},
 		getTplData : function(data) {
-			var me = this;
+			var me = this,
+			sideError = (me.msgTarget === 'side'),
+            underError = (me.msgTarget === 'under');
 			data = $.extend({
 				field:'',
 				inputId : me.cid,
 				fieldLabel : me.fieldLabel,
 				labelStyle : me.getLabelStyle(),
 				controlsStyle : me.getControlsStyle(),
+				renderError: sideError || underError,
 				labelSeparator: me.labelSeparator
 			},data);
 			return Base.prototype.getTplData.call(me, data)
@@ -79,19 +82,19 @@ define(function(require) {
 			sideError = this.msgTarget === 'side',
             underError = this.msgTarget === 'under',
             renderError = sideError || underError;
-			if(this.$el.hasClass('has-error')){
+			/*if(this.$el.hasClass('has-error')){
 				this.bodyEl.find('.help-block').remove();
-			}
+			}*/
 			if(activeError !== this.lastActiveError){
 	            this.trigger('errorchange', activeError);
 	            this.lastActiveError = activeError;
 			}
 			if(activeError && renderError){
-				this.bodyEl.append(activeError);
 				this.$el.addClass('has-error');
 			} else {
 				this.$el.removeClass('has-error');
 			}
+			this.errorEl.html(activeError);
 		},
 		hasActiveError: function() {
 	        return !!this.getActiveError();
@@ -111,7 +114,8 @@ define(function(require) {
 		},
 		applyChildEls : function(childEls) {
 			var childEls = $.extend(childEls || {}, {
-				'bodyEl' : '> div'
+				'bodyEl' : '>[id$="bodyEl"]',
+				'errorEl' : '>[id$="errorEl"]'
 			});
 			Base.prototype.applyChildEls.call(this, childEls);
 		},

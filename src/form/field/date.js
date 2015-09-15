@@ -18,7 +18,7 @@
 	}
 }(this,function(Picker,DatePicker,_,moment) {
 	return taurus.view("taurus.form.field.Date", Picker.extend({
-		format : 'MM/DD/YYYY',
+		format : 'YYYY年MM月DD日',
 		triggerTpl : '<div class="input-group-btn"><button class="btn form-trigger btn-default" type="button"><i class="halflings calendar"></i></button></div>',
 		createPicker : function() {
 			var picker = new DatePicker({
@@ -84,8 +84,10 @@
 			return Picker.prototype.getValue.apply(this,arguments)
 		},
 		getSubmitValue:function(){
-			var value = this.getValue();
-			return value ? value.utc().format(this.format) : '';
+	        var format = this.submitFormat || this.format,
+	            value = this.getValue();
+
+	        return value ? value.format(format) : '';
 		},
 		rawToValue : function(rawValue) {
 			return moment(rawValue,this.format) || rawValue || null;

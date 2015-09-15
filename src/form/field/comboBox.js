@@ -334,10 +334,14 @@ define(function(require) {
 			}
 		},
 		setValue : function(value) {
+			var me = this, displayField = this.displayField, valueField = this.valueField || displayField, processedValue = [], displayTplData = [], model, record, displayValue,
+			displayIsValue = me.displayField === me.valueField;
 			if (_.isUndefined(value)) {
 				return Picker.prototype.setValue.apply(this, [value]);
 			}
-			var me = this, displayField = this.displayField, valueField = this.valueField || displayField, processedValue = [], displayTplData = [], model, record, displayValue;
+			if (_.isString(value)) {
+				return this.setRawValue(displayIsValue ? value : '');
+			}
 			value = $.makeArray(value);
 			for ( i = 0, len = value.length; i < len; i++) {
 				val = value[i];

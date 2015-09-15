@@ -57,6 +57,7 @@ define(function(require) {
 
 		},
 		button : null,
+		buttonOnly:false,
 		multiple : true,
 		maxConnections : 3,
 		disableCancelForFormUploads : false,
@@ -204,7 +205,7 @@ define(function(require) {
 		onSubmitted : taurus.emptyFn,
 		_addToList : function(id, name) {
 			this.bodyEl.parent().find('.help-block').remove();
-			var item = this.bodyEl.append(_.template(['<p class="text-info help-block" id="<%=fileId%>">', '<span class="halflings refresh spinner" data-name="refresh" data-type="" data-prefix="halflings" data-utf="E031"></span>', '<span class="qq-upload-file"><%=name%></span>' + (this.disableCancelForFormUploads && !qq.supportedFeatures.ajaxUploading ? '<a class="qq-upload-cancel" href="#" data-item-id="' + id + '"><%=cancelButtonText%></a>' : ''), '<span class="qq-upload-status-text"></span></p>'].join(''), {
+			var item = this.bodyEl.append(_.template(['<p class="text-info help-block" id="<%=fileId%>">', '<span class="halflings refresh spinner" data-name="refresh" data-type="" data-prefix="halflings" data-utf="E031"></span>', '<span class="qq-upload-file"><%=name%></span>' + (this.disableCancelForFormUploads && !qq.supportedFeatures.ajaxUploading ? '<a class="qq-upload-cancel" href="#" data-item-id="' + id + '"><%=cancelButtonText%></a>' : ''), '<span class="qq-upload-status-text"></span></p>'].join(''))({
 				'name' : name,
 				'cancelButtonText' : this.cancelButtonText,
 				'fileId' : 'file-' + id
@@ -781,6 +782,12 @@ define(function(require) {
 			}
 
 			return valid;
+		},
+		afterRender:function(){
+			Trigger.prototype.afterRender.apply(this,arguments)
+			if(this.buttonOnly){
+				this.inputEl.hide();
+			}
 		}
 	}));
 });

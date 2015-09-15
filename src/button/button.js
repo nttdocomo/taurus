@@ -5,7 +5,9 @@ define(function(require) {
 	var Base = require('../view/base'),
 	Menu = require('../menu/menu'),
 	MenuManager = require('../menu/manager'),
-	ButtonManager = require('./manager');
+	ButtonManager = require('./manager'),
+	taurus = require('../taurus'),
+	_ = require('../underscore');
 	return Base.extend({
 		/*
 	     * @property {Boolean}
@@ -34,11 +36,15 @@ define(function(require) {
 		 * @readonly
 		 */
 		pressed : false,
+		iconBeforeText:false,
+		_hasIconCls: taurus.baseCSSPrefix + 'btn-icon',
 
-		tpl : '<%=text%><%if(menu){%> <span class="caret"></span><%}%>',
+		tpl : '<%if(iconBeforeText){%><%=icon%><%}%><%=text%><%if(menu){%> <span class="caret"></span><%}%>',
+		iconTpl:'<i id="<%=id%>-btnIconEl" class="<%=_hasIconCls%>" style="<%if(iconUrl){%>background-image:url(<%=iconUrl%>);<%}%>"></i>',
 		pressedCls : 'active',
 		tagName : 'button',
-		className : 'btn btn-default',
+		className : 'btn',
+		uiClass:'btn-default',
 		menuAlign: {
 			"my" : "left top",
 			"at" : "left bottom",
@@ -46,6 +52,19 @@ define(function(require) {
 		},
 		events : {
 			'mousedown' : 'onMouseDown'
+		},
+		childEls:{
+			'btnIconEl':'[id$="btnIconEl"]'
+		},
+		didIconStateChange: function(old, current) {
+	        var currentEmpty = _.isEmpty(current);
+	        return _.isEmpty(old) ? !currentEmpty : currentEmpty;
+	    },
+		doToggle : function(e) {
+			var me = this;
+			if (me.enableToggle && (me.allowDepress !== false || !me.pressed)) {
+				me.toggle($(e.target));
+			}
 		},
 
 	    doPreventDefault: function(e) {
@@ -69,14 +88,15 @@ define(function(require) {
 		getTplData:function(){
 			return $.extend({
 				text:this.text || '',
-				menu:!_.isUndefined(this.menu)
+				menu:!_.isUndefined(this.menu),
+				comp:this,
+				icon:this.renderIcon({
+					id:this.id,
+					iconUrl:this.iconUrl,
+					_hasIconCls:this._hasIconCls
+				}),
+				iconBeforeText:this.iconBeforeText
 			},Base.prototype.getTplData.apply(this,arguments))
-		},
-		doToggle : function(e) {
-			var me = this;
-			if (me.enableToggle && (me.allowDepress !== false || !me.pressed)) {
-				me.toggle($(e.target));
-			}
 		},
 
 		fireHandler : function(e) {
@@ -164,6 +184,36 @@ define(function(require) {
 			ButtonManager.register(this);
 		},
 
+		/**
+		 * Sets the background image (inline style) of the button. This method also changes the value of the {@link #icon}
+		 * config internally.
+		 * @param {String} icon The path to an image to display in the button
+		 * @return {Ext.button.Button} this
+		 */
+		setIcon: function(icon) {
+		    icon = icon || '';
+		    var me = this,
+		        btnIconEl = me.btnIconEl,
+		        oldIcon = me.icon || '';
+
+		    me.icon = icon;
+		    if (icon !== oldIcon) {
+		        if (btnIconEl) {
+		            btnIconEl.css('background-image', icon ? 'url(' + icon + ')': '');
+		            me._syncHasIconCls();
+		            if (me.didIconStateChange(oldIcon, icon)) {
+		                me.updateLayout();
+		            }
+		        }
+		        me.trigger('iconchange', me, oldIcon, icon);
+		    }
+		    return me;
+		},
+
+		setText:function(text){
+			this.$el.text(text)
+		},
+
 	    /**
 	     * Shows this button's menu (if it has one)
 	     */
@@ -218,6 +268,10 @@ define(function(require) {
 	        }
 	    },
 
+	    renderIcon: function(values) {
+	        return _.template(this.iconTpl)(values);
+	    },
+
 		/**
 		 * If a state it passed, it becomes the pressed state otherwise the current state is toggled.
 		 * @param {Boolean} [state] Force a particular state
@@ -241,6 +295,19 @@ define(function(require) {
 			events = events || {};
 			events[this.clickEvent] = 'onClick';
 			Base.prototype.delegateEvents.call(this,events)
-		}
+		},
+
+        _syncHasIconCls: function() {
+            var me = this,
+                btnEl = me.btnEl,
+                hasIconCls = me._hasIconCls;
+
+            if (btnEl) {
+                btnEl[me._hasIcon() ? 'addCls' : 'removeCls']([
+                    hasIconCls,
+                    hasIconCls + '-' + me.iconAlign
+                ]);
+            }
+        }
 	})
 })

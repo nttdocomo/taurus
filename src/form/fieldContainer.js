@@ -45,14 +45,14 @@
 	    			items.push(item)
 	    		} else {
 		    		if(item.query){
-		    			items.concat(item.query(queryString))
+		    			items = items.concat(item.query(queryString))
 		    		}
 	    		}
 	    	})
 	    	return items;
 	    },
 		getTargetEl: function() {
-            return this.frameBody || this.$el.find('>div');
+            return this.frameBody || this.bodyEl;
         },
 		lookupComponent : function(cmp) {
 			if(this.combineErrors){

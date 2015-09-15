@@ -14,6 +14,7 @@ define(function(require) {
 	Time = require("../../src/form/field/time"),
 	FieldContainer = require("../../src/form/fieldContainer"),
 	Splitter = require("../../src/resizer/splitter"),
+	File = require("../../src/form/field/file"),
 	Backbone = require("../../src/backbone"),
 	collection = new Backbone.Collection([{
 		name : "001",
@@ -44,6 +45,7 @@ define(function(require) {
 		collapsible: true,
 		items:[{
 			cls:Text,
+			msgTarget:'under',
 			name : 'first_name',
 			fieldLabel : 'First Name:'
 		},{
@@ -148,6 +150,10 @@ define(function(require) {
 				name:'type'
 			}],
 			name : 'platform'
+		},{
+			cls:File,
+			fieldLabel : '应用平台:',
+			buttonOnly:true
 		}],
 		buttons: [{
             text: 'Save',

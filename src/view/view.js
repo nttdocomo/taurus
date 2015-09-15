@@ -10,8 +10,8 @@ define(function(require){
 		selectedItemCls:'item-selected',
 		keyEventRe: /^key/,
 		onItemClick:function(e){
-			var node = $(e.target).closest(this.itemSelector);
-			var record = this.collection.at(this.$el.children().index((node)));
+			var node = $(e.target).parents(this.itemSelector);
+			var record = this.collection.at(this.$el.children().index(node));
 			/*if(e.ctrlKey){
 				if(this.selection.contains(record)){
 					node.removeClass(this.selectedItemCls);
@@ -40,7 +40,7 @@ define(function(require){
 		},
 		getRecord: function(node){
 	        return this.collection.find(function(model){
-	        	return model.cid = node.attr('data-item-id')
+	        	return model.cid == node.attr('data-item-id')
 	        });
 	    },
 
@@ -71,16 +71,20 @@ define(function(require){
 	        }
 	    },
 	    processSpecialEvent: taurus.emptyFn,
+	    processItemEvent: taurus.emptyFn,
 	    processUIEvent:function(e){
 	    	var me = this,
             item = e.item,
             record = e.record,
-            index;
+            index,
+            type = e.type,
+            newType = type;
             if (item) {
             	index = e.recordIndex = me.indexInStore ? me.indexInStore(record) : me.indexOf(item);
             	if (!record || me.processItemEvent(record, item, index, e) === false) {
 	                return false;
 	            }
+	            me.trigger('item' + newType, me, record, item, index, e);
             }
 	    }
 	    /*,

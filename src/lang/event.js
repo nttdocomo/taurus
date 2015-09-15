@@ -217,7 +217,7 @@ define(function() {
 			// Print Screen, Insert, Delete
 		},
 		getTarget:function(selector,maxDepth){
-			return selector ? $(this.target).parentsUntil(maxDepth,selector) :
+			return selector ? $(this.target).closest(selector) :
             (returnEl ? $(this.target) : this.target);
 		},
 

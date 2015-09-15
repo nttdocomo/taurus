@@ -11,9 +11,6 @@ define(function(require){
 		events:{
 			'click [data-dismiss="modal"]' : 'close'
 		},
-		initialize:function(){
-			Base.prototype.initialize.apply(this,arguments);
-		},
 		getTplData : function() {
 			var data = Base.prototype.getTplData.apply(this,arguments);
 			return $.extend(data,{

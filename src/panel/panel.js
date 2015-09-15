@@ -8,7 +8,7 @@ define(function(require){
 		autoHeight:false,
 		header:true,
 		referTo:$(window),
-		tpl:'<%if(header){%><div class="panel-heading"><h4 class="panel-title"><%=title%></h4></div><%}%><div class="panel-body"><%=content%></div>',
+		tpl:'<%if(header){%><div class="panel-heading clearfix"><h4 class="panel-title"><%=title%></h4></div><%}%><div class="panel-body"><%=content%></div>',
 		className:'panel panel-default',
 		events:{
 			'click .refresh' : 'refresh',

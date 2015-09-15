@@ -28,6 +28,7 @@
 }(this, function(Base,Picker,Time,_,moment,Backbone) {
 	return Base.extend({
 		format:'H:mm',
+		submitFormat:'HHmm',
 		initDateParts: [2008, 0, 1],
 		increment: 15,
 		queryMode: 'local',
@@ -171,7 +172,7 @@
 	    getSubmitValue: function() {
 	        var me = this,
 	            format = me.submitFormat || me.format,
-	            value = me.getValue();
+	            value = moment(me.getValue(),me.format);
 
 	        return value ? value.format(format) : null;
 	    },

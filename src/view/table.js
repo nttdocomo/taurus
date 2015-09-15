@@ -78,6 +78,7 @@ define(function(require){
 	        me.collection.on('sync',_.bind(me.reset,me));
 	        me.collection.on('reset',_.bind(me.reset,me));
 	        me.collection.on('update',_.bind(me.reset,me));
+	        me.collection.on('change',_.bind(me.reset,me));
 	        $(window).on('resize',function(){
 	        	me.headerCt.setColumnsWidth(me.getCellsWidth())
 	        });
@@ -320,6 +321,7 @@ define(function(require){
 	        } else {
 	            value = fieldValue;
 	        }
+	        classes.length = clsInsertPoint;
 	        cellValues.tdCls = classes.join(' ');
 			cellValues.value = (value == null || value === '') ? column.emptyCellText : value;
 			return _.template(this.cellTpl)(_.extend(cellValues));

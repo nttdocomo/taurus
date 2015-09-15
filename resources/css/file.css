@@ -1,11 +1,11 @@
 .form-group > div{
 	position:relative;
 }
-.g-form-file-btn{
+.form-file-btn{
 	position:relative;
 	overflow:hidden;
 }
-.g-form-file-input {
+.form-file-input {
 	position: absolute;
 	top: -4px;
 	right: -2px;
