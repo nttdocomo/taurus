@@ -45,6 +45,7 @@ define(function(require) {
 		tagName : 'button',
 		className : 'btn',
 		uiClass:'btn-default',
+		_disabledCls: taurus.baseCSSPrefix + 'btn-disabled',
 		menuAlign: {
 			"my" : "left top",
 			"at" : "left bottom",
@@ -60,6 +61,11 @@ define(function(require) {
 	        var currentEmpty = _.isEmpty(current);
 	        return _.isEmpty(old) ? !currentEmpty : currentEmpty;
 	    },
+	    disable:function(){
+	    	var me = this;
+	    	Base.prototype.disable.apply(me,arguments);
+	    	me.$el.addClass(me._disabledCls);
+	    },
 		doToggle : function(e) {
 			var me = this;
 			if (me.enableToggle && (me.allowDepress !== false || !me.pressed)) {
@@ -71,6 +77,11 @@ define(function(require) {
 	        if (e && (this.preventDefault || (this.disabled && this.getHref()))) {
 	            e.preventDefault();
 	        }
+	    },
+	    enable:function(){
+	    	var me = this;
+	    	Base.prototype.enable.apply(me,arguments);
+	    	me.$el.removeClass(me._disabledCls);
 	    },
 
 	    /**

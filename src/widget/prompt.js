@@ -22,7 +22,7 @@ define(function(require) {
 		},
 		confirm : function() {
 			this.close();
-			this.trigger('confirm')
+			this.trigger('confirm',this)
 			return false;
 		},
 		cancel:function(){

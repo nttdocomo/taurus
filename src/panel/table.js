@@ -132,6 +132,13 @@ define(function(require){
                 me.bodyEl.css('padding-top',0)
             }
 		},
+		applyState:function(state){
+			var me = this,
+			columns = state.columns;
+			if (columns) {
+	            me.headerCt.applyColumnsState(columns);
+	        }
+		},
 
 	    getColumnManager: function() {
 	        return this.columnManager;

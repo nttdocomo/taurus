@@ -2,7 +2,8 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Base = require('../../view/base');
+	var Base = require('../../view/base'),
+	HeaderResizer = require('../plugin/headerResizer');
 	return Base.extend({
 		className : 'column-header',
 		possibleSortStates : ['ASC', 'DESC'],
@@ -21,6 +22,9 @@ define(function(require) {
 		initComponent:function(){
 			var me = this;
 			me.setupRenderer();
+			if (me.flex) {
+                me.minWidth = me.minWidth || HeaderResizer.prototype.minColWidth;
+            }
 			Base.prototype.initComponent.apply(this, arguments);
 		},
 		/*delegateEvents : function(events) {

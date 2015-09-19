@@ -62,7 +62,7 @@ define(function(require) {
 		maxConnections : 3,
 		disableCancelForFormUploads : false,
 		autoUpload : true,
-		/*request : {
+		request : {
 		 endpoint : '/server/upload',
 		 params : {},
 		 paramsInBody : true,
@@ -72,7 +72,7 @@ define(function(require) {
 		 uuidName : 'qquuid',
 		 totalFileSizeName : 'qqtotalfilesize',
 		 filenameParam : 'qqfilename'
-		 },*/
+		 },
 		editFilename : {
 			enabled : false
 		},
@@ -541,7 +541,7 @@ define(function(require) {
 			}
 
 			this._removeFromFilesInProgress(id);
-			this._maybeParseAndSendUploadError(id, name, result, xhr);
+			//this._maybeParseAndSendUploadError(id, name, result, xhr);
 			//qq.FineUploaderBasic.prototype._onComplete.apply(this, arguments);var item = this.getItemByFileId(id);
 			var item = this.$el.find('#file-' + id);
 			//qq(this._find(item, 'statusText')).clearText();

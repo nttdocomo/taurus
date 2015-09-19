@@ -139,10 +139,10 @@ define(function(require) {
 		 */
 		onChange : function(newVal, oldVal) {
 			var me = this, handler = me.handler;
+			Base.prototype.onChange.apply(this, arguments);
 			if (handler) {
 				handler.call(me, newVal);
 			}
-			Base.prototype.onChange.apply(this, arguments);
 		},
 
 		/**

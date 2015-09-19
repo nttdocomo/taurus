@@ -20,6 +20,9 @@ define(function(require){
 				'footer':''
 			});
 		},
+		getTargetEl:function(){
+			return this.$el.find('.modal-body')
+		},
 		show:function(renderTo){
 			if(!this.isRendered){
 				this.render(renderTo || $(document.body));

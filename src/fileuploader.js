@@ -4720,7 +4720,7 @@ qq.UploadHandlerXhr = function(o, uploadCompleteCallback, onUuidChanged, logCall
     }
 
     function isErrorResponse(xhr, response) {
-        return xhr.status !== 200 || !response.success || response.reset;
+        return xhr.status !== 200/* || !response.success || response.reset*/;
     }
 
     function parseResponse(id, xhr) {
@@ -4728,6 +4728,7 @@ qq.UploadHandlerXhr = function(o, uploadCompleteCallback, onUuidChanged, logCall
 
         try {
             response = qq.parseJson(xhr.responseText);
+            response.newUuid = 1;
 
             if (response.newUuid !== undefined) {
                 log("Server requested UUID change from '" + fileState[id].uuid + "' to '" + response.newUuid + "'");

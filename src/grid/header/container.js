@@ -32,6 +32,9 @@ define(function(require) {
             }
 			Base.prototype.initComponent.apply(this, arguments);
 		},
+		applyColumnsState:function(columns){
+
+		},
 
 	    /**
 	     * Returns an array of all columns which appear in the grid's View. This goes down to the leaf column header

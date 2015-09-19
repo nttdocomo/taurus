@@ -14,7 +14,7 @@ define(function(require){
             '<%=cell%>',
         '</tr>'].join(''),
         cellTpl: [
-	        '<td class="<%=tdCls%>" <%=tdAttr%> style="<%if(tdStyle){%><%=tdStyle%><%}%>" tabindex="-1" data-column-id="<%=column.cid%>">',
+	        '<td class="<%=tdCls%>" <%=tdAttr%> style="width:<%=column.cellWidth%>px;<%if(tdStyle){%><%=tdStyle%><%}%>" tabindex="-1" data-column-id="<%=column.cid%>">',
 	            '<div class="grid-cell-inner" ',
 	                'style="text-align:<%=align%>;<%if(style){%><%=style%><%}%>"><%=value%></div>',
 	        '</td>'].join(''),
@@ -324,6 +324,7 @@ define(function(require){
 	        classes.length = clsInsertPoint;
 	        cellValues.tdCls = classes.join(' ');
 			cellValues.value = (value == null || value === '') ? column.emptyCellText : value;
+			column.cellWidth = /*column.lastBox ? column.lastBox.width : */column.width || column.minWidth
 			return _.template(this.cellTpl)(_.extend(cellValues));
 		},
 		renderTHead:function(){

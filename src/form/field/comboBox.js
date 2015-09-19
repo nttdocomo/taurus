@@ -337,10 +337,10 @@ define(function(require) {
 			var me = this, displayField = this.displayField, valueField = this.valueField || displayField, processedValue = [], displayTplData = [], model, record, displayValue,
 			displayIsValue = me.displayField === me.valueField;
 			if (_.isUndefined(value)) {
-				return Picker.prototype.setValue.apply(this, [value]);
+				return Picker.prototype.setValue.apply(this, value);
 			}
-			if (_.isString(value)) {
-				return this.setRawValue(displayIsValue ? value : '');
+			if (_.isString(value) && value == '') {
+				return Picker.prototype.setValue.apply(this, [value]);
 			}
 			value = $.makeArray(value);
 			for ( i = 0, len = value.length; i < len; i++) {
@@ -376,7 +376,7 @@ define(function(require) {
 				}
 			}
 			this.displayTplData = displayTplData;
-			this.value = this.multiSelect ? processedValue : processedValue[0] || '';
+			this.value = processedValue.length ? this.multiSelect ? processedValue : processedValue[0] || '' : value ? value : '';
 			return Picker.prototype.setValue.apply(this, [this.value]);
 		},
 		clearValue : function() {

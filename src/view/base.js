@@ -6,7 +6,8 @@ define(function(require) {
 	require('../lang/number');
 	require('../mixins');
 	require('../jquery.ui.position');
-	var _ = require('../underscore'),
+	var Stateful = require('../state/stateful'),
+	_ = require('../underscore'),
 	Backbone = require('backbone');
 	return Backbone.View.extend({
 		isRendered : false,
@@ -27,6 +28,16 @@ define(function(require) {
 				this.setElement(_.result(this, 'el'), false);
 			}
 		},
+	    disable:function(){
+	    	var me = this;
+	    	me.$el.attr('disabled',true);
+	    	me.disabled = true;
+	    },
+	    enable:function(){
+	    	var me = this;
+	    	me.$el.attr('disabled',false);
+	    	me.disabled = false;
+	    },
 		getRefOwner: function () {
 	        var me = this;
 	        
@@ -108,7 +119,8 @@ define(function(require) {
 		initialize : function(options) {
 			this.initialConfig = options;
 			_.extend(this, options);
-			this.initComponent()
+			this.initComponent();
+			//Stateful.prototype.initialize.apply(this,arguments);
 		},
 		initComponent:function(){
 			/*
@@ -589,5 +601,5 @@ define(function(require) {
 		}
 	},{
 		INVALID_ID_CHARS_Re: /[\.,\s]/g
-	});
+	}).mixins(Stateful);
 });
