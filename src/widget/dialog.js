@@ -8,6 +8,7 @@ define(function(require){
 		className:'modal fade',
 		content:null,
 		header:true,
+		fullscreen:false,
 		events:{
 			'click [data-dismiss="modal"]' : 'close'
 		},
@@ -32,16 +33,21 @@ define(function(require){
 			this.position();
 		},
 		position:function(){
+			if(this.fullscreen){
+				this.$el.addClass('modal-fullscreen')
+			}
 			var height = this.$el.find('.modal-dialog').height(),width = this.$el.find('.modal-dialog').width();
-			this.$el.find('.modal-dialog').css({
-				'margin-top':(height/2)*-1,
-				'margin-left':(width/2)*-1,
-				'position':'absolute',
-				'margin-right':0,
-				'margin-bottom':0,
-				'top':'50%',
-				'left':'50%'
-			});
+			if(!this.fullscreen){
+				this.$el.find('.modal-dialog').css({
+					'margin-top':(height/2)*-1,
+					'margin-left':(width/2)*-1,
+					'position':'absolute',
+					'margin-right':0,
+					'margin-bottom':0,
+					'top':'50%',
+					'left':'50%'
+				});
+			}
 		},
 		close:function(){
 			this.$el.removeClass('in').hide().remove();

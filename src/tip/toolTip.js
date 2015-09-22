@@ -131,6 +131,7 @@ define(function(require){
 
 	    // @private
 	    onTargetOut: function(e) {
+	    	console.log('out')
 	        var me = this,
 	            triggerEl = me.triggerElement,
 	            // If we don't have a delegate, then the target is set

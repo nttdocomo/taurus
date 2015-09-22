@@ -27,6 +27,7 @@ define(function(require) {
 		},
 		cancel:function(){
 			this.close();
+			this.trigger('cancel',this)
 			return false;
 		},
 		delegateEvents : function(events) {

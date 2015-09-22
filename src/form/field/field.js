@@ -35,7 +35,28 @@ define(function(require){
 					this.onChange(newVal, oldVal);
 				}
 			}
-		}
+		},
+
+	    /**
+	     * A utility for grouping a set of modifications which may trigger value changes into a single transaction, to
+	     * prevent excessive firing of {@link #change} events. This is useful for instance if the field has sub-fields which
+	     * are being updated as a group; you don't want the container field to check its own changed state for each subfield
+	     * change.
+	     * @param {Function} fn The function to call with change checks suspended.
+	     */
+	    batchChanges: function(fn) {
+	        try {
+	            this.suspendCheckChange++;
+	            fn();
+	        }
+	        catch (pseudo) {  //required with IE when using 'try'
+	            throw pseudo;
+	        }
+	        finally {
+	            this.suspendCheckChange--;
+	        }
+	        this.checkChange();
+	    }
 	}
 	return Field;
 })
