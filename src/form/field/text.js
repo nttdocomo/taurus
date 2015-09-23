@@ -35,13 +35,13 @@ define(function(require) {
 	            }
 	        }
 
-			if (this.getStrLen(value) < this.minLength) {
+			if (value.length < this.minLength) {
 				errors.push(_.template(this.minLengthText)({
 					len : this.minLength
 				}));
 			}
 
-			if (this.getStrLen(value) > this.maxLength) {
+			if (value.length > this.maxLength) {
 				errors.push(_.template(this.maxLengthText)({
 					len : this.maxLength
 				}));
@@ -51,20 +51,6 @@ define(function(require) {
 			}
 			return errors;
 		},
-		getStrLen:function(str){
-			var len = 0;  
-		    var i;  
-		    var c;  
-		    for (var i=0;i<str.length;i++){  
-		        c = str.charCodeAt(i);  
-		        if (taurus.isDbcCase(c)) { //半角  
-		            len = len + 1;  
-		        } else { //全角  
-		            len = len + 2;  
-		        }  
-		    }  
-		    return len;  
-		},
 		getRawValue : function() {
 			var v = Base.prototype.getRawValue.apply(this, arguments);
 			if (v === this.emptyText) {
@@ -73,7 +59,8 @@ define(function(require) {
 			return v;
 		},
 		getSubTplData : function() {
-			var me = this, value = me.getRawValue(), isEmpty = me.emptyText && value.length < 1, placeholder;
+			var me = this, value = me.getRawValue(), isEmpty = me.emptyText && value.length < 1, placeholder,
+			maxLength = me.maxLength;
 
 			if (isEmpty) {
 				if (Modernizr.input.placeholder) {
@@ -82,9 +69,17 @@ define(function(require) {
 					value = me.emptyText;
 				}
 			}
+			if (me.enforceMaxLength && Modernizr.input.max) {
+	            if (maxLength === Number.MAX_VALUE) {
+	                maxLength = undefined;
+	            }
+	        } else {
+	            maxLength = undefined;
+	        }
 
 			return $.extend(Base.prototype.getSubTplData.apply(this, arguments), {
-				placeholder : placeholder
+				placeholder : placeholder,
+				maxLength:maxLength
 			});
 		},
 

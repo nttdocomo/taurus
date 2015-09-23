@@ -157,6 +157,23 @@ define(function(require) {
 			}
 			return cmp
 		},
+		getStrLen:function(str){
+			if(!str){
+				return 0;
+			}
+			var len = 0;  
+		    var i;  
+		    var c;  
+		    for (var i=0;i<str.length;i++){  
+		        c = str.charCodeAt(i);  
+		        if (taurus.isDbcCase(c)) { //半角  
+		            len = len + 1;  
+		        } else { //全角  
+		            len = len + 2;  
+		        }  
+		    }  
+		    return len;
+		},
 		isDbcCase:function(c){
 			// 基本拉丁字母（即键盘上可见的，空格、数字、字母、符号）  
 		    if (c >= 32 && c <= 127) {  

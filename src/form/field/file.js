@@ -2,7 +2,9 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Trigger = require('./trigger');
+	var Trigger = require('./trigger'),
+	taurus = require('../../taurus'),
+	_ = require('underscore');
 	require('../../fileuploader');
 	/*==*/
 	var supportsUploading = qq.supportedFeatures.uploading, supportsAjaxFileUploading = qq.supportedFeatures.ajaxUploading;
@@ -10,13 +12,16 @@ define(function(require) {
 		ajaxUploading : supportsAjaxFileUploading
 	});
 	return taurus.view('taurus.form.field.File', Trigger.extend({
+		iconTpl:'<i id="<%=id%>-btnIconEl" class="<%=_hasIconCls%>" style="<%if(iconUrl){%>background-image:url(<%=iconUrl%>);<%}%>"></i>',
 		buttonText : 'Browse...',
+		_hasIconCls: taurus.baseCSSPrefix + 'btn-icon',
 		childEls : {
 			'fileInputEl' : '#fileInputEl',
 			'inputEl' : '.form-control',
 			'buttonEl' : '#buttonEl',
 			'spinnerEl' : '.spinner',
-			'cancelEl' : '.qq-upload-cancel'
+			'cancelEl' : '.qq-upload-cancel',
+			'btnIconEl':'[id$="btnIconEl"]'
 		},
 		events : {
 			'change #fileInputEl' : 'onFileChange',
@@ -148,11 +153,15 @@ define(function(require) {
 			this._handler.cancel(parseInt($(e.target).attr('data-item-id')));
 			return false;
 		},
+		didIconStateChange: function(old, current) {
+	        var currentEmpty = _.isEmpty(current);
+	        return _.isEmpty(old) ? !currentEmpty : currentEmpty;
+	    },
 		/**
 		 * Gets the markup to be inserted into the subTplMarkup.
 		 */
 		getTriggerMarkup : function() {
-			return _.template((this.buttonOnly ? '' : '<span id="<%=id%>" class="input-group-btn <%=cls%>">') + '<div id="buttonEl" class="btn btn-primary' + (this.buttonOnly ? ' <%=cls%>' : '') + '" <%if(disabled){%> disabled="disabled"<%}%>><%=text%>' + $('<div>').append($('<input />', {
+			return _.template((this.buttonOnly ? '' : '<span id="<%=id%>" class="input-group-btn <%=cls%>">') + '<div id="buttonEl" class="btn btn-primary' + (this.buttonOnly ? ' <%=cls%>' : '') + '" <%if(disabled){%> disabled="disabled"<%}%>><%=icon%><%=text%>' + $('<div>').append($('<input />', {
 				id : 'fileInputEl',
 				class : taurus.baseCSSPrefix + 'form-file-input',
 				type : 'file',
@@ -162,6 +171,11 @@ define(function(require) {
 				id : 'buttonEl',
 				cls : taurus.baseCSSPrefix + 'form-file-btn',
 				text : this.buttonText,
+				icon:this.renderIcon({
+					id:this.id,
+					iconUrl:this.iconUrl,
+					_hasIconCls:this._hasIconCls
+				}),
 				disabled : this.disabled
 			});
 		},
@@ -203,6 +217,36 @@ define(function(require) {
 		onSubmit : taurus.emptyFn,
 		onUpload : taurus.emptyFn,
 		onSubmitted : taurus.emptyFn,
+
+	    renderIcon: function(values) {
+	        return _.template(this.iconTpl)(values);
+	    },
+
+		/**
+		 * Sets the background image (inline style) of the button. This method also changes the value of the {@link #icon}
+		 * config internally.
+		 * @param {String} icon The path to an image to display in the button
+		 * @return {Ext.button.Button} this
+		 */
+		setIcon: function(icon) {
+		    icon = icon || '';
+		    var me = this,
+		        btnIconEl = me.btnIconEl,
+		        oldIcon = me.icon || '';
+
+		    me.icon = icon;
+		    if (icon !== oldIcon) {
+		        if (btnIconEl) {
+		            btnIconEl.css('background-image', icon ? 'url(' + icon + ')': '');
+		            me._syncHasIconCls();
+		            if (me.didIconStateChange(oldIcon, icon)) {
+		                me.updateLayout();
+		            }
+		        }
+		        me.trigger('iconchange', me, oldIcon, icon);
+		    }
+		    return me;
+		},
 		_addToList : function(id, name) {
 			this.bodyEl.parent().find('.help-block').remove();
 			var item = this.bodyEl.append(_.template(['<p class="text-info help-block" id="<%=fileId%>">', '<span class="halflings refresh spinner" data-name="refresh" data-type="" data-prefix="halflings" data-utf="E031"></span>', '<span class="qq-upload-file"><%=name%></span>' + (this.disableCancelForFormUploads && !qq.supportedFeatures.ajaxUploading ? '<a class="qq-upload-cancel" href="#" data-item-id="' + id + '"><%=cancelButtonText%></a>' : ''), '<span class="qq-upload-status-text"></span></p>'].join(''))({
@@ -733,6 +777,19 @@ define(function(require) {
 			//var item = this.getItemByFileId(id);
 			//qq(this._find(item, 'spinner')).hide();
 		},
+
+        _syncHasIconCls: function() {
+            var me = this,
+                btnEl = me.btnEl,
+                hasIconCls = me._hasIconCls;
+
+            if (btnEl) {
+                btnEl[me._hasIcon() ? 'addCls' : 'removeCls']([
+                    hasIconCls,
+                    hasIconCls + '-' + me.iconAlign
+                ]);
+            }
+        },
 		_upload : function(blobOrFileContainer, params, endpoint) {
 			var id = this._handler.add(blobOrFileContainer), name = this._handler.getName(id);
 
