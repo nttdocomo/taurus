@@ -28,7 +28,7 @@ define(function(require) {
 	     * @cfg {String} maxText
 	     * Error text to display if the maximum value validation fails.
 	     */
-	    maxText : 'The maximum value for this field is {0}',
+	    maxText : 'The maximum value for this field is <%=num%>',
 		nanText : '<%=num%> is not a valid number',
 	    //</locale>
 
@@ -117,7 +117,7 @@ define(function(require) {
 
 	        if (num > me.maxValue) {
 	            errors.push(_.template(me.maxText)({
-	            	num:me.minValue
+	            	num:me.maxValue
 	            }));
 	        }
 

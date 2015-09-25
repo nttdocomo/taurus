@@ -3,7 +3,7 @@
  */
 define(function(require) {
 	var Base = require('../view/base');
-	return taurus.view('taurus.tip.alert', Base.extend({
+	return Base.extend({
 		tpl : '<div class="alert alert-<%=type%><%if(dismissable){%> alert-dismissable<%}%>"><%if(dismissable){%><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><%}%><%=text%></div>',
 		type : 'warning',
 		dismissable : false,
@@ -36,5 +36,5 @@ define(function(require) {
 				'dismissable' : this.dismissable
 			}
 		}
-	}));
+	});
 });

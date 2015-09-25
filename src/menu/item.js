@@ -175,7 +175,10 @@ define(function(require) {
 	        }
 
 	        //Ext.callback(me.handler, me.scope, [me, e], 0, me);
-	        //me.fireEvent('click', me, e);
+	        me.trigger('click', me, e);
+	        if (me.handler) {
+	            me.handler()
+	        }
 
 	        // If there's an href, invoke dom.click() after we've fired the click event in case a click
 	        // listener wants to handle it.
@@ -197,6 +200,7 @@ define(function(require) {
 	        /*if (!me.hideOnClick) {
 	            me.focus();
 	        }*/
+	        return false;
 	    },
 		/**
 	     * Set a child menu for this item. See the {@link #cfg-menu} configuration.

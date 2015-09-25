@@ -14,7 +14,7 @@ define(function(require) {
 		events:{
 			'mouseleave li':'onMouseLeave',
 			'mouseenter li':'onMouseOver',
-			'click li': 'onClick'
+			'click li a': 'onClick'
 		},
 		initialize:function(){
 			this.renderTo = $(document.body);
@@ -54,7 +54,19 @@ define(function(require) {
 	    },
 	    // @private
 	    getItemFromEvent: function(e) {
-	        return $(e.currentTarget).data('component')
+	        var me = this,
+	            renderTarget = me.$el.get(0),
+	            toEl = e.target;
+
+	        // See which top level element the event is in and find its owning Component.
+	        while (toEl.parentNode !== renderTarget) {
+	            toEl = toEl.parentNode;
+	            if (!toEl) {
+	                return;
+	            }
+	        }
+	        //return Ext.getCmp(toEl.id);
+	        return $(toEl).data('component')
 	    },
 
 	    // @inheritdoc
@@ -135,7 +147,8 @@ define(function(require) {
 	        if (!item || item.disabled) {
 	            item = undefined;
 	        }
-	        //me.fireEvent('click', me, item, e);
+	        me.trigger('click', me, item, e);
+	        return false;
 	    },
 	    onMouseLeave:function(e){
 	        var me = this;

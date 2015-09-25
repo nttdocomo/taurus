@@ -27,7 +27,7 @@ define(function(require) {
 			Base.prototype.initialize.apply(this,arguments);
 			this.collection.on('sync', this.renderHtml, this);
 			this.collection.on('reset', this.renderHtml, this);
-			this.collection.on('update', this.renderHtml, this);
+			this.collection.on('update', this.onCollectionChange, this);
 			this.collection.on('sort', this.renderHtml, this);
 		},
 		delegateEvents:function(){
@@ -52,6 +52,12 @@ define(function(require) {
 			}
 			return false;
 		},
+		onCollectionChange:function(){
+			var info = this.collection.state;
+			if(!this.collection.length){
+				this.collection.getPage(info.currentPage);
+			}
+		},
 		renderHtml:function(){
 			if(this.collection.length){
 				var info = this.collection.state;
@@ -63,6 +69,8 @@ define(function(require) {
 					pageDesc:i18n.__("Page %d of %d",info.currentPage,info.totalPages),
 					totalPages:0
 				},info));
+			} else {
+				this.collection.hasPreviousPage() && this.collection.getPreviousPage();
 			}
 			return '';
 		}
