@@ -127,6 +127,7 @@ define(function(require) {
 	    onClick: function(e) {
 	        var me = this,
 	            type = e.type,
+	            clickResult,
 	            item;
 
 	        /*if (me.disabled) {
@@ -138,7 +139,7 @@ define(function(require) {
 	        item = (type !== 'keydown') ? me.getItemFromEvent(e) : me.activeItem;
 	        if (item && item.isMenuItem) {
 	            if (!item.menu || !me.ignoreParentClicks) {
-	                item.onClick(e);
+	                clickResult = item.onClick(e);
 	            } else {
 	                e.stopEvent();
 	            }
@@ -148,7 +149,7 @@ define(function(require) {
 	            item = undefined;
 	        }
 	        me.trigger('click', me, item, e);
-	        return false;
+	        return clickResult;
 	    },
 	    onMouseLeave:function(e){
 	        var me = this;

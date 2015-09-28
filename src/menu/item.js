@@ -148,6 +148,7 @@ define(function(require) {
 	    onClick: function (e) {
 	        var me = this,
 	            clickHideDelay = me.clickHideDelay,
+	            clickResult,
 	            preventDefault;
 
 	        if (!me.href || me.disabled) {
@@ -177,7 +178,7 @@ define(function(require) {
 	        //Ext.callback(me.handler, me.scope, [me, e], 0, me);
 	        me.trigger('click', me, e);
 	        if (me.handler) {
-	            me.handler()
+	            clickResult = me.handler()
 	        }
 
 	        // If there's an href, invoke dom.click() after we've fired the click event in case a click
@@ -200,7 +201,7 @@ define(function(require) {
 	        /*if (!me.hideOnClick) {
 	            me.focus();
 	        }*/
-	        return false;
+	        return clickResult;
 	    },
 		/**
 	     * Set a child menu for this item. See the {@link #cfg-menu} configuration.
