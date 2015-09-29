@@ -1,14 +1,22 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	require('../taurus');
-	require('../lang/number');
-	require('../mixins');
-	require('../jquery.ui.position');
-	var Stateful = require('../state/stateful'),
-	_ = require('../underscore'),
-	Backbone = require('backbone');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../state/stateful','underscore','../taurus','backbone','../lang/number','../mixins','../jquery.ui.position'], function(Base) {
+				return factory(Base);
+			});
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../state/stateful'),require('underscore'),require('../taurus'),require('backbone'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../state/stateful'),require('underscore'),require('../taurus'),require('backbone'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
+	}
+}(this, function(Stateful,_,taurus,Backbone) {
 	return Backbone.View.extend({
 		isRendered : false,
 		doc : taurus.$doc,
@@ -602,4 +610,6 @@ define(function(require) {
 	},{
 		INVALID_ID_CHARS_Re: /[\.,\s]/g
 	}).mixins(Stateful);
+}));
+define(function(require) {
 });
