@@ -1,21 +1,20 @@
 /**
  * @author nttdocomo
  */
-/* # Example usage
- *
- * 		@example
- *		new taurus.form.field.Text({
- * 			name: 'name',
- * 			fieldLabel: 'Name',
- * 			inputType: 'password'
- * 		})
- */
-define(function(require) {
-	var Label = require("../label"),
-	_ = require('underscore'),
-	Modernizr = require('modernizr'),
-	Field = require("./field"),
-	Backbone = require("backbone");
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../label','./field','underscore','backbone','modernizr'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../label'),require('./field'),require('underscore'),require('backbone'),require('modernizr'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../label'),require('./field'),require('underscore'),require('backbone'),require('modernizr'));
+	}
+}(this, function(Label,Field,_,Backbone,Modernizr) {
 	return Label.extend({
 		inputType : 'text',
 		readOnly:false,
@@ -270,4 +269,4 @@ define(function(require) {
 			return isValid;
 		}
 	}).mixins(Field);
-});
+}));

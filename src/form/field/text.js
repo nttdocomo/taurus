@@ -1,20 +1,20 @@
 /**
  * @author nttdocomo
  */
-/* # Example usage
- *
- * 		@example
- *		new taurus.form.field.Text({
- * 			name: 'name',
- * 			fieldLabel: 'Name',
- * 			inputType: 'password'
- * 		})
- */
-define(function(require) {
-	var Base = require("./base"),
-	Modernizr = require('modernizr'),
-	taurus = require('../../taurus'),
-	_ = require('underscore');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./base','../../taurus','underscore','modernizr'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./base'),require('../../taurus'),require('underscore'),require('modernizr'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./base'),require('../../taurus'),require('underscore'),require('modernizr'));
+	}
+}(this, function(Base,taurus,_,Modernizr) {
 	return Base.extend({
 		allowBlank : true,
 		blankText : 'This field is required',
@@ -116,4 +116,4 @@ define(function(require) {
 			Base.prototype.delegateEvents.call(this, events);
 		}
 	});
-});
+}));

@@ -1,9 +1,22 @@
 /**
  * @author nttdocomo
  */
-define(function(require){
-	var vsprintf = require('./util/sprintf').vsprintf;
-	var i18n = function(opt){
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./util/sprintf'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./util/sprintf'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./util/sprintf'));
+	}
+}(this, function(sprintf){
+	var vsprintf = sprintf.vsprintf,
+	i18n = function(opt){
 		var self = this;
 	
 		// Put into dev or production mode
@@ -86,4 +99,4 @@ define(function(require){
 		}
 	}
 	return i18n
-});
+}));

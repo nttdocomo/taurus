@@ -1,4 +1,20 @@
-define(function(require){
+/**
+ * @author nttdocomo
+ */
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory();
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory();
+	}
+}(this, function(){
 	var Field = function(){};
 	Field.prototype = {
 		isFormField : true,
@@ -59,4 +75,4 @@ define(function(require){
 	    }
 	}
 	return Field;
-})
+}));

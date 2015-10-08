@@ -1,9 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Base = require("../view/base");
-	var ActiveErrors = require("../view/activeErrors");
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../view/base','../view/activeErrors'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../view/base'),require('../view/activeErrors'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../view/base'),require('../view/activeErrors'));
+	}
+}(this, function(Base) {
 	return Base.extend({
 		tpl:'<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%=fieldLabel%><%if(labelSeparator){%><%=labelSeparator%><%}%></label><%}%><div style="<%=controlsStyle%>" id="<%=id%>-bodyEl"><%=field%></div><%if(fieldLabel){%><%}%><%if(renderError){%><div class="help-block" id="<%=id%>-errorEl" style="<%=controlsStyle%>"></div><%}%>',
 		className : "form-group",
@@ -144,4 +155,4 @@ define(function(require) {
 	        return lastChar === separator ? label.slice(0, -1) : label;
 	    }
 	});
-});
+}));
