@@ -146,7 +146,8 @@ input.trigger-noedit, input.trigger-noedit:focus {
 }
 
 .radio input,.checkbox input{
-	visibility: hidden;
+	/*==visibility: hidden;==*/
+	opacity: 0;
 }
 /*.radio > svg path,.checkbox > svg path {
 	stroke-width: 8px;

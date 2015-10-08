@@ -52,7 +52,7 @@ define(function(require) {
 					opacity:checked ? 1:0
 				})
 			} else {
-				alert('SVG not supported')
+				console.log('SVG not supported')
 			}
 		},
 		applyChildEls : function(childEls) {

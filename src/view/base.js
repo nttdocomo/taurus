@@ -4,9 +4,7 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../state/stateful','underscore','../taurus','backbone','../lang/number','../mixins','../jquery.ui.position'], function(Base) {
-				return factory(Base);
-			});
+			define(['../state/stateful','underscore','../taurus','backbone','../lang/number','../mixins','../jquery.ui.position'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
@@ -611,5 +609,3 @@
 		INVALID_ID_CHARS_Re: /[\.,\s]/g
 	}).mixins(Stateful);
 }));
-define(function(require) {
-});

@@ -1,22 +1,20 @@
 /**
  * @author nttdocomo
  */
-/* # Example usage
- *
- * 		@example
- *		new taurus.form.field.Text({
- * 			name: 'name',
- * 			fieldLabel: 'Name',
- * 			inputType: 'password'
- * 		})
- */
-define(function(require) {
-	require("../../lang/event");
-	require("../../jquery.scrollIntoView");
-	var _ = require("underscore"),
-	Backbone = require("backbone"),
-	Picker = require("./picker"),
-	BoundList = require("../../view/boundList");
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./picker','../../view/boundList','underscore','backbone','../../lang/event','../../jquery.scrollIntoView'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./picker'),require('../../view/boundList'),require('underscore'),require('backbone'),require('../../lang/event'),require('../../jquery.scrollIntoView'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./picker'),require('../../view/boundList'),require('underscore'),require('backbone'),require('../../lang/event'),require('../../jquery.scrollIntoView'));
+	}
+}(this, function(Picker,BoundList,_,Backbone) {
 	return Picker.extend({
 		allQuery: '',
 		delimiter : ', ',
@@ -400,4 +398,4 @@ define(function(require) {
 			this.$el.find('.form-trigger').attr('disabled',false);
    		}
 	});
-});
+}));
