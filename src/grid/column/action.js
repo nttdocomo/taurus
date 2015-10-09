@@ -1,6 +1,20 @@
-define(function(require){
-	var Column = require('./column'),
-	_ = require('underscore');
+/**
+ * @author nttdocomo
+ */
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./column','underscore'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./column'),require('underscore'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./column'),require('underscore'));
+	}
+}(this, function(Column,_){
 	return Column.extend({
 		actionIconCls: taurus.baseCSSPrefix + 'action-col-icon',
 		actionIdRe: new RegExp(taurus.baseCSSPrefix + 'action-col-(\\d+)'),
@@ -126,4 +140,4 @@ define(function(require){
 	    	return Column.prototype.initComponent.apply(this,arguments);
 	    }
 	})
-})
+}));

@@ -1,10 +1,21 @@
 /**
  * @author nttdocomo
  */
-define(function(require){
-	var Base = require('../view/base');
-	var Spinner = require('../spinner/wave');
-	return taurus.view('taurus.panel.Base',Base.extend({
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../view/base','../spinner/wave'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../view/base'),require('../spinner/wave'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../view/base'),require('../spinner/wave'));
+	}
+}(this, function(Base,Spinner){
+	return Base.extend({
 		autoHeight:false,
 		header:true,
 		referTo:$(window),
@@ -63,5 +74,5 @@ define(function(require){
         getTargetEl: function() {
             return this.frameBody || this.$el.find('>.panel-body');
         }
-	}));
-});
+	});
+}));

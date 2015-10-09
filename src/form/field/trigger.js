@@ -1,10 +1,21 @@
 /**
  * @author nttdocomo
  */
-define(function(require){
-	var Text = require("./text"),
-	_ = require('underscore');
-	return taurus.view("taurus.form.field.Trigger", Text.extend({
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./text','underscore'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./text'),require('underscore'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./text'),require('underscore'));
+	}
+}(this, function(Text,_){
+	return Text.extend({
 		editable:true,
 		/**
 		 * @cfg {Boolean} buttonOnly
@@ -40,5 +51,5 @@ define(function(require){
 		getTriggerMarkup:function(){
 			return this.triggerTpl;
 		}
-	}));
-});
+	});
+}));

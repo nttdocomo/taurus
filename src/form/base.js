@@ -1,9 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Base = require('../view/base'),
-	_ = require('underscore');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../view/base','underscore'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../view/base'),require('underscore'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../view/base'),require('underscore'));
+	}
+}(this, function(Base,_) {
 	return Base.extend({
 		tagName : 'form',
 		initialize:function(){
@@ -137,4 +148,4 @@ define(function(require) {
 			return false;
 		},
 	});
-});
+}));

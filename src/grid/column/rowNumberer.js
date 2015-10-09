@@ -1,5 +1,20 @@
-define(function(require){
-	var Column = require('./column');
+/**
+ * @author nttdocomo
+ */
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./column'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./column'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./column'));
+	}
+}(this, function(Column){
 	return Column.extend({
 		width:23,
 		text:'&#160;',
@@ -35,4 +50,4 @@ define(function(require){
 	        return result + 1;
 	    }
 	})
-})
+}));

@@ -1,15 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require){
-	var Panel = require('./panel'),
-	Table = require('../view/table'),
-	Header = require('../grid/header/container'),
-	Pagination = require('../grid/pagination'),
-	Spinner = require('../spinner/wave'),
-	PageableCollection = require("backbone-pageable"),
-	_ = require('underscore'),
-	taurus = require('../taurus');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./panel','../view/table','../grid/header/container','../grid/pagination','backbone-pageable','underscore','../taurus'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./panel'),require('../view/table'),require('../grid/header/container'),require('../grid/pagination'),require('backbone-pageable'),require('underscore'),require('../taurus'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./panel'),require('../view/table'),require('../grid/header/container'),require('../grid/pagination'),require('backbone-pageable'),require('underscore'),require('../taurus'));
+	}
+}(this, function(Panel,Table,Header,Pagination,PageableCollection,_,taurus){
 	return Panel.extend({
 		pager:false,
 		className:'panel panel-default grid',
@@ -220,4 +225,4 @@ define(function(require){
 			return html;
 		}
 	});
-});
+}));
