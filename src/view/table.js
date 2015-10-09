@@ -1,12 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require){
-	var Base = require('./view'),
-	Thead = require('./tableHeader'),
-	TableBody = require('./tableBody'),
-	Backbone = require('backbone'),
-	_ = require('underscore');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./view','./tableHeader','./tableBody','backbone','underscore'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./view'),require('./tableHeader'),require('./tableBody'),require('backbone'),require('underscore'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./view'),require('./tableHeader'),require('./tableBody'),require('backbone'),require('underscore'));
+	}
+}(this, function(Base,Thead,TableBody,Backbone,_){
 	return Base.extend({
 		header:true,
 		tpl:'<div class="grid-item-container"><table><%=rows%></table></div>',
@@ -350,4 +358,4 @@ define(function(require){
 			'gridResizeMarker':'.grid-resize-marker'
 		}
 	})
-})
+}));

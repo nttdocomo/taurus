@@ -1,9 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Class = require('../class'),
-	_ = require('underscore');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../class','underscore'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../class'),require('underscore'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../class'),require('underscore'));
+	}
+}(this, function(Class,_) {
 	return new (Class.extend({
 		menus: {},
 		init: function() {
@@ -130,4 +141,4 @@ define(function(require) {
 	        //}
 	    }
 	}));
-});
+}));

@@ -1,9 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Base = require('../view/base'),
-	i18n = require('../i18n/zh-cn');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../view/base','../i18n/zh-cn'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../view/base'),require('../i18n/zh-cn'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../view/base'),require('../i18n/zh-cn'));
+	}
+}(this, function(Base,i18n) {
 	return Base.extend({
 		//tpl:'<ul><li<% if (currentPage <= firstPage) { %> class="disabled"<%}%>><a href="#">Prev</a></li><% for(p=1;p<=totalPages;p++){%><li<% if (currentPage == p) { %> class="disabled"<% } %>><a href="#"><%= p %></a></li><%}%><li<% if (currentPage == totalPages) { %> class="disabled"<%}%>><a href="#">Next</a></li></ul>',
 		tpl:'<%=fastBackward%><%=backward%><span><%=pageDesc%></span><%=forward%><%=fastForward%>',
@@ -75,4 +86,4 @@ define(function(require) {
 			return '';
 		}
 	});
-});
+}));

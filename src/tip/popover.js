@@ -1,5 +1,20 @@
-define(function(require){
-	var Tip = require('./toolTip');
+/**
+ * @author nttdocomo
+ */
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./toolTip'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./toolTip'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./toolTip'));
+	}
+}(this, function(Tip){
 	return Tip.extend({
 		className:'popover',
 		tpl:'<div class="arrow"></div><%if(title){%><h3 class="popover-title"><%=title%></h3><%}%><div class="popover-content"><%=content%></div>',
@@ -37,4 +52,4 @@ define(function(require){
 	        }
 	    }
 	})
-})
+}));

@@ -1,12 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Base = require('../view/base'),
-	MenuItem = require('./item'),
-	Manager = require('./manager'),
-	_ = require('underscore'),
-	Backbone = require('backbone');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../view/base','./item','./manager','backbone','underscore'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../view/base'),require('./item'),require('./manager'),require('backbone'),require('underscore'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../view/base'),require('./item'),require('./manager'),require('backbone'),require('underscore'));
+	}
+}(this, function(Base,MenuItem,Manager,Backbone,_) {
 	return taurus.augmentString('taurus.menu.Menu',Base.extend({
 		isMenu: true,
 		tagName:'ul',
@@ -202,4 +210,4 @@ define(function(require) {
 	        }
 	    }
 	}));
-});
+}));

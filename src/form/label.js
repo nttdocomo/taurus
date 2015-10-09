@@ -14,7 +14,7 @@
 	} else if(typeof module === "object" && module.exports) {
 		module.exports = factory(require('../view/base'),require('../view/activeErrors'));
 	}
-}(this, function(Base) {
+}(this, function(Base,ActiveErrors) {
 	return Base.extend({
 		tpl:'<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%if(typeof beforeLabelTextTpl !== "undefined"){%><%=beforeLabelTextTpl%><%}%><%=fieldLabel%><%if(labelSeparator){%><%=labelSeparator%><%}%></label><%}%><div style="<%=controlsStyle%>" id="<%=id%>-bodyEl"><%=field%></div><%if(fieldLabel){%><%}%><%if(renderError){%><div class="help-block" id="<%=id%>-errorEl" style="<%=controlsStyle%>"></div><%}%>',
 		className : "form-group",
