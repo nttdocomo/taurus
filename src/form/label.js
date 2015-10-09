@@ -16,7 +16,7 @@
 	}
 }(this, function(Base) {
 	return Base.extend({
-		tpl:'<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%=fieldLabel%><%if(labelSeparator){%><%=labelSeparator%><%}%></label><%}%><div style="<%=controlsStyle%>" id="<%=id%>-bodyEl"><%=field%></div><%if(fieldLabel){%><%}%><%if(renderError){%><div class="help-block" id="<%=id%>-errorEl" style="<%=controlsStyle%>"></div><%}%>',
+		tpl:'<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%if(typeof beforeLabelTextTpl !== "undefined"){%><%=beforeLabelTextTpl%><%}%><%=fieldLabel%><%if(labelSeparator){%><%=labelSeparator%><%}%></label><%}%><div style="<%=controlsStyle%>" id="<%=id%>-bodyEl"><%=field%></div><%if(fieldLabel){%><%}%><%if(renderError){%><div class="help-block" id="<%=id%>-errorEl" style="<%=controlsStyle%>"></div><%}%>',
 		className : "form-group",
 		labelWidth : 100,
 		labelAlign : 'left',
@@ -60,7 +60,8 @@
 				labelStyle : me.getLabelStyle(),
 				controlsStyle : me.getControlsStyle(),
 				renderError: sideError || underError,
-				labelSeparator: me.labelSeparator
+				labelSeparator: me.labelSeparator,
+				beforeLabelTextTpl:me.beforeLabelTextTpl
 			},data);
 			return Base.prototype.getTplData.call(me, data)
 		},
