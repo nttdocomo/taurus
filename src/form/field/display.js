@@ -1,18 +1,20 @@
 /**
  * @author nttdocomo
  */
-/* # Example usage
- *
- * 		@example
- *		new taurus.form.field.Text({
- * 			name: 'name',
- * 			fieldLabel: 'Name',
- * 			inputType: 'password'
- * 		})
- */
-define(function(require) {
-	var Base = require("./base"),
-	taurus = require('../../taurus');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./base','../../taurus'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./base'),require('../../taurus'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./base'),require('../../taurus'));
+	}
+}(this, function(Base,taurus) {
 	return Base.extend({
 		allowBlank : true,
 		fieldSubTpl:'<p class="form-control-static"><%=value%></p>',
@@ -63,4 +65,4 @@ define(function(require) {
 			Base.prototype.applyChildEls.call(this, childEls);
 		}
 	});
-});
+}));

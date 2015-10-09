@@ -1,6 +1,20 @@
-define(function(require){
-	var Tip = require('./tip');
-	DateUtil = require('../lang/date');
+/**
+ * @author nttdocomo
+ */
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./tip','../lang/date'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./tip'),require('../lang/date'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./tip'),require('../lang/date'));
+	}
+}(this, function(Tip,DateUtil){
 	return Tip.extend({
 
 	    /**
@@ -217,4 +231,4 @@ define(function(require){
 	        delete this.fromDelayShow;
 	    }
 	})
-})
+}));

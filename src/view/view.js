@@ -1,10 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require){
-	var Base = require('./abstractView'),
-	Backbone = require('backbone');
-	require("../lang/event");
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./abstractView','backbone','../lang/event'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./abstractView'),require('backbone'),require("../lang/event"));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./abstractView'),require('backbone'),require("../lang/event"));
+	}
+}(this, function(Base,Backbone){
 	return Base.extend({
 		className:'row-fluid',
 		selectedItemCls:'item-selected',
@@ -106,4 +116,4 @@ define(function(require){
             doubletap: 'dblclick'
         }
 	});
-});
+}));

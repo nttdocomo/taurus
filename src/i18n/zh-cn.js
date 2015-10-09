@@ -1,8 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require){
-	i18n = require('../i18n');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../i18n'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../i18n'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../i18n'));
+	}
+}(this, function(i18n){
 	return new i18n({
 		locales:[[
 		'zh-cn',{
@@ -11,4 +23,4 @@ define(function(require){
 			"Confirm" : "确定"
 		}]]
 	});
-});
+}));
