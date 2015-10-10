@@ -15,10 +15,6 @@
 		module.exports = factory(require('./trigger'),require('../../taurus'),require('underscore'),require('../../fine-uploader'));
 	}
 }(this, function(Trigger,taurus,_) {
-	var supportsUploading = qq.supportedFeatures.uploading, supportsAjaxFileUploading = qq.supportedFeatures.ajaxUploading;
-	taurus.augmentObject('$.support', {
-		ajaxUploading : supportsAjaxFileUploading
-	});
 	return Trigger.extend({
 		iconTpl:'<i id="<%=id%>-btnIconEl" class="<%=_hasIconCls%>" style="<%if(iconUrl){%>background-image:url(<%=iconUrl%>);<%}%>"></i>',
 		buttonText : 'Browse...',
