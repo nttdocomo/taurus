@@ -1,6 +1,21 @@
-define(function(require){
-	var taurus = require('../taurus'),
-	FieldAncestor = function(){};
+/**
+ * @author nttdocomo
+ */
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../taurus'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../taurus'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../taurus'));
+	}
+}(this, function(taurus){
+	var FieldAncestor = function(){};
 	FieldAncestor.prototype = {
 		/**
 	     * @private Handle bubbled errorchange events from descendants; invoke the aggregated event and method
@@ -38,4 +53,4 @@ define(function(require){
 	    }
 	}
 	return FieldAncestor;
-})
+}));

@@ -1,8 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require){
-	var Trigger = require("./trigger");
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./trigger'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./trigger'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./trigger'));
+	}
+}(this, function(Trigger){
 	return Trigger.extend({
 		alignPicker:function(){
 			var me = this, picker = me.getPicker(),position,
@@ -95,4 +107,4 @@ define(function(require){
 			"collision" : "none none"
 		}
 	});
-});
+}));

@@ -1,7 +1,21 @@
-define(function(require){
-	var Class = require('../class'),
-	_ = require('underscore'),
-	array = [],
+/**
+ * @author nttdocomo
+ */
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../class','underscore'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../class'),require('underscore'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../class'),require('underscore'));
+	}
+}(this, function(Class,_){
+	var array = [],
 	slice = array.slice,
 	Collection = Class.extend({
 		init:function(options){
@@ -95,4 +109,4 @@ define(function(require){
 		};
 	});
 	return Collection;
-})
+}));

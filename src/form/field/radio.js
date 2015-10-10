@@ -1,11 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Base = require('./checkbox'),
-	_ = require('underscore'),
-	RadioManager = require('../radioManager'),
-	Svg = require('../../svg');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./checkbox','../radioManager','underscore','svg'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./checkbox'),require('../radioManager'),require('underscore'),require('svg'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./checkbox'),require('../radioManager'),require('underscore'),require('svg'));
+	}
+}(this, function(Base,RadioManager,_,Svg) {
 	return Base.extend({
 		inputType : 'radio',
 		formId: null,
@@ -92,4 +101,4 @@ define(function(require) {
 	        return me;
 	    }
 	})
-})
+}));

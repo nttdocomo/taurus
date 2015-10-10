@@ -1,10 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Base = require('../view/base'),
-	Manager = require('./manager'),
-	_ = require('underscore');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../view/base','./manager','underscore'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../view/base'),require('./manager'),require('underscore'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../view/base'),require('./manager'),require('underscore'));
+	}
+}(this, function(Base,Manager,_) {
 	return Base.extend({
 		isMenuItem: true,
 		canActivate:true,
@@ -231,4 +241,4 @@ define(function(require) {
 	        }
 	    }
 	});
-});
+}));

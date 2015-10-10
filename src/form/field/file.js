@@ -1,17 +1,25 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Trigger = require('./trigger'),
-	taurus = require('../../taurus'),
-	_ = require('underscore');
-	require('../../fileuploader');
-	/*==*/
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./trigger','../../taurus','underscore','../../fileuploader'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./trigger'),require('../../taurus'),require('underscore'),require('../../fileuploader'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./trigger'),require('../../taurus'),require('underscore'),require('../../fileuploader'));
+	}
+}(this, function(Trigger,taurus,_) {
 	var supportsUploading = qq.supportedFeatures.uploading, supportsAjaxFileUploading = qq.supportedFeatures.ajaxUploading;
 	taurus.augmentObject('$.support', {
 		ajaxUploading : supportsAjaxFileUploading
 	});
-	return taurus.view('taurus.form.field.File', Trigger.extend({
+	return Trigger.extend({
 		iconTpl:'<i id="<%=id%>-btnIconEl" class="<%=_hasIconCls%>" style="<%if(iconUrl){%>background-image:url(<%=iconUrl%>);<%}%>"></i>',
 		buttonText : 'Browse...',
 		_hasIconCls: taurus.baseCSSPrefix + 'btn-icon',
@@ -163,7 +171,7 @@ define(function(require) {
 		getTriggerMarkup : function() {
 			return _.template((this.buttonOnly ? '' : '<span id="<%=id%>" class="input-group-btn <%=cls%>">') + '<div id="buttonEl" class="btn btn-primary' + (this.buttonOnly ? ' <%=cls%>' : '') + '" <%if(disabled){%> disabled="disabled"<%}%>><%=icon%><%=text%>' + $('<div>').append($('<input />', {
 				id : 'fileInputEl',
-				class : taurus.baseCSSPrefix + 'form-file-input',
+				'class' : taurus.baseCSSPrefix + 'form-file-input',
 				type : 'file',
 				disabled : this.disabled,
 				size : 1
@@ -846,5 +854,5 @@ define(function(require) {
 				this.inputEl.hide();
 			}
 		}
-	}));
-});
+	});
+}));

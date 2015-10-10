@@ -1,12 +1,20 @@
 /**
  * @author nttdocomo
  */
-
-define(function(require) {
-	var Base = require('./view'),
-	BoundListItem = require('./boundListItem'),
-	_ = require("underscore"),
-	Backbone = require('backbone');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./view','./boundListItem','underscore','backbone'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./view'),require('./boundListItem'),require("underscore"),require('backbone'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./view'),require('./boundListItem'),require("underscore"),require('backbone'));
+	}
+}(this, function(Base,BoundListItem,_,Backbone) {
 	return Base.extend({
 		//tpl:'<%=content%>',
 		id : 'listEl',
@@ -129,4 +137,4 @@ define(function(require) {
 			Base.prototype.show.apply(this,arguments);
 		}
 	});
-});
+}));

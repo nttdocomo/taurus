@@ -1,10 +1,21 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Dialog = require('./dialog'),
-	i18n = require('../i18n/zh-cn');
-	return taurus.view("taurus.widget.Prompt", Dialog.extend({
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./dialog','../i18n/zh-cn'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./dialog'),require('../i18n/zh-cn'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./dialog'),require('../i18n/zh-cn'));
+	}
+}(this, function(Dialog,i18n) {
+	return Dialog.extend({
 		disabled:false,
 		buttons:[{
 			text:i18n.__('Cancel'),
@@ -63,5 +74,5 @@ define(function(require) {
 			this.disabled = false;
 			this.renderButttons();
 		}
-	}));
-});
+	});
+}));

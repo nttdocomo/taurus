@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./util/sprintf'], factory);
+			define(['./util/sprintf','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./util/sprintf'));
+				return factory(require('./util/sprintf'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./util/sprintf'));
+		module.exports = factory(require('./util/sprintf'),require('underscore'));
 	}
 }(this, function(sprintf){
 	var vsprintf = sprintf.vsprintf,
@@ -29,10 +29,10 @@
 	
 		// implicitly read all locales
 		// if it's an array of locale names, read in the data
-		if (opt.locales && opt.locales.forEach) {
+		if (opt.locales && _.isArray(opt.locales)) {
 			this.locales = {};
 	
-			opt.locales.forEach(function(locale) {
+			_.each(opt.locales,function(locale) {
 				self.readFile(locale);
 			});
 	

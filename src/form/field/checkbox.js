@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./base','../checkboxManager','../../svg','underscore'], factory);
+			define(['./base','../checkboxManager','svg','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./base'),require('../checkboxManager'),require('../../svg'),require('underscore'));
+				return factory(require('./base'),require('../checkboxManager'),require('svg'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./base'),require('../checkboxManager'),require('../../svg'),require('underscore'));
+		module.exports = factory(require('./base'),require('../checkboxManager'),require('svg'),require('underscore'));
 	}
 }(this, function(Base,CheckboxManager,Svg,_) {
 	return Base.extend({

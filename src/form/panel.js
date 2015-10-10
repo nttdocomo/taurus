@@ -1,11 +1,21 @@
 /**
  * @author nttdocomo
  */
-define(function(require){
-	var Panel = require('../panel/panel'),
-	_ = require('underscore'),
-	BaseForm = require('./base');
-	return taurus.view("taurus.form.Panel", Panel.extend({
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../panel/panel','./base','underscore'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../panel/panel'),require('./base'),require('underscore'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../panel/panel'),require('./base'),require('underscore'));
+	}
+}(this, function(Panel,BaseForm,_){
+	return Panel.extend({
 		disabled:false,
 		childEls:{
 			'body':'.panel-body'
@@ -81,5 +91,5 @@ define(function(require){
 	    submit: function(options) {
 	        this.form.submit(options);
 	    }
-	}));
-});
+	});
+}));

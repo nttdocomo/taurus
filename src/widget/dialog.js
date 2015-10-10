@@ -1,9 +1,21 @@
 /**
  * @author nttdocomo
  */
-define(function(require){
-	var Base = require('../view/base');
-	return taurus.view("taurus.widget.Dialog", Base.extend({
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../view/base'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../view/base'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../view/base'));
+	}
+}(this, function(Base){
+	return Base.extend({
 		tpl:'<div class="modal-dialog"><div class="modal-content"><%if(header){%><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title"><%=title%></h4></div><%}%><div class="modal-body"><%=content%></div><%=footer%></div></div>',
 		className:'modal fade',
 		content:null,
@@ -72,5 +84,5 @@ define(function(require){
 		},
 		setHeight : function(height) {},
 		setWidth : function(width) {}
-	}));
-});
+	});
+}));
