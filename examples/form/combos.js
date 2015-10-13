@@ -4,7 +4,9 @@
 define(function(require) {
 	var Backbone = require("backbone");
 	var chance = require('chance');
-	var ComboBox = require("../../src/form/field/comboBox.js"), $body = $("#main"), data_with_src=[],states = [{
+	var ComboBox = require("../../src/form/field/comboBox"),
+	Button = require("../../src/button/button"),
+	$body = $("#main"), data_with_src=[],states = [{
 		"abbr" : "AL",
 		"name" : "Alabama",
 		"slogan" : "The Heart of Dixie"
@@ -228,7 +230,7 @@ define(function(require) {
 			"value" : chance.word({length: 5})
 		})
 	};http://lorempixel.com/output/sports-q-c-640-480-6.jpg
-	new ComboBox({
+	var city = new ComboBox({
 		renderTo : $body,
 		name : 'textfield2',
 		id : 'textfield2',
@@ -285,4 +287,11 @@ define(function(require) {
 		fieldLabel : 'city',
 		collection : collection
 	});
+	new Button({
+		renderTo : $body,
+		text:'Clear Value',
+		handler:function(){
+			city.setValue(null)
+		}
+	})
 }); 

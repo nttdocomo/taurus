@@ -332,8 +332,18 @@
 			}
 		},
 		setValue : function(value) {
+			if (value != null) {
+	            return me.doSetValue(value);
+	        }
+	        // Clearing is a special, simpler case.
+	        else {
+	            me.doSetValue(null);
+	        }
+		},
+		doSetValue:function(value){
 			var me = this, displayField = this.displayField, valueField = this.valueField || displayField, processedValue = [], displayTplData = [], model, record, displayValue,
-			displayIsValue = me.displayField === me.valueField;
+			displayIsValue = me.displayField === me.valueField,
+			displayTplData = me.displayTplData || (me.displayTplData = []);
 			if (_.isUndefined(value)) {
 				return Picker.prototype.setValue.apply(this, value);
 			}
@@ -341,6 +351,7 @@
 				return Picker.prototype.setValue.apply(this, [value]);
 			}
 			value = $.makeArray(value);
+			displayTplData.length = 0;
 			for ( i = 0, len = value.length; i < len; i++) {
 				val = value[i];
 				if ((_.isString(val) || _.isNumber(val) || _.isObject(val)) && this.collection.length) {
@@ -378,7 +389,7 @@
 			return Picker.prototype.setValue.apply(this, [this.value]);
 		},
 		clearValue : function() {
-			this.setValue([]);
+			this.setValue(null);
 		},
 		getSubTplData : function() {
 			var me = this;
