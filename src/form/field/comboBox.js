@@ -95,7 +95,8 @@
 					'click input' : 'onTriggerClick'
 				});
 			}
-			Picker.prototype.delegateEvents.call(this, events);
+			Backbone.View.prototype.delegateEvents.call(this, events);
+			//Picker.prototype.delegateEvents.call(this, events);
 		},
 
 		doTypeAhead : function() {
@@ -332,18 +333,20 @@
 			}
 		},
 		setValue : function(value) {
+			var me = this;
 			if (value != null) {
 	            return me.doSetValue(value);
 	        }
 	        // Clearing is a special, simpler case.
 	        else {
-	            me.doSetValue(null);
+	            return me.doSetValue(null);
 	        }
 		},
 		doSetValue:function(value){
 			var me = this, displayField = this.displayField, valueField = this.valueField || displayField, processedValue = [], displayTplData = [], model, record, displayValue,
 			displayIsValue = me.displayField === me.valueField,
 			displayTplData = me.displayTplData || (me.displayTplData = []);
+			displayTplData.length = 0;
 			if (_.isUndefined(value)) {
 				return Picker.prototype.setValue.apply(this, value);
 			}
@@ -351,7 +354,6 @@
 				return Picker.prototype.setValue.apply(this, [value]);
 			}
 			value = $.makeArray(value);
-			displayTplData.length = 0;
 			for ( i = 0, len = value.length; i < len; i++) {
 				val = value[i];
 				if ((_.isString(val) || _.isNumber(val) || _.isObject(val)) && this.collection.length) {
@@ -397,6 +399,16 @@
 			data.value = this.getDisplayValue();
 			return data;
 		},
+
+	    getSubmitValue: function() {
+	        var value = this.getValue();
+	        // If the value is null/undefined, we still return an empty string. If we
+	        // don't, the field will never get posted to the server since nulls are ignored.
+	        if (_.isEmpty(value)) {
+	            value = '';
+	        }
+	        return value;
+	    },
 		valueToRaw : function(value) {
 			return Picker.prototype.valueToRaw.apply(this, [this.getDisplayValue()]);
 		},
