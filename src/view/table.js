@@ -117,7 +117,7 @@
 		getCellsWidth:function(){
 			var cells = this.$el.find('tr:eq(0) > td');
 			return _.map(cells,function(cell){
-				return $(cell).innerWidth();
+				return $(cell).outerWidth();
 			})
 		},
 		initFeatures:function(grid){
