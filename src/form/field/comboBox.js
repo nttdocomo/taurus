@@ -95,8 +95,8 @@
 					'click input' : 'onTriggerClick'
 				});
 			}
-			Backbone.View.prototype.delegateEvents.call(this, events);
-			//Picker.prototype.delegateEvents.call(this, events);
+			//Backbone.View.prototype.delegateEvents.call(this, events);
+			Picker.prototype.delegateEvents.call(this, events);
 		},
 
 		doTypeAhead : function() {

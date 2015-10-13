@@ -1,8 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Base = require('../view/base');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../view/base'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../view/base'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../view/base'));
+	}
+}(this, function(Base) {
 	return Base.extend({
 		tagName : 'li',
 		tpl : '<a href="#"><%=title%></a>',
@@ -51,4 +63,4 @@ define(function(require) {
 			me.$el.removeClass(me.activeCls);
 		}
 	});
-});
+}));
