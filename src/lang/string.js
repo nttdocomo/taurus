@@ -1,6 +1,21 @@
-define(function(require) {
-	var taurus = require('../taurus'),
-	formatRe = /\{(\d+)\}/g,escapeRegexRe = /([-.*+?\^${}()|\[\]\/\\])/g;
+/**
+ * @author nttdocomo
+ */
+ (function (root, factory) {
+    if(typeof define === "function") {
+        if(define.amd){
+            define(['../taurus'], factory);
+        }
+        if(define.cmd){
+            define(function(require, exports, module){
+                return factory(require('../taurus'));
+            })
+        }
+    } else if(typeof module === "object" && module.exports) {
+        module.exports = factory(require('../taurus'));
+    }
+}(this, function(taurus) {
+	var formatRe = /\{(\d+)\}/g,escapeRegexRe = /([-.*+?\^${}()|\[\]\/\\])/g;
 	taurus.augmentObject('taurus.String.prototype', $.extend({}, String.prototype, {
 		format : function(format) {
 			var args = aries.Array.toArray(arguments, 1);
@@ -21,4 +36,4 @@ define(function(require) {
 	taurus.String.escapeRegex = function(string) {
 		return string.replace(escapeRegexRe, "\\$1");
 	}
-})
+}));
