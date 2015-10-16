@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../view/base','../i18n/zh-cn'], factory);
+			define(['../view/base','../i18n'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../view/base'),require('../i18n/zh-cn'));
+				return factory(require('../view/base'),require('../i18n'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../view/base'),require('../i18n/zh-cn'));
+		module.exports = factory(require('../view/base'),require('../i18n'));
 	}
 }(this, function(Base,i18n) {
 	return Base.extend({

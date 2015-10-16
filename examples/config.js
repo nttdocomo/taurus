@@ -12,5 +12,8 @@ seajs.config({
 		'taurus':'./'
 	},
 	base : '/src/',
-	charset : 'utf-8'
+	charset : 'utf-8',
+	vars : {
+		'locale' : (navigator.language || navigator.browserLanguage).toLowerCase()
+	}
 });

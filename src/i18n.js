@@ -2,19 +2,22 @@
  * @author nttdocomo
  */
  (function (root, factory) {
+ 	var locale = (navigator.language || navigator.browserLanguage).toLowerCase();
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./util/sprintf','underscore'], factory);
+			define(['./util/sprintf','./i18n/'+locale], function(sprintf,locales){
+				return factory(sprintf,locales,locale)
+			});
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./util/sprintf'),require('underscore'));
+				return factory(require('./util/sprintf'),require('./i18n/{locale}'),locale,require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./util/sprintf'),require('underscore'));
+		module.exports = factory(require('./util/sprintf'),require('./i18n/'+locale),locale,require('underscore'));
 	}
-}(this, function(sprintf){
+}(this, function(sprintf,locales,locale){
 	var vsprintf = sprintf.vsprintf,
 	i18n = function(opt){
 		var self = this;
@@ -29,15 +32,16 @@
 	
 		// implicitly read all locales
 		// if it's an array of locale names, read in the data
-		if (opt.locales && _.isArray(opt.locales)) {
+		/*if (opt.locales && _.isArray(opt.locales)) {
 			this.locales = {};
 	
 			_.each(opt.locales,function(locale) {
 				self.readFile(locale);
 			});
 	
-			this.defaultLocale = opt.locales[0][0];
-		}
+			this.defaultLocale = this.locale = locale;
+		}*/
+		this.defaultLocale = this.locale = locale;
 	}
 	i18n.prototype = {
 		defaultLocale: "en-us",
@@ -46,7 +50,7 @@
 		cookiename: "lang",
 
 		__: function() {
-			var msg = this.translate(this.locale, arguments[0]);
+			var msg = this.translate(locale, arguments[0]);
 	
 			if (arguments.length > 1) {
 				msg = vsprintf(msg, Array.prototype.slice.call(arguments, 1));
@@ -56,7 +60,7 @@
 		},
 		// read locale file, translate a msg and write to fs if new
 		translate: function(locale, singular, plural) {
-			if (!locale || !this.locales[locale]) {
+			if (!locale || !locales) {
 				if (this.devMode) {
 					console.warn("WARN: No locale found. Using the default (" +
 						this.defaultLocale + ") as current locale");
@@ -67,8 +71,8 @@
 				this.initLocale(locale, {});
 			}
 	
-			if (!this.locales[locale][singular]) {
-				this.locales[locale][singular] = plural ?
+			if (!locales[singular]) {
+				locales[singular] = plural ?
 					{ one: singular, other: plural } :
 					singular;
 	
@@ -77,7 +81,7 @@
 				}
 			}
 	
-			return this.locales[locale][singular];
+			return locales[singular];
 		},
 		// try reading a file
 		readFile: function(locale) {
@@ -98,5 +102,5 @@
 			}
 		}
 	}
-	return i18n
+	return new i18n
 }));

@@ -25,7 +25,7 @@
 	}
 }(this, function(Base) {
 	return Base.extend({
-		className:'navigation-bar',
+		className:'navbar',
 		tpl:'<div class="left toolbar"></div><h1><%=title%></h1><div class="right toolbar">1</div>',
 		getTargetEl:function(item){
 			return this.$el.find('.'+item.side);

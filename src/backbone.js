@@ -1457,6 +1457,7 @@
       if (!callback) callback = this[name];
       var router = this;
       Backbone.history.route(route, function(fragment) {
+        console.log(fragment)
         var args = router._extractParameters(route, fragment);
         if (router.execute(callback, args, name) !== false) {
           router.trigger.apply(router, ['route:' + name].concat(args));

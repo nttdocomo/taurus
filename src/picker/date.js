@@ -4,19 +4,19 @@
 (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(["../view/base",'underscore','moment','../lang/date'], factory);
+			define(["../view/base",'../i18n','underscore','moment','../lang/date'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-		        return factory(require('../view/base'),require("underscore"),require('moment'),require('../lang/date'));
+		        return factory(require('../view/base'),require('../i18n'),require("underscore"),require('moment'),require('../lang/date'));
 		     })
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../view/base'),require("underscore"),require('moment'),require('../lang/date'));
+		module.exports = factory(require('../view/base'),require('../i18n'),require("underscore"),require('moment'),require('../lang/date'));
 	} else {
 		root.myModule = factory();
 	}
-}(this,function(Base,_,moment) {
+}(this,function(Base,i18n,_,moment) {
 	return Base.extend({
 		tpl : '<div class="datepicker-days"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody></tbody></table></div><div class="datepicker-months"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody><tr><td colspan="7"></td></tr></tbody></table></div><div class="datepicker-years"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody><tr><td colspan="7"></td></tr></tbody></table></div>',
 		className : 'bootstrap-datetimepicker-widget dropdown-menu',
@@ -38,11 +38,11 @@
 			navStep : 10
 		}],
 		dates : {
-			days : ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-			daysShort : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-			daysMin : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
-			months : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-			monthsShort : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+			days : [i18n.__("Sunday"), i18n.__("Monday"), i18n.__("Tuesday"), i18n.__("Wednesday"), i18n.__("Thursday"), i18n.__("Friday"), i18n.__("Saturday"), i18n.__("Sunday")],
+			daysShort : [i18n.__("Sun"), i18n.__("Mon"), i18n.__("Tue"), i18n.__("Wed"), i18n.__("Thu"), i18n.__("Fri"), i18n.__("Sat"), i18n.__("Sun")],
+			daysMin : [i18n.__("Su"), i18n.__("Mo"), i18n.__("Tu"), i18n.__("We"), i18n.__("Th"), i18n.__("Fr"), i18n.__("Sa"), i18n.__("Su")],
+			months : [i18n.__("January"), i18n.__("February"), i18n.__("March"), i18n.__("April"), i18n.__("May"), i18n.__("June"), i18n.__("July"), i18n.__("August"), i18n.__("September"), i18n.__("October"), i18n.__("November"), i18n.__("December")],
+			monthsShort : [i18n.__("Jan"), i18n.__("Feb"), i18n.__("Mar"), i18n.__("Apr"), i18n.__("May"), i18n.__("Jun"), i18n.__("Jul"), i18n.__("Aug"), i18n.__("Sep"), i18n.__("Oct"), i18n.__("Nov"), i18n.__("Dec")]
 		},
 		initialize : function(options) {
 			Base.prototype.initialize.apply(this, arguments);

@@ -22,7 +22,7 @@
             '<%=cell%>',
         '</tr>'].join(''),
         cellTpl: [
-	        '<td class="<%=tdCls%>" <%=tdAttr%> style="width:<%=column.cellWidth%>px;<%if(tdStyle){%><%=tdStyle%><%}%>" tabindex="-1" data-column-id="<%=column.cid%>">',
+	        '<td class="<%=tdCls%>" <%=tdAttr%> style="<%if(tdStyle){%><%=tdStyle%><%}%>" tabindex="-1" data-column-id="<%=column.cid%>">',
 	            '<div class="grid-cell-inner" ',
 	                'style="text-align:<%=align%>;<%if(style){%><%=style%><%}%>"><%=value%></div>',
 	        '</td>'].join(''),
@@ -308,7 +308,7 @@
 			cellValues.tdCls = cellValues.tdStyle = cellValues.tdAttr = cellValues.style = "";
 			if(column.cellWidth){
 				cellValues.tdStyle = 'width:'+column.cellWidth+'px;';
-				cellValues.style = 'width:'+column.cellWidth+'px;';
+				//cellValues.style = 'width:'+column.cellWidth+'px;';
 			}
 			clsInsertPoint = 2;
 			if (column.renderer && column.renderer.call) {

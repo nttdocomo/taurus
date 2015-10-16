@@ -79,7 +79,7 @@
 	     * @private Fired when the error message of any field within the container changes, and updates the
 	     * combined error message to match.
 	     */
-	    onFieldErrorChange: function() {
+	    onFieldErrorChange: function(activeError) {
 	        if (this.combineErrors) {
 	            var me = this,
 	                oldError = me.getActiveError(),
@@ -89,7 +89,7 @@
 	                newErrors = me.getCombinedErrors(invalidFields);
 
 	            if (newErrors.length) {
-	                me.setActiveErrors(newErrors);
+	                me.setActiveErrors(activeError);
 	            } else {
 	                me.unsetActiveError();
 	            }
