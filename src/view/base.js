@@ -239,10 +239,10 @@
 			}
 			el.appendChild(this.el.cloneNode(true));
 			this.afterRender();
-			var height = this.height;
+			/*var height = this.height;
 			if (height) {
 				this.$el.css('height', height);
-			}
+			}*/
 			this.initItems();
 			return el.innerHTML;
 		},

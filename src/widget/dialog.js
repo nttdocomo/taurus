@@ -80,9 +80,12 @@
 		},
 		render : function() {
 			Base.prototype.render.apply(this, arguments);
+			this.$el.find('.modal-dialog').height(this.height);
 			this.$el.find('.modal-dialog').width(this.width);
 		},
-		setHeight : function(height) {},
-		setWidth : function(width) {}
+		setHeight : function(height) {
+		},
+		setWidth : function(width) {
+		}
 	});
 }));

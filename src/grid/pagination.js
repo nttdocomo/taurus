@@ -40,6 +40,7 @@
 			this.collection.on('reset', this.renderHtml, this);
 			this.collection.on('update', this.onCollectionChange, this);
 			this.collection.on('sort', this.renderHtml, this);
+			this.collection.on('remove', this.renderHtml, this);
 		},
 		delegateEvents:function(){
 			var events = $.extend({}, this.events, {

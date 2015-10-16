@@ -221,9 +221,9 @@
 	        }
 	    },
 		setColumnsWidth:function(widths){
-			var headers = this.$el.find('.column-header');
+			var me = this,items = me.items,headers = this.$el.find('.column-header');
 			headers.each(function(i,header){
-				$(header).width(widths[i]);
+				$(header).width(widths[i] || items[i].width);
 			});
 		},
 		/*setSize:function(){
