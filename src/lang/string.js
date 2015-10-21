@@ -35,5 +35,8 @@
 	}))
 	taurus.String.escapeRegex = function(string) {
 		return string.replace(escapeRegexRe, "\\$1");
+	},
+	taurus.String.htmlEncode = function(string) {
+		return document.createElement('a').appendChild(document.createTextNode(string)).parentNode.innerHTML;
 	}
 }));

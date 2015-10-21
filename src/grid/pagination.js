@@ -35,12 +35,15 @@
 			}
 		},
 		initialize : function() {
-			Base.prototype.initialize.apply(this,arguments);
-			this.collection.on('sync', this.renderHtml, this);
-			this.collection.on('reset', this.renderHtml, this);
-			this.collection.on('update', this.onCollectionChange, this);
-			this.collection.on('sort', this.renderHtml, this);
-			this.collection.on('remove', this.renderHtml, this);
+			var me = this;collection = me.collection,renderHtml = me.renderHtml;
+			Base.prototype.initialize.apply(me,arguments);
+			collection.on('sync', renderHtml, me);
+			collection.on('reset', renderHtml, me);
+			collection.on('update', me.onCollectionChange, me);
+			collection.on('sort', renderHtml, me);
+			if(collection.mode != "server"){
+				collection.on('remove', renderHtml, me);
+			}
 		},
 		delegateEvents:function(){
 			var events = $.extend({}, this.events, {

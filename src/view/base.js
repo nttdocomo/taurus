@@ -18,7 +18,6 @@
 	return Backbone.View.extend({
 		isRendered : false,
 		doc : taurus.$doc,
-		baseCls:'component',
 		_ensureElement : function() {
 			if (!this.el) {
 				var attrs = _.extend({}, _.result(this, 'attributes'));
@@ -132,7 +131,6 @@
 			/*
 			 * if has selector then render, for let the user see the ui as soon as possible
 			 */
-			this.setSize(this.width, this.height);
 			if (this.renderTo) {
 				this.render(this.renderTo, this.operation);
 			}
@@ -229,6 +227,7 @@
 			this.renderHtml();
 			this.isRendered = true;
 			this.rendered = true;
+			this.setSize(this.width, this.height);
 			return this;
 		},
 		renderHtml : function(data) {
