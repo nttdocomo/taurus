@@ -5,17 +5,17 @@
  	var locale = (navigator.language || navigator.browserLanguage).toLowerCase();
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./util/sprintf','./i18n/'+locale], function(sprintf,locales){
+			define(['./util/sprintf','i18n/'+locale], function(sprintf,locales){
 				return factory(sprintf,locales,locale)
 			});
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./util/sprintf'),require('./i18n/{locale}'),locale,require('underscore'));
+				return factory(require('./util/sprintf'),require('i18n/{locale}'),locale,require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./util/sprintf'),require('./i18n/'+locale),locale,require('underscore'));
+		module.exports = factory(require('./util/sprintf'),require('i18n/'+locale),locale,require('underscore'));
 	}
 }(this, function(sprintf,locales,locale){
 	var vsprintf = sprintf.vsprintf,

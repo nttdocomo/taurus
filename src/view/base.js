@@ -365,7 +365,10 @@
 		},
 		setWidth : function(width) {
 			var borderWidth = parseInt(this.$el.css('borderLeftWidth').replace('px', '')) + parseInt(this.$el.css('borderLeftWidth').replace('px', ''));
-			return this.$el.width(width - borderWidth);
+			if(!_.isNaN(borderWidth)){
+				width = width - borderWidth;
+			}
+			return this.$el.width(width);
 		},
 
 	    /**

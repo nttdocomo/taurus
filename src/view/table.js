@@ -24,7 +24,7 @@
         cellTpl: [
 	        '<td class="<%=tdCls%>" <%=tdAttr%> style="<%if(tdStyle){%><%=tdStyle%><%}%>" tabindex="-1" data-column-id="<%=column.cid%>">',
 	            '<div class="grid-cell-inner" ',
-	                'style="text-align:<%=align%>;<%if(style){%><%=style%><%}%>"><%=value%></div>',
+	                'style="<%if(style){%><%=style%><%}%>"><%=value%></div>',
 	        '</td>'].join(''),
 		className:'grid-view',
 		itemCls: 'grid-item',
@@ -306,9 +306,12 @@
 			cellValues.align = column.align;
 			cellValues.column = column;
 			cellValues.tdCls = cellValues.tdStyle = cellValues.tdAttr = cellValues.style = "";
+			column.cellWidth = column.width || column.minWidth
 			if(column.cellWidth){
 				cellValues.tdStyle = 'width:'+column.cellWidth+'px;';
-				//cellValues.style = 'width:'+column.cellWidth+'px;';
+			}
+			if(cellValues.align){
+				cellValues.style += 'text-align:'+cellValues.align;
 			}
 			clsInsertPoint = 2;
 			if (column.renderer && column.renderer.call) {
@@ -332,7 +335,6 @@
 	        classes.length = clsInsertPoint;
 	        cellValues.tdCls = classes.join(' ');
 			cellValues.value = (value == null || value === '') ? column.emptyCellText : value;
-			column.cellWidth = /*column.lastBox ? column.lastBox.width : */column.width || column.minWidth
 			return _.template(this.cellTpl)(_.extend(cellValues));
 		},
 		renderTHead:function(){
