@@ -26,7 +26,6 @@
 		initialize : function() {
 			Picker.prototype.initialize.apply(this, arguments);
 			//this.collection.on('reset',_.bind(this.expand,this));
-			console.log(this)
 		},
 		initField : function() {
 			//this.displayTpl = this.getDisplayTpl();
@@ -174,7 +173,6 @@
 		},
 		doRemoteQuery : function(queryString) {
 			var me = this, collection = this.collection;
-			console.log(this.getParams(queryString))
 			collection.fetch({
 				data : this.getParams(queryString),
 				success : function() {

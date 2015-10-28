@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../view/base'], factory);
+			define(['../view/base','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../view/base'));
+				return factory(require('../view/base'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../view/base'));
+		module.exports = factory(require('../view/base'),require('underscore'));
 	}
 }(this, function(Base){
 	return Base.extend({
@@ -62,7 +62,7 @@
 			}
 		},
 		close:function(){
-			this.$el.removeClass('in').hide().remove();
+			this.$el.removeClass('in').hide();
 			$(document.body).removeClass('modal-open');
 			return false;
 		},
@@ -74,7 +74,10 @@
 		},
 		applyChildEls:function(childEls){
 			childEls = $.extend(childEls || {},{
-				'modal':'.modal'
+				'modal':'.modal',
+				'headerEl':'.modal-header',
+				'header':'.modal-title',
+				'bodyEl':'.modal-body'
 			});
 			Base.prototype.applyChildEls.call(this,childEls);
 		},
@@ -85,7 +88,26 @@
 		},
 		setHeight : function(height) {
 		},
+		setTitle:function(title){
+	        var me = this,
+	            oldTitle = me.title,
+	            header = me.header
+	        
+	        if (title !== oldTitle) {
+	            me.title = title;
+
+	            header.text(title);
+
+	            me.trigger('titlechange', me, title, oldTitle);
+	        }
+		},
 		setWidth : function(width) {
+		},
+		update:function(htmlOrData){
+	        var me = this;
+	        if (_.isString(htmlOrData)) {
+	            me.bodyEl.html(htmlOrData)
+	        }
 		}
 	});
 }));

@@ -23,6 +23,12 @@
 		 * inherited Text members will still be available.
 		 */
 		buttonOnly : false,
+		applyChildEls:function(childEls){
+			childEls = $.extend(childEls || {},{
+				'triggerEl':'.form-trigger'
+			});
+			Text.prototype.applyChildEls.call(this,childEls);
+		},
 		delegateEvents : function(events) {
 			var events = $.extend(events || {}, this.events, {
 				'click .form-trigger' : 'onTriggerClick'
