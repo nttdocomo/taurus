@@ -101,9 +101,9 @@
 					collection:this.collection,
 					renderTo:this.$el
 				});
-				this.$el.css({
+				/*this.$el.css({
 					'padding-bottom':this.paging.$el.outerHeight()
-				})
+				})*/
 			}
 
 			/*if(this.pager){
