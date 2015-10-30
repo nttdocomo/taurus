@@ -93,19 +93,6 @@
             me.items.push(view);
 			Panel.prototype.initComponent.apply(this,[options]);
 
-
-			if(this.collection instanceof PageableCollection){
-				this.$el.addClass('has-pager');
-				this.paging = new Pagination({
-					uiClass:'panel-footer',
-					collection:this.collection,
-					renderTo:this.$el
-				});
-				/*this.$el.css({
-					'padding-bottom':this.paging.$el.outerHeight()
-				})*/
-			}
-
 			/*if(this.pager){
 				new Pagination({
 					uiClass:'panel-footer',
@@ -127,7 +114,21 @@
 			this.collection.on('sync',function(){
 				this.html();
 			},this);*/
-			var headEl = me.headEl;
+		},
+		afterRender:function(){
+			Panel.prototype.afterRender.apply(this,arguments);
+			var me = this,headEl = me.headEl;
+			if(this.collection instanceof PageableCollection){
+				this.$el.addClass('has-pager');
+				this.paging = new Pagination({
+					uiClass:'panel-footer',
+					collection:this.collection,
+					renderTo:this.$el
+				});
+				/*this.$el.css({
+					'padding-bottom':this.paging.$el.outerHeight()
+				})*/
+			}
 			if(headEl){
 				var headElHeight = me.headEl.outerHeight();
 				me.$el.css('padding-top',headElHeight+'px');
