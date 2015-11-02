@@ -118,7 +118,7 @@
 		afterRender:function(){
 			Panel.prototype.afterRender.apply(this,arguments);
 			var me = this,headEl = me.headEl;
-			if(this.collection instanceof PageableCollection){
+			if(this.collection instanceof PageableCollection && me.pager){
 				this.$el.addClass('has-pager');
 				this.paging = new Pagination({
 					uiClass:'panel-footer',

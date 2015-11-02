@@ -83,10 +83,10 @@
 	        //me.all = new Ext.view.NodeCache(me);
 
 	        Base.prototype.initComponent.apply(this,arguments);
-	        me.collection.on('sync',_.bind(me.reset,me));
-	        me.collection.on('reset',_.bind(me.reset,me));
-	        me.collection.on('update',_.bind(me.reset,me));
-	        me.collection.on('change',_.bind(me.reset,me));
+	        me.collection.on('sync reset update change',_.debounce(_.bind(me.reset,me),500));
+	        /*me.collection.on('reset',_.bind(me.reset,me));
+	        me.collection.on('update',_.debounce(_.bind(me.reset,me)));
+	        me.collection.on('change',_.bind(me.reset,me));*/
 	        $(window).on('resize',function(){
 	        	me.headerCt.setColumnsWidth(me.getCellsWidth())
 	        });
