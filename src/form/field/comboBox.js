@@ -155,6 +155,9 @@
 		},
 		doQuery : function(queryString, forceAll, rawQuery) {
 			var me = this, isLocalMode = this.queryMode === 'local', collection = this.collection;
+			/*if(!queryString){
+				return false;
+			}*/
 			if (isLocalMode) {
 				if(!collection.length){
 					collection.fetch({
@@ -173,6 +176,9 @@
 		},
 		doRemoteQuery : function(queryString) {
 			var me = this, collection = this.collection;
+			if(!queryString){
+				return false;
+			}
 			collection.fetch({
 				data : this.getParams(queryString),
 				success : function() {
