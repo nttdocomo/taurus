@@ -28,6 +28,6 @@
 	}
 }(this, function(Base) {
 	return Base.extend({
-		fieldSubTpl:'<textarea id="<%=id%>" type="<%=type%>" class="form-control <%=fieldCls%>"<%if(typeof(placeholder) !== "undefined"){%> placeholder="<%=placeholder%>"<%}%><%if(typeof(value) !== "undefined"){%> value="<%=value%>"<%}%><%if(typeof(checked) !== "undefined"){%> checked="<%=checked%>"<%}%><%if(readOnly){%> readonly="readonly"<%}%>></textarea>'
+		fieldSubTpl:'<textarea id="<%=id%>" type="<%=type%>" class="form-control <%=fieldCls%>"<%if(typeof(placeholder) !== "undefined"){%> placeholder="<%=placeholder%>"<%}%><%if(typeof(value) !== "undefined"){%> value="<%=value%>"<%}%><%if(typeof(checked) !== "undefined"){%> checked="<%=checked%>"<%}%><%if(readOnly){%> readonly="readonly"<%}%><%if(disabled){%> disabled="<%=disabled%>"<%}%>></textarea>'
 	});
 }));

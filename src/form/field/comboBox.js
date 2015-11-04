@@ -22,7 +22,7 @@
 		queryMode : 'remote',
 		queryParam : 'query',
 		triggerAction: 'all',
-		triggerTpl : '<div class="input-group-btn"><button class="btn form-trigger btn-default" type="button"><span class="caret"></span></button></div>',
+		triggerTpl : '<div class="input-group-btn"><button class="btn form-trigger btn-default" type="button"<%if(disabled){%> disabled="<%=disabled%>"<%}%>><span class="caret"></span></button></div>',
 		initialize : function() {
 			Picker.prototype.initialize.apply(this, arguments);
 			//this.collection.on('reset',_.bind(this.expand,this));

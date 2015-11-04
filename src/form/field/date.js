@@ -19,7 +19,7 @@
 }(this,function(Picker,DatePicker,_,moment) {
 	return taurus.view("taurus.form.field.Date", Picker.extend({
 		format : 'YYYY年MM月DD日',
-		triggerTpl : '<div class="input-group-btn"><button class="btn form-trigger btn-default" type="button"><i class="halflings calendar"></i></button></div>',
+		triggerTpl : '<div class="input-group-btn"><button class="btn form-trigger btn-default" type="button"<%if(disabled){%> disabled="<%=disabled%>"<%}%>><i class="halflings calendar"></i></button></div>',
 		createPicker : function() {
 			var picker = new DatePicker({
 				endDate:this.endDate,

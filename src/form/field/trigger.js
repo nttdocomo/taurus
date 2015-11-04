@@ -36,23 +36,21 @@
 			Text.prototype.delegateEvents.call(this, events);
 		},
 		getSubTplMarkup:function(){
-			var inputHtml = Text.prototype.getFieldHtml.apply(this,arguments);
-			return _.template((this.buttonOnly ? '' : (this.hideTrigger ? '' : '<div class="input-group">') + Text.prototype.getSubTplMarkup.apply(this,arguments)) + (this.hideTrigger ? '' : this.getTriggerMarkup())+(this.hideTrigger || this.buttonOnly ? '' : '</div>'))({
-				editableClass:(this.readOnly || !this.editable) ? 'trigger-noedit':'',
-				readOnly: !this.editable || this.readOnly
+			var me = this,inputHtml = Text.prototype.getFieldHtml.apply(this,arguments);
+			return _.template((me.buttonOnly ? '' : (me.hideTrigger ? '' : '<div class="input-group">') + Text.prototype.getSubTplMarkup.apply(me,arguments)) + (me.hideTrigger ? '' : me.getTriggerMarkup())+(me.hideTrigger || me.buttonOnly ? '' : '</div>'))({
+				editableClass:(me.readOnly || !me.editable) ? 'trigger-noedit':'',
+				readOnly: !me.editable || me.readOnly,
+				disabled:me.disabled
 			});
 			//return this.getFieldHtml();
 		},
 		getFieldHtml : function() {
-			var inputHtml = Text.prototype.getFieldHtml.apply(this,arguments);
-			return _.template((this.buttonOnly ? '' : (this.hideTrigger ? '' : '<div class="input-group">') + Text.prototype.getSubTplMarkup.apply(this,arguments)) + (this.hideTrigger ? '' : this.getTriggerMarkup())+(this.hideTrigger || this.buttonOnly ? '' : '</div>'))({
-				editableClass:(this.readOnly || !this.editable) ? 'trigger-noedit':'',
-				readOnly: !this.editable || this.readOnly
+			var me = this,inputHtml = Text.prototype.getFieldHtml.apply(this,arguments);
+			return _.template((me.buttonOnly ? '' : (me.hideTrigger ? '' : '<div class="input-group">') + Text.prototype.getSubTplMarkup.apply(me,arguments)) + (me.hideTrigger ? '' : me.getTriggerMarkup())+(me.hideTrigger || me.buttonOnly ? '' : '</div>'))({
+				editableClass:(me.readOnly || !me.editable) ? 'trigger-noedit':'',
+				readOnly: !me.editable || me.readOnly,
+				disabled:me.disabled
 			});
-			/*return _.template('<div class="input-append"><input class="<%=editableClass%>" type="text"<%if(readOnly){%>  readonly="readonly"<%}%>>'+this.triggerTpl+'</div>',{
-				editableClass:(this.readOnly || !this.editable) ? 'trigger-noedit':'',
-				readOnly: !this.editable || this.readOnly
-			});*/
 		},
 		getTriggerMarkup:function(){
 			return this.triggerTpl;
