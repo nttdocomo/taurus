@@ -66,9 +66,12 @@
 			return Base.prototype.getTplData.call(me, data)
 		},
 		unsetActiveError: function() {
-	        delete this.activeError;
-	        delete this.activeErrors;
-	        this.renderActiveError();
+			var me = this;
+			if (me.hasActiveError()) {
+		        delete this.activeError;
+		        delete this.activeErrors;
+		        this.renderActiveError();
+			}
 	    },
 	    setActiveError: function(msg) {
            this.setActiveErrors(msg);
