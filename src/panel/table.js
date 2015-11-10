@@ -19,14 +19,6 @@
 		pager:false,
 		className:'panel panel-default grid',
 		colLinesCls: taurus.baseCSSPrefix + 'grid-with-col-lines',
-		applyChildEls:function(childEls){
-			childEls = $.extend({
-				'headEl' : '.panel-heading',
-				'bodyEl' : '.panel-body',
-				'frameBody' : '.panel-body'
-			}, childEls);
-			Panel.prototype.applyChildEls.call(this,childEls);
-		},
 		initComponent:function(options){
 			var me = this,
 			viewConfig,
@@ -117,17 +109,14 @@
 		},
 		afterRender:function(){
 			Panel.prototype.afterRender.apply(this,arguments);
-			var me = this,headEl = me.headEl;
-			if(this.collection instanceof PageableCollection && me.pager){
-				this.$el.addClass('has-pager');
-				this.paging = new Pagination({
+			var me = this,headEl = me.headEl,paging,height;
+			if(me.collection instanceof PageableCollection && me.pager){
+				me.$el.addClass('has-pager');
+				paging = me.paging = new Pagination({
 					uiClass:'panel-footer',
-					collection:this.collection,
-					renderTo:this.$el
+					collection:me.collection,
+					renderTo:me.$el
 				});
-				/*this.$el.css({
-					'padding-bottom':this.paging.$el.outerHeight()
-				})*/
 			}
 			if(headEl){
 				var headElHeight = me.headEl.outerHeight();
@@ -137,6 +126,19 @@
 			if (me.hideHeaders) {
                 me.bodyEl.css('padding-top',0)
             }
+            me.collection.on('sync',me.updateLayout,me)
+		},
+		updateLayout:function(){
+			var me = this,height;
+			if(me.paging){
+				height = me.paging.$el.outerHeight()
+				me.$el.css({
+					'padding-bottom':height
+				})
+				me.paging.$el.css({
+					'margin-bottom':-1*height
+				})
+			}
 		},
 		applyState:function(state){
 			var me = this,

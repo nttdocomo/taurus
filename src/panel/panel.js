@@ -25,6 +25,14 @@
 			'click .refresh' : 'refresh',
 			'click .tool-collapse-top, .tool-expand-bottom' : 'toggleCollapse'
 		},
+		applyChildEls:function(childEls){
+			childEls = $.extend({
+				'headEl' : '.panel-heading',
+				'bodyEl' : '.panel-body',
+				'frameBody' : '.panel-body'
+			}, childEls);
+			Base.prototype.applyChildEls.call(this,childEls);
+		},
 		initialize:function(){
 			Base.prototype.initialize.apply(this,arguments);
 			if(this.title){
@@ -73,6 +81,18 @@
          */
         getTargetEl: function() {
             return this.frameBody || this.$el.find('>.panel-body');
-        }
+        },
+		afterRender:function(){
+			Base.prototype.afterRender.apply(this,arguments);
+			var me = this,headEl = me.headEl,headElHeight;
+			if(headEl){
+				headElHeight = me.headEl.outerHeight();
+				me.$el.css('padding-top',headElHeight+'px');
+				me.headEl.css('margin-top','-' + headElHeight+'px')
+			}
+			if (me.hideHeaders) {
+                me.bodyEl.css('padding-top',0)
+            }
+		}
 	});
 }));
