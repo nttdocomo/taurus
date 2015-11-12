@@ -36,9 +36,9 @@
 	                me.grid.columnManager = me.columnManager;
 	                me.grid.visibleColumnManager = me.visibleColumnManager;
 	            }
-	            if(me.hiddenHeaders){
+	            /*if(me.hiddenHeaders){
 	            	me.$el.css('display','none');
-	            }
+	            }*/
             }
 			Base.prototype.initComponent.apply(this, arguments);
 		},
@@ -265,6 +265,16 @@
 					headers[i].setSortState(null, true);
 				}
 			}
+		},
+		updateLayout:function(){
+			Base.prototype.updateLayout.apply(this,arguments);
+			var me = this,paging,height;
+			me.$el.css({
+				'margin-top':-1*me.$el.outerHeight()
+			})
+			me.$el.parent().css({
+				'padding-top':me.$el.outerHeight()
+			})
 		}
 	}));
 }));

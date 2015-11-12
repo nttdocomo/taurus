@@ -9,6 +9,10 @@
 .grid-header-ct {
 	margin-top: -37px;
 	border-bottom:1px solid #dddddd;
+	overflow-y:hidden;
+}
+.grid-header-ct-hidden{
+	border-bottom:none;
 }
 .grid-view{
 	height:100%;

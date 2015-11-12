@@ -18,6 +18,7 @@
 	return Panel.extend({
 		pager:false,
 		className:'panel panel-default grid',
+		hiddenHeaderCtCls: 'grid-header-ct-hidden',
 		colLinesCls: taurus.baseCSSPrefix + 'grid-with-col-lines',
 		initComponent:function(options){
 			var me = this,
@@ -63,6 +64,10 @@
 				sortable:this.sortable,
 				renderTo:this.$el.find('.panel-body')
 			}));*/
+			if (me.hideHeaders) {
+                me.headerCt.addClass(me.hiddenHeaderCtCls);
+                me.addClass(me.hiddenHeaderCls);
+            }
 			me.viewConfig = me.viewConfig || {};
 			/*viewConfig = _.extend({
                 // TableView injects the view reference into this grid so that we have a reference as early as possible
@@ -84,6 +89,12 @@
 
             me.items.push(view);
 			Panel.prototype.initComponent.apply(this,[options]);
+
+            /*if (me.hideHeaders) {
+                headerCtCfg.setHeight(0);
+                // don't set the hidden property, we still need these to layout
+                headerCtCfg.hiddenHeaders = true;
+            }*/
 
 			/*if(this.pager){
 				new Pagination({
@@ -107,9 +118,9 @@
 				this.html();
 			},this);*/
 		},
-		afterRender:function(){
-			Panel.prototype.afterRender.apply(this,arguments);
-			var me = this,headEl = me.headEl,paging,height;
+		updateLayout:function(){
+			Panel.prototype.updateLayout.apply(this,arguments);
+			var me = this,paging,height;
 			if(me.collection instanceof PageableCollection && me.pager){
 				me.$el.addClass('has-pager');
 				paging = me.paging = new Pagination({
@@ -118,14 +129,6 @@
 					renderTo:me.$el
 				});
 			}
-			if(headEl){
-				var headElHeight = me.headEl.outerHeight();
-				me.$el.css('padding-top',headElHeight+'px');
-				me.headEl.css('margin-top','-' + headElHeight+'px')
-			}
-			if (me.hideHeaders) {
-                me.bodyEl.css('padding-top',0)
-            }
             me.collection.on('sync',me.updateLayout,me)
 		},
 		updateLayout:function(){

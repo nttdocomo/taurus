@@ -33,6 +33,9 @@
 				this.setElement(_.result(this, 'el'), false);
 			}
 		},
+		addClass:function(cls){
+			this.$el.addClass(cls)
+		},
 	    disable:function(){
 	    	var me = this;
 	    	me.$el.attr('disabled',true);
@@ -353,11 +356,12 @@
 			this.updateLayout();
 		},
 		updateLayout : function() {
-			if (this.width) {
-				this.setWidth(this.width);
+			var me = this, width = me.width, height = me.height;
+			if (typeof width == 'number') {
+				me.setWidth(width);
 			}
-			if (this.height) {
-				this.setHeight(this.height);
+			if (typeof height == 'number') {
+				me.setHeight(height);
 			}
 		},
 		setHeight : function(height) {
@@ -524,7 +528,8 @@
 				}
 			}
 			//me.items = items;
-			this.updateItems();
+			me.updateLayout()
+			me.updateItems();
 			return ret;
 			/*var me = this, len = this.items.length;
 			 _.each(this.items, function(item, i) {
@@ -608,6 +613,7 @@
 			return this.$el.parentsUntil(selector).parent().data('component');
 		}
 	},{
-		INVALID_ID_CHARS_Re: /[\.,\s]/g
+		INVALID_ID_CHARS_Re: /[\.,\s]/g,
+		updateLayout:function(){}
 	}).mixins(Stateful);
 }));
