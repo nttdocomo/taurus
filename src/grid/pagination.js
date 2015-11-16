@@ -37,13 +37,14 @@
 		initialize : function() {
 			var me = this;collection = me.collection,renderHtml = me.renderHtml;
 			Base.prototype.initialize.apply(me,arguments);
+			if(collection.mode != "server"){
+				collection.fullCollection.on('reset', renderHtml, me)
+				collection.on('remove', renderHtml, me);
+			}
 			collection.on('sync', renderHtml, me);
 			collection.on('reset', renderHtml, me);
 			collection.on('update', me.onCollectionChange, me);
 			collection.on('sort', renderHtml, me);
-			if(collection.mode != "server"){
-				collection.on('remove', renderHtml, me);
-			}
 		},
 		delegateEvents:function(){
 			var events = $.extend({}, this.events, {
