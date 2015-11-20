@@ -17,7 +17,8 @@
 }(this, function(Base,i18n) {
 	return Base.extend({
 		//tpl:'<ul><li<% if (currentPage <= firstPage) { %> class="disabled"<%}%>><a href="#">Prev</a></li><% for(p=1;p<=totalPages;p++){%><li<% if (currentPage == p) { %> class="disabled"<% } %>><a href="#"><%= p %></a></li><%}%><li<% if (currentPage == totalPages) { %> class="disabled"<%}%>><a href="#">Next</a></li></ul>',
-		tpl:'<%=fastBackward%><%=backward%><span><%=pageDesc%></span><%=forward%><%=fastForward%>',
+		tpl:'<%=page%>',
+		pageTpl:'<%=fastBackward%><%=backward%><span><%=pageDesc%></span><%=forward%><%=fastForward%>',
 		tagName:'div',
 		className:'pagination',
 		events:{
@@ -77,16 +78,21 @@
 		renderHtml:function(){
 			if(this.collection.length){
 				var info = this.collection.state;
-				return Base.prototype.renderHtml.call(this,$.extend({
-					fastBackward : '<a href="" class="halflings fast-backward" data-name="fast-backward" data-type="" data-prefix="halflings" data-utf="E070"></a>',
-					backward : '<a href="" class="halflings backward" data-name="backward" data-type="" data-prefix="halflings" data-utf="E071"></a>',
-					fastForward : '<a href="" class="halflings fast-forward" data-name="fast-forward" data-type="" data-prefix="halflings" data-utf="E076"></a>',
-					forward : '<a href="" class="halflings forward" data-name="forward" data-type="" data-prefix="halflings" data-utf="E077"></a>',
-					pageDesc:i18n.__("Page %d of %d",info.currentPage,info.totalPages),
-					totalPages:0
-				},info));
+				return Base.prototype.renderHtml.call(this,{
+					page:_.template(this.pageTpl)($.extend({
+						fastBackward : '<a href="" class="halflings fast-backward" data-name="fast-backward" data-type="" data-prefix="halflings" data-utf="E070"></a>',
+						backward : '<a href="" class="halflings backward" data-name="backward" data-type="" data-prefix="halflings" data-utf="E071"></a>',
+						fastForward : '<a href="" class="halflings fast-forward" data-name="fast-forward" data-type="" data-prefix="halflings" data-utf="E076"></a>',
+						forward : '<a href="" class="halflings forward" data-name="forward" data-type="" data-prefix="halflings" data-utf="E077"></a>',
+						pageDesc:i18n.__("Page %d of %d",info.currentPage,info.totalPages),
+						totalPages:0
+					},info))
+				});
 			} else {
 				this.collection.hasPreviousPage() && this.collection.getPreviousPage();
+				return Base.prototype.renderHtml.call(this,{
+					page:''
+				});
 			}
 			return '';
 		}

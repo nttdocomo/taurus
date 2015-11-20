@@ -118,21 +118,21 @@
 				this.html();
 			},this);*/
 		},
-		updateLayout:function(){
-			Panel.prototype.updateLayout.apply(this,arguments);
+		afterRender:function(){
+			Panel.prototype.afterRender.apply(this,arguments);
 			var me = this,paging,height;
 			if(me.collection instanceof PageableCollection && me.pager){
-				me.$el.addClass('has-pager');
-				paging = me.paging = new Pagination({
+				me.paging = new Pagination({
 					uiClass:'panel-footer',
 					collection:me.collection,
 					renderTo:me.$el
 				});
-			}
-            me.collection.on('sync',me.updateLayout,me)
+				me.$el.addClass('has-pager');
+			};
 		},
 		updateLayout:function(){
-			var me = this,height;
+			Panel.prototype.updateLayout.apply(this,arguments);
+			var me = this,paging,height;
 			if(me.paging){
 				height = me.paging.$el.outerHeight()
 				me.$el.css({
@@ -142,6 +142,7 @@
 					'margin-bottom':-1*height
 				})
 			}
+            me.collection.on('sync',me.updateLayout,me)
 		},
 		applyState:function(state){
 			var me = this,
