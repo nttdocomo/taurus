@@ -47,6 +47,16 @@
 	        }
 	    },
 
+	    /**
+	     * @private
+	     */
+	    clearTimers: function() {
+	        var me = this;
+	        me.clearTimer('show');
+	        me.clearTimer('dismiss');
+	        me.clearTimer('hide');
+	    },
+
 	    // @private
 	    delayShow: function (trackMouse) {
 	        // When delaying, cache the XY coords of the mouse when this method was invoked, NOT when the deferred
@@ -222,6 +232,27 @@
 	                me.anchorEl.hide();
 	            }*/
 	        }
+	    },
+
+	    /**
+	     * @inheritdoc
+	     */
+	    showBy: function(cmp, pos, off) {
+	        var me = this;
+	        me.lastActive = new Date();
+	        me.clearTimers();
+	        me.calledFromShowAt = true;
+
+	        // Only call if this is hidden. May have been called from show above.
+	        if (!me.isVisible()) {
+	            Tip.prototype.showBy.apply(this,arguments);
+	        }
+
+	        // Show may have been vetoed.
+	        if (me.isVisible()) {
+	            me.alignTo(cmp, pos || me.defaultAlign, off || me.alignOffset);
+	        }
+	        delete me.calledFromShowAt;
 	    },
     
 	    showFromDelay: function (xy) {
