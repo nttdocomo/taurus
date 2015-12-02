@@ -111,13 +111,13 @@
 	            menu.ownerItem = me;
 	            menu.parentMenu = me.parentMenu;
 	            menu.constrainTo = document.body;
-				if(me.parentMenu.isNav){
+				/*if(me.parentMenu.isNav){
 					me.menuAlign = {
 						"my" : "left top",
 						"at" : "left bottom",
 						"collision" : "none none"
 					};
-				};
+				};*/
 	            menu.showBy(me, me.menuAlign);
 	        }
 	    },

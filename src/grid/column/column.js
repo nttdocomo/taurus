@@ -26,7 +26,7 @@
 	        edit: 'editRenderer',
 	        summary: 'summaryRenderer'
 	    },
-		tpl : '<div id="<%=id%>-titleEl" class="column-header-inner"><span id="<%=id%>-textEl" class="column-header-text"><%=text%></span><%if(sortable){%> <span class="caret"></span><%}%></div>',
+		tpl : '<div id="<%=id%>-titleEl" class="column-header-inner"><span id="<%=id%>-textEl" class="column-header-text" title="<%=text%>"><%=text%></span><%if(sortable){%> <span class="caret"></span><%}%></div>',
 		initialize : function() {
 			Base.prototype.initialize.apply(this, arguments);
 		},

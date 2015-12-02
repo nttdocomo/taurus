@@ -25,9 +25,14 @@
 			'click li a': 'onClick'
 		},
 		initialize:function(){
-			this.renderTo = $(document.body);
-	        Base.prototype.initialize.apply(this,arguments);
-	        Manager.register(this)
+			var me = this;
+			me.renderTo = $(document.body);
+			//Fixed a bug that in chrome 31,32. elem offset top is the same as body or html height;
+			me.$el.css({
+				top:-10000
+			})
+	        Base.prototype.initialize.apply(me,arguments);
+	        Manager.register(me)
 		},
 
 	    /**
