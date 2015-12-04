@@ -20,7 +20,7 @@
 		tagName:'ul',
 		className:'dropdown-menu',
 		events:{
-			'mouseleave li':'onMouseLeave',
+			'mouseleave':'onMouseLeave',
 			'mouseenter li':'onMouseOver',
 			'click li a': 'onClick'
 		},
@@ -172,6 +172,7 @@
 	        if (me.disabled) {
 	            return;
 	        }
+	        me.trigger('mouseleave', this, e)
 	    },
 	    onMouseOver:function(e){
 	    	var me = this,

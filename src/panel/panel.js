@@ -29,19 +29,25 @@
 			childEls = $.extend({
 				'headEl' : '.panel-heading',
 				'bodyEl' : '.panel-body',
+				'header':'.panel-title',
 				'frameBody' : '.panel-body'
 			}, childEls);
 			Base.prototype.applyChildEls.call(this,childEls);
 		},
 		initialize:function(){
 			Base.prototype.initialize.apply(this,arguments);
-			if(this.title){
+			if(this.header){
 				this.$el.addClass('has-header');
 			}
 		},
+		afterRender:function(){
+			Base.prototype.afterRender.apply(this,arguments);
+			var me = this,headEl = me.headEl,headElHeight;
+			me.setHeaderStyle();
+		},
 		getTplData : function() {
 			return {
-				header:this.title,
+				header:this.header,
 				title:this.collapsible ? this.title + '<span class="tool-collapse-top"></span>' : this.title,
 				content:this.loading ? (new Spinner({
 					renderTo:this.$el
@@ -82,8 +88,7 @@
         getTargetEl: function() {
             return this.frameBody || this.$el.find('>.panel-body');
         },
-		afterRender:function(){
-			Base.prototype.afterRender.apply(this,arguments);
+		setHeaderStyle:function(){
 			var me = this,headEl = me.headEl,headElHeight;
 			if(headEl){
 				headElHeight = me.headEl.outerHeight();
@@ -93,6 +98,20 @@
 			if (me.hideHeaders) {
                 me.bodyEl.css('padding-top',0)
             }
+		},
+		setTitle:function(title){
+	        var me = this,
+	            oldTitle = me.title,
+	            header = me.header
+	        
+	        if (title !== oldTitle) {
+	            me.title = title;
+
+	            header.text(title);
+
+	            me.trigger('titlechange', me, title, oldTitle);
+	            me.setHeaderStyle();
+	        }
 		}
 	});
 }));
