@@ -225,6 +225,7 @@
 			headers.each(function(i,header){
 				$(header).width(widths[i] || items[i].width);
 			});
+			me.updateLayout()
 		},
 		/*setSize:function(){
 			var width = this.$el.width(), items = this.items, headers = this.$el.find('.column-header'), fullWidth = 0;
@@ -275,6 +276,7 @@
 			me.$el.parent().css({
 				'padding-top':me.$el.outerHeight()
 			})
+			me.ownerCt.updateLayout()
 		}
 	}));
 }));
