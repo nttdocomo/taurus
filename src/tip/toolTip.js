@@ -4,17 +4,17 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./tip','../lang/date'], factory);
+			define(['./tip','../lang/date','../taurus','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./tip'),require('../lang/date'));
+				return factory(require('./tip'),require('../lang/date'),require('../taurus'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./tip'),require('../lang/date'));
+		module.exports = factory(require('./tip'),require('../lang/date'),require('../taurus'),require('underscore'));
 	}
-}(this, function(Tip,DateUtil){
+}(this, function(Tip,DateUtil,taurus,_){
 	return Tip.extend({
 
 	    /**
@@ -140,6 +140,37 @@
 				anchor:this.anchor
 			}
 		},
+
+	    onDisable: function() {
+	        Tip.prototype.onDisable.apply(this,arguments);
+	        this.clearTimers();
+	        this.hide();
+	    },
+
+	    /**
+	     * @private
+	     */
+	    doEnable: function() {
+	        if (!this.destroyed) {
+	            this.enable();
+	        }
+	    },
+		/**
+	     * @private
+	     */
+	    onDocMouseDown: function(e) {
+	        var me = this;
+	        if (!me.closable && !me.$el.has(e.target).length) {
+	            me.disable();
+	            _.delay(_.bind(me.doEnable,me), 100);
+	        }
+	    },
+    
+	    onShow: function() {
+	        var me = this;
+	        Tip.prototype.onShow.apply(this,arguments);
+	        taurus.$doc.on('mousedown', _.bind(me.onDocMouseDown,me));
+	    },
 
 	    // @private
 	    onTargetEnter: function(e) {

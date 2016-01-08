@@ -38,13 +38,24 @@
 		},
 	    disable:function(){
 	    	var me = this;
+	    	if (!me.disabled) {
+	    		if (me.rendered) {
+	                me.onDisable();
+	            } else {
+	                me.disableOnRender = true;
+	            }
+	    	}
 	    	me.$el.attr('disabled',true);
 	    	me.disabled = true;
 	    },
 	    enable:function(){
 	    	var me = this;
 	    	me.$el.attr('disabled',false);
-	    	me.disabled = false;
+	    	if(me.disabled){
+	    		if (!me.__proto__.hasOwnProperty('disabled')) {
+	    			me.disabled = false;
+	    		}
+	    	}
 	    },
 		getRefOwner: function () {
 	        var me = this;
@@ -209,10 +220,24 @@
 				id : this.cid
 			},data);
 		},
+
+	    /**
+	     * Allows addition of behavior to the disable operation.
+	     * After calling the superclass's `onDisable`, the Component will be disabled.
+	     *
+	     * @template
+	     * @protected
+	     */
+	    onDisable: function () {
+	    },
+		onShow:function(){
+
+		},
 		show : function() {
 			this.$el.show();
 			this.trigger('show',this);
 			this.hidden = false;
+			this.onShow()
 			return this;
 		},
 		hide : function() {
