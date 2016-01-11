@@ -52,7 +52,7 @@
 	    	var me = this;
 	    	me.$el.attr('disabled',false);
 	    	if(me.disabled){
-	    		if (!me.__proto__.hasOwnProperty('disabled')) {
+	    		if (!me.hasOwnProperty('disabled')) {
 	    			me.disabled = false;
 	    		}
 	    	}
