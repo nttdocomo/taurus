@@ -21,7 +21,8 @@
 
 .panel-body table{
 	margin-bottom:0;
-	/*width: 100%;*/
+	table-layout: fixed;
+	width: 100%;
 }
 .table > tbody > tr:first-child > td{
 	border-top:none;

@@ -97,6 +97,22 @@
 	        }
 	        return false;
 	    },
+
+	    onAdd: function (child) {
+	    	console.log('add')
+	        /*var me = this;
+
+	        if (child.isColumn) {
+	            child.isSubHeader = true;
+	            child.addCls(me.groupSubHeaderCls);
+	        }
+
+	        if (me.isGroupHeader && me.hidden && me.hasVisibleChildColumns()) {
+	            me.show();
+	        }
+
+	        me.callParent([child]);*/
+	    },
 		onTitleElClick : function() {
 			this.toggleSortState();
 		},

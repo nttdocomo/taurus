@@ -136,9 +136,13 @@
 	        return this.xtype;
 	    },
 		initialize : function(options) {
-			this.initialConfig = options;
-			_.extend(this, options);
-			this.initComponent();
+			var me = this;
+			me.initialConfig = options;
+			_.extend(me, options);
+			me.initComponent();
+			if(me.style){
+				me.$el.css(me.style)
+			}
 			//Stateful.prototype.initialize.apply(this,arguments);
 		},
 		initComponent:function(){

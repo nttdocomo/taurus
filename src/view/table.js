@@ -114,8 +114,24 @@
 			Base.prototype.afterRender.apply(this,arguments);
 			this.headerCt.setColumnsWidth(this.getCellsWidth())
 		},
+		convertWidthsToFlexes:function(){
+			var me = this,
+			totalWidth = 0,
+			cells = this.$el.find('tr:eq(0) > td');
+			_.each(cells,function(cell){
+				totalWidth += $(cell).outerWidth();
+			})
+			return totalWidth !== me.$el.width();
+		},
 		getCellsWidth:function(){
-			var cells = this.$el.find('tr:eq(0) > td');
+			var me = this,
+			cells = this.$el.find('tr:eq(0) > td'),
+			columns = me.columns;
+			if(me.forceFit){
+				if(me.convertWidthsToFlexes(ownerContext)){
+
+				}
+			}
 			return _.map(cells,function(cell){
 				return $(cell).outerWidth();
 			})
