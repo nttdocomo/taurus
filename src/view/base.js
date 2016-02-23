@@ -59,7 +59,7 @@
 	    },
 		getRefOwner: function () {
 	        var me = this;
-	        
+
 	        // Look for both ownerCt (classic toolkit) and parent (modern toolkit)
 	        // Look for ownerCmp before floatParent for scenarios like a button menu inside a floating window.
 	        return me.ownerCt || me.parent || me.$initParent || me.ownerCmp || me.floatParent;
@@ -136,13 +136,14 @@
 	        return this.xtype;
 	    },
 		initialize : function(options) {
-			var me = this;
-			me.initialConfig = options;
-			_.extend(me, options);
-			me.initComponent();
-			if(me.style){
-				me.$el.css(me.style)
-			}
+      var me = this;
+			this.initialConfig = options;
+			_.extend(this, options);
+			this.initComponent();
+      if (me.style) {
+          me.initialStyle = me.style;
+          me.$el.css(me.style);
+      }
 			//Stateful.prototype.initialize.apply(this,arguments);
 		},
 		initComponent:function(){
