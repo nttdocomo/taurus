@@ -87,6 +87,10 @@
 	        this.deactivateActiveItem(true);
 	        Base.prototype.hide.apply(this,arguments);
 	    },
+	    show:function(){
+	    	Base.prototype.show.apply(this,arguments);
+	    	Manager.onShow(this);
+	    },
 		lookupComponent: function(cmp) {
 	        var me = this;
 

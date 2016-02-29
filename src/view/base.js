@@ -238,13 +238,112 @@
 		onShow:function(){
 
 		},
+
+	    setLocalXY: function(x, y) {
+	        this.$el.css({ top: y, left: x });
+	    },
+
+	    /**
+	     * Sets the page XY position of the component. To set the left and top instead, use {@link #setPosition}.
+	     * This method fires the {@link #event-move} event.
+	     * @param {Number/Number[]} x The new x position or an array of `[x,y]`.
+	     * @param {Number} [y] The new y position.
+	     * @param {Boolean/Object} [animate] True to animate the Component into its new position. You may also pass an
+	     * animation configuration.
+	     * @return {Ext.Component} this
+	     */
+	    setPagePosition: function(x, y, animate) {
+	        var me = this,
+	            p,
+	            floatParentBox;
+
+	        me.setPosition(x, y, animate);
+
+	        return me;
+	    },
+
+	    /**
+	     * @member Ext.Component
+	     * Sets the left and top of the component. To set the page XY position instead, use {@link Ext.Component#setPagePosition setPagePosition}. This
+	     * method fires the {@link #event-move} event.
+	     * @param {Number/Number[]/Object} x The new left, an array of `[x,y]`, or animation config object containing `x` and `y` properties.
+	     * @param {Number} [y] The new top.
+	     * @param {Boolean/Object} [animate] If `true`, the Component is _animated_ into its new position. You may also pass an
+	     * animation configuration.
+	     * @return {Ext.Component} this
+	     */
+	    setPosition: function(x, y, animate) {
+	        var me = this;
+	        me.setLocalXY(x, y);
+	        return me;
+	    },
 		show : function() {
-			this.$el.show();
-			this.trigger('show',this);
-			this.hidden = false;
-			this.onShow()
-			return this;
+			var me = this;
+            //me.beforeShow();
+			me.$el.show();
+			me.trigger('show',this);
+			me.hidden = false;
+			me.onShow()
+			return me;
 		},
+		showAt : function(x, y, animate) {
+			var me = this;
+
+	        // Not rendered, then animating to a position is meaningless,
+	        // just set the x,y position and allow show's processing to work.
+	        if (!me.rendered && (me.autoRender || me.floating)) {
+	            me.x = x;
+	            me.y = y;
+	            return me.show();
+	        }
+	        if (me.floating) {
+	            me.setPosition(x, y, animate);
+	        } else {
+	            me.setPagePosition(x, y, animate);
+	        }
+	        return me.show();
+		},
+
+	    /**
+	     * Shows this component by the specified {@link Ext.Component Component} or {@link Ext.dom.Element Element}.
+	     * Used when this component is {@link #floating}.
+	     * @param {Ext.Component/Ext.dom.Element} component The {@link Ext.Component} or {@link Ext.dom.Element} to show the component by.
+	     * @param {String} [position] Alignment position as used by {@link Ext.util.Positionable#getAlignToXY}.
+	     * Defaults to `{@link #defaultAlign}`. See {@link #alignTo} for possible values.
+	     * @param {Number[]} [offsets] Alignment offsets as used by {@link Ext.util.Positionable#getAlignToXY}. See {@link #alignTo} for possible values.
+	     * @return {Ext.Component} this
+	     */
+	    showBy: function(cmp, pos, off) {
+	        var me = this;
+
+	        //<debug>
+	        /*if (!me.floating) {
+	            Ext.log.warn('Using showBy on a non-floating component');
+	        }*/
+	        //</debug>
+
+	        /*if (me.floating && cmp) {
+	            me.alignTarget = cmp;
+
+	            if (pos) {
+	                me.defaultAlign = pos;
+	            }
+
+	            if (off) {
+	                me.alignOffset = off;
+	            }*/
+            if (!me.isVisible()) {
+            	me.show();
+	        }
+
+            // Could have been vetoed.
+            if (!me.hidden) {
+                me.alignTo(cmp, pos || me.defaultAlign, off || me.alignOffset);
+            }
+	        //}
+
+	        return me;
+	    },
 		hide : function() {
 			this.$el.hide();
 			return this;
@@ -404,47 +503,6 @@
 			}
 			return this.$el.width(width);
 		},
-
-	    /**
-	     * Shows this component by the specified {@link Ext.Component Component} or {@link Ext.dom.Element Element}.
-	     * Used when this component is {@link #floating}.
-	     * @param {Ext.Component/Ext.dom.Element} component The {@link Ext.Component} or {@link Ext.dom.Element} to show the component by.
-	     * @param {String} [position] Alignment position as used by {@link Ext.util.Positionable#getAlignToXY}.
-	     * Defaults to `{@link #defaultAlign}`. See {@link #alignTo} for possible values.
-	     * @param {Number[]} [offsets] Alignment offsets as used by {@link Ext.util.Positionable#getAlignToXY}. See {@link #alignTo} for possible values.
-	     * @return {Ext.Component} this
-	     */
-	    showBy: function(cmp, pos, off) {
-	        var me = this;
-
-	        //<debug>
-	        /*if (!me.floating) {
-	            Ext.log.warn('Using showBy on a non-floating component');
-	        }*/
-	        //</debug>
-
-	        /*if (me.floating && cmp) {
-	            me.alignTarget = cmp;
-
-	            if (pos) {
-	                me.defaultAlign = pos;
-	            }
-
-	            if (off) {
-	                me.alignOffset = off;
-	            }*/
-            if (!me.isVisible()) {
-            	me.show();
-	        }
-
-            // Could have been vetoed.
-            if (!me.hidden) {
-                me.alignTo(cmp, pos || me.defaultAlign, off || me.alignOffset);
-            }
-	        //}
-
-	        return me;
-	    },
 		alignTo : function(element, position, offsets) {
 
 			// element may be a Component, so first attempt to use its el to align to.

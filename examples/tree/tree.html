@@ -40,11 +40,10 @@
 		<!-- Bootstrap core JavaScript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script type="text/javascript" src="../../src/LAB.min.js"></script>
+		<script type="text/javascript" src="../../src/sea-debug.js"></script>
+		<script type="text/javascript" src="../config.js"></script>
 		<script type="text/javascript">
-			$LAB.script('../../src/sea-debug.js','../../src/modernizr.js').wait().script('../../src/moment.js').wait().script('../config.js').wait(function(){
-				seajs.use("../menu/menus");
-			});
+			seajs.use("../tree/tree");
 		</script>
 		<!--<script src="../../src/sea.js" data-config="../config" data-main="../menu/menus"></script>-->
 	</body>

@@ -4,7 +4,9 @@
 define(function(require) {
 	var backbone = require("backbone"),
 	chance = require('chance'),
-	Navbar = require("../../src/menu/navbar.js"),
+	_ = require('underscore'),
+	Navbar = require("../../src/menu/navbar"),
+	Menu = require("../../src/menu/menu.js"),
 	$body = $(document.body),
 	likelihood = 30;
 	function randomMenu(){
@@ -41,4 +43,18 @@ define(function(require) {
 		showMenuEvent:'click',
 		items: randomMenu()
 	});
+	var menu = new Menu({
+		renderTo : $body,
+		items: randomMenu()
+	});
+	$(document).on('contextmenu',function(e){
+		return false;
+	}).on('mousedown',_.debounce(function(e){
+	    if(e.which == 3) {
+	    	//alert('Right Mouse button pressed.');
+			menu.showAt(e.clientX,e.clientY)
+			
+			return false;
+	    }
+	}))
 })

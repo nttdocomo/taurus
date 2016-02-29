@@ -17,8 +17,16 @@
 }(this, function(Class,_) {
 	return new (Class.extend({
 		menus: {},
+		visible:[],
 		init: function() {
 	        var me = this;
+	        // Lazily create the mousedown listener on first menu show
+	        me.onShow = function () {
+	            delete me.onShow; // remove this hook
+	            // Use the global mousedown event that gets fired even if propagation is stopped
+	            $(document).on('mousedown',_.bind(me.checkActiveMenus,me))
+	            return me.onShow.apply(me, arguments); // do the real thing
+	        };
 	        
 	        me.active = [];
 	        $(document).on('keypress',_.bind(function(e) {
@@ -105,20 +113,46 @@
 	        }*/
 	        me.hideAll();
 	    },
+	    checkActiveMenus:function(e){
+	    	console.log('checkActiveMenus')
+			var allMenus = this.active,
+	            len = allMenus.length,
+	            i, menu/*,
+	            mousedownCmp = Ext.Component.fromElement(e.target)*/;
+
+	        if (len) {
+	            // Clone here, we may modify this collection while the loop is active
+	            allMenus = allMenus.slice();
+	            for (i = 0; i < len; ++i) {
+	                menu = allMenus[i];
+	                // Hide the menu if:
+	                //      The menu does not own the clicked upon element AND
+	                //      The menu is not the child menu of a clicked upon MenuCheckItem
+	                if (!(menu.$el.has(e.target).length/* || (mousedownCmp && mousedownCmp.isMenuCheckItem && mousedownCmp.menu === menu)*/)) {
+	                    menu.hide();
+	                }
+	            }
+	        }
+	    },
 
 	    onShow: function(m) {
+	    	console.log('onShow')
 	        var me = this,
 	            active   = me.active,
 	            attached = me.attached;
 
-	        me.lastShow = new Date();
-	        active.push(m);
-	        if (!attached) {
-	        	$(document).on('mousedown',_.bind(me.onMouseDown,me))
+	        /*me.lastShow = new Date();*/
+	        /*if (!attached) {
+	        	$(document).on('mousedown',_.bind(me.checkActiveMenus,me))
+	        	//$(document).on('mousedown',_.bind(me.onMouseDown,me))
 	        	//$.gevent.subscribe($({}), 'mousedown', _.bind(me.onMouseDown,me));
 	            me.attached = true;
+	        }*/
+	        if(_.findIndex(active,function(item){
+	        	return item.cid == m.cid
+	        }) == -1){
+	        	active.push(m)
 	        }
-	        //m.toFront();
 	    },
 
 	    // @private
@@ -131,13 +165,13 @@
 
 	        //if (menu.floating) {
             me.menus[menu.id] = menu;
-            menu.on({
+            /*menu.on({
                 //beforehide: me.onBeforeHide,
                 //hide: me.onHide,
                 //beforeshow: me.onBeforeShow,
                 'show': me.onShow,
                 //scope: me
-            },me);
+            },me);*/
 	        //}
 	    }
 	}));
