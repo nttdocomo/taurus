@@ -3,28 +3,39 @@
         // Now we're wrapping the factory and assigning the return
         // value to the root (window) and returning it as well to
         // the AMD loader.
-        define(['../panel/table','../model/tree','underscore'],function(Table){
+        define(['../panel/table','./view','./column','../panel/mixins','../model/tree','underscore','backbone'],function(Table){
           return (root.Class = factory(Table));
         });
     }
     if(define.cmd){
         define(function(require, exports, module){
-            return (root.Class = factory(require('../panel/table'),require('../model/tree'),require('underscore')));
+            return (root.Class = factory(require('../panel/table'),require('./view'),require('./column'),require('../panel/mixins'),require('../model/tree'),require('underscore'),require('backbone')));
         })
     } else if(typeof module === "object" && module.exports) {
         // I've not encountered a need for this yet, since I haven't
         // run into a scenario where plain modules depend on CommonJS
         // *and* I happen to be loading in a CJS browser environment
         // but I'm including it for the sake of being thorough
-        module.exports = (root.Class = factory(require('../panel/table'),require('../model/tree'),require('underscore')));
+        module.exports = (root.Class = factory(require('../panel/table'),require('./view'),require('./column'),require('../panel/mixins'),require('../model/tree'),require('underscore'),require('backbone')));
     } else {
         root.Class = factory();
     }
-}(this, function(Table,Model,_) {
+}(this, function(Table,View,Column,mixins,Model,_,Backbone) {
     return Table.extend({
         treeCls: 'tree-panel',
         useArrows: false,
+        viewType:View,
         arrowCls: 'tree-arrows',
+        displayField: 'text',
+        /**
+         * @cfg {Boolean} [rootVisible=true]
+         * False to hide the root node.
+         *
+         * Note that trees *always* have a root node. If you do not specify a {@link #cfg-root} node, one will be created.
+         *
+         * If the root node is not visible, then in order for a tree to appear to the end user, the root node is autoloaded with its child nodes.
+         */
+        rootVisible: true,
         initialize: function(config) {
             config = config || {};
             if (config.animate === undefined) {
@@ -38,7 +49,7 @@
         initComponent: function() {
             var me = this,
             cls = [me.treeCls],
-            store,
+            model,
             view;
 
             if (me.useArrows) {
@@ -52,21 +63,21 @@
                 cls.push(me.noLinesCls);
             }
 
-            store = me.applyStore(me.store);
+            model = me.applyStore(me.model);
 
             // If there is no root node defined, then create one.
-            if (!store.root) {
-                store.root = {};
+            if (!model.root) {
+                model.root = {};
             }
 
             // Store must have the same idea about root visibility as us BEFORE callParent binds it.
-            store.setRootVisible(me.rootVisible);
+            model.rootVisible = me.rootVisible;
 
-            me.viewConfig = Ext.apply({
+            me.viewConfig = _.extend({
                 rootVisible: me.rootVisible,
                 animate: me.enableAnimations,
                 singleExpand: me.singleExpand,
-                node: store.getRoot(),
+                node: model.root,
                 hideHeaders: me.hideHeaders,
                 navigationModel: 'tree'
             }, me.viewConfig);
@@ -77,9 +88,9 @@
                 if (me.initialConfig.hideHeaders === undefined) {
                     me.hideHeaders = true;
                 }
-                me.addCls(me.autoWidthCls);
+                me.$el.addClass(me.autoWidthCls);
                 me.columns = [{
-                    xtype    : 'treecolumn',
+                    cls    : Column,
                     text     : 'Name',
                     flex     : 1,
                     dataIndex: me.displayField         
@@ -91,34 +102,27 @@
             }
             me.cls = cls.join(' ');
 
-            me.callParent();
+            Table.prototype.initComponent.apply(me,arguments);
 
-            view = me.getView();
+            view = me.getView(View);
 
             // Relay events from the TreeView.
             // An injected LockingView relays events from its locked side's View
-            me.relayEvents(view, [
-                /**
-                * @event checkchange
-                * Fires when a node with a checkbox's checked property changes
-                * @param {Ext.data.TreeModel} node The node who's checked property was changed
-                * @param {Boolean} checked The node's new checked state
-                */
-                'checkchange',
-                /**
-                * @event afteritemexpand
-                * @inheritdoc Ext.tree.View#afteritemexpand
-                */
-                'afteritemexpand',
-                /**
-                * @event afteritemcollapse
-                * @inheritdoc Ext.tree.View#afteritemcollapse
-                */
-                'afteritemcollapse'
-            ]);
         },
         applyStore:function(store){
-            return new Model(store)
+            if(store instanceof Backbone.Model){
+                return store
+            } else {
+                return new Model(store)
+            }
+        },
+
+        /**
+         * Returns the store associated with this Panel.
+         * @return {Ext.data.Store} The store
+         */
+        getStore: function(){
+            return this.model;
         }
-    })
+    }).mixins(mixins);
 }))

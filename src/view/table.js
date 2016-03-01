@@ -83,7 +83,7 @@
 	        //me.all = new Ext.view.NodeCache(me);
 
 	        Base.prototype.initComponent.apply(this,arguments);
-	        me.collection.on('sync reset update change',_.debounce(_.bind(me.reset,me),500));
+	        //me.collection.on('sync reset update change',_.debounce(_.bind(me.reset,me),500));
 	        /*me.collection.on('reset',_.bind(me.reset,me));
 	        me.collection.on('update',_.debounce(_.bind(me.reset,me)));
 	        me.collection.on('change',_.bind(me.reset,me));*/
@@ -271,8 +271,12 @@
 	    		return Base.prototype.getRecord.call(this,node)
 	    	}
 	    },
+	    getRowId:function(record){
+	    	return this.id + '-record-' + record.id;
+	    },
 		renderRows:function(rows, viewStartIndex){
-	        var rowValues = this.rowValues,
+	        var me = this,
+	        	rowValues = this.rowValues,
 	            rowCount = rows.length,
 	            html = '',
 	            i;
@@ -296,6 +300,7 @@
 			rowValues = me.rowValues,
 	        itemClasses = rowValues.itemClasses;
 			rowValues.record = record;
+	        rowValues.rowId = me.getRowId(record);
 	        rowValues.itemCls = rowValues.rowCls = '';
 			if (!rowValues.columns) {
 	            columns = rowValues.columns = me.ownerCt.getVisibleColumnManager().getColumns();
@@ -321,6 +326,7 @@
 			fieldValue = record.get(column.dataIndex);
 			cellValues.align = column.align;
 			cellValues.column = column;
+			cellValues.innerCls = column.innerCls;
 			cellValues.tdCls = cellValues.tdStyle = cellValues.tdAttr = cellValues.style = "";
 			column.cellWidth = column.width || column.minWidth
 			if(column.cellWidth){
@@ -332,7 +338,7 @@
 			clsInsertPoint = 2;
 			if (column.renderer && column.renderer.call) {
 	            fullIndex = me.ownerCt.columnManager.getHeaderIndex(column);
-	            value = column.renderer.call(column.usingDefaultRenderer ? column : column.scope || me.ownerCt, fieldValue, cellValues, record, recordIndex, fullIndex, me.collection, me);
+	            value = column.renderer.call(column.usingDefaultRenderer ? column : column || me.ownerCt, fieldValue, cellValues, record, recordIndex, fullIndex, me.collection, me);
 	            if (cellValues.css) {
 	                // This warning attribute is used by the compat layer
 	                // TODO: remove when compat layer becomes deprecated

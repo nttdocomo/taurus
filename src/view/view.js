@@ -85,7 +85,9 @@
 	    processUIEvent:function(e){
 	    	var me = this,
             item = e.item,
+            self = me.constructor,
             record = e.record,
+            map = self.EventMap,
             index,
             type = e.type,
             newType = type;
@@ -94,7 +96,10 @@
             	if (!record || me.processItemEvent(record, item, index, e) === false) {
 	                return false;
 	            }
-	            me.trigger('item' + newType, me, record, item, index, e);
+	            if(me['onItem' + map[newType]](record, item, index, e) === false){
+	            	 return false;
+	            }
+	            //me.trigger('item' + newType, me, record, item, index, e);
             }
 	    }
 	    /*,
@@ -109,6 +114,22 @@
 			})
 		}*/
 	},{
+		EventMap: {
+            longpress: 'LongPress',
+            mousedown: 'MouseDown',
+            mouseup: 'MouseUp',
+            click: 'Click',
+            dblclick: 'DblClick',
+            contextmenu: 'ContextMenu',
+            mouseover: 'MouseOver',
+            mouseout: 'MouseOut',
+            mouseenter: 'MouseEnter',
+            mouseleave: 'MouseLeave',
+            keydown: 'KeyDown',
+            keyup: 'KeyUp',
+            keypress: 'KeyPress',
+            focus: 'Focus'
+        },
         TouchEventMap: {
             touchstart: 'mousedown',
             touchend: 'mouseup',

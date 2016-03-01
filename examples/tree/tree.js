@@ -7,6 +7,7 @@ define(function(require) {
 	_ = require('underscore'),
 	Tree = require("../../src/tree/panel"),
 	TreeModel = require("../../src/model/tree"),
+	TreeCollection = require("../../src/collection/tree"),
 	$body = $(document.body),
 	likelihood = 30;
 	function randomMenu(){
@@ -26,11 +27,11 @@ define(function(require) {
 		};
 		return items;
 	}
-	var model = new TreeModel({
-		text: chance.word(),
-		children:randomMenu()
-	})
+	var collection = new TreeCollection(randomMenu())
 	new Tree({
-		model:model
+		hideHeaders:true,
+		title: 'Destination',
+		collection:collection,
+		renderTo:$('#main')
 	})
 })

@@ -202,7 +202,7 @@
 				cls = arguments[0].cls;
 				delete arguments[0].cls;
 			}
-			new cls(arguments[0]);
+			return new cls(arguments[0]);
 		},
 		ieVersion:(function(){
 

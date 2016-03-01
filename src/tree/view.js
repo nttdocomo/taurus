@@ -20,27 +20,65 @@
     } else {
         root.Class = factory();
     }
-}(this, function(Table) {
-    return Table.extend({
+}(this, function(Base) {
+    return Base.extend({
+        /**
+         * @cfg {Boolean} rootVisible
+         * False to hide the root node.
+         */
+        rootVisible: true,
+        expanderSelector: '.tree-expander',
+        cellTpl: [
+            '<td class="<%=tdCls%>" <%=tdAttr%> style="<%if(tdStyle){%><%=tdStyle%><%}%>" tabindex="-1" data-column-id="<%=column.cid%>">',
+                '<div class="grid-cell-inner <%=innerCls%>"',
+                    '<%if(style){%> style="<%=style%>"<%}%>><%=value%></div>',
+            '</td>'].join(''),
         initComponent: function() {
             var me = this;
 
-            if (me.bufferedRenderer) {
-                me.animate = false;
+            me.model = me.panel.getStore();
+            //me.onRootChange(me.model.root);
+
+            Base.prototype.initComponent.apply(me,arguments);
+            me.collection.rootVisible = me.rootVisible;
+            //me.addRowTpl(Ext.XTemplate.getTpl(me, 'treeRowTpl'));
+        },
+
+        onRootChange: function(newRoot, oldRoot) {
+            var me = this;
+
+            if (oldRoot) {
+                me.rootListeners.destroy();
+                me.rootListeners = null;
             }
-            else if (me.initialConfig.animate === undefined) {
-                me.animate = Ext.enableFx;
+            
+            if (newRoot) {
+                me.rootListeners = newRoot.on({
+                    beforeexpand: me.onBeforeExpand,
+                    expand: me.onExpand,
+                    beforecollapse: me.onBeforeCollapse,
+                    collapse: me.onCollapse,
+                    destroyable: true,
+                    scope: me
+                });
             }
+        },
+        processUIEvent: function(e) {
+            // If the clicked node is part of an animation, ignore the click.
+            // This is because during a collapse animation, the associated Records
+            // will already have been removed from the Store, and the event is not processable.
+            /*if (e.getTarget('.' + this.nodeAnimWrapCls, this.el)) {
+                return false;
+            }*/
+            return Base.prototype.processUIEvent.apply(this,arguments);//this.callParent([e]);
+        },
 
-            me.store = me.panel.getStore();
-            me.onRootChange(me.store.getRoot());
-
-            me.animQueue = {};
-            me.animWraps = {};
-
-            me.callParent();
-            me.store.setRootVisible(me.rootVisible);
-            me.addRowTpl(Ext.XTemplate.getTpl(me, 'treeRowTpl'));
+        onItemClick: function(record, item, index, e) {
+            if (e.getTarget(this.expanderSelector, item) && record.isExpandable()) {
+                this.toggle(record, e.ctrlKey);
+                return false;
+            }
+            return this.callParent([record, item, index, e]);
         }
     })
 }))
