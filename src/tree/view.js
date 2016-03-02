@@ -44,6 +44,58 @@
             //me.addRowTpl(Ext.XTemplate.getTpl(me, 'treeRowTpl'));
         },
 
+        /**
+         * Collapses a record that is loaded in the view.
+         *
+         * If an animated collapse or expand of the record is in progress, this call will be ignored.
+         * @param {Ext.data.Model} record The record to collapse
+         * @param {Boolean} [deep] True to collapse nodes all the way up the tree hierarchy.
+         * @param {Function} [callback] The function to run after the collapse is completed
+         * @param {Object} [scope] The scope of the callback function.
+         */
+        collapse: function(record, deep, callback, scope) {
+            var me = this,
+                doAnimate = !!me.animate;
+
+            // Block toggling if we are already animating an expand or collapse operation.
+            if (!doAnimate || !record.isExpandingOrCollapsing) {
+                if (!record.isLeaf()) {
+                    record.isExpandingOrCollapsing = doAnimate;
+                }
+                return record.collapse(deep, callback, scope);
+            }
+        },
+
+        /**
+         * Expands a record that is loaded in the view.
+         *
+         * If an animated collapse or expand of the record is in progress, this call will be ignored.
+         * @param {Ext.data.Model} record The record to expand
+         * @param {Boolean} [deep] True to expand nodes all the way down the tree hierarchy.
+         * @param {Function} [callback] The function to run after the expand is completed
+         * @param {Object} [scope] The scope of the callback function.
+         */
+        expand: function(record, deep, callback, scope) {
+            var me = this,
+                doAnimate = !!me.animate,
+                result;
+
+            // Block toggling if we are already animating an expand or collapse operation.
+            if (!doAnimate || !record.isExpandingOrCollapsing) {
+                if (!record.isLeaf()) {
+                    record.isExpandingOrCollapsing = doAnimate;
+                }
+
+                // Need to suspend layouts because the expand process makes multiple changes to the UI
+                // in addition to inserting new nodes. Folder and elbow images have to change, so we
+                // need to coalesce all resulting layouts.
+                //Ext.suspendLayouts();
+                result = record.expand(deep, callback, scope);
+                //Ext.resumeLayouts(true);
+                return result;
+            }
+        },
+
         onRootChange: function(newRoot, oldRoot) {
             var me = this;
 
@@ -78,7 +130,24 @@
                 this.toggle(record, e.ctrlKey);
                 return false;
             }
-            return this.callParent([record, item, index, e]);
+            return Base.prototype.onItemClick.apply(this,arguments);
+        },
+
+        /**
+         * Toggles a record between expanded and collapsed.
+         *
+         * If an animated collapse or expand of the record is in progress, this call will be ignored.
+         * @param {Ext.data.Model} record
+         * @param {Boolean} [deep] True to collapse nodes all the way up the tree hierarchy.
+         * @param {Function} [callback] The function to run after the expand/collapse is completed
+         * @param {Object} [scope] The scope of the callback function.
+         */
+        toggle: function(record, deep, callback, scope) {
+            if (record.isExpanded()) {
+                this.collapse(record, deep, callback, scope);
+            } else {
+                this.expand(record, deep, callback, scope);
+            }
         }
     })
 }))

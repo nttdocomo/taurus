@@ -23,7 +23,11 @@
 }(this, function(Backbone) {
     var Model = Backbone.Model.extend({
         defaults:{
+            expandable:true,
+            expanded:false,
             icon:'',
+            isLast:false,
+            leaf:false,
             parentId: null
         },
         /**
@@ -58,8 +62,39 @@
         rootVisible: false,
         initialize: function() {
             if (Array.isArray(this.get('children'))) {
-                this.set({children: new Collection(this.get('children'))});
+                var children = new Collection(this.get('children'))
+                children.parentNode = this;
+                children.each(function(model){
+                    model.parentNode = this
+                })
+                this.set({children: children});
             }
+        },
+
+        // Used to inform the TreeStore that we belong to about some event which requires its participation.
+        callTreeStore: function(funcName, args) {
+            var me = this,
+                target = me.getTreeStore(),
+                fn = target && target[funcName];
+
+            if (target && fn) {
+                args = args || [];
+                if (args[0] !== me) {
+                    args.unshift(me);
+                }
+                fn.apply(target, args);
+            }
+        },
+
+        /**
+         * Expand this node.
+         * @param {Boolean} [recursive=false] True to recursively expand all the children
+         * @param {Function} [callback] The function to execute once the expand completes
+         * @param {Object} [scope] The scope to run the callback in
+         */
+        expand: function(recursive, callback, scope) {
+            var me = this;
+            me.callTreeStore('onBeforeNodeExpand', [me.onChildNodesAvailable, me, [recursive, callback, scope]]);
         },
         /**
          * Returns the {@link Ext.data.TreeStore} which owns this node.
@@ -67,24 +102,49 @@
          */
         getTreeStore: function() {
             var root = this;
-            while (root && !root.treeStore) {
+            while (root && !root.collection) {
                 root = root.parentNode;
             }
-            return root && root.treeStore;
+            return root && root.collection;
+        },
+
+        /**
+         * Returns true if this node has one or more child nodes, else false.
+         * @return {Boolean}
+         */
+        hasChildNodes: function() {
+            return !this.isLeaf() && (this.get('children') && this.get('children').length > 0);
         },
         isExpandable:function(){
             var me = this;
             if (me.get('expandable')) {
-                return !(me.isLeaf() || (me.isLoaded() && !me.phantom && !me.hasChildNodes()));
+                return !(me.isLeaf() || (me.isLoaded() && /*!me.phantom && */!me.hasChildNodes()));
             }
             return false;
         },
+
         /**
-         * Tests whether the store currently has any active filters.
-         * @return {Boolean} `true` if the store is filtered.
+         * Returns `true` if this node is expanded.
+         * @return {Boolean}
          */
-        isFiltered: function() {
-            return this.getFilters().getCount() > 0;
+        isExpanded: function() {
+            return this.get('expanded');
+        },
+
+        /**
+         * Returns true if this node is a leaf
+         * @return {Boolean}
+         */
+        isLeaf: function() {
+            return this.get('leaf') === true;
+        },
+
+        /**
+         * Returns true if this node is loaded
+         * @return {Boolean}
+         */
+        isLoaded: function() {
+            return true;
         },
         /**
          * @private
@@ -94,12 +154,13 @@
          */
         isLastVisible: function() {
             var me = this,
-                result = me.get('isLast'),
+                collection = me.collection,
+                result = me == collection.at(collection.length - 1),
                 next = me.nextSibling;
             // If it is not the true last and the store is filtered
             // we need to see if any following siblings are visible.
             // If any are, return false.
-            if (!result && me.getTreeStore().isFiltered()) {
+            /*if (!result && me.getTreeStore().isFiltered()) {
                 while (next) {
                     if (next.data.visible) {
                         return false;
@@ -107,8 +168,33 @@
                     next = next.nextSibling;
                 }
                 return true;
-            }
+            }*/
             return result;
+        },
+        onChildNodesAvailable:function(records, recursive, callback, scope){
+            var me = this;
+            me.set('expanded', true);
+            me.callTreeStore('onNodeExpand', [records, false])
+        },
+
+        // Called from a node's onChildNodesAvailable method to
+        // insert the newly available child nodes below the parent.
+        onNodeExpand: function(parent, records) {
+            var me = this,
+                insertIndex = me.indexOf(parent) + 1,
+                toAdd = [];
+
+            me.handleNodeExpand(parent, records, toAdd);
+
+            // If a hidden root is being expanded for the first time, it's not an insert operation
+            if (!me.refreshCounter && parent.isRoot() && !parent.get('visible')) {
+                me.loadRecords(toAdd);
+            }
+            // The add event from this insertion is handled by TreeView.onAdd.
+            // That implementation calls parent and then ensures the previous sibling's joining lines are correct.
+            else {
+                me.insert(insertIndex, toAdd);
+            }
         }
     }),
     Collection = Backbone.Collection.extend({

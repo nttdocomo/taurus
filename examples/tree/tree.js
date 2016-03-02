@@ -15,7 +15,8 @@ define(function(require) {
 		var items = [];
 		for (var i = len; i >= 0; i--) {
 			var item = {
-				text:chance.word()
+				text:chance.word(),
+				leaf:false
 			};
 			if(chance.bool({likelihood:likelihood})){
 				item.children = randomMenu()
@@ -28,6 +29,7 @@ define(function(require) {
 		return items;
 	}
 	var collection = new TreeCollection(randomMenu())
+	console.log(collection)
 	new Tree({
 		hideHeaders:true,
 		title: 'Destination',

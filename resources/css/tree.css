@@ -1,0 +1,26 @@
+.tree-icon, .tree-elbow-img, .tree-checkbox {
+    margin-top: -7px;
+    margin-bottom: -6px;
+}
+.tree-elbow-img, .tree-icon {
+    display: inline-block;
+    text-align: center;
+    background-repeat: no-repeat;
+    background-position: 0 center;
+    vertical-align: top;
+}
+.tree-icon {
+    width: 16px;
+    height: 32px;
+    line-height: 32px;
+}
+.tree-elbow-img {
+    width: 18px;
+    height: 32px;
+    line-height: 32px;
+    margin-right: 4px;
+}
+.tree-icon-parent:before{
+	content: "\e117";
+	font-family: 'Glyphicons Halflings';
+}

@@ -3,27 +3,32 @@
         // Now we're wrapping the factory and assigning the return
         // value to the root (window) and returning it as well to
         // the AMD loader.
-        define(['../grid/column/column'],function(Table){
+        define(['../grid/column/column','taurus','underscore'],function(Table){
           return (root.Class = factory(Table));
         });
     }
     if(define.cmd){
         define(function(require, exports, module){
-            return (root.Class = factory(require('../grid/column/column')));
+            return (root.Class = factory(require('../grid/column/column'),require('taurus'),require('underscore')));
         })
     } else if(typeof module === "object" && module.exports) {
         // I've not encountered a need for this yet, since I haven't
         // run into a scenario where plain modules depend on CommonJS
         // *and* I happen to be loading in a CJS browser environment
         // but I'm including it for the sake of being thorough
-        module.exports = (root.Class = factory(require('../grid/column/column')));
+        module.exports = (root.Class = factory(require('../grid/column/column'),require('taurus'),require('underscore')));
     } else {
         root.Class = factory();
     }
-}(this, function(Base) {
+}(this, function(Base,taurus,_) {
     return Base.extend({
-        innerCls: 'grid-cell-inner-treecolumn',
-        cellTpl: ['<div class="{childCls} {elbowCls}-img {elbowCls}<%if(expandable){%>-plus <%=expanderCls%><%}%>" role="presentation"></div>'].join(''),
+        iconCls: taurus.baseCSSPrefix + 'tree-icon',
+        innerCls: taurus.baseCSSPrefix + 'grid-cell-inner-treecolumn',
+        elbowCls: taurus.baseCSSPrefix + 'tree-elbow',
+        expanderCls: taurus.baseCSSPrefix + 'tree-expander',
+        cellTpl: ['<div class="<%=childCls%> <%=elbowCls%>-img <%=elbowCls%><%if(expandable){%>-plus <%=expanderCls%> glyphicon glyphicon-plus<%}%>" role="presentation"></div>',
+        '<%if(icon){%><%}else{%><div class="<%=childCls%> <%=baseIconCls%> <%=customIconCls%> <%=baseIconCls%>-<%if(leaf){%>leaf<%}else{if(expanded){%>parent-expanded<%}else{%>parent<%}%><%}%>"></div><%}%>',
+        '<span class="<%=textCls%> <%=childCls%>"><%=value%></span>'].join(''),
         initComponent: function() {
             var me = this;
 
@@ -53,7 +58,7 @@
 
             rendererData = me.initTemplateRendererData(value, metaData, record, rowIdx, colIdx, store, view);
             
-            return me.getTpl('cellTpl').apply(rendererData);
+            return _.template(me.cellTpl)(rendererData);
         },
     
         initTemplateRendererData: function(value, metaData, record, rowIdx, colIdx, store, view) {
@@ -87,7 +92,7 @@
                 expandable: record.isExpandable(),
                 expanded: data.expanded,
                 isLast: record.isLastVisible(),
-                blankUrl: Ext.BLANK_IMAGE_URL,
+                blankUrl: taurus.BLANK_IMAGE_URL,
                 href: data.href,
                 hrefTarget: data.hrefTarget,
                 lines: lines,

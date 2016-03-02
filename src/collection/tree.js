@@ -22,6 +22,35 @@
     }
 }(this, function(Tree,Backbone) {
     return Backbone.Collection.extend({
-        model: Tree
+        model: Tree,
+        /**
+         * Tests whether the store currently has any active filters.
+         * @return {Boolean} `true` if the store is filtered.
+         */
+        isFiltered: function() {
+            return this.getFilters().getCount() > 0;
+        },
+
+        /**
+         * Gets the filters for this store.
+         * @return {Ext.util.FilterCollection} The filters
+         */
+        getFilters: function(/* private */ autoCreate) {
+            var result = this.callParent();
+            if (!result && autoCreate !== false) {
+                this.setFilters([]);
+                result = this.callParent();
+            }
+            return result;
+        },
+        onBeforeNodeExpand:function(node, callback, scope, args){
+            var me = this,
+                callbackArgs;
+            callbackArgs = [node.collection];
+            if (args) {
+                callbackArgs.push.apply(callbackArgs, args);
+            }
+            callback.apply(scope || node, callbackArgs);
+        }
     });
 }))
