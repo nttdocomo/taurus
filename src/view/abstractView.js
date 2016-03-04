@@ -36,9 +36,10 @@
 	        return {
 	            refresh: me.onDataRefresh,
 	            replace: me.onReplace,
-	            add: me.onAdd,
+	            /*add: me.onAdd,*/
 	            remove: me.onRemove,
 	            change: me.onUpdate,
+                update: me.onAdd,
 	            clear: me.onDataRefresh,
 	            beginupdate: me.onBeginUpdate,
 	            endupdate: me.onEndUpdate

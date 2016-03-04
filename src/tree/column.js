@@ -26,7 +26,8 @@
         innerCls: taurus.baseCSSPrefix + 'grid-cell-inner-treecolumn',
         elbowCls: taurus.baseCSSPrefix + 'tree-elbow',
         expanderCls: taurus.baseCSSPrefix + 'tree-expander',
-        cellTpl: ['<div class="<%=childCls%> <%=elbowCls%>-img <%=elbowCls%><%if(expandable){%>-plus <%=expanderCls%> glyphicon glyphicon-plus<%}%>" role="presentation"></div>',
+        cellTpl: ['<%for(var i = 0; i < lines.length;i++){%><div class="<%=childCls%> <%=elbowCls%>-img <%=elbowCls%>-line" role="presentation"></div><%}%>',
+        '<div class="<%=childCls%> <%=elbowCls%>-img <%=elbowCls%><%if(expandable){%>-plus <%=expanderCls%> glyphicon glyphicon-plus<%}%>" role="presentation"></div>',
         '<%if(icon){%><%}else{%><div class="<%=childCls%> <%=baseIconCls%> <%=customIconCls%> <%=baseIconCls%>-<%if(leaf){%>leaf<%}else{if(expanded){%>parent-expanded<%}else{%>parent<%}%><%}%>"></div><%}%>',
         '<span class="<%=textCls%> <%=childCls%>"><%=value%></span>'].join(''),
         initComponent: function() {
@@ -70,8 +71,8 @@
                 lines = [],
                 parentData;
             
-            while (parent && (rootVisible || parent.data.depth > 0)) {
-                parentData = parent.data;
+            while (parent && (rootVisible || parent.get('depth') > 0)) {
+                parentData = parent.attributes;
                 lines[rootVisible ? parentData.depth : parentData.depth - 1] =
                         parentData.isLast ? 0 : 1;
                 parent = parent.parentNode;

@@ -23,12 +23,14 @@
 }(this, function(Backbone) {
     var Model = Backbone.Model.extend({
         defaults:{
+            depth:0,
             expandable:true,
             expanded:false,
             icon:'',
             isLast:false,
             leaf:false,
-            parentId: null
+            parentId: null,
+            visible:true
         },
         /**
          * @cfg {Ext.data.TreeModel/Ext.data.NodeInterface/Object} root
@@ -61,13 +63,15 @@
          */
         rootVisible: false,
         initialize: function() {
+            var me = this;
+            Backbone.Model.prototype.initialize.apply(this,arguments)
             if (Array.isArray(this.get('children'))) {
                 var children = new Collection(this.get('children'))
                 children.parentNode = this;
                 children.each(function(model){
-                    model.parentNode = this
+                    model.parentNode = me
                 })
-                this.set({children: children});
+                me.set({children: children});
             }
         },
 
@@ -171,30 +175,18 @@
             }*/
             return result;
         },
+
+        /**
+         * Returns true if this node is the root node
+         * @return {Boolean}
+         */
+        isRoot: function() {
+            return !this.parentNode;
+        },
         onChildNodesAvailable:function(records, recursive, callback, scope){
             var me = this;
             me.set('expanded', true);
             me.callTreeStore('onNodeExpand', [records, false])
-        },
-
-        // Called from a node's onChildNodesAvailable method to
-        // insert the newly available child nodes below the parent.
-        onNodeExpand: function(parent, records) {
-            var me = this,
-                insertIndex = me.indexOf(parent) + 1,
-                toAdd = [];
-
-            me.handleNodeExpand(parent, records, toAdd);
-
-            // If a hidden root is being expanded for the first time, it's not an insert operation
-            if (!me.refreshCounter && parent.isRoot() && !parent.get('visible')) {
-                me.loadRecords(toAdd);
-            }
-            // The add event from this insertion is handled by TreeView.onAdd.
-            // That implementation calls parent and then ensures the previous sibling's joining lines are correct.
-            else {
-                me.insert(insertIndex, toAdd);
-            }
         }
     }),
     Collection = Backbone.Collection.extend({

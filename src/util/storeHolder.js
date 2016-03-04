@@ -40,7 +40,7 @@
                     listeners.scope = this;
                 }*/
                 this.storeListeners = listeners;
-                collection.on(listeners);
+                collection.on(listeners,this);
             }
         }
     }

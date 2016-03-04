@@ -191,6 +191,21 @@
 	        }
 	        return false;
 	    },
+
+	    // after adding a row stripe rows from then on
+	    onAdd: function(store, options) {
+	        var me = this,
+	            bufferedRenderer = me.bufferedRenderer;
+	        me.refresh(store, options)
+
+	        /*if (me.rendered && bufferedRenderer) {
+	        	me.refresh(store, index, [], records)
+	             //bufferedRenderer.onReplace(store, index, [], records);
+	        } else {
+	            Base.prototype.onAdd.apply(me,arguments);;
+	        }
+	        me.setPendingStripe(index);*/
+	    },
 		processItemEvent:function(record, item, rowIndex, e){
 	        var me = this,
 	            self = me.self,
@@ -368,6 +383,10 @@
 	                headers[i].call(this, values, out, parent);
 	            }
 	        }
+		},
+		refresh:function(store, options){
+			this.collection = store;
+			this.reset();
 		},
 		reset:function(){
 			this.renderHtml();
