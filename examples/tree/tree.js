@@ -6,8 +6,8 @@ define(function(require) {
 	chance = require('chance'),
 	_ = require('underscore'),
 	Tree = require("../../src/tree/panel"),
-	TreeModel = require("../../src/model/tree"),
 	TreeCollection = require("../../src/collection/tree"),
+	TreeModel = require("../../src/model/tree"),
 	$body = $(document.body),
 	likelihood = 30;
 	function randomMenu(){

@@ -3,24 +3,25 @@
         // Now we're wrapping the factory and assigning the return
         // value to the root (window) and returning it as well to
         // the AMD loader.
-        define(['backbone'],function(Backbone){
+        define(['backbone','../subscribeModule'],function(Backbone){
           return (root.Class = factory(Backbone));
         });
     }
     if(define.cmd){
         define(function(require, exports, module){
-            return (root.Class = factory(require('backbone')));
+            return (root.Class = factory(require('backbone'),require('../subscribeModule')));
         })
     } else if(typeof module === "object" && module.exports) {
         // I've not encountered a need for this yet, since I haven't
         // run into a scenario where plain modules depend on CommonJS
         // *and* I happen to be loading in a CJS browser environment
         // but I'm including it for the sake of being thorough
-        module.exports = (root.Class = factory(require('backbone')));
+        module.exports = (root.Class = factory(require('backbone'),require('../subscribeModule')));
     } else {
         root.Class = factory();
     }
-}(this, function(Backbone) {
+}(this, function(Backbone,subscribeModule) {
+    var Colleciton = subscribeModule.fire('tree-collection');
     var Model = Backbone.Model.extend({
         defaults:{
             depth:0,
@@ -50,10 +51,10 @@
          * Setting the `root` config option is the same as calling {@link #setRootNode}.
          *
          * It's important to note that setting expanded to true on the root node will cause
-         * the tree store to attempt to load.  This will occur regardless the value of 
-         * {@link Ext.data.ProxyStore#autoLoad autoLoad}. If you you do not want the store 
+         * the tree store to attempt to load.  This will occur regardless the value of
+         * {@link Ext.data.ProxyStore#autoLoad autoLoad}. If you you do not want the store
          * to load on instantiation, ensure expanded is false and load the store when you're ready.
-         * 
+         *
          */
         root: null,
 
@@ -63,10 +64,11 @@
          */
         rootVisible: false,
         initialize: function() {
-            var me = this;
+            var me = this,
+            Colleciton = subscribeModule.fire('tree-collection');
             Backbone.Model.prototype.initialize.apply(this,arguments)
             if (Array.isArray(this.get('children'))) {
-                var children = new Collection(this.get('children'))
+                var children = new  Colleciton(this.get('children'))
                 children.parentNode = this;
                 children.each(function(model){
                     model.parentNode = me
@@ -154,7 +156,7 @@
          * @private
          * Used by {@link Ext.tree.Column#initTemplateRendererData} to determine whether a node is the last *visible*
          * sibling.
-         * 
+         *
          */
         isLastVisible: function() {
             var me = this,
@@ -188,9 +190,6 @@
             me.set('expanded', true);
             me.callTreeStore('onNodeExpand', [records, false])
         }
-    }),
-    Collection = Backbone.Collection.extend({
-        model: Model
     });
     return Model
 }))
