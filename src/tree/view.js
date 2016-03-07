@@ -132,6 +132,28 @@
             }
             return Base.prototype.onItemClick.apply(this,arguments);
         },
+        onCellClick:function(cell, cellIndex, record, row, rowIndex, e){
+          var me = this,
+            column = e.position.column,
+            checkedState;
+
+            // We're only interested in clicks in the tree column
+            if (column.isTreeColumn){
+              if (e.getTarget(me.expanderSelector, cell) && record.isExpandable()) {
+                // Ensure focus is on the clicked cell so that if this causes a refresh,
+                // focus restoration does not scroll back to the previouslty focused position.
+                // onCellClick is called *befor* cellclick is fired which is what changes focus position.
+                // TODO: connect directly from View's event processing to NavigationModel without relying on events.
+                //me.getNavigationModel().setPosition(e.position);
+                me.toggle(record, e.ctrlKey);
+
+                // So that we know later to stop event propagation by returning false from the NavigationModel
+                // TODO: when NavigationModel is directly hooked up to be called *before* the event sequence
+                // This flag will not be necessary.
+                e.nodeToggled = true;
+            }
+            }
+        },
 
         /**
          * Toggles a record between expanded and collapsed.

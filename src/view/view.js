@@ -19,6 +19,22 @@
 		className:'row-fluid',
 		selectedItemCls:'item-selected',
 		keyEventRe: /^key/,
+		EventMap: {
+            longpress: 'LongPress',
+            mousedown: 'MouseDown',
+            mouseup: 'MouseUp',
+            click: 'Click',
+            dblclick: 'DblClick',
+            contextmenu: 'ContextMenu',
+            mouseover: 'MouseOver',
+            mouseout: 'MouseOut',
+            mouseenter: 'MouseEnter',
+            mouseleave: 'MouseLeave',
+            keydown: 'KeyDown',
+            keyup: 'KeyUp',
+            keypress: 'KeyPress',
+            focus: 'Focus'
+        },
 		onItemClick:function(e){
 			var node = $(e.target).parents(this.itemSelector);
 			var record = this.collection.at(this.$el.children().index(node));

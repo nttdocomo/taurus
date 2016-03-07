@@ -4,17 +4,17 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./view','./tableHeader','./tableBody','backbone','underscore'], factory);
+			define(['./view','./tableHeader','./tableBody','../grid/cellContext','backbone','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./view'),require('./tableHeader'),require('./tableBody'),require('backbone'),require('underscore'));
+				return factory(require('./view'),require('./tableHeader'),require('./tableBody'),require('../grid/cellContext'),require('backbone'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./view'),require('./tableHeader'),require('./tableBody'),require('backbone'),require('underscore'));
+		module.exports = factory(require('./view'),require('./tableHeader'),require('./tableBody'),require('../grid/cellContext'),require('backbone'),require('underscore'));
 	}
-}(this, function(Base,Thead,TableBody,Backbone,_){
+}(this, function(Base,Thead,TableBody,CellContext,Backbone,_){
 	return Base.extend({
 		header:true,
 		tpl:'<div class="grid-item-container"><table><%=rows%></table></div>',
@@ -192,6 +192,10 @@
 	        return false;
 	    },
 
+	    getVisibleColumnManager: function() {
+	        return this.ownerCt.getVisibleColumnManager();
+	    },
+
 	    // after adding a row stripe rows from then on
 	    onAdd: function(store, options) {
 	        var me = this,
@@ -209,12 +213,12 @@
 		processItemEvent:function(record, item, rowIndex, e){
 	        var me = this,
 	            self = me.self,
-	            //map = self.EventMap,
+	            map = me.EventMap,
 	            type = e.type,
 	            //features = me.features,
 	            //len = features.length,
 	            i, cellIndex, result, feature, column,
-	            eventPosition = e.position = me.eventPosition || {},//(me.eventPosition = new Ext.grid.CellContext()),
+	            eventPosition = e.position = me.eventPosition || (me.eventPosition = new CellContext()),
 	            row, cell/*,
 	            navModel = me.getNavigationModel()*/;
 	        if (me.indexInStore(item) !== -1) {
@@ -223,6 +227,17 @@
 		        if(cell){
 		        	column = me.getHeaderByCell(cell);
 		        	cellIndex = me.ownerCt.getColumnManager().getHeaderIndex(column);
+		        }
+	            eventPosition.setAll(
+	                me,
+	                rowIndex,
+	                column ? me.getVisibleColumnManager().getHeaderIndex(column) : -1,
+	                record,
+	                column
+	            );
+	            eventPosition.cellElement = cell;
+		        if(cell && type !== 'mouseover' && type !== 'mouseout'){
+		        	result = !(me['onCell' + map[type]](cell, cellIndex, record, row, rowIndex, e) === false)
 		        }
 		        eventPosition.column = column;
 	        }

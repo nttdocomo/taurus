@@ -26,6 +26,7 @@
         innerCls: taurus.baseCSSPrefix + 'grid-cell-inner-treecolumn',
         elbowCls: taurus.baseCSSPrefix + 'tree-elbow',
         expanderCls: taurus.baseCSSPrefix + 'tree-expander',
+        isTreeColumn: true,
         cellTpl: ['<%for(var i = 0; i < lines.length;i++){%><div class="<%=childCls%> <%=elbowCls%>-img <%=elbowCls%>-line" role="presentation"></div><%}%>',
         '<div class="<%=childCls%> <%=elbowCls%>-img <%=elbowCls%><%if(expandable){%>-plus <%=expanderCls%> glyphicon glyphicon-plus<%}%>" role="presentation"></div>',
         '<%if(icon){%><%}else{%><div class="<%=childCls%> <%=baseIconCls%> <%=customIconCls%> <%=baseIconCls%>-<%if(leaf){%>leaf<%}else{if(expanded){%>parent-expanded<%}else{%>parent<%}%><%}%>"></div><%}%>',

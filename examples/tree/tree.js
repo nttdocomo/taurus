@@ -28,7 +28,19 @@ define(function(require) {
 		};
 		return items;
 	}
-	var collection = new TreeCollection(randomMenu())
+	var collection = new TreeCollection({
+        root: {
+            expanded: true,
+            children: [
+                { text: 'detention', leaf: true },
+                { text: 'homework', expanded: false, children: [
+                    { text: 'book report', leaf: true },
+                    { text: 'algebra', leaf: true}
+                ] },
+                { text: 'buy lottery tickets', leaf: true }
+            ]
+        }
+    })
 	console.log(collection)
 	new Tree({
 		hideHeaders:true,

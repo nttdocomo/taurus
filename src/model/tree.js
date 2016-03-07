@@ -65,10 +65,12 @@
         rootVisible: false,
         initialize: function() {
             var me = this,
-            Colleciton = subscribeModule.fire('tree-collection');
+            Collection = subscribeModule.fire('tree-collection');
             Backbone.Model.prototype.initialize.apply(this,arguments)
             if (Array.isArray(this.get('children'))) {
-                var children = new  Colleciton(this.get('children'))
+                var children = new Backbone.Collection(this.get('children'),{
+                    model:Model
+                })
                 children.parentNode = this;
                 children.each(function(model){
                     model.parentNode = me

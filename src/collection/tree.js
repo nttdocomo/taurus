@@ -3,29 +3,50 @@
         // Now we're wrapping the factory and assigning the return
         // value to the root (window) and returning it as well to
         // the AMD loader.
-        define(['../model/tree','../subscribeModule','backbone'],function(Tree,Backbone){
+        define(['../model/tree','../subscribeModule','backbone','underscore'],function(Tree,Backbone){
           return (root.Class = factory(Tree,Backbone));
         });
     }
     if(define.cmd){
         define(function(require, exports, module){
-            return (root.Class = factory(require('../model/tree'),require('../subscribeModule'),require('backbone')));
+            return (root.Class = factory(require('../model/tree'),require('../subscribeModule'),require('backbone'),require('underscore')));
         })
     } else if(typeof module === "object" && module.exports) {
         // I've not encountered a need for this yet, since I haven't
         // run into a scenario where plain modules depend on CommonJS
         // *and* I happen to be loading in a CJS browser environment
         // but I'm including it for the sake of being thorough
-        module.exports = (root.Class = factory(require('../model/tree'),require('../subscribeModule'),require('backbone')));
+        module.exports = (root.Class = factory(require('../model/tree'),require('../subscribeModule'),require('backbone'),require('underscore')));
     } else {
         root.Class = factory();
     }
-}(this, function(Tree,subscribeModule,Backbone) {
+}(this, function(Tree,subscribeModule,Backbone,_) {
     var Collection = Backbone.Collection.extend({
         model: Tree,
-        initialize:function(){
-          Backbone.Collection.prototype.initialize.apply(this,arguments)
-          this.updateRoot()
+        defaultRootText: 'Root',
+        constructor :function(models, options){
+            var args = Array.prototype.slice.call(Array,arguments);
+            args.splice(0,1,models.root.children)
+            var root = this.applyRoot(models.root)
+            this.updateRoot(root)
+            Backbone.Collection.apply(this, args);
+        },
+        applyRoot:function(newRoot){
+            var me = this;
+            if (newRoot && !newRoot.isNode) {
+                newRoot = _.extend({
+                    text: me.defaultRootText,
+                    root: true,
+                    isFirst: true,
+                    isLast: true,
+                    depth: 0,
+                    index: 0,
+                    parentId: null,
+                    allowDrag: false
+                }, newRoot);
+                newRoot = new Tree(newRoot);
+            }
+            return newRoot;
         },
         /**
          * Tests whether the store currently has any active filters.
@@ -132,8 +153,11 @@
                 console.log(me)
             }
         },
-        updateRoot:function(){
-          
+        updateRoot:function(newRoot,oldRoot){
+            var me = this;
+            if(newRoot){
+                newRoot.collection = newRoot.treeStore = me;
+            }
         }
     });
     subscribeModule.subscribe('tree-collection',Collection);
