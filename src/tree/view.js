@@ -28,6 +28,7 @@
          */
         rootVisible: true,
         expanderSelector: '.tree-expander',
+        expandedCls: 'grid-tree-node-expanded',
         cellTpl: [
             '<td class="<%=tdCls%>" <%=tdAttr%> style="<%if(tdStyle){%><%=tdStyle%><%}%>" tabindex="-1" data-column-id="<%=column.cid%>">',
                 '<div class="grid-cell-inner <%=innerCls%>"',
@@ -65,6 +66,11 @@
                 return record.collapse(deep, callback, scope);
             }
         },
+        /*delegateEvents:function(events){
+    			var me = this, events = $.extend(events || {}, this.events);
+          events['click '+me.expanderSelector] = me.onCellClick
+    			Base.prototype.delegateEvents.call(this, events);
+        }*/
 
         /**
          * Expands a record that is loaded in the view.
@@ -103,7 +109,7 @@
                 me.rootListeners.destroy();
                 me.rootListeners = null;
             }
-            
+
             if (newRoot) {
                 me.rootListeners = newRoot.on({
                     beforeexpand: me.onBeforeExpand,
@@ -139,7 +145,7 @@
 
             // We're only interested in clicks in the tree column
             if (column.isTreeColumn){
-              if (e.getTarget(me.expanderSelector, cell) && record.isExpandable()) {
+              if (e.getTarget(me.expanderSelector, cell).length && record.isExpandable()) {
                 // Ensure focus is on the clicked cell so that if this causes a refresh,
                 // focus restoration does not scroll back to the previouslty focused position.
                 // onCellClick is called *befor* cellclick is fired which is what changes focus position.
@@ -151,9 +157,20 @@
                 // TODO: when NavigationModel is directly hooked up to be called *before* the event sequence
                 // This flag will not be necessary.
                 e.nodeToggled = true;
-            }
+              }
             }
         },
+    		renderRow:function(record, recordIndex, rowIndex){
+    			var me = this,
+      			columns,
+      	    itemCls = me.itemCls,
+      			rowValues = me.rowValues,
+      	    itemClasses = rowValues.itemClasses;
+          if(record.isExpanded()){
+            itemClasses.push(me.expandedCls)
+          }
+    			return Base.prototype.renderRow.apply(this,arguments)
+    		},
 
         /**
          * Toggles a record between expanded and collapsed.

@@ -39,7 +39,7 @@
 	            /*add: me.onAdd,*/
 	            remove: me.onRemove,
 	            change: me.onUpdate,
-                update: me.onAdd,
+              update: me.onAdd,
 	            clear: me.onDataRefresh,
 	            beginupdate: me.onBeginUpdate,
 	            endupdate: me.onEndUpdate
@@ -47,6 +47,9 @@
 	    },
 	    onUpdate:function(store, record, operation, modifiedFieldNames, details){
 	    	console.log(arguments)
-	    }
+	    },
+      onRemove:function(){
+	    	console.log(arguments)
+      }
 	}).mixins(StoreHolder)
 }))

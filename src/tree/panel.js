@@ -27,6 +27,7 @@
         viewType:View,
         arrowCls: 'tree-arrows',
         displayField: 'text',
+        animate:false,
         /**
          * @cfg {Boolean} [rootVisible=true]
          * False to hide the root node.
@@ -35,7 +36,7 @@
          *
          * If the root node is not visible, then in order for a tree to appear to the end user, the root node is autoloaded with its child nodes.
          */
-        rootVisible: true,
+        rootVisible: false,
         initialize: function(config) {
             config = config || {};
             if (config.animate === undefined) {
@@ -93,7 +94,7 @@
                     cls    : Column,
                     text     : 'Name',
                     flex     : 1,
-                    dataIndex: me.displayField         
+                    dataIndex: me.displayField
                 }];
             }
 

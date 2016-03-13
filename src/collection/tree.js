@@ -27,9 +27,16 @@
         constructor :function(models, options){
             var args = Array.prototype.slice.call(Array,arguments);
             args.splice(0,1,models.root.children)
+            _.each(models.root.children,function(model){
+              model.depth = 1;
+            })
             var root = this.applyRoot(models.root)
             this.updateRoot(root)
+            root.treeStore = root.get('children');
             Backbone.Collection.apply(this, args);
+            this.each(function(model){
+              model.parentNode = root;
+            })
         },
         applyRoot:function(newRoot){
             var me = this;
@@ -131,6 +138,19 @@
                 callbackArgs.push.apply(callbackArgs, args);
             }
             callback.apply(scope || node, callbackArgs);
+        },
+        onNodeCollapse:function(parent, records){
+          var me = this/*,
+              collapseIndex = me.indexOf(parent) + 1,
+              lastNodeIndexPlus*/;
+          if (records.length/* && me.contains(records[0])*/) {
+
+              // Calculate the index *one beyond* the last node we are going to remove.
+              //lastNodeIndexPlus = me.indexOfNextVisibleNode(parent);
+
+              // Remove the whole collapsed node set.
+              me.remove(records.models);
+          }
         },
 
         // Called from a node's onChildNodesAvailable method to

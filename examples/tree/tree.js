@@ -35,7 +35,10 @@ define(function(require) {
                 { text: 'detention', leaf: true },
                 { text: 'homework', expanded: false, children: [
                     { text: 'book report', leaf: true },
-                    { text: 'algebra', leaf: true}
+                    { text: 'algebra', expanded: false,children: [
+		                    { text: 'book report', leaf: true },
+		                    { text: 'algebra', expanded: false}
+		                ]}
                 ] },
                 { text: 'buy lottery tickets', leaf: true }
             ]

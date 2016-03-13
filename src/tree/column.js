@@ -26,9 +26,10 @@
         innerCls: taurus.baseCSSPrefix + 'grid-cell-inner-treecolumn',
         elbowCls: taurus.baseCSSPrefix + 'tree-elbow',
         expanderCls: taurus.baseCSSPrefix + 'tree-expander',
+        textCls:'tree-node-text',
         isTreeColumn: true,
         cellTpl: ['<%for(var i = 0; i < lines.length;i++){%><div class="<%=childCls%> <%=elbowCls%>-img <%=elbowCls%>-line" role="presentation"></div><%}%>',
-        '<div class="<%=childCls%> <%=elbowCls%>-img <%=elbowCls%><%if(expandable){%>-plus <%=expanderCls%> glyphicon glyphicon-plus<%}%>" role="presentation"></div>',
+        '<div class="<%=childCls%> <%=elbowCls%>-img <%=elbowCls%><%if(expandable){%>-plus <%=expanderCls%><%}%>" role="presentation"></div>',
         '<%if(icon){%><%}else{%><div class="<%=childCls%> <%=baseIconCls%> <%=customIconCls%> <%=baseIconCls%>-<%if(leaf){%>leaf<%}else{if(expanded){%>parent-expanded<%}else{%>parent<%}%><%}%>"></div><%}%>',
         '<span class="<%=textCls%> <%=childCls%>"><%=value%></span>'].join(''),
         initComponent: function() {
@@ -44,7 +45,7 @@
             //me.scope = me;
 
             Base.prototype.initComponent.apply(this,arguments);
-            
+
             //me.hasCustomRenderer = me.innerRenderer && me.innerRenderer.length > 1;
         },
         treeRenderer:function(value, metaData, record, rowIdx, colIdx, store, view){
@@ -59,10 +60,10 @@
             }
 
             rendererData = me.initTemplateRendererData(value, metaData, record, rowIdx, colIdx, store, view);
-            
+
             return _.template(me.cellTpl)(rendererData);
         },
-    
+
         initTemplateRendererData: function(value, metaData, record, rowIdx, colIdx, store, view) {
             var me = this,
                 innerRenderer = me.innerRenderer,
@@ -71,14 +72,14 @@
                 rootVisible = view.rootVisible,
                 lines = [],
                 parentData;
-            
+
             while (parent && (rootVisible || parent.get('depth') > 0)) {
                 parentData = parent.attributes;
                 lines[rootVisible ? parentData.depth : parentData.depth - 1] =
                         parentData.isLast ? 0 : 1;
                 parent = parent.parentNode;
             }
-            
+
             return {
                 record: record,
                 baseIconCls: me.iconCls,

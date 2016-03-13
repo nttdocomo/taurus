@@ -73,7 +73,8 @@
                 })
                 children.parentNode = this;
                 children.each(function(model){
-                    model.parentNode = me
+                    model.parentNode = me;
+                    model.set('depth',me.get('depth')+1)
                 })
                 me.set({children: children});
             }
@@ -100,9 +101,25 @@
          * @param {Function} [callback] The function to execute once the expand completes
          * @param {Object} [scope] The scope to run the callback in
          */
+        collapse: function(recursive, callback, scope) {
+            var me = this;
+            if(me.isExpanded()){
+              me.set('expanded', false);
+              me.callTreeStore('onNodeCollapse', [me.get('children'),callback, scope]);
+            }
+        },
+
+        /**
+         * Expand this node.
+         * @param {Boolean} [recursive=false] True to recursively expand all the children
+         * @param {Function} [callback] The function to execute once the expand completes
+         * @param {Object} [scope] The scope to run the callback in
+         */
         expand: function(recursive, callback, scope) {
             var me = this;
-            me.callTreeStore('onBeforeNodeExpand', [me.onChildNodesAvailable, me, [recursive, callback, scope]]);
+            if(!me.isExpanded()){
+              me.callTreeStore('onBeforeNodeExpand', [me.onChildNodesAvailable, me, [recursive, callback, scope]]);
+            }
         },
         /**
          * Returns the {@link Ext.data.TreeStore} which owns this node.
@@ -110,7 +127,7 @@
          */
         getTreeStore: function() {
             var root = this;
-            while (root && !root.collection) {
+            while (root && !root.treeStore) {
                 root = root.parentNode;
             }
             return root && root.collection;
