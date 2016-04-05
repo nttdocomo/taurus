@@ -75,6 +75,44 @@
             }
             return result;
         },
+        handleNodeCollapse:function(parent, records, toRemove){
+            var me = this,
+                ln = records ? records.length : 0,
+                i, record;
+
+            // If parent is not visible, nothing to do (unless parent is the root)
+            /*if (parent !== this.root && !me.isVisible(parent)) {
+                return;
+            }*/
+
+            if (ln) {
+                // The view items corresponding to these are rendered.
+                // Loop through and expand any of the non-leaf nodes which are expanded
+                for (i = 0; i < ln; i++) {
+                    record = records.at(i);
+
+                    // If the TreePanel has not set its visible flag to false, add to new node array
+                    if (record.get('visible')) {
+                        // Add to array being collected by recursion when child nodes are loaded.
+                        // Must be done here in loop so that child nodes are inserted into the stream in place
+                        // in recursive calls.
+                        toRemove.push(record);
+
+                        if (record.isExpanded()) {
+                            if (record.isLoaded()) {
+                                // Take a shortcut - appends to toAdd array
+                                me.handleNodeCollapse(record, record.get('children'), toRemove);
+                            }
+                            else {
+                                // Might be asynchronous if child nodes are not immediately available
+                                record.set('collapsed', false);
+                                record.collapse();
+                            }
+                        }
+                    }
+                }
+            }
+        },
 
         // Collects child nodes to remove into the passed toRemove array.
         // When available, all descendant nodes are pushed into that array using recursion.
@@ -104,7 +142,7 @@
                         if (record.isExpanded()) {
                             if (record.isLoaded()) {
                                 // Take a shortcut - appends to toAdd array
-                                me.handleNodeExpand(record, record.childNodes, toAdd);
+                                me.handleNodeExpand(record, record.get('children'), toAdd);
                             }
                             else {
                                 // Might be asynchronous if child nodes are not immediately available
@@ -140,16 +178,18 @@
             callback.apply(scope || node, callbackArgs);
         },
         onNodeCollapse:function(parent, records){
-          var me = this/*,
+          var me = this,
+            toRemove = [];/*,
               collapseIndex = me.indexOf(parent) + 1,
               lastNodeIndexPlus*/;
+          me.handleNodeCollapse(parent, records, toRemove);
           if (records.length/* && me.contains(records[0])*/) {
 
               // Calculate the index *one beyond* the last node we are going to remove.
               //lastNodeIndexPlus = me.indexOfNextVisibleNode(parent);
 
               // Remove the whole collapsed node set.
-              me.remove(records.models);
+              me.remove(toRemove);
           }
         },
 
