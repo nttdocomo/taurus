@@ -140,7 +140,8 @@
                         toAdd.push(record);
 
                         if (record.isExpanded()) {
-                            if (record.isLoaded()) {
+                            me.handleNodeExpand(record, record.get('children'), toAdd);
+                            /*if (record.isLoaded()) {
                                 // Take a shortcut - appends to toAdd array
                                 me.handleNodeExpand(record, record.get('children'), toAdd);
                             }
@@ -148,7 +149,7 @@
                                 // Might be asynchronous if child nodes are not immediately available
                                 record.set('expanded', false);
                                 record.expand();
-                            }
+                            }*/
                         }
                     }
                 }
@@ -179,18 +180,28 @@
         },
         onNodeCollapse:function(parent, records){
           var me = this,
-            toRemove = [];/*,
+            collapseRecords = []/*,
               collapseIndex = me.indexOf(parent) + 1,
               lastNodeIndexPlus*/;
-          me.handleNodeCollapse(parent, records, toRemove);
+          //me.handleNodeCollapse(parent, records, toRemove);
           if (records.length/* && me.contains(records[0])*/) {
 
               // Calculate the index *one beyond* the last node we are going to remove.
               //lastNodeIndexPlus = me.indexOfNextVisibleNode(parent);
+              collapseRecords = me.indexOfNextVisibleNode(records);
 
               // Remove the whole collapsed node set.
-              me.remove(toRemove);
+              me.remove(collapseRecords);
           }
+        },
+        indexOfNextVisibleNode:function(records){
+            var result = _.clone(records.models);
+            records.each(function(record){
+                if(record.has('children') && record.get('expanded')){
+                    Array.prototype.push.apply(result,record.get('children').models)
+                }
+            })
+            return result;
         },
 
         // Called from a node's onChildNodesAvailable method to

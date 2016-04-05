@@ -225,19 +225,6 @@ define(function(require) {
 			width : 105,
 			sortable : false,
 			dataIndex : 'lastChange'
-		}, {
-			text : 'Action',
-			width : 105,
-			sortable : false,
-			cls:ActionColumn,
-			items: [{
-                iconCls: 'array-grid-sell-col',
-                tooltip: 'Sell stock',
-                handler: function(grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex);
-                    Ext.Msg.alert('Sell', 'Sell ' + rec.get('name'));
-                }
-            }]
 		}],
 		collection : collection,
 		renderTo : $body

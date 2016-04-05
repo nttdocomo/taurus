@@ -33,9 +33,9 @@
 		initComponent:function(){
 			var me = this;
 			me.setupRenderer();
-			if (me.flex) {
+			/*if (me.flex) {
                 me.minWidth = me.minWidth || HeaderResizer.prototype.minColWidth;
-            }
+            }*/
 			Base.prototype.initComponent.apply(this, arguments);
 		},
 		/*delegateEvents : function(events) {
