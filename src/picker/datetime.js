@@ -23,6 +23,7 @@ define(function(require) {
 		timeIcon : 'halflings calendar',
 		dateIcon : 'halflings time',
 		viewMode : 0,
+		pickerType:1,
 		pick12HourFormat : false,
 		pickSeconds : true,
 		fillHtml : function() {
@@ -260,10 +261,19 @@ define(function(require) {
 					return;
 				expanded.hide().removeClass('in');
 				closed.show().addClass('in');
-				console.log($this);
 				$this.find('i').toggleClass(this.timeIcon + ' ' + this.dateIcon);
 				this.$el.find('.add-on i').toggleClass(this.timeIcon + ' ' + this.dateIcon);
 			}
+			this.pickerType = !this.pickerType;
+			if(!this.pickerType){
+				this.showMode()
+			}
+		},
+		showMode : function(dir) {
+			if (dir) {
+				this.viewMode = Math.max(0, Math.min(2, this.viewMode + dir));
+			}
+			this.$el.find('.datepicker > div').hide().filter('.datepicker-' + this.modes[this.viewMode].clsName).show();
 		}
 	});
 });

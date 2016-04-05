@@ -1,0 +1,56 @@
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('../fonts/fontawesome-webfont.eot?v=4.5.0');
+  src: url('../fonts/fontawesome-webfont.eot?#iefix&v=4.5.0') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff2?v=4.5.0') format('woff2'), url('../fonts/fontawesome-webfont.woff?v=4.5.0') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.5.0') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.5.0#fontawesomeregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+.tree-icon, .tree-elbow-img, .tree-checkbox {
+    margin-top: -7px;
+    margin-bottom: -6px;
+}
+.tree-elbow-img, .tree-icon {
+    display: inline-block;
+    text-align: center;
+    background-repeat: no-repeat;
+    background-position: 0 center;
+    vertical-align: top;
+}
+.tree-icon {
+    width: 16px;
+    height: 32px;
+    line-height: 32px;
+}
+.tree-elbow-img {
+    width: 18px;
+    height: 32px;
+    line-height: 32px;
+    margin-right: 4px;
+}
+.tree-node-text {
+    padding-left: 6px;
+}
+.tree-icon-parent:before {
+    content: "\f114";
+}
+.tree-icon-parent-expanded:before {
+    content: "\f115";
+}
+.tree-elbow-plus:before, .tree-elbow-end-plus:before {
+    content: "\f0fe";
+}
+.grid-tree-node-expanded .tree-elbow-plus:before, .grid-tree-node-expanded .tree-elbow-end-plus:before {
+    content: "\f146";
+}
+.tree-icon-leaf:before {
+    content: "\f016";
+}
+.tree-icon-leaf,.tree-icon-parent-expanded, .tree-icon-parent, .tree-elbow-plus, .tree-elbow-end-plus,.grid-tree-node-expanded .tree-elbow-plus, .grid-tree-node-expanded .tree-elbow-end-plus{
+  font-family: FontAwesome;
+}
+.tree-elbow-plus, .tree-elbow-end-plus,.grid-tree-node-expanded .tree-elbow-plus, .grid-tree-node-expanded .tree-elbow-end-plus {
+    font-size: 14px;
+}
+.tree-icon-leaf,.tree-icon-parent,.tree-icon-parent-expanded {
+    font-size: 16px;
+}

@@ -1,17 +1,29 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Base = require("./base"),ActiveError = require("./activeError");
-	return taurus.view("taurus.views.ActiveErrors", Base.extend({
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./base'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./base'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./base'));
+	}
+}(this, function(Base) {
+	return Base.extend({
 		tpl:'<%=errors%>',
 		tagName:'span',
 		className:'help-block',
-		html:function(errors){
+		renderHtml:function(errors){
 			var me = this;
-			return Base.prototype.html.apply(this,[{
+			return Base.prototype.renderHtml.apply(this,[{
 				errors:errors.join('')
 			}])
 		}
-	}));
-});
+	});
+}));

@@ -6,7 +6,7 @@ define(function(require){
 	return taurus.view('taurus.views.Column',Base.extend({
 		tpl:'<div class="column-header-inner"><%=text%><%if(sortable){%><span class="caret"></span><%}%></div>',
 		className:'column-header',
-		html:function(data){
+		renderHtml:function(data){
 			if(data.width){
 				this.$el.css('width',data.width)
 			}

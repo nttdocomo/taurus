@@ -1,4 +1,20 @@
-define(function(require) {
+/**
+ * @author nttdocomo
+ */
+ (function (root, factory) {
+    if(typeof define === "function") {
+        if(define.amd){
+            define(['../taurus'], factory);
+        }
+        if(define.cmd){
+            define(function(require, exports, module){
+                return factory(require('../taurus'));
+            })
+        }
+    } else if(typeof module === "object" && module.exports) {
+        module.exports = factory(require('../taurus'));
+    }
+}(this, function(taurus) {
 	var formatRe = /\{(\d+)\}/g,escapeRegexRe = /([-.*+?\^${}()|\[\]\/\\])/g;
 	taurus.augmentObject('taurus.String.prototype', $.extend({}, String.prototype, {
 		format : function(format) {
@@ -19,5 +35,8 @@ define(function(require) {
 	}))
 	taurus.String.escapeRegex = function(string) {
 		return string.replace(escapeRegexRe, "\\$1");
+	},
+	taurus.String.htmlEncode = function(string) {
+		return document.createElement('a').appendChild(document.createTextNode(string)).parentNode.innerHTML;
 	}
-})
+}));

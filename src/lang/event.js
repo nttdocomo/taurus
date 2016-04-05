@@ -216,6 +216,10 @@ define(function() {
 			(k >= 44 && k <= 46);
 			// Print Screen, Insert, Delete
 		},
+		getTarget:function(selector,maxDepth){
+			return selector ? $(this.target).closest(selector) :
+            (returnEl ? $(this.target) : this.target);
+		},
 
 		normalizeKey : function(key) {
 			return jQuery.browser.webkit ? (this.safariKeys[key] || key) : key;

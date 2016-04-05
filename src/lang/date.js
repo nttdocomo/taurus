@@ -1,8 +1,9 @@
 /**
  * @author nttdocomo
  */
-define(function() {
-	taurus.augmentObject('taurus.Date', {
+define(function(require) {
+	var taurus = require('../taurus');
+	return taurus.augmentObject('taurus.Date', {
 		parse : function(input, format, strict) {
 			var p = taurus.Date.parseFunctions;
 			if (p[format] == null) {
@@ -31,6 +32,16 @@ define(function() {
 			}
 			return age;
 		},
+
+	    /**
+	     * Returns the number of milliseconds between two dates
+	     * @param {Date} dateA The first date
+	     * @param {Date} dateB (optional) The second date, defaults to now
+	     * @return {Number} The difference in milliseconds
+	     */
+	    getElapsed: function(dateA, dateB) {
+	        return Math.abs(dateA - (dateB || new Date()));
+	    },
 		parseFormat : function(format) {
 			var separator = format.match(/[.\/-].*?/), parts = format.split(/\W+/);
 			if (!separator || !parts || parts.length == 0) {

@@ -23,6 +23,11 @@
 		<footer id="footer">
 			footer
 		</footer>
-		<script src="../../src/sea.js" data-config="../config" data-main="../form/combos"></script>
+		<script type="text/javascript" src="../../src/LAB.min.js"></script>
+		<script type="text/javascript">
+			$LAB.script('../../src/sea-debug.js','../../src/modernizr.js').wait().script('../../src/backbone.js','../../src/moment.js').wait().script('../config.js').wait(function(){
+				seajs.use("../form/combos");
+			});
+		</script>
 	</body>
 </html>

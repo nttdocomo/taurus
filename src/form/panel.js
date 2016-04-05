@@ -1,23 +1,45 @@
 /**
  * @author nttdocomo
  */
-define(function(require){
-	var Panel = require('../panel/panel'), BaseForm = require('./base');
-	return taurus.view("taurus.form.Panel", Panel.extend({
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../panel/panel','./base','underscore'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../panel/panel'),require('./base'),require('underscore'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../panel/panel'),require('./base'),require('underscore'));
+	}
+}(this, function(Panel,BaseForm,_){
+	return Panel.extend({
 		disabled:false,
+		childEls:{
+			'body':'.panel-body'
+		},
 		/*tpl:'<div class="panel-heading"><%=tool%><h4 class="panel-title"><%=title%></h4></div><div class="panel-body"><%=content%></div><div class="panel-footer"></div>',*/
 		initialize:function(){
 			Panel.prototype.initialize.apply(this,arguments);
-			this.form = this.createForm();
+		},
+		initComponent:function(){
+			var items = this.items;
+			delete this.items;
+			Panel.prototype.initComponent.apply(this,arguments);
+			this.form = this.createForm(items);
 			this.renderButttons();
 			if(this.inline){
 				this.form.$el.addClass('form-inline');
 			}
 		},
-		createForm:function(){
+		createForm:function(items){
 			delete this.initialConfig.width;
 			return new BaseForm({
 				owner:this,
+				renderTo:this.body,
+				items:items,
 				//renderTo:this.$el.find('.panel-body'),
 				operation:'prepend'
 			});
@@ -44,9 +66,9 @@ define(function(require){
 			});
 			Panel.prototype.delegateEvents.call(this, events);
 		},
-		html:function(){
+		renderHtml:function(){
 			this.tpl += '<div class="panel-footer"><%=buttons%></div>';
-			return Panel.prototype.html.apply(this,arguments);
+			return Panel.prototype.renderHtml.apply(this,arguments);
 		},
 		getTplData:function(){
 			return $.extend(Panel.prototype.getTplData.apply(this,arguments),{
@@ -54,7 +76,7 @@ define(function(require){
 			});
 		},
 		renderButttons:function(){
-			return _.template('<%_.each(buttons,function(button){%><button class="btn<%if(button){%> <%=button.className%><%}%>"<%if(disabled){%> disabled="disabled"<%}%>><%=button.text%></button>\n<%})%>', $.extend({
+			return _.template('<%_.each(buttons,function(button){%><button class="btn<%if(button){%> <%=button.className%><%}%>"<%if(disabled){%> disabled="disabled"<%}%>><%=button.text%></button>\n<%})%>')($.extend({
 				buttons:this.buttons
 			}, {
 				disabled : this.disabled
@@ -69,5 +91,5 @@ define(function(require){
 	    submit: function(options) {
 	        this.form.submit(options);
 	    }
-	}));
-});
+	});
+}));

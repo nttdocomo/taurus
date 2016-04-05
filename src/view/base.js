@@ -1,11 +1,21 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	require('../taurus');
-	require('../lang/number');
-	require('../jquery.ui.position');
-	return taurus.view("taurus.views.Base", Backbone.View.extend({
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../state/stateful','underscore','../taurus','backbone','../lang/number','../mixins','../jquery.ui.position'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../state/stateful'),require('underscore'),require('../taurus'),require('backbone'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../state/stateful'),require('underscore'),require('../taurus'),require('backbone'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
+	}
+}(this, function(Stateful,_,taurus,Backbone) {
+	return Backbone.View.extend({
 		isRendered : false,
 		doc : taurus.$doc,
 		_ensureElement : function() {
@@ -14,7 +24,7 @@ define(function(require) {
 				if (this.id)
 					attrs.id = _.result(this, 'id');
 				else
-					attrs.id = _.result(this, 'cid');
+					this.id = attrs.id = _.result(this, 'cid');
 				if (this.className)
 					attrs['class'] = _.result(this, 'className');
 				var $el = Backbone.$('<' + _.result(this, 'tagName') + '>').attr(attrs);
@@ -23,22 +33,144 @@ define(function(require) {
 				this.setElement(_.result(this, 'el'), false);
 			}
 		},
+		addClass:function(cls){
+			this.$el.addClass(cls)
+		},
+	    disable:function(){
+	    	var me = this;
+	    	if (!me.disabled) {
+	    		if (me.rendered) {
+	                me.onDisable();
+	            } else {
+	                me.disableOnRender = true;
+	            }
+	    	}
+	    	me.$el.attr('disabled',true);
+	    	me.disabled = true;
+	    },
+	    enable:function(){
+	    	var me = this;
+	    	me.$el.attr('disabled',false);
+	    	if(me.disabled){
+	    		if (!me.hasOwnProperty('disabled')) {
+	    			me.disabled = false;
+	    		}
+	    	}
+	    },
+		getRefOwner: function () {
+	        var me = this;
+
+	        // Look for both ownerCt (classic toolkit) and parent (modern toolkit)
+	        // Look for ownerCmp before floatParent for scenarios like a button menu inside a floating window.
+	        return me.ownerCt || me.parent || me.$initParent || me.ownerCmp || me.floatParent;
+	    },
+		initCls: function() {
+            var me = this,
+                cls = [me.baseCls];/*,
+                targetCls = me.getComponentLayout().targetCls;
+
+            if (targetCls) {
+                cls.push(targetCls);
+            }
+
+            //<deprecated since=0.99>
+            if (Ext.isDefined(me.cmpCls)) {
+                if (Ext.isDefined(Ext.global.console)) {
+                    Ext.global.console.warn('Ext.Component: cmpCls has been deprecated. Please use componentCls.');
+                }
+                me.componentCls = me.cmpCls;
+                delete me.cmpCls;
+            }
+            //</deprecated>
+
+            if (me.componentCls) {
+                cls.push(me.componentCls);
+            } else {
+                me.componentCls = me.baseCls;
+            }*/
+
+            return cls;
+        },
+		setElement: function(element) {
+			var cls = this.initCls();
+
+      		this.undelegateEvents();
+			this._setElement(element);
+
+            this.$el.addClass(cls.join(' '));
+			return this;
+		},
+
+	    /**
+	     * Retrieves the `id` of this component. Will auto-generate an `id` if one has not already been set.
+	     * @return {String}
+	     */
+	    getId: function() {
+	        var me = this,
+	            xtype;
+
+	        // If we have no id, attempt to gather it from our configuration.
+	        // Autogenerate it if none was configured.
+	        if (!(me.id || (me.id = me.initialConfig.id))) {
+	            xtype = me.getXType();
+	            if (xtype) {
+	                xtype = xtype.replace(Ext.Component.INVALID_ID_CHARS_Re, '-');
+	            } else {
+	                xtype = Ext.name.toLowerCase() + '-comp';
+	            }
+	            me.id = xtype + '-' + me.getAutoId();
+	        }
+	        return me.id;
+	    },
+
+	    /**
+	     * Gets the xtype for this component as registered with {@link Ext.ComponentManager}. For a list of all available
+	     * xtypes, see the {@link Ext.Component} header. Example usage:
+	     *
+	     *     var t = new Ext.form.field.Text();
+	     *     alert(t.getXType());  // alerts 'textfield'
+	     *
+	     * @return {String} The xtype
+	     */
+	    getXType: function() {
+	        return this.xtype;
+	    },
 		initialize : function(options) {
+      var me = this;
 			this.initialConfig = options;
 			_.extend(this, options);
+			this.initComponent();
+      if (me.style) {
+          me.initialStyle = me.style;
+          me.$el.css(me.style);
+      }
+			//Stateful.prototype.initialize.apply(this,arguments);
+		},
+		initComponent:function(){
 			/*
 			 * if has selector then render, for let the user see the ui as soon as possible
 			 */
 			if (this.renderTo) {
 				this.render(this.renderTo, this.operation);
 			}
+			if (this.autoShow && !this.isContained) {
+	            this.show();
+	        }
 			this.$el.data('component', this);
 			this.on(this.listeners);
-			this.setSize(this.width, this.height);
 			if (this.cls) {
 	            this.$el.addClass(this.cls);
 	        }
+	        this.delegateEvents();
 		},
+
+        /**
+         * This is used to determine where to insert the 'html', 'contentEl' and 'items' in this component.
+         * @private
+         */
+        getTargetEl: function() {
+            return this.frameBody || this.$el;
+        },
 		initItems : function() {
 			var me = this, items = me.items;
 			me.items = [];
@@ -50,56 +182,259 @@ define(function(require) {
 				me.add(items);
 			}
 		},
+
+	    /**
+	     * Method to determine whether this Component is currently disabled.
+	     * @return {Boolean} the disabled state of this Component.
+	     */
+	    isDisabled : function() {
+	        return this.disabled;
+	    },
+
+	    /**
+	     * Returns `true` if this component is visible.
+	     *
+	     * @param {Boolean} [deep=false] Pass `true` to interrogate the visibility status of all parent Containers to
+	     * determine whether this Component is truly visible to the user.
+	     *
+	     * Generally, to determine whether a Component is hidden, the no argument form is needed. For example when creating
+	     * dynamically laid out UIs in a hidden Container before showing them.
+	     *
+	     * @return {Boolean} `true` if this component is visible, `false` otherwise.
+	     *
+	     * @since 1.1.0
+	     */
+	    isVisible: function(deep) {
+	        var me = this,
+	            hidden = !this.$el.is(':visible');
+
+	        /*if (me.hidden || !me.rendered || me.isDestroyed) {
+	            hidden = true;
+	        } else if (deep) {
+	            hidden = me.isHierarchicallyHidden();
+	        }*/
+
+	        return !hidden;
+	    },
 		delegateEvents : function(events) {
 			var events = $.extend(events || {}, this.events/*, this.listeners*/);
 			Backbone.View.prototype.delegateEvents.call(this, events);
 		},
-		getTplData : function() {
-			return {
+		getTplData : function(data) {
+			return _.extend({
 				id : this.cid
-			};
+			},data);
 		},
+
+	    /**
+	     * Allows addition of behavior to the disable operation.
+	     * After calling the superclass's `onDisable`, the Component will be disabled.
+	     *
+	     * @template
+	     * @protected
+	     */
+	    onDisable: function () {
+	    },
+		onShow:function(){
+
+		},
+
+	    setLocalXY: function(x, y) {
+	        this.$el.css({ top: y, left: x });
+	    },
+
+	    /**
+	     * Sets the page XY position of the component. To set the left and top instead, use {@link #setPosition}.
+	     * This method fires the {@link #event-move} event.
+	     * @param {Number/Number[]} x The new x position or an array of `[x,y]`.
+	     * @param {Number} [y] The new y position.
+	     * @param {Boolean/Object} [animate] True to animate the Component into its new position. You may also pass an
+	     * animation configuration.
+	     * @return {Ext.Component} this
+	     */
+	    setPagePosition: function(x, y, animate) {
+	        var me = this,
+	            p,
+	            floatParentBox;
+
+	        me.setPosition(x, y, animate);
+
+	        return me;
+	    },
+
+	    /**
+	     * @member Ext.Component
+	     * Sets the left and top of the component. To set the page XY position instead, use {@link Ext.Component#setPagePosition setPagePosition}. This
+	     * method fires the {@link #event-move} event.
+	     * @param {Number/Number[]/Object} x The new left, an array of `[x,y]`, or animation config object containing `x` and `y` properties.
+	     * @param {Number} [y] The new top.
+	     * @param {Boolean/Object} [animate] If `true`, the Component is _animated_ into its new position. You may also pass an
+	     * animation configuration.
+	     * @return {Ext.Component} this
+	     */
+	    setPosition: function(x, y, animate) {
+	        var me = this;
+	        me.setLocalXY(x, y);
+	        return me;
+	    },
 		show : function() {
-			this.$el.show();
-			return this;
+			var me = this;
+            //me.beforeShow();
+			me.$el.show();
+			me.trigger('show',this);
+			me.hidden = false;
+			me.onShow()
+			return me;
 		},
+		showAt : function(x, y, animate) {
+			var me = this;
+
+	        // Not rendered, then animating to a position is meaningless,
+	        // just set the x,y position and allow show's processing to work.
+	        if (!me.rendered && (me.autoRender || me.floating)) {
+	            me.x = x;
+	            me.y = y;
+	            return me.show();
+	        }
+	        if (me.floating) {
+	            me.setPosition(x, y, animate);
+	        } else {
+	            me.setPagePosition(x, y, animate);
+	        }
+	        return me.show();
+		},
+
+	    /**
+	     * Shows this component by the specified {@link Ext.Component Component} or {@link Ext.dom.Element Element}.
+	     * Used when this component is {@link #floating}.
+	     * @param {Ext.Component/Ext.dom.Element} component The {@link Ext.Component} or {@link Ext.dom.Element} to show the component by.
+	     * @param {String} [position] Alignment position as used by {@link Ext.util.Positionable#getAlignToXY}.
+	     * Defaults to `{@link #defaultAlign}`. See {@link #alignTo} for possible values.
+	     * @param {Number[]} [offsets] Alignment offsets as used by {@link Ext.util.Positionable#getAlignToXY}. See {@link #alignTo} for possible values.
+	     * @return {Ext.Component} this
+	     */
+	    showBy: function(cmp, pos, off) {
+	        var me = this;
+
+	        //<debug>
+	        /*if (!me.floating) {
+	            Ext.log.warn('Using showBy on a non-floating component');
+	        }*/
+	        //</debug>
+
+	        /*if (me.floating && cmp) {
+	            me.alignTarget = cmp;
+
+	            if (pos) {
+	                me.defaultAlign = pos;
+	            }
+
+	            if (off) {
+	                me.alignOffset = off;
+	            }*/
+            if (!me.isVisible()) {
+            	me.show();
+	        }
+
+            // Could have been vetoed.
+            if (!me.hidden) {
+                me.alignTo(cmp, pos || me.defaultAlign, off || me.alignOffset);
+            }
+	        //}
+
+	        return me;
+	    },
 		hide : function() {
 			this.$el.hide();
 			return this;
 		},
 		render : function(renderTo, operation) {
 			this.operation = operation || "append";
-			renderTo = renderTo || this.renderTo;
+			renderTo = renderTo || this.renderTo || $(document.body);
 			/*run html brfore append el because the el must has html*/
-			if (renderTo) {
-				$(renderTo)[this.operation](this.$el);
+			$(renderTo)[this.operation](this.$el);
+			if(this.isRendered){
+				return this;
 			}
-			this.html();
+			this.renderHtml();
 			this.isRendered = true;
+			this.rendered = true;
+			this.setSize(this.width, this.height);
 			return this;
 		},
-		html : function(data) {
-			if(this.innerHtml){
-				this.el.innerHTML = this.innerHtml;
-			} else {
-				var html = this._html = this.el.innerHTML = this.tpl ? _.template(this.tpl, (data || this.getTplData() || this)) : "";
-			}
-			
+		renderHtml : function(data) {
+			this.inserHtml(data)
 			var el = document.createElement('div');
 			if (this.uiClass) {
 				this.$el.addClass(this.uiClass);
 			}
 			el.appendChild(this.el.cloneNode(true));
 			this.afterRender();
-			var height = this.height;
+			/*var height = this.height;
 			if (height) {
 				this.$el.css('height', height);
-			}
+			}*/
 			this.initItems();
 			return el.innerHTML;
 		},
+		setUI:function(){
+			var classes = me.addClsWithUI(uiCls, true);
+		},
+		addClsWithUI:function(classes, skip){
+			var clsArray = [];
+			for (; i < length; i++) {
+		        cls = classes[i];
+		        clsArray = clsArray.concat(me.addUIClsToElement(cls));
+		    }
+		    return clsArray;
+		},
+		/**
+	     * Method which adds a specified UI + `uiCls` to the components element. Can be overridden
+	     * to add the UI to more than just the component's element.
+	     * @param {String} uiCls The UI class to add to the element.
+	     * @protected
+	     */
+	    addUIClsToElement: function (uiCls) {
+	        var me = this,
+	            baseClsUI = me.baseCls + '-' + me.ui + '-' + uiCls,
+	            result = [ Ext.baseCSSPrefix + uiCls, me.baseCls + '-' + uiCls, baseClsUI ],
+	            childEls, childElName, el, suffix;
+
+	        if (me.rendered && me.frame && !Ext.supports.CSS3BorderRadius) {
+	            // Loop through each frame element, and if they are defined add the ui:
+	            baseClsUI += '-';
+	            childEls = me.getChildEls();
+
+	            for (childElName in childEls) {
+	                suffix = childEls[childElName].frame;
+	                if (suffix && suffix !== true) {
+	                    el = me[childElName];
+	                    if (el) {
+	                        el.addCls(baseClsUI + suffix);
+	                    }
+	                }
+	            }
+	        }
+
+	        return result;
+	    },
+		inserHtml:function(data){
+			var html = '';
+			if(this.innerHtml){
+				this.el.innerHTML = this.innerHtml;
+			} else {
+				data = data || this.getTplData();
+				if(data){
+					html = this.tpl ? _.template(this.tpl)(data || this) : "";
+				}
+			}
+			if(this.html){
+				html = this.html + html;
+			}
+			this.$el.html(html)
+		},
 		$html : function(options) {
-			return $(this.html());
+			return $(this.renderHtml());
 		},
 		afterRender : function() {
 			this.applyChildEls();
@@ -109,13 +444,22 @@ define(function(require) {
 			}
 		},
 		applyChildEls : function(childEls) {
-			var childEls = $.extend(this.childEls, childEls);
+			var childEls = $.extend({},this.childEls, childEls);
 			for (var k in childEls) {
 				this[k] = this.$el.find(childEls[k]);
 			}
 		},
 		getHeight : function() {
 			return this.$el.height();
+		},
+		getWidth:function(){
+			return this.$el.width();
+		},
+		getOuterHeight : function() {
+			return this.$el.outerHeight();
+		},
+		getOuterWidth : function() {
+			return this.$el.outerWidth();
 		},
 		setSize : function(width, height) {
 			var me = this;
@@ -141,11 +485,12 @@ define(function(require) {
 			this.updateLayout();
 		},
 		updateLayout : function() {
-			if (this.width) {
-				this.setWidth(this.width);
+			var me = this, width = me.width, height = me.height;
+			if (typeof width == 'number') {
+				me.setWidth(width);
 			}
-			if (this.height) {
-				this.setHeight(this.height);
+			if (typeof height == 'number') {
+				me.setHeight(height);
 			}
 		},
 		setHeight : function(height) {
@@ -153,7 +498,10 @@ define(function(require) {
 		},
 		setWidth : function(width) {
 			var borderWidth = parseInt(this.$el.css('borderLeftWidth').replace('px', '')) + parseInt(this.$el.css('borderLeftWidth').replace('px', ''));
-			return this.$el.width(width - borderWidth);
+			if(!_.isNaN(borderWidth)){
+				width = width - borderWidth;
+			}
+			return this.$el.width(width);
 		},
 		alignTo : function(element, position, offsets) {
 
@@ -192,10 +540,13 @@ define(function(require) {
 						items[i] = item;
 						me.onAdd(item, i, len);
 					} else {
+						item.initOwnerCt = me;
+						//item.renderTo = me.$el;
 						item = me.lookupComponent(item);
 						if (item) {
 							items[i] = item;
 						}
+						delete item.initOwnerCt;
 					}
 				}
 			}/*
@@ -220,12 +571,15 @@ define(function(require) {
 			}
 			if(Cls){
 				return new Cls($.extend(_.omit(cmp, 'cls'),{
-					renderTo:this.getItemContainer()
+					//renderTo:this.getItemContainer(cmp)
 				}));
 			}
 			return false;
 		},
 		onAdd : function(item, pos, len) {
+		},
+		onAdded:function(container){
+			this.ownerCt = container;
 		},
 		getLayout:function(){
 			return this.layout;
@@ -256,17 +610,46 @@ define(function(require) {
 					item.onAdded(me, pos);
 				} else {
 					me.items.splice(pos, 0, item);
-					//item.onAdded(me, pos);
+					item.onAdded(me, pos);
 					me.onAdd(item, pos);
 					layout && layout.onAdd(item, pos);
 				}
 			}
+			//me.items = items;
+			me.updateLayout()
+			me.updateItems();
 			return ret;
 			/*var me = this, len = this.items.length;
 			 _.each(this.items, function(item, i) {
 			 me.getItemContainer().append(item.render().$el);
 			 });
 			 this.afterRender();*/
+		},
+		removeItem:function(component, autoDestroy){
+	        var me = this,
+	            c = me.getComponent(component);
+	        me.doRemove(c,autoDestroy);
+			me.updateItems();
+			return c;
+		},
+		doRemove:function(component,doDestroy){
+			var me = this,
+			doDestroy = doDestroy === true || (doDestroy !== false && this.autoDestroy),
+			isDestroying = component.destroying || doDestroy,
+			index = _.indexOf(me.items,component);
+			me.items.splice(index,1)
+			component.onRemoved(isDestroying);
+		},
+		onRemoved:function(destroying){
+			if(destroying){
+				this.remove()
+			}
+		},
+		updateItems:function(){
+			var me = this;
+			_.each(this.items,function(item){
+				item.render(me.getTargetEl(item))
+			})
 		},
 		insert : function(index, comp) {
 			var compIdx;
@@ -313,6 +696,12 @@ define(function(require) {
 			}
 
 			return c;
+		},
+		up: function (selector, limit) {
+			return this.$el.parentsUntil(selector).parent().data('component');
 		}
-	}));
-});
+	},{
+		INVALID_ID_CHARS_Re: /[\.,\s]/g,
+		updateLayout:function(){}
+	}).mixins(Stateful);
+}));

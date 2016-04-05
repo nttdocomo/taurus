@@ -7,8 +7,8 @@ define(function(require){
 	return taurus.view('taurus.grid.Header',Base.extend({
 		tpl:'<table class="table"><thead><tr><%=items%></tr></thead></table>',
 		className:'header-ct',
-		html:function(){
-			return Base.prototype.html.call(this,{
+		renderHtml:function(){
+			return Base.prototype.renderHtml.call(this,{
 				'items':_.map(this.columns,function(item){
 					return _.template('<th<%=width%>><div class="column-header-inner"><%=text%></div></th>',{
 						text:item.text,

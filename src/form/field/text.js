@@ -1,21 +1,25 @@
 /**
  * @author nttdocomo
  */
-/* # Example usage
- *
- * 		@example
- *		new taurus.form.field.Text({
- * 			name: 'name',
- * 			fieldLabel: 'Name',
- * 			inputType: 'password'
- * 		})
- */
-define(function(require) {
-	var Base = require("./base");
-	return taurus.view("taurus.form.field.Text", Base.extend({
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./base','../../taurus','underscore','modernizr'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./base'),require('../../taurus'),require('underscore'),require('modernizr'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./base'),require('../../taurus'),require('underscore'),require('modernizr'));
+	}
+}(this, function(Base,taurus,_,Modernizr) {
+	return Base.extend({
 		allowBlank : true,
 		blankText : 'This field is required',
 		minLengthText : 'The minimum length for this field is <%=len%>',
+		maxLengthText:'The maximum length for this field is <%=len%>',
 		getErrors : function(value) {
 			var errors = Base.prototype.getErrors.apply(this, arguments), regex = this.regex, validator = this.validator;
 			if (value.length < 1 || value === this.emptyText) {
@@ -32,8 +36,14 @@ define(function(require) {
 	        }
 
 			if (value.length < this.minLength) {
-				errors.push(_.template(this.minLengthText, {
+				errors.push(_.template(this.minLengthText)({
 					len : this.minLength
+				}));
+			}
+
+			if (value.length > this.maxLength) {
+				errors.push(_.template(this.maxLengthText)({
+					len : this.maxLength
 				}));
 			}
 			if (value && regex && !regex.test(value)) {
@@ -49,7 +59,8 @@ define(function(require) {
 			return v;
 		},
 		getSubTplData : function() {
-			var me = this, value = me.getRawValue(), isEmpty = me.emptyText && value.length < 1, placeholder;
+			var me = this, value = me.getRawValue(), isEmpty = me.emptyText && value.length < 1, placeholder,
+			maxLength = me.maxLength;
 
 			if (isEmpty) {
 				if (Modernizr.input.placeholder) {
@@ -58,11 +69,31 @@ define(function(require) {
 					value = me.emptyText;
 				}
 			}
+			if (me.enforceMaxLength && Modernizr.input.max) {
+	            if (maxLength === Number.MAX_VALUE) {
+	                maxLength = undefined;
+	            }
+	        } else {
+	            maxLength = undefined;
+	        }
 
 			return $.extend(Base.prototype.getSubTplData.apply(this, arguments), {
-				placeholder : placeholder
+				placeholder : placeholder,
+				maxLength:maxLength
 			});
 		},
+
+	    onKeyDown: function(e) {
+	        this.trigger('keydown', e);
+	    },
+
+	    onKeyUp: function(e) {
+	        this.trigger('keyup', e);
+	    },
+
+	    onKeyPress: function(e) {
+	        this.trigger('keypress', e);
+	    },
 		processRawValue : function(value) {
 			var me = this, stripRe = me.stripCharsRe, newValue;
 			if (stripRe) {
@@ -73,6 +104,16 @@ define(function(require) {
 				}
 			}
 			return value;
+		},
+		delegateEvents : function(events) {
+			if (this.enableKeyEvents) {
+	            $.extend(events,{
+	                'keyup': 'onKeyUp',
+	                'keydown': 'onKeyDown',
+	                'keypress': 'onKeyPress'
+	            });
+	        }
+			Base.prototype.delegateEvents.call(this, events);
 		}
-	}));
-});
+	});
+}));

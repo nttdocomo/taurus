@@ -1,9 +1,25 @@
 /**
  * @author nttdocomo
  */
-define(function(require){
-	var vsprintf = require('./util/sprintf').vsprintf;
-	var i18n = function(opt){
+ (function (root, factory) {
+ 	var locale = (navigator.language || navigator.browserLanguage).toLowerCase();
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./util/sprintf','i18n/'+locale], function(sprintf,locales){
+				return factory(sprintf,locales,locale)
+			});
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./util/sprintf'),require('i18n/{locale}'),locale,require('underscore'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./util/sprintf'),require('i18n/'+locale),locale,require('underscore'));
+	}
+}(this, function(sprintf,locales,locale){
+	var vsprintf = sprintf.vsprintf,
+	i18n = function(opt){
 		var self = this;
 	
 		// Put into dev or production mode
@@ -16,15 +32,16 @@ define(function(require){
 	
 		// implicitly read all locales
 		// if it's an array of locale names, read in the data
-		if (opt.locales && opt.locales.forEach) {
+		/*if (opt.locales && _.isArray(opt.locales)) {
 			this.locales = {};
 	
-			opt.locales.forEach(function(locale) {
+			_.each(opt.locales,function(locale) {
 				self.readFile(locale);
 			});
 	
-			this.defaultLocale = opt.locales[0][0];
-		}
+			this.defaultLocale = this.locale = locale;
+		}*/
+		this.defaultLocale = this.locale = locale;
 	}
 	i18n.prototype = {
 		defaultLocale: "en-us",
@@ -33,7 +50,7 @@ define(function(require){
 		cookiename: "lang",
 
 		__: function() {
-			var msg = this.translate(this.locale, arguments[0]);
+			var msg = this.translate(locale, arguments[0]);
 	
 			if (arguments.length > 1) {
 				msg = vsprintf(msg, Array.prototype.slice.call(arguments, 1));
@@ -43,7 +60,7 @@ define(function(require){
 		},
 		// read locale file, translate a msg and write to fs if new
 		translate: function(locale, singular, plural) {
-			if (!locale || !this.locales[locale]) {
+			if (!locale || !locales) {
 				if (this.devMode) {
 					console.warn("WARN: No locale found. Using the default (" +
 						this.defaultLocale + ") as current locale");
@@ -54,8 +71,8 @@ define(function(require){
 				this.initLocale(locale, {});
 			}
 	
-			if (!this.locales[locale][singular]) {
-				this.locales[locale][singular] = plural ?
+			if (!locales[singular]) {
+				locales[singular] = plural ?
 					{ one: singular, other: plural } :
 					singular;
 	
@@ -64,7 +81,7 @@ define(function(require){
 				}
 			}
 	
-			return this.locales[locale][singular];
+			return locales[singular];
 		},
 		// try reading a file
 		readFile: function(locale) {
@@ -85,5 +102,5 @@ define(function(require){
 			}
 		}
 	}
-	return i18n
-});
+	return new i18n
+}));

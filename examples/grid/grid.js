@@ -2,30 +2,17 @@
  * @author nttdocomo
  */
 define(function(require) {
-	require('backbone');
-	require('backbone.paginator');
+	var PageableCollection = require("backbone-pageable");
 	var Panel = require("../../src/panel/panel.js"),
 		Table = require("../../src/panel/table.js"),
 		$body = $("#main"),
-		Collection = Backbone.Paginator.clientPager.extend({
-		paginator_ui : {
-			// the lowest page index your API allows to be accessed
-			firstPage : 1,
-
-			// which page should the paginator start from
-			// (also, the actual page the paginator is on)
-			currentPage : 1,
-
-			// how many items per page should be shown
-			perPage : 10000,
-
-			// a default number of total pages to query in case the API or
-			// service you are using does not support providing the total
-			// number of pages for us.
-			// 10 as a default in case your service doesn't return the total
-			totalPages : 10
-		}
-	}),
+		Collection = PageableCollection.extend({
+			//url: "json/pageable-territories.json",
+			mode: "client",
+			state: {
+				pageSize: 10000
+			}
+		}),
 		collection = new Collection([{
 		'company' : '3m Co',
 		'price' : 71.72,
@@ -202,6 +189,7 @@ define(function(require) {
 		'lastChange' : '9/1 12:00am'
 	}]);
 	new Table({
+		hideHeaders:true,
 		loading : true,
 		refreshable : true,
 		collapsible: true,
@@ -212,7 +200,10 @@ define(function(require) {
 			text : 'Company',
 			flex : 1,
 			sortable : false,
-			dataIndex : 'company'
+			dataIndex : 'company',
+			renderer:function(value){
+				return value;
+			}
 		}, {
 			text : 'Price',
 			flex : 1,

@@ -9,6 +9,9 @@
 	margin: 0;
 	padding: 0;
 }
+*:focus {
+    outline: none;
+}
 
 /* must declare 0 margins on everything, also for main layout components use padding, not
  vertical margins (top and bottom) to add spacing, else those margins get added to total height
@@ -58,4 +61,7 @@ body:before {/* thanks to Maleika (Kohoutec)*/
 	position: absolute !important;
 	overflow: hidden;
 	zoom: 1
+}
+tr.mousedown td div{
+	background-color:#f5f5f5;
 }

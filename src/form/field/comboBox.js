@@ -1,19 +1,20 @@
 /**
  * @author nttdocomo
  */
-/* # Example usage
- *
- * 		@example
- *		new taurus.form.field.Text({
- * 			name: 'name',
- * 			fieldLabel: 'Name',
- * 			inputType: 'password'
- * 		})
- */
-define(function(require) {
-	require("../../lang/event");
-	require("../../jquery.scrollIntoView");
-	var Picker = require("./picker"), BoundList = require("../../view/boundList");
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./picker','../../view/boundList','underscore','backbone','../../lang/event','../../jquery.scrollIntoView'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./picker'),require('../../view/boundList'),require('underscore'),require('backbone'),require('../../lang/event'),require('../../jquery.scrollIntoView'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./picker'),require('../../view/boundList'),require('underscore'),require('backbone'),require('../../lang/event'),require('../../jquery.scrollIntoView'));
+	}
+}(this, function(Picker,BoundList,_,Backbone) {
 	return Picker.extend({
 		allQuery: '',
 		delimiter : ', ',
@@ -21,7 +22,7 @@ define(function(require) {
 		queryMode : 'remote',
 		queryParam : 'query',
 		triggerAction: 'all',
-		triggerTpl : '<div class="input-group-btn"><button class="btn form-trigger btn-default" type="button"><span class="caret"></span></button></div>',
+		triggerTpl : '<div class="input-group-btn"><button class="btn form-trigger btn-default" type="button"<%if(disabled){%> disabled="<%=disabled%>"<%}%>><span class="caret"></span></button></div>',
 		initialize : function() {
 			Picker.prototype.initialize.apply(this, arguments);
 			//this.collection.on('reset',_.bind(this.expand,this));
@@ -52,8 +53,11 @@ define(function(require) {
 				}
 			}
 		},
+		getPickerWidth:function(){
+			return this.triggerWrap.width()
+		},
 		alignPicker : function() {
-			this.picker.setWidth(this.triggerWrap.width());
+			this.picker.setWidth(this.getPickerWidth());
 			var me = this, picker = me.getPicker(), position, heightAbove = taurus.getPositionAbove(this.$el), heightBelow = taurus.getPositionBelow(this.$el), height = picker.getHeight();
 			space = heightBelow;
 			position = {
@@ -90,6 +94,7 @@ define(function(require) {
 					'click input' : 'onTriggerClick'
 				});
 			}
+			//Backbone.View.prototype.delegateEvents.call(this, events);
 			Picker.prototype.delegateEvents.call(this, events);
 		},
 
@@ -139,7 +144,7 @@ define(function(require) {
 			}
 
 			// Expand after adjusting the filter unless there are no matches
-			if (this.collection.length) {
+			if (collection.length || me.getPicker().emptyText) {
 				this.getPicker().collection.reset(collection);
 				this.expand();
 			} else {
@@ -149,30 +154,48 @@ define(function(require) {
 			me.afterQuery();
 		},
 		doQuery : function(queryString, forceAll, rawQuery) {
-			var isLocalMode = this.queryMode === 'local', collection = this.collection;
+			var me = this, isLocalMode = this.queryMode === 'local', collection = this.collection;
+			/*if(!queryString){
+				return false;
+			}*/
 			if (isLocalMode) {
-				this.expand();
+				if(!collection.length){
+					collection.fetch({
+						success:function(){
+							me.expand()
+						}
+					})
+				} else {
+					//if (!this.multiSelect){
+						this.doLocalQuery(queryString);
+					//}
+				}
 			} else {
 				this.doRemoteQuery(queryString);
-			}
-			if (isLocalMode) {
-				if (!this.multiSelect){
-					this.doLocalQuery(queryString);
-				}
 			}
 		},
 		doRemoteQuery : function(queryString) {
 			var me = this, collection = this.collection;
-			if (!collection.length) {
+			if(!queryString){
+				return false;
+			}
+			collection.fetch({
+				data : this.getParams(queryString),
+				success : function() {
+					//me.getPicker().collection.reset(collection.models);
+					me.expand();
+					//me.doLocalQuery(queryString);
+					if (!me.multiSelect){
+						//me.doLocalQuery(queryString);
+					}
+				},
+				reset:true
+			});
+			/*if (!collection.length) {
 				collection.fetch({
 					data : this.getParams(),
 					success : function() {
-						//me.expand();
-						//me.getPicker().collection.reset(collection.models);
 						me.doLocalQuery(queryString);
-						/*if (!me.multiSelect){
-							me.doLocalQuery(queryString);
-						}*/
 					}
 				});
 			} else {
@@ -180,7 +203,7 @@ define(function(require) {
 				if (!me.multiSelect){
 					me.doLocalQuery(queryString);
 				}
-			}
+			}*/
 		},
 		getParams : function(queryString) {
 			var params = {}, param = this.queryParam;
@@ -196,7 +219,7 @@ define(function(require) {
 		createPicker : function() {
 			var picker = this.picker = new BoundList($.extend({
 				displayField : this.displayField,
-				collection : this.collection.clone()
+				collection : this.collection
 			}, this.listConfig)), me = this;
 			picker.on({
 				'itemclick': this.onItemClick,
@@ -212,7 +235,7 @@ define(function(require) {
 			return '<%_.each(value,function(item,index){%><%=item.' + this.displayField + '%><%if(index < value.length - 1){%>' + this.delimiter + '<%}%><%})%>';
 		},
 		getDisplayValue : function() {
-			return _.template(this.getDisplayTpl(), {
+			return _.template(this.getDisplayTpl())({
 				value : this.displayTplData
 			});
 		},
@@ -264,9 +287,9 @@ define(function(require) {
 		},
 		onKeyUp : function(e) {
 			var key = e.getKey();
-			console.log(key);
 			//if (!e.isSpecialKey() && key !== 229) {
 			this.doQuery(this.getRawValue(), false, true);
+			Picker.prototype.onKeyUp.call(this,arguments);
 			//}
 		},
 
@@ -314,10 +337,26 @@ define(function(require) {
 			}
 		},
 		setValue : function(value) {
+			var me = this;
+			if (value != null) {
+	            return me.doSetValue(value);
+	        }
+	        // Clearing is a special, simpler case.
+	        else {
+	            return me.doSetValue(null);
+	        }
+		},
+		doSetValue:function(value){
+			var me = this, displayField = this.displayField, valueField = this.valueField || displayField, processedValue = [], displayTplData = [], model, record, displayValue,
+			displayIsValue = me.displayField === me.valueField,
+			displayTplData = me.displayTplData || (me.displayTplData = []);
+			displayTplData.length = 0;
 			if (_.isUndefined(value)) {
+				return Picker.prototype.setValue.apply(this, value);
+			}
+			if (_.isString(value) && value == '') {
 				return Picker.prototype.setValue.apply(this, [value]);
 			}
-			var me = this, displayField = this.displayField, valueField = this.valueField || displayField, processedValue = [], displayTplData = [], model, record, displayValue;
 			value = $.makeArray(value);
 			for ( i = 0, len = value.length; i < len; i++) {
 				val = value[i];
@@ -352,11 +391,11 @@ define(function(require) {
 				}
 			}
 			this.displayTplData = displayTplData;
-			this.value = this.multiSelect ? processedValue : processedValue[0];
+			this.value = processedValue.length ? this.multiSelect ? processedValue : processedValue[0] || '' : value ? value : '';
 			return Picker.prototype.setValue.apply(this, [this.value]);
 		},
 		clearValue : function() {
-			this.setValue([]);
+			this.setValue(null);
 		},
 		getSubTplData : function() {
 			var me = this;
@@ -364,8 +403,26 @@ define(function(require) {
 			data.value = this.getDisplayValue();
 			return data;
 		},
+
+	    getSubmitValue: function() {
+	        var value = this.getValue();
+	        // If the value is null/undefined, we still return an empty string. If we
+	        // don't, the field will never get posted to the server since nulls are ignored.
+	        if (_.isEmpty(value)) {
+	            value = '';
+	        }
+	        return value;
+	    },
 		valueToRaw : function(value) {
 			return Picker.prototype.valueToRaw.apply(this, [this.getDisplayValue()]);
-		}
+		},
+		disable:function(){
+			Picker.prototype.disable.apply(this,arguments);
+			this.$el.find('.form-trigger').attr('disabled',true);
+		},
+		enable:function(){
+			Picker.prototype.enable.apply(this,arguments);
+			this.$el.find('.form-trigger').attr('disabled',false);
+   		}
 	});
-});
+}));

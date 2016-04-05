@@ -2,14 +2,17 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var CheckboxGroup = require('./checkboxGroup');
-	var Base = require('./field/base');
-	return taurus.view('taurus.form.RadioGroup', CheckboxGroup.extend({
+	var Base = require('./field/base'),
+	_ = require('underscore'),
+	CheckboxGroup = require('./checkboxGroup'),
+	Radio = require('./field/radio');
+	return CheckboxGroup.extend({
 		blankText : 'You must select one item in this group',
-		fieldSubTpl : '<div><%_.each(fields,function(field){%><%if(vertical){%><div><%}%><%if(field.boxLabel){%><label id="<%=field.cmpId%>-boxLabelEl" class="radio-inline"><%}%><input class="form-radio" id="<%=field.id%>" type="<%=field.type%>" name="<%=field.name%>"<%if(field.checked){%> checked="checked"<%}%> value="<%=field.inputValue%>"/><%if(field.boxLabel){%><%=field.boxLabel%></label><%}%><%if(vertical){%></div><%}%><%})%></div>',
-		getBoxes : function(query) {
+		defaultType:Radio,
+		//fieldSubTpl : '<div><%_.each(fields,function(field){%><%if(vertical){%><div><%}%><%if(field.boxLabel){%><label id="<%=field.cmpId%>-boxLabelEl" class="radio-inline"><%}%><input class="form-radio" id="<%=field.id%>" type="<%=field.type%>" name="<%=field.name%>"<%if(field.checked){%> checked="checked"<%}%> value="<%=field.inputValue%>"/><%if(field.boxLabel){%><%=field.boxLabel%></label><%}%><%if(vertical){%></div><%}%><%})%></div>',
+		/*getBoxes : function(query) {
 			return this.$el.find(':radio' + (query || ''));
-		},
+		},*/
 		getSubTplData : function() {
 			var me = this;
 			return {
@@ -43,16 +46,15 @@ define(function(require) {
 		setValue : function(value) {
 			Base.prototype.setValue.apply(this,arguments);
 		},
-		getValue : function() {
+		/*getValue : function() {
 			var values = {}, box = this.getBoxes(':checked');
 			return box.val();
-		},
+		},*/
 		getSubmitData:function(){
 			var values = {}, boxes = this.getBoxes(':checked'), b, bLen = boxes.length, box, name, inputValue, bucket;
-			boxes.each(function(i) {
-				box = $(this);
-				name = box.attr('name');
-				inputValue = box.val();
+			_.each(boxes,function(box,i) {
+				name = box.getName();
+				inputValue = box.getValue();
 				if (values.hasOwnProperty(name)) {
                     bucket = values[name];
                     if (!_.isArray(bucket)) {
@@ -65,5 +67,5 @@ define(function(require) {
 			});
 			return values;
 		}
-	}));
+	});
 });

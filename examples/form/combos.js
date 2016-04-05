@@ -2,8 +2,11 @@
  * @author nttdocomo
  */
 define(function(require) {
-	require("backbone");
-	var ComboBox = require("../../src/form/field/comboBox.js"), $body = $("#main"), states = [{
+	var Backbone = require("backbone");
+	var chance = require('chance');
+	var ComboBox = require("../../src/form/field/comboBox"),
+	Button = require("../../src/button/button"),
+	$body = $("#main"), data_with_src=[],states = [{
 		"abbr" : "AL",
 		"name" : "Alabama",
 		"slogan" : "The Heart of Dixie"
@@ -207,59 +210,64 @@ define(function(require) {
 		"abbr" : "WY",
 		"name" : "Wyoming",
 		"slogan" : "Like No Place on Earth"
-	}], collection = new Backbone.Collection(states), city = [[{
-		name : "广州",
-		age : 5
-	}, {
-		name : "珠海",
-		age : 26
-	}, {
-		name : "深圳",
-		age : 55
-	}], [{
-		name : "福州",
-		age : 5
-	}, {
-		name : "厦门",
-		age : 26
-	}], [{
-		name : "桂林",
-		age : 5
-	}, {
-		name : "南宁",
-		age : 26
-	}, {
-		name : "柳州",
-		age : 55
-	}]], comboBox = new ComboBox({
+	}], collection = new Backbone.Collection(states), comboBox = new ComboBox({
 		renderTo : $body,
 		queryMode : 'local',
 		name : 'textfield1',
 		id : 'textfield1',
 		displayField : 'name',
 		fieldLabel : 'country',
-		collection : collection,
-		listeners : {
-			'select' : function() {
-				var child = $('#textfield2').data('component');
-				child.clearValue();
-				var index = this.collection.indexOf(arguments[1]);
-				child.collection.reset(city[index]);
+		value:"AK",
+		valueField : 'abbr',
+		width:250,
+		collection : collection
+	});
+	types = ['abstract','animals','business','cats','city','food','nightlife','fashion','people','nature','sports','technics','transport']
+	for (var i = chance.natural({min: 1, max: 100}); i >= 0; i--) {
+		data_with_src.push({
+			"src":'http://lorempixel.com/20/20/'+[types[chance.natural({min: 0, max: 12})],chance.natural({min: 1, max: 10})].join('/'),
+			"name" : chance.word(),
+			"value" : chance.word({length: 5})
+		})
+	};http://lorempixel.com/output/sports-q-c-640-480-6.jpg
+	var city = new ComboBox({
+		renderTo : $body,
+		name : 'textfield2',
+		id : 'textfield2',
+		queryMode : 'local',
+		displayField : 'name',
+		fieldLabel : 'image',
+		multiSelect : true,
+		valueField : 'value',
+		listConfig:{
+			emptyText:'手欠了吧23333',
+			lazyload:true,
+			getInnerTpl:function(displayField){
+				console.log(this)
+				return '<a href="#" class="boundlist-item"><%if(item.src){%><img class="lazy" '+(this.lazyload ?' data-original':'src') +'="<%=item.src%>" height="20" width="20"> <%}%><%=item.' + displayField + '%></a>';
 			}
-		}
+		},
+		width:250,
+		collection : new Backbone.Collection(data_with_src)
 	});
 	new ComboBox({
 		renderTo : $body,
 		name : 'textfield2',
 		id : 'textfield2',
+		queryMode : 'local',
 		displayField : 'name',
 		fieldLabel : 'city',
-		collection : new Backbone.Collection()
+		multiSelect : true,
+		value : ['AK','WA'],
+		valueField : 'abbr',
+		width:250,
+		collection : collection
 	});
 	new ComboBox({
 		renderTo : $body,
 		name : 'textfield3',
 		id : 'textfield3',
+		queryMode : 'local',
 		width : 250,
 		displayField : 'name',
 		valueField : 'abbr',
@@ -271,6 +279,7 @@ define(function(require) {
 		editable : false,
 		name : 'textfield4',
 		id : 'textfield4',
+		queryMode : 'local',
 		width : 250,
 		multiSelect : true,
 		displayField : 'name',
@@ -278,4 +287,11 @@ define(function(require) {
 		fieldLabel : 'city',
 		collection : collection
 	});
+	new Button({
+		renderTo : $body,
+		text:'Clear Value',
+		handler:function(){
+			city.setValue(null)
+		}
+	})
 }); 

@@ -1,8 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Base = require('./base'), TabPanel = require('./card');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./base','./card','backbone'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./base'),require('./card'),require("backbone"));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./base'),require('./card'),require("backbone"));
+	}
+}(this, function(Base,TabPanel,Backbone) {
 	return Base.extend({
 		defaultType : TabPanel,
 		className : 'tab-content',
@@ -40,4 +52,4 @@ define(function(require) {
 			}
 		}
 	});
-});
+}));

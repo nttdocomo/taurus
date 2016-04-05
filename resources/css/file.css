@@ -1,15 +1,17 @@
 .form-group > div{
 	position:relative;
 }
-.g-form-file-btn{
+.form-file-btn{
 	position:relative;
 	overflow:hidden;
 }
-.g-form-file-input {
+.form-file-input {
 	position: absolute;
 	top: -4px;
 	right: -2px;
 	filter: alpha(opacity=0);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
 	opacity: 0;
 	font-size: 1000px
 }

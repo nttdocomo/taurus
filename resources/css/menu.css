@@ -1,0 +1,8 @@
+
+.dropdown-menu .caret {
+	float：right;
+	border-left: 4px solid;
+	border-right: 0;
+	border-top: 4px solid transparent;
+	border-bottom: 4px solid transparent;
+}

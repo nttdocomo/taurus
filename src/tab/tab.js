@@ -1,0 +1,66 @@
+/**
+ * @author nttdocomo
+ */
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../view/base'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../view/base'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../view/base'));
+	}
+}(this, function(Base) {
+	return Base.extend({
+		tagName : 'li',
+		tpl : '<a href="#"><%=title%></a>',
+		activeCls : 'active',
+		initialize : function() {
+			Base.prototype.initialize.apply(this, arguments);
+			if (this.card) {
+				this.setCard(this.card);
+			}
+		},
+
+		/**
+		 * Sets this tab's attached card. Usually this is handled automatically by the {@link Ext.tab.Panel} that this Tab
+		 * belongs to and would not need to be done by the developer
+		 * @param {Ext.Component} card The card to set
+		 */
+		setCard : function(card) {
+			var me = this;
+
+			me.card = card;
+			me.setText(me.title || card.title);
+			/*me.setIconCls(me.iconCls || card.iconCls);
+			me.setIcon(me.icon || card.icon);
+			me.setGlyph(me.glyph || card.glyph);*/
+		},
+		setText:function(text){
+			this.$el.find('a').text(text);
+		},
+		getTplData : function() {
+			return Base.prototype.getTplData.apply(this, [{
+				title : this.title
+			}]);
+		},
+		// @private
+		activate : function(supressEvent) {
+			var me = this;
+
+			me.active = true;
+			me.$el.addClass(me.activeCls);
+		},
+		// @private
+		deactivate : function(supressEvent) {
+			var me = this;
+
+			me.active = false;
+			me.$el.removeClass(me.activeCls);
+		}
+	});
+}));

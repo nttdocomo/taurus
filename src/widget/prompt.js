@@ -1,17 +1,29 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Dialog = require('./dialog');
-	return taurus.view("taurus.widget.Prompt", Dialog.extend({
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./dialog','../i18n'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./dialog'),require('../i18n'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./dialog'),require('../i18n'));
+	}
+}(this, function(Dialog,i18n) {
+	return Dialog.extend({
 		disabled:false,
 		buttons:[{
-			text:'取消',
+			text:i18n.__('Cancel'),
 			handler:'cancel',
 			className:'btn-default',
 			disabled:false
 		},{
-			text:'确定',
+			text:i18n.__('Confirm'),
 			handler:'confirm',
 			className:'btn-primary',
 			disabled:false
@@ -21,11 +33,12 @@ define(function(require) {
 		},
 		confirm : function() {
 			this.close();
-			this.trigger('confirm')
+			this.trigger('confirm',this)
 			return false;
 		},
 		cancel:function(){
 			this.close();
+			this.trigger('cancel',this)
 			return false;
 		},
 		delegateEvents : function(events) {
@@ -49,7 +62,7 @@ define(function(require) {
 			//this.footer = $('<div class="modal-footer"></div>').appendTo(this.modal);
 		},
 		renderButttons:function(){
-			return _.template('<%_.each(buttons,function(button){%><button class="btn<%if(button){%> <%=button.className%><%}%>"<%if(button.disabled){%> disabled="disabled"<%}%>><%=button.text%></button><%})%>', {
+			return _.template('<%_.each(buttons,function(button){%><button class="btn<%if(button){%> <%=button.className%><%}%>"<%if(button.disabled){%> disabled="disabled"<%}%>><%=button.text%></button><%})%>')({
 				buttons:this.buttons
 			});
 		},
@@ -61,5 +74,5 @@ define(function(require) {
 			this.disabled = false;
 			this.renderButttons();
 		}
-	}));
-});
+	});
+}));

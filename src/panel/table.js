@@ -1,26 +1,103 @@
 /**
  * @author nttdocomo
  */
-define(function(require){
-	var Base = require('./panel');
-	var Table = require('../view/table');
-	var Header = require('../grid/header/container');
-	var Pagination = require('../grid/pagination');
-	var Spinner = require('../spinner/wave');
-	return taurus.view('taurus.panel.Table',Base.extend({
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./panel','./mixins','../view/table','../grid/header/container','../grid/pagination','backbone-pageable','underscore','../taurus'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./panel'),require('./mixins'),require('../view/table'),require('../grid/header/container'),require('../grid/pagination'),require('backbone-pageable'),require('underscore'),require('../taurus'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./panel'),require('./mixins'),require('../view/table'),require('../grid/header/container'),require('../grid/pagination'),require('backbone-pageable'),require('underscore'),require('../taurus'));
+	}
+}(this, function(Panel,mixins,Table,Header,Pagination,PageableCollection,_,taurus){
+	return Panel.extend({
 		pager:false,
+		viewType:Table,
 		className:'panel panel-default grid',
-		initialize:function(options){
-			var me = this;
-			Base.prototype.initialize.apply(this,[options]);
-			this.table = new Table($.extend(options,{
+		hiddenHeaderCtCls: 'grid-header-ct-hidden',
+		colLinesCls: taurus.baseCSSPrefix + 'grid-with-col-lines',
+		initComponent:function(options){
+			var me = this,
+			viewConfig,
+            headerCtCfg = me.columns || [],
+            view,
+            i, len,
+            columns, viewScroller;
+
+            if (_.isArray(headerCtCfg)) {
+                headerCtCfg = {
+                    items: headerCtCfg
+                };
+            }
+            me.features = me.features || [];
+            if (!_.isArray(me.features)) {
+                me.features = [me.features];
+            }
+
+            _.extend(headerCtCfg, {
+                grid: me,
+                columnLines: me.columnLines/*,
+                forceFit: me.forceFit,
+                sortable: me.sortableColumns,
+                enableColumnMove: me.enableColumnMove,
+                enableColumnResize: me.enableColumnResize,
+                sealed: me.sealedColumns*/
+            });
+
+            if (me.hideHeaders) {
+                headerCtCfg.height = 0;
+                // don't set the hidden property, we still need these to layout
+                headerCtCfg.hiddenHeaders = true;
+            }
+            me.headerCt = new Header(headerCtCfg);
+            me.items = [me.headerCt];
+            //me.items = [me.headerCt];
+            //me.columnManager = me.headerCt.columnManager;
+
+			/*this.table = new Table($.extend(options,{
 				collection:this.collection,
 				columns:this.columns,
 				sortable:this.sortable,
 				renderTo:this.$el.find('.panel-body')
-			}));
-			if(this.pager){
-				this.$el.addClass('has-pager');
+			}));*/
+			if (me.hideHeaders) {
+                me.headerCt.addClass(me.hiddenHeaderCtCls);
+                me.addClass(me.hiddenHeaderCls);
+            }
+			me.viewConfig = me.viewConfig || {};
+			/*viewConfig = _.extend({
+                // TableView injects the view reference into this grid so that we have a reference as early as possible
+                // and Features need a reference to the grid.
+                // For these reasons, we configure a reference to this grid into the View
+                grid: me,
+                cls:Table,
+                renderTo:me.bodyEl,
+                collection:me.collection,
+                ownerGrid: me.ownerGrid,
+                headerCt: me.headerCt,
+                panel: me,
+                emptyText: me.emptyText || ''
+            }, me.viewConfig);*/
+
+            if (!me.hasView) {
+            	view = me.getView();
+            }
+
+            me.items.push(view);
+			Panel.prototype.initComponent.apply(this,[options]);
+
+            /*if (me.hideHeaders) {
+                headerCtCfg.setHeight(0);
+                // don't set the hidden property, we still need these to layout
+                headerCtCfg.hiddenHeaders = true;
+            }*/
+
+			/*if(this.pager){
 				new Pagination({
 					uiClass:'panel-footer',
 					collection:this.collection,
@@ -32,7 +109,7 @@ define(function(require){
 				top += $(item).outerHeight();
 			});
 			this.$el.find('.panel-body').css('padding-top',top);
-			this.$el.find('.panel-body > div:first-child').css('margin-top',-1*top);
+			this.$el.find('.panel-body > div:first-child').css('margin-top',-1*top);*/
 			/*if(this.pager){
 				this.collection.pager();
 			}else{
@@ -42,8 +119,49 @@ define(function(require){
 				this.html();
 			},this);*/
 		},
+		afterRender:function(){
+			Panel.prototype.afterRender.apply(this,arguments);
+			var me = this,paging,height;
+			if(me.collection instanceof PageableCollection && me.pager){
+				me.paging = new Pagination({
+					uiClass:'panel-footer',
+					collection:me.collection,
+					renderTo:me.$el
+				});
+				me.$el.addClass('has-pager');
+			};
+		},
+		updateLayout:function(){
+			Panel.prototype.updateLayout.apply(this,arguments);
+			var me = this,paging,height;
+			if(me.paging){
+				height = me.paging.$el.outerHeight()
+				me.$el.css({
+					'padding-bottom':height
+				})
+				me.paging.$el.css({
+					'margin-bottom':-1*height
+				})
+			}
+            me.collection.on('sync',me.updateLayout,me)
+		},
+		applyState:function(state){
+			var me = this,
+			columns = state.columns;
+			if (columns) {
+	            me.headerCt.applyColumnsState(columns);
+	        }
+		},
+
+	    getColumnManager: function() {
+	        return this.columnManager;
+	    },
+
+	    getVisibleColumnManager: function() {
+	        return this.visibleColumnManager;
+	    },
 		getTplData:function(){
-			return $.extend(Base.prototype.getTplData.apply(this,arguments),{
+			return $.extend(Panel.prototype.getTplData.apply(this,arguments),{
 				content:''
 			});
 		},
@@ -61,10 +179,28 @@ define(function(require){
 	        }
 	        return fullWidth;
 		},
-		html:function(){
+
+	    /**
+	     * @private
+	     * Processes UI events from the view. Propagates them to whatever internal Components need to process them.
+	     * @param {String} type Event type, eg 'click'
+	     * @param {Ext.view.Table} view TableView Component
+	     * @param {HTMLElement} cell Cell HTMLElement the event took place within
+	     * @param {Number} recordIndex Index of the associated Store Model (-1 if none)
+	     * @param {Number} cellIndex Cell index within the row
+	     * @param {Ext.event.Event} e Original event
+	     */
+	    processEvent: function(type, view, cell, recordIndex, cellIndex, e, record, row) {
+	        var header = e.position.column;
+
+	        if (header) {
+	            return header.processEvent.apply(header, arguments);
+	        }
+	    },
+		renderHtml:function(){
 			this.$el.find('.panel-body').empty();
-			var html = Base.prototype.html.apply(this,arguments);
+			var html = Panel.prototype.renderHtml.apply(this,arguments);
 			return html;
 		}
-	}));
-});
+	}).mixins(mixins);
+}));

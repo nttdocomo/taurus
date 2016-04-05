@@ -1,14 +1,26 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	require('backbone');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['backbone'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('backbone'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('backbone'));
+	}
+}(this, function(Backbone) {
 	if(!$.browser){
 		$.browser = {};
 		$.browser.mozilla = /firefox/.test(navigator.userAgent.toLowerCase());
 		$.browser.webkit = /webkit/.test(navigator.userAgent.toLowerCase());
 		$.browser.opera = /opera/.test(navigator.userAgent.toLowerCase());
-		$.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
+		$.browser.msie = /msie/.test(navigator.userAgent.toLowerCase()) || !(window.ActiveXObject) && "ActiveXObject" in window;
 	}
 	$.each(['BorderRadius', 'MozBorderRadius', 'WebkitBorderRadius', 'OBorderRadius', 'KhtmlBorderRadius'], function() {
 		if (document.body.style[this] !== undefined)
@@ -31,7 +43,7 @@ define(function(require) {
 	};
 	d("taurus", {
 		itemPathPrefix:'',
-		baseCSSPrefix : "g-",
+		baseCSSPrefix : "",
 		BLANK_IMAGE_URL : "data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
 		copyTo : function(dest, source, names, usePrototypeKeys) {
 			if ( typeof names == "string") {
@@ -149,11 +161,64 @@ define(function(require) {
 			return $(window).width() - taurus.getPositionLeft(el) - el.width()
 		},
 		getPositionLeft:function(el){
-			console.log(el)
-			console.log(el.offset())
-			console.log(taurus.$body.scrollLeft())
 			return el.offset().left - taurus.$body.scrollLeft()
-		}
+		},
+		get:function(cmp){
+			if(cmp instanceof Backbone.View){
+				return cmp.$el
+			}
+			return cmp
+		},
+		getStrLen:function(str){
+			if(!str){
+				return 0;
+			}
+			var len = 0;  
+		    var i;  
+		    var c;  
+		    for (var i=0;i<str.length;i++){  
+		        c = str.charCodeAt(i);  
+		        if (taurus.isDbcCase(c)) { //半角  
+		            len = len + 1;  
+		        } else { //全角  
+		            len = len + 2;  
+		        }  
+		    }  
+		    return len;
+		},
+		isDbcCase:function(c){
+			// 基本拉丁字母（即键盘上可见的，空格、数字、字母、符号）  
+		    if (c >= 32 && c <= 127) {  
+		        return true;
+		    }   
+		    // 日文半角片假名和符号  
+		    else if (c >= 65377 && c <= 65439) {  
+		        return true;
+		    }  
+		},
+		create:function(){
+			var cls;
+			if(arguments.length == 1){
+				cls = arguments[0].cls;
+				delete arguments[0].cls;
+			}
+			return new cls(arguments[0]);
+		},
+		ieVersion:(function(){
+
+		    var undef,
+		        v = 3,
+		        div = document.createElement('div'),
+		        all = div.getElementsByTagName('i');
+
+		    while (
+		        div.innerHTML = '<!--[if gt IE ' + (++v) + ']><i></i><![endif]-->',
+		        all[0]
+		    );
+
+		    return v > 4 ? v : undef;
+
+		}())
 	});
 	/*(function() {
 		var check = function(regex) {
@@ -346,4 +411,5 @@ define(function(require) {
 			return me;
 		}
 	});
-})
+	return window.taurus;
+}))

@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/base.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap.css"/>
+		<link href="../../resources/css/jumbotron-narrow.css" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="../../resources/css/glyphicons.css">
+		<link type="text/css" rel="stylesheet" href="../../resources/css/form.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/checkbox.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/datepicker.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/panel.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/table.css"/>
+		<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<style>
+			.refresh {
+				padding-left: 14px;
+				padding-top: 14px;
+			}
+		</style>
+	</head>
+	<body>
+
+		<div class="container">
+			<div class="header">
+				<ul class="nav nav-pills pull-right">
+					<li class="active">
+						<a href="#">Home</a>
+					</li>
+					<li>
+						<a href="#">About</a>
+					</li>
+					<li>
+						<a href="#">Contact</a>
+					</li>
+				</ul>
+				<h3 class="text-muted">Taurus</h3>
+			</div>
+
+			<div class="row marketing" id="main">
+				<h1>Stateful Array Grid Example</h1>
+				<p>
+					This example shows how to create a grid from Array data.
+				</p>
+				<p>
+					The grid is stateful so you can move or hide columns, reload the page, and come
+					back to the grid in the same state you left it in.
+				</p>
+				<p>
+					The cells are selectable due to use of the
+					<code>
+						enableTextSelection
+					</code>
+					option.
+				</p>
+			</div>
+			
+
+			<div class="footer">
+				<p>
+					&copy; Company 2014
+				</p>
+			</div>
+
+		</div>
+		<!-- /container -->
+
+		<!-- Bootstrap core JavaScript
+		================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" src="../../src/LAB.min.js"></script>
+		<script type="text/javascript">
+			$LAB.script('../../src/sea-debug.js').wait().script('../config.js').wait(function(){
+				seajs.use("../tabs/tabs");
+			});
+		</script>
+		<!--<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/labjs/2.0.3/LAB.min.js"></script>
+		<script type="text/javascript">
+			$LAB.script('../../src/sea-debug.js','../../src/jquery-2.0.0.js','http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js','http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.min.js').wait().script('http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone.js','../../src/jquery.ui.position.js','http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js').wait().script('../config.js').wait(function(){
+				seajs.use("../tabs/tabs");
+			});
+		</script>-->
+	</body>
+</html>

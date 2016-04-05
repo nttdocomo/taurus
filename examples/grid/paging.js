@@ -2,30 +2,19 @@
  * @author nttdocomo
  */
 define(function(require) {
-	require('backbone');
-	require('backbone.paginator');
-	var Panel = require("../../src/panel/panel.js");
-	var Table = require("../../src/panel/table.js");
-	var $body = $("#main");
-	var Collection = Backbone.Paginator.clientPager.extend({
-		paginator_ui : {
-			// the lowest page index your API allows to be accessed
-			firstPage : 1,
-
-			// which page should the paginator start from
-			// (also, the actual page the paginator is on)
-			currentPage : 1,
-
-			// how many items per page should be shown
-			perPage : 8,
-
-			// a default number of total pages to query in case the API or
-			// service you are using does not support providing the total
-			// number of pages for us.
-			// 10 as a default in case your service doesn't return the total
-			totalPages : 10
-		}
-	}),
+	var PageableCollection = require("backbone-pageable"),
+	Panel = require("../../src/panel/panel.js"),
+	Table = require("../../src/panel/table.js"),
+	ActionColumn = require("../../src/grid/column/action"),
+	NumberColumn = require("../../src/grid/column/rowNumberer"),
+	$body = $("#main"),
+	Collection =PageableCollection.extend({
+		//url: "json/pageable-territories.json",
+		mode: "client",
+		state: {
+			pageSize: 8
+		},
+	});
 	collection = new Collection([{
 		'company' : '3m Co',
 		'price' : 71.72,
@@ -207,8 +196,11 @@ define(function(require) {
 		refreshable : true,
 		height : 350,
 		width : 600,
+		columnLines:true,
 		title : 'Array Grid',
 		columns : [{
+			cls:NumberColumn
+		},{
 			text : 'Company',
 			flex : 1,
 			sortable : false,
@@ -221,7 +213,7 @@ define(function(require) {
 		}, {
 			text : 'Change',
 			width : 75,
-			sortable : false,
+			sortable : true,
 			dataIndex : 'change'
 		}, {
 			text : '% Change',

@@ -1,11 +1,20 @@
 /**
  * @author nttdocomo
  */
-
-define(function(require) {
-	var Base = require('./view');
-	require('../jquery.ui.position');
-	var BoundListItem = require('./boundListItem');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./view','./boundListItem','underscore','backbone'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./view'),require('./boundListItem'),require("underscore"),require('backbone'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./view'),require('./boundListItem'),require("underscore"),require('backbone'));
+	}
+}(this, function(Base,BoundListItem,_,Backbone) {
 	return Base.extend({
 		//tpl:'<%=content%>',
 		id : 'listEl',
@@ -21,7 +30,20 @@ define(function(require) {
 		initialize:function(){
 			this.$el.css('top',0);
 			Base.prototype.initialize.apply(this,arguments);
-			this.collection.on('reset',_.bind(this.refresh,this));
+			this.collection.on('sync',_.bind(this.refresh,this));
+		},
+		initComponent:function(){
+			var me = this,
+			itemCls = me.itemCls;
+			me.itemSelector = "." + itemCls;
+			Base.prototype.initComponent.apply(this,arguments);
+		},
+		delegateEvents : function(events) {
+			events = events || {};
+			events['click ' + this.itemSelector] = 'onItemClick';
+			var events = $.extend({}, this.events, events);
+			Base.prototype.delegateEvents.call(this, events);
+			this.selection = new Backbone.Collection;
 		},
 		onItemSelect:function(record){
 			var node = this.getNode(record);
@@ -57,7 +79,7 @@ define(function(require) {
 			item.addClass(this.selectedItemCls);
 			this.trigger('highlightitem', this, item);
 		},
-		html:function(){
+		renderHtml:function(){
 			var itemCls = this.itemCls;
 			if (!this.tpl) {
 	            // should be setting aria-posinset based on entire set of data
@@ -66,7 +88,8 @@ define(function(require) {
 	            '<li role="option" class="' + itemCls + '">' + this.getInnerTpl(this.displayField) + '</li>',
 	            '<%})%>'].join('');
 	        }
-			return Base.prototype.html.call(this,{results:this.collection.toJSON()});/*
+			return Base.prototype.renderHtml.call(this,{results:this.collection.toJSON()});
+			/*
 			return taurus.views.Base.prototype.html.call(this,{
 				content:this.collection.map(function(model){
 					var boundListItem = new BoundListItem({
@@ -77,18 +100,41 @@ define(function(require) {
 				}).join('')
 			})*/
 		},
-		refresh:function(){
+		clearViewEl:function(){
 			this.$el.empty();
-			this.html();
+			this.emptyEl = null;
+		},
+		refresh:function(){
+			var me = this;
+			me.clearViewEl();
+			if (me.collection.length < 1) {
+                // Process empty text unless the store is being cleared.
+                if (me.emptyText) {
+                    me.emptyEl = $('<li>').text(me.emptyText).appendTo(me.getTargetEl());
+                }
+            } else {
+				me.renderHtml();
+            }
 			this.$el.css('height','auto');
-			this.trigger('refresh');
+			me.trigger('refresh');
 		},
 		alignTo : function(element, position, offsets) {
+			var me = this;
 			this.$el.css('z-index','1051');
+			if(this.lazyload){
+				require.async('jquery.lazyload',function(){
+					me.$el.find("img.lazy").lazyload({
+						container: me.$el
+					});
+				})
+			}
 			return Base.prototype.alignTo.apply(this,arguments);
 		},
 		setHeight:function(height){
 			return Base.prototype.setHeight.call(this,Math.min(height,this.$el.height()));
+		},
+		show:function(){
+			Base.prototype.show.apply(this,arguments);
 		}
 	});
-});
+}));

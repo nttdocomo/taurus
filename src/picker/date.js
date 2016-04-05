@@ -1,17 +1,29 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Base = require('../view/base');
-	require('../jquery.ui.position');
-	require("../lang/date");
-	require("../moment");
+(function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(["../view/base",'../i18n','underscore','moment','../lang/date'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+		        return factory(require('../view/base'),require('../i18n'),require("underscore"),require('moment'),require('../lang/date'));
+		     })
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('../view/base'),require('../i18n'),require("underscore"),require('moment'),require('../lang/date'));
+	} else {
+		root.myModule = factory();
+	}
+}(this,function(Base,i18n,_,moment) {
 	return Base.extend({
-		tpl : '<ul><li class="collapse in"><div class="datepicker"><div class="datepicker-days"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody></tbody></table></div><div class="datepicker-months"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody><tr><td colspan="7"></td></tr></tbody></table></div><div class="datepicker-years"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody><tr><td colspan="7"></td></tr></tbody></table></div></div></li></ul>',
+		tpl : '<div class="datepicker-days"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody></tbody></table></div><div class="datepicker-months"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody><tr><td colspan="7"></td></tr></tbody></table></div><div class="datepicker-years"><table class="table-condensed"><thead><tr><th class="prev"><i class="glyphicon glyphicon-arrow-left"/></th><th colspan="5" class="switch"></th><th class="next"><i class="glyphicon glyphicon-arrow-right"/></th></tr></thead><tbody><tr><td colspan="7"></td></tr></tbody></table></div>',
 		className : 'bootstrap-datetimepicker-widget dropdown-menu',
 		timeIcon:'halflings uni-calendar',
 		dateIcon : 'halflings time',
 		viewMode : 0,
+		endDate:Infinity,
 		modes : [{
 			clsName : 'days',
 			navFnc : 'Month',
@@ -26,18 +38,30 @@ define(function(require) {
 			navStep : 10
 		}],
 		dates : {
-			days : ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-			daysShort : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-			daysMin : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
-			months : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-			monthsShort : ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+			days : [i18n.__("Sunday"), i18n.__("Monday"), i18n.__("Tuesday"), i18n.__("Wednesday"), i18n.__("Thursday"), i18n.__("Friday"), i18n.__("Saturday"), i18n.__("Sunday")],
+			daysShort : [i18n.__("Sun"), i18n.__("Mon"), i18n.__("Tue"), i18n.__("Wed"), i18n.__("Thu"), i18n.__("Fri"), i18n.__("Sat"), i18n.__("Sun")],
+			daysMin : [i18n.__("Su"), i18n.__("Mo"), i18n.__("Tu"), i18n.__("We"), i18n.__("Th"), i18n.__("Fr"), i18n.__("Sa"), i18n.__("Su")],
+			months : [i18n.__("January"), i18n.__("February"), i18n.__("March"), i18n.__("April"), i18n.__("May"), i18n.__("June"), i18n.__("July"), i18n.__("August"), i18n.__("September"), i18n.__("October"), i18n.__("November"), i18n.__("December")],
+			monthsShort : [i18n.__("Jan"), i18n.__("Feb"), i18n.__("Mar"), i18n.__("Apr"), i18n.__("May"), i18n.__("Jun"), i18n.__("Jul"), i18n.__("Aug"), i18n.__("Sep"), i18n.__("Oct"), i18n.__("Nov"), i18n.__("Dec")]
 		},
 		initialize : function(options) {
 			Base.prototype.initialize.apply(this, arguments);
+			this.setStartDate();
+			this.setEndDate();
 			this.weekStart = this.weekStart || 0;
 			this.fillHtml();
 			this.update();
 			this.showMode();
+		},
+		setEndDate:function(){
+			if(_.isString(this.endDate)){
+				this.endDate = moment(this.endDate)
+			}
+		},
+		setStartDate:function(){
+			if(_.isString(this.startDate)){
+				this.startDate = moment(this.startDate)
+			}
 		},
 		fillHtml:function(){
 			this.fillDow();
@@ -49,11 +73,11 @@ define(function(require) {
 					this.showMode(1);
 				},
 				'click .prev,.next' : function(e) {
-					this.viewDate.year(this.viewDate.year() + this.modes[this.viewMode].navStep * (e.currentTarget.className == 'prev' ? -1 : 1));
+					this.viewDate.month(this.viewDate.month() + this.modes[this.viewMode].navStep * (e.currentTarget.className == 'prev' ? -1 : 1));
 					//this.viewDate['set' + this.modes[this.viewMode].navFnc].call(this.viewDate, this.viewDate['get' + this.modes[this.viewMode].navFnc].call(this.viewDate) + this.modes[this.viewMode].navStep * (e.currentTarget.className == 'prev' ? -1 : 1));
 					this.fill();
 				},
-				'click td' : function(e) {
+				'click td:not(".disabled")' : function(e) {
 					var target = $(e.target);
 					if (target.is('.day')) {
 						var day = parseInt(target.text(), 10) || 1;
@@ -64,6 +88,14 @@ define(function(require) {
 							month += 1;
 						}
 						var year = this.viewDate.year();
+						if(month > 11){
+							year++;
+							month = 0;
+						}
+						if(month < 0){
+							year--;
+							month = 11;
+						}
 						this.date = moment([year, month, day, 0, 0, 0, 0]);
 						this.viewDate = moment([year, month, day, 0, 0, 0, 0]);
 						this.fill();
@@ -135,9 +167,20 @@ define(function(require) {
 				}
 				clsName = '';
 				if (prevMonth.getMonth() < month) {
-					clsName += ' old';
+					if(year < prevMonth.getFullYear()){
+						clsName += ' new';
+					} else {
+						clsName += ' old';
+					}
 				} else if (prevMonth.getMonth() > month) {
-					clsName += ' new';
+					if(year > prevMonth.getFullYear()){
+						clsName += ' old';
+					} else {
+						clsName += ' new';
+					}
+				}
+				if (prevMonth.valueOf() > this.endDate || prevMonth.valueOf() < this.startDate) {
+					clsName += ' disabled';
 				}
 				if (prevMonth.valueOf() == currentDate) {
 					clsName += ' active';
@@ -181,7 +224,7 @@ define(function(require) {
 			if (dir) {
 				this.viewMode = Math.max(0, Math.min(2, this.viewMode + dir));
 			}
-			this.$el.find('.datepicker > div').hide().filter('.datepicker-' + this.modes[this.viewMode].clsName).show();
+			this.$el.find(' > div').hide().filter('.datepicker-' + this.modes[this.viewMode].clsName).show();
 		}
 	});
-});
+}));

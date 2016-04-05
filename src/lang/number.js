@@ -1,10 +1,20 @@
 /**
- * @class Ext.Number
- *
- * A collection of useful static methods to deal with numbers
- * @singleton
+ * @author nttdocomo
  */
-define(function() {
+ (function (root, factory) {
+    if(typeof define === "function") {
+        if(define.amd){
+            define(['../taurus'], factory);
+        }
+        if(define.cmd){
+            define(function(require, exports, module){
+                return factory(require('../taurus'));
+            })
+        }
+    } else if(typeof module === "object" && module.exports) {
+        module.exports = factory(require('../taurus'));
+    }
+}(this, function(taurus) {
 	var me = this,
 	isToFixedBroken = (0.9).toFixed() !== '1',
 	math = Math;
@@ -59,4 +69,4 @@ define(function() {
             return value;
         },
 	}
-})
+}));

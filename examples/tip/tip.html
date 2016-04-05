@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/menu.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap-glyphicons.css"/>
+		<script src="../chance.js"></script>
+		<style type="text/css">
+			.tooltip{
+				display: none;
+				opacity:1;
+			}
+		</style>
+		<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<!-- /container -->
+
+		<!-- Bootstrap core JavaScript
+		================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" src="../../src/LAB.min.js"></script>
+		<script type="text/javascript">
+			$LAB.script('../../src/sea-debug.js').wait().script('../config.js').wait(function(){
+				seajs.use("../tip/tip");
+			});
+		</script>
+		<!--<script src="../../src/sea.js" data-config="../config" data-main="../menu/menus"></script>-->
+	</body>
+</html>

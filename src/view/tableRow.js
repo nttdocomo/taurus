@@ -19,7 +19,7 @@ define(function(require){
 			_.each(this.columns,function(column,i){
 				html.push((new TableCell({
 					column:column
-				})).html(data))
+				})).renderHtml(data))
 			})
 			me.$el.html(html.join(''))
 			this.$el.attr('data-item-id',this.model.id);

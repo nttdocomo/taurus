@@ -2,13 +2,17 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Base = require('./field/base');
-	return taurus.view('taurus.form.CheckboxGroup', Base.extend({
+	var Base = require('./field/base'),
+	_ = require('underscore'),
+	Checkbox = require('./field/checkbox');
+	return Base.extend({
 		events : {
 			'change input' : 'checkChange'
 		},
+		defaultType:Checkbox,
 		blankText : "You must select at least one item in this group",
-		fieldSubTpl : '<%_.each(fields,function(field){%><%if(vertical){%><div><%}%><%if(field.boxLabel){%><label id="<%=field.cmpId%>-boxLabelEl" class="checkbox-inline"><%}%><input id="<%=field.id%>" type="<%=field.type%>" /><%if(field.boxLabel){%><%=field.boxLabel%></label><%}%><%if(vertical){%></div><%}%><%})%>',
+		//fieldSubTpl : '<%_.each(fields,function(field){%><%if(vertical){%><div><%}%><%if(field.boxLabel){%><label id="<%=field.cmpId%>-boxLabelEl" class="checkbox-inline"><%}%><input id="<%=field.id%>" type="<%=field.type%>" /><%if(field.boxLabel){%><%=field.boxLabel%></label><%}%><%if(vertical){%></div><%}%><%})%>',
+		fieldSubTpl : '',
 		vertical : false,
 		getSubTplData : function() {
 			var me = this;
@@ -32,7 +36,14 @@ define(function(require) {
 		 * @param {String} [query] An additional query to add to the selector.
 		 */
 		getBoxes : function(query) {
-			return this.$el.find(':checkbox' + (query || ''));
+			var me = this,boxes = this.items;/*$el.find(':radio' + (query || ''))*/;
+			if(query){
+				return _.filter(boxes,function(item,i){
+					return item.inputEl.is(query)
+				})
+			}
+			return boxes;
+			//return this.$el.find(':checkbox' + (query || '')).data('component');
 		},
 
 		/**
@@ -70,13 +81,71 @@ define(function(require) {
 		 */
 		getValue : function() {
 			var values = {}, boxes = this.getBoxes(':checked'), b, bLen = boxes.length, box, name, inputValue, bucket;
-			boxes.each(function(i) {
-				box = $(this);
+			_.each(boxes,function(box,i) {
+				box = box.inputEl;
 				name = box.attr('name');
 				values[name] = box.val();
 			});
 			return values;
-		}, /**
+		},
+
+	    /**
+	     * When a checkbox is added to the group, monitor it for changes
+	     * @param {Object} field The field being added
+	     * @protected
+	     */
+	    onAdd: function(field) {
+	        var me = this,
+	            items,
+	            len, i;
+
+	        if (field.isCheckbox) {
+	            field.on('change', me.checkChange, me);
+	        } else if (field.isContainer) {
+	            items = field.items.items;
+	            for (i = 0, len = items.length; i < len; i++) {
+	                me.onAdd(items[i]);
+	            }
+	        }
+	        Base.prototype.onAdd.apply(this,arguments);
+	    },
+	    /**
+	     * Resets the checked state of all {@link Ext.form.field.Checkbox checkboxes} in the group to their originally
+	     * loaded values and clears any validation messages.
+	     * See {@link Ext.form.Basic}.{@link Ext.form.Basic#trackResetOnLoad trackResetOnLoad}
+	     */
+	    reset: function() {
+	        var me = this/*,
+	            hadError = me.hasActiveError(),
+	            preventMark = me.preventMark*/;
+	        //me.preventMark = true;
+	        /*me.batchChanges(function() {
+	            var boxes = me.getBoxes(),
+	                b,
+	                bLen  = boxes.length;
+
+	            for (b = 0; b < bLen; b++) {
+	                boxes[b].reset();
+	            }
+	        });*/
+	        //me.preventMark = preventMark;
+	        var boxes = me.getBoxes(),
+                b,
+                bLen  = boxes.length;
+
+            for (b = 0; b < bLen; b++) {
+            	boxes[b].reset();
+            	console.log(boxes[b].inputEl)
+            	console.log(boxes[b].inputEl.is(':checked'))
+	        }
+               
+	        me.unsetActiveError();
+	        /*if (hadError) {
+	            me.updateLayout();
+	        }*/
+	    },
+
+		/**
 		 * Sets the value(s) of all checkboxes in the group. The expected format is an Object of name-value pairs
 		 * corresponding to the names of the checkboxes in the group. Each pair can have either a single or multiple values:
 		 *
@@ -172,6 +241,9 @@ define(function(require) {
 			}
 
 			return isValid;
+		},
+		getTargetEl:function(){
+			return this.$el.find('> div');
 		}
-	}));
+	});
 });
