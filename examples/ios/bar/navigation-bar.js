@@ -2,16 +2,12 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Navigation = require("../../../src/ios/bar/navigationBar"),
+	var NavBar = require("../../../src/ios/bar/navBar"),
 	BarItem = require("../../../src/ios/bar/barItem"),
 	Button = require("../../../src/ios/button/button");
-	new Navigation({
-		title:'信息',
+	new NavBar({
 		items:[{
-			cls:Button,
-			text:'信息',
-			side:'left',
-			iconClass:'back'
+			text:'信息'
 		}],
 		renderTo:$(document.body)
 	})
