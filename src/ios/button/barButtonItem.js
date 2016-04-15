@@ -28,7 +28,14 @@
 		className:'bar-button-item',
 		tagName:'button',
 		iconClass:'icon-back',
-		tpl:'<i class="icon <%=iconClass%>"></i><span><%=title%></span>',
+		style:'plain',
+		getTpl:function(){
+			var me = this,style = me.style,tpl;
+			switch(style){
+				case 'plain':
+					return '<i class="icon <%=iconClass%>"></i><span><%=title%></span>'
+			}
+		},
 		getTplData:function(){
 			var me = this;
 			return {
