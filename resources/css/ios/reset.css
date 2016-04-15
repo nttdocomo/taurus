@@ -8,7 +8,7 @@ html, body,h1, h2, h3, h4, h5, h6
 
 body 
 {
- font-family:Arial,  sans-serif;
+ font-family:-apple-system,SF UI Text,Helvetica Neue,Helvetica,Arial,sans-serif;
  line-height:1.5;
  font-size:16px;
  background: #fff;
@@ -24,3 +24,7 @@ p img { float: left; margin: 0 10px 5px 0; padding: 0; }
 img { border: 0; max-width: 100%; }
 
 table { width:auto; border-collapse: collapse;border-spacing: 0; }
+button {
+	border:none;
+	background-color: transparent;
+}

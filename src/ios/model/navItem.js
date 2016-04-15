@@ -4,14 +4,13 @@
 		    // Now we're wrapping the factory and assigning the return
 		    // value to the root (window) and returning it as well to
 		    // the AMD loader.
-		    define(["../../view/base"], function(Base){
+		    define(["backbone"], function(Backbone){
 		    	return (root.myModule = factory(Base));
 		    });
 		}
 	  	if(define.cmd){
 	  		define(function(require, exports, module){
-				var Base = require('../../view/base');
-				return factory(Base);
+				return factory(require('backbone'));
 			})
 	  	}
 	} else if(typeof module === "object" && module.exports) {
@@ -19,22 +18,11 @@
 	    // run into a scenario where plain modules depend on CommonJS
 	    // *and* I happen to be loading in a CJS browser environment
 	    // but I'm including it for the sake of being thorough
-	    module.exports = (root.myModule = factory(require("../../view/base")));
+	    module.exports = (root.myModule = factory(require("backbone")));
 	} else {
 	    root.myModule = factory(root.Base);
 	}
-}(this, function(Base) {
-	return Base.extend({
-		className:'bar-button-item',
-		tagName:'button',
-		iconClass:'icon-back',
-		tpl:'<i class="icon <%=iconClass%>"></i><span><%=title%></span>',
-		getTplData:function(){
-			var me = this;
-			return {
-				title:me.title,
-				iconClass:me.iconClass
-			}
-		}
+}(this, function(Backbone) {
+	return Backbone.Model.extend({
 	})
 }));
