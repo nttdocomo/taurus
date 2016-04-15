@@ -23,6 +23,7 @@
 .navbar {
   left: 0;
   top: 0;
+  border-bottom: 1px solid #a7a7aa;
 }
 .navbar-inner,
 .toolbar-inner {
