@@ -2,17 +2,31 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Navigation = require("../../../src/ios/bar/navigationBar"),
-	BarItem = require("../../../src/ios/bar/barItem"),
-	Button = require("../../../src/ios/button/button");
-	new Navigation({
-		title:'信息',
-		items:[{
-			cls:Button,
-			text:'信息',
-			side:'left',
-			iconClass:'back'
-		}],
+	console.log('aaaaa')
+	var View = require("../../../src/ios/view/view"),
+	TableView = require("../../../src/ios/view/table"),
+	Navigation = require("../../../src/ios/view/navigation"),
+	Backbone = require("backbone"),
+	Button = require("../../../src/ios/button/button"),
+	collection = new Backbone.Collection([{
+		firstName:'Cui'
+	}]),
+	navigation = new Navigation({
+		activeView:new TableView({
+			collection:collection,
+			columns:[{
+				dataIndex : 'firstName',
+				renderer:function(value){
+					return value
+				}
+			}],
+			navigationItem:{
+				title:'信息',
+				backBarButtonItem:{
+					title:'Back'
+				}
+			}
+		}),
 		renderTo:$(document.body)
 	})
 });

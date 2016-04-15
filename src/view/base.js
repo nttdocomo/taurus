@@ -220,6 +220,9 @@
 			var events = $.extend(events || {}, this.events/*, this.listeners*/);
 			Backbone.View.prototype.delegateEvents.call(this, events);
 		},
+		getTpl : function(data) {
+			return this.tpl
+		},
 		getTplData : function(data) {
 			return _.extend({
 				id : this.cid
@@ -425,7 +428,7 @@
 			} else {
 				data = data || this.getTplData();
 				if(data){
-					html = this.tpl ? _.template(this.tpl)(data || this) : "";
+					html = this.getTpl() ? _.template(this.getTpl())(data || this) : "";
 				}
 			}
 			if(this.html){
