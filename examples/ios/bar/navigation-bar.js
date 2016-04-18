@@ -5,6 +5,7 @@ define(function(require) {
 	console.log('aaaaa')
 	var View = require("../../../src/ios/view/view"),
 	TableView = require("../../../src/ios/view/table"),
+	NavBar = require("../../../src/ios/bar/navBar"),
 	Navigation = require("../../../src/ios/view/navigation"),
 	Backbone = require("backbone"),
 	Button = require("../../../src/ios/button/button"),
@@ -12,7 +13,13 @@ define(function(require) {
 		firstName:'Cui'
 	}]),
 	navigation = new Navigation({
-		activeView:new TableView({
+		items:[{
+			cls:NavBar,
+			items:[{
+				title:'信息'
+			}],
+		},{
+			cls:TableView,
 			collection:collection,
 			columns:[{
 				dataIndex : 'firstName',
@@ -21,12 +28,9 @@ define(function(require) {
 				}
 			}],
 			navigationItem:{
-				title:'信息',
-				backBarButtonItem:{
-					title:'Back'
-				}
+				title:'信息'
 			}
-		}),
+		}],
 		renderTo:$(document.body)
 	})
 });

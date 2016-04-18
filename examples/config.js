@@ -2,16 +2,15 @@
  * @author nttdocomo
  */
 seajs.config({
-	plugins: ['shim'],
 	alias : {
-	    'button':'taurus/button/button'/*,
-	    'underscore':'underscore',
-	    'button':'taurus/button/button'*/
+	    'button':'taurus/button/button',
+	    //'backbone-pageable':'../../src/backbone-pageable'/*,
+	    //'underscore':'../../src/backbone-pageable'
 	},
 	paths: {
 		'taurus':'./'
 	},
-	base : '/src/',
+	base : location.pathname.replace(/^(\/taurus)?\/.*/,'$1') + '/src',
 	charset : 'utf-8',
 	vars : {
 		'locale' : (navigator.language || navigator.browserLanguage).toLowerCase()

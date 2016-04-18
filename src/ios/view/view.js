@@ -24,7 +24,8 @@
 	}
 }(this, function(Base,NavBar,NavItem,_) {
 	return Base.extend({
-		tpl:'',
+		className:'pages',
+		tpl:'<div class="page"><div class="page-content"></div></div>',
 		initialize:function(){
 			var me = this;
 			Base.prototype.initialize.apply(me,arguments)
@@ -34,6 +35,7 @@
 				items:[me.navigationItem.clone()]
 			})*/
 			me.navigationItem = new NavItem(me.navigationItem)
+			this.$el.addClass('navbar-through')
 		}
 	})
 }));

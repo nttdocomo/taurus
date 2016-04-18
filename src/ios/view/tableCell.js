@@ -34,7 +34,7 @@
 		},
 		cellForRowAtIndexPath:function(model){
 			var me = this;
-			_.map(me.columns,function(column){
+			return _.map(me.columns,function(column){
 				if(column.renderer){
 					return column.renderer(me.model.get(column.dataIndex))
 				}

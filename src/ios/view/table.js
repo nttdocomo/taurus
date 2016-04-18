@@ -24,15 +24,19 @@
 	}
 }(this, function(Base,TableCell,_) {
 	return Base.extend({
-		className:'list-block',
 		initialize:function(){
 			var me = this;
 			Base.prototype.initialize.apply(me,arguments)
+		},
+		afterRender:function(){
+			var me = this,ul = $('<div class="list-block"><ul></ul></div>').appendTo(me.$el.find('.page-content'));
+			Base.prototype.afterRender.apply(me,arguments)
+			console.log(me.collection)
 			me.collection.each(function(model){
 				new TableCell({
 					model:model,
 					columns:me.columns,
-					renderTo:me.$el
+					renderTo:ul.find('ul')
 				})
 			})
 		}
