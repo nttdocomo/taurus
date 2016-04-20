@@ -1,0 +1,12 @@
+/* === Content Block === */
+.content-block {
+  margin: 35px 0;
+  padding: 0 15px;
+  color: #6d6d72;
+  box-sizing: border-box;
+}
+.content-block-title+.list-block,
+.content-block-title+.content-block,
+.content-block-title+.card {
+    margin-top: 10 px;
+}

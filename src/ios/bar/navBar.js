@@ -25,14 +25,13 @@
 }(this, function(Base,NavBarInner,_) {
 	return Base.extend({
 		className:'navbar',
+		items:[],
 		//tpl:'<div class="navbar-inner"><div class="left"></div><div class="center"><%=title%></div><div class="right"></div></div>',
 		initialize:function(){
 			var me = this,len,topItem;
 			Base.prototype.initialize.apply(me,arguments)
-			/*len = me.items.length,topItem = this.items[len-1];
-			me.backBarButtonItem = new BarButtonItem(_.extend({
-				renderTo:me.$el.find('.left')
-			},topItem.get('backBarButtonItem')))*/
+			len = me.items.length,topItem = this.items[len-1];
+			me.setActiveItem(topItem)
 		},
 		getTargetEl:function(item){
 			return this.$el;
@@ -43,12 +42,30 @@
 				title:'asasd'//topItem.get('title')
 			}
 		},
+		pushItem:function(item){
+			var me = this;
+			me.setActiveItem(item)
+		},
 		setActiveItem:function(item){
-			this.items.push(item)
+			var me = this,activeItem = me.activeItem,
+			len = me.items.length,topItem = this.items[len-1];
+			if(activeItem){
+				activeItem.slideOutToView()
+				if(!item.backBarButtonItem.title){
+					item.backBarButtonItem.title = topItem.title;
+				}
+			}
 			var nextNavBarInner = new NavBarInner({
 				item:item,
 				renderTo:this.$el
 			})
+			me.preItem = activeItem;
+			me.items.push(item)
+			me.activeItem = nextNavBarInner;
+			me.slideIntoView()
+		},
+		slideIntoView:function(){
+
 		}
 	})
 }));

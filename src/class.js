@@ -3,12 +3,13 @@
         // Now we're wrapping the factory and assigning the return
         // value to the root (window) and returning it as well to
         // the AMD loader.
-        define(function(){
+        define([],function(){
           return (root.Class = factory());
         });
     }
     if(define.cmd){
         define(function(require, exports, module){
+            reuqire()
             return (root.Class = factory());
         })
     } else if(typeof module === "object" && module.exports) {

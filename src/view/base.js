@@ -136,15 +136,32 @@
 	        return this.xtype;
 	    },
 		initialize : function(options) {
-      var me = this;
+			var me = this;
 			this.initialConfig = options;
 			_.extend(this, options);
 			this.initComponent();
-      if (me.style) {
-          me.initialStyle = me.style;
-          me.$el.css(me.style);
-      }
+			if (me.style) {
+				me.initialStyle = me.style;
+				me.$el.css(me.style);
+			}
 			//Stateful.prototype.initialize.apply(this,arguments);
+		},
+		on:function(options){
+			var me = this,delegateEvents = {},events = {};
+			for (var ename in options) {
+                var config = options[ename];
+                if(typeof config.selector !== 'undefined'){
+                	if(config.selector){
+                		delegateEvents[[ename,options.selector].join(' ')] = config.fn
+                	} else {
+                		delegateEvents[ename] = config.fn
+                	}
+                } else {
+                	events[ename] = config
+                }
+            }
+            me.delegateEvents(delegateEvents)
+            Backbone.View.prototype.on.call(this, events);
 		},
 		initComponent:function(){
 			/*
