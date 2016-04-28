@@ -9,8 +9,31 @@
 .navbar-on-left .fading {
   opacity: 0;
 }
+.navbar-on-right .sliding {
+  opacity: 0;
+}
 .navbar-from-right-to-center .sliding {
   opacity: 1;
+}
+.navbar-from-center-to-right .sliding {
+  opacity: 0;
+}
+
+@-webkit-keyframes navbarElementFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes navbarElementFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 .navbar-from-center-to-left .left,
 .navbar-from-center-to-left .right,

@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../util/mixedCollection'], factory);
+			define(['../../util/mixedCollection'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../util/mixedCollection'));
+				return factory(require('../../util/mixedCollection'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../util/mixedCollection'));
+		module.exports = factory(require('../../util/mixedCollection'));
 	}
 }(this, function(Collection){
 	return new (Collection.extend({

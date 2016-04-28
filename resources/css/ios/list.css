@@ -5,6 +5,7 @@
 }
 .list-block ul {
   background: #fff;
+  border-bottom: 1px solid #c8c7cc;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -28,6 +29,28 @@
 .list-block li {
   box-sizing: border-box;
   position: relative;
+}
+.list-block .item-media {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-shrink: 0;
+  -ms-flex: 0 0 auto;
+  flex-shrink: 0;
+  -webkit-box-lines: single;
+  -moz-box-lines: single;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: none;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  padding-top: 7px;
+  padding-bottom: 8px;
 }
 .list-block .item-link {
   -webkit-transition-duration: 300ms;
@@ -78,6 +101,7 @@
   -ms-flex-item-align: stretch;
   -webkit-align-self: stretch;
   align-self: stretch;
+  border-bottom: 1px solid #c8c7cc;
 }
 .list-block .item-link .item-inner {
   padding-right: 35px;
@@ -87,4 +111,11 @@
   background-position: 95% center;
   background-position: -webkit-calc(100% - 15px) center;
   background-position: calc(100% - 15px) center;
+}
+.list-block .item-media + .item-inner {
+  margin-left: 15px;
+}
+
+.list-block li:last-child .item-inner{
+  border-bottom: none;
 }

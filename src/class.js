@@ -9,7 +9,6 @@
     }
     if(define.cmd){
         define(function(require, exports, module){
-            reuqire()
             return (root.Class = factory());
         })
     } else if(typeof module === "object" && module.exports) {

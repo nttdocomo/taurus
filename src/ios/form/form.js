@@ -1,4 +1,4 @@
-(function (root, factory) {
+/*(function (root, factory) {
 	if(typeof define === "function") {
 	  	if(define.amd){
 		    // Now we're wrapping the factory and assigning the return
@@ -25,22 +25,15 @@
 }(this, function(Base,TableCell,_) {
 	return Base.extend({
 		className:'list-block',
+		tpl:'<ul></ul>'
+	})
+}));*/
+taurus.klass('taurus.IOS.form.Form',["../../view/base","./tableCell","underscore"],function(Base,TableCell,_) {
+	return Base.extend({
+		className:'list-block',
 		tpl:'<ul></ul>',
-		initialize:function(){
-			var me = this;
-			Base.prototype.initialize.apply(me,arguments)
-		},
-		afterRender:function(){
-			var me = this;
-			Base.prototype.afterRender.apply(me,arguments)
-			console.log(me.collection)
-			me.collection.each(function(model){
-				new TableCell({
-					model:model,
-					columns:me.columns,
-					renderTo:me.$el.find('ul')
-				})
-			})
+		getTargetEl:function(item){
+			return this.$el.find('ul');
 		}
 	})
-}));
+})

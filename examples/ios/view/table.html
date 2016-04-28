@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+		<title></title>
+		<link type="text/css" rel="stylesheet" href="../../../resources/css/ios/reset.css"/>
+		<link type="text/css" rel="stylesheet" href="../../../resources/css/ios/intro.css"/>
+		<link type="text/css" rel="stylesheet" href="../../../resources/css/ios/view.css"/>
+		<link type="text/css" rel="stylesheet" href="../../../resources/css/ios/icon.css"/>
+		<link type="text/css" rel="stylesheet" href="../../../resources/css/ios/navigationBar.css"/>
+		<link type="text/css" rel="stylesheet" href="../../../resources/css/ios/pages.css"/>
+		<link type="text/css" rel="stylesheet" href="../../../resources/css/ios/toolbars-pages.css"/>
+		<link type="text/css" rel="stylesheet" href="../../../resources/css/ios/list.css"/>
+		<link type="text/css" rel="stylesheet" href="../../../resources/css/ios/forms.css"/>
+		<link type="text/css" rel="stylesheet" href="../../../resources/css/ios/content-block.css"/>
+		<link type="text/css" rel="stylesheet" href="../../../resources/css/ios/toolbars.css"/>
+		<link type="text/css" rel="stylesheet" href="../../../resources/css/ios/themes/ios9.css"/>
+		<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="views">
+		    <div class="view view-main">
+				<div class="pages navbar-through toolbar-through">
+				</div>
+			</div>
+		</div>
+		<!-- /container -->
+
+		<!-- Bootstrap core JavaScript
+		================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" src="../../../src/LAB.min.js"></script>
+		<script type="text/javascript">
+			$LAB.script('../../../src/sea-debug.js').wait().script('../../config.js').wait(function(){
+				seajs.use("../view/table");
+			});
+		</script>
+	</body>
+</html>

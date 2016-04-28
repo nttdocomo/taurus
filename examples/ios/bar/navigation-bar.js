@@ -11,10 +11,7 @@ define(function(require) {
 	Button = require("../../../src/ios/button/button"),
 	navBar = new NavBar({
 		items:[{                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-			title:'信息',
-			backBarButtonItem:{
-				title:'取消'
-			}
+			title:'信息'
 		}],
 		renderTo:$('.page')
 	}),
@@ -26,12 +23,11 @@ define(function(require) {
 			click: {
 				selector:'',
 				fn:function(){
-					console.log(arguments)
 					navBar.pushItem({                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-						title:chance.word(),
+						title:chance.word()/*,
 						backBarButtonItem:{
 							title:'取消'
-						}
+						}*/
 					})
 				}
 			}

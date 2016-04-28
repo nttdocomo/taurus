@@ -4,78 +4,19 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./base','../checkboxManager','svg','underscore'], factory);
+			define(['../../classic/form/checkboxManager','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./base'),require('../checkboxManager'),require('svg'),require('underscore'));
+				return factory(require('../../classic/form/checkboxManager'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./base'),require('../checkboxManager'),require('svg'),require('underscore'));
+		module.exports = factory(require('../../classic/form/checkboxManager'),require('underscore'));
 	}
-}(this, function(Base,CheckboxManager,Svg,_) {
-	return Base.extend({
-		fieldSubTpl : '<div class="<%=type%>"><%if(boxLabel){%><label id="<%=cmpId%>-boxLabelEl" for="<%=id%>"><%}%><input id="<%=id%>" type="<%=type%>"<%if(checked){%> checked="<%=checked%>"<%}%> name="<%=name%>" value="<%=value%>"/><%if(boxLabel){%><%=boxLabel%></label><%}%></div>',
-		inputType : 'checkbox',
-		checked : false,
-		checkedCls : taurus.baseCSSPrefix + 'form-cb-checked',
-		onRe : /^on$/i,
-
-		/**
-		 * @cfg {String} inputValue
-		 * The value that should go into the generated input element's value attribute and should be used as the parameter
-		 * value when submitting as part of a form.
-		 */
-		inputValue : 'on',
-		childEls: {
-			'inputEl' : ':checkbox'
-		},
-
-		initComponent: function() {
-	        var me = this,
-	            value = me.value;
-	            
-	        if (value !== undefined) {
-	            me.checked = me.isChecked(value, me.inputValue);
-	        }
-	        
-	        Base.prototype.initComponent.apply(this,arguments);
-	        me.getManager().add(me);
-	    },
-		
-		afterRender:function(){
-			Base.prototype.afterRender.apply(this,arguments);
-			this.initShadowInputEl();
-		},
-		initShadowInputEl:function(){
-			var checked = this.checked;
-			if (SVG.supported) {
-				this.checkbox = SVG(this.boxLabelEl.parent().get(0)).size(0, 0);
-				this.shadowInputEl = SVG(this.boxLabelEl.parent().get(0)).size(0, 0);
-				this.checkbox.viewbox(0, 0, 15, 15)
-				this.shadowInputEl.viewbox(0, 0, 15, 15)
-				this.checkbox.path('M13.33,1.67v11.67H1.67V1.67H13.33 M13.33,0H1.67C0.75,0,0,0.75,0,1.67v11.67c0,0.92,0.75,1.67,1.67,1.67h11.67c0.92,0,1.67-0.75,1.67-1.67V1.67C15,0.75,14.25,0,13.33,0z')
-				this.shadowInputEl.path('M5.83,11.67l-4.167-4.167l1.167-1.167 l3,3l6.33-6.33L13.33,4.167L5.83,11.667z')
-				this.shadowInputEl.style({
-					opacity:checked ? 1:0
-				})
-			} else {
-				console.log('SVG not supported')
-			}
-		},
-		applyChildEls : function(childEls) {
-			var childEls = $.extend(this.childEls, childEls);
-			childEls['boxLabelEl'] = '#' + this.cid + '-boxLabelEl';
-			Base.prototype.applyChildEls.call(this,childEls);
-		},
-
-		delegateEvents:function(events){
-			var events = events || {};
-			events['change input:'+this.inputType] = 'onBoxClick';
-			Base.prototype.delegateEvents.call(this,events);
-		},
-
+}(this, function(CheckboxManager,_) {
+	var CheckBox = function(){};
+	CheckBox.prototype = {
 	    getFormId: function(){
 	        var me = this,
 	            form;
@@ -101,12 +42,6 @@
 		getValue : function() {
 			return this.checked;
 		},
-		getSubTplData : function() {
-			return $.extend(Base.prototype.getSubTplData.apply(this, arguments), {
-				boxLabel : this.boxLabel || false,
-				checked:this.checked
-			})
-		},
 
 		/**
 		 * Returns the submit value for the checkbox which can be used when submitting forms.
@@ -117,32 +52,9 @@
 			var unchecked = this.uncheckedValue, uncheckedVal = !_.isUndefined(unchecked) ? unchecked : null;
 			return this.checked ? this.inputValue : uncheckedVal;
 		},
-		initValue : function() {
-			var me = this, checked = !!me.checked;
-
-			/**
-			 * @property {Object} originalValue
-			 * The original value of the field as configured in the {@link #checked} configuration, or as loaded by the last
-			 * form load operation if the form's {@link Ext.form.Basic#trackResetOnLoad trackResetOnLoad} setting is `true`.
-			 */
-			me.originalValue = me.lastValue = checked;
-
-			// Set the initial checked state
-			me.setValue(checked);
-		},
 
 		isChecked : function(rawValue, inputValue) {
 			return (rawValue === true || rawValue === 'true' || rawValue === '1' || rawValue === 1 || (((_.isString(rawValue) || _.isNumber(rawValue)) && inputValue) ? rawValue == inputValue : this.onRe.test(rawValue)));
-		},
-
-		/**
-		 * @private Handle click on the checkbox button
-		 */
-		onBoxClick : function(e) {
-			var me = this;
-			if (!me.disabled && !me.readOnly) {
-				me.setValue(!me.checked);
-			}
 		},
 
 		/**
@@ -152,7 +64,7 @@
 		 */
 		onChange : function(newVal, oldVal) {
 			var me = this, handler = me.handler;
-			Base.prototype.onChange.apply(this, arguments);
+			this.constructor.__super__.onChange.apply(this, arguments);
 			if (handler) {
 				handler.call(me, newVal);
 			}
@@ -203,11 +115,12 @@
 					this.inputEl.attr('checked',Ext.Array.contains(checked, box.inputValue))
 				}
 			} else {
-				Base.prototype.setValue.apply(this, arguments);
+				this.constructor.__super__.setValue.apply(this, arguments);
 				this.inputEl.attr('checked',checked)
 			}
 
 			return me;
 		}
-	})
+	}
+	return CheckBox
 }));
