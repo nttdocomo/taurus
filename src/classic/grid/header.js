@@ -2,7 +2,7 @@
  * @author nttdocomo
  */
 define(function(require){
-	var Base = require('../view/base');
+	var Base = require('../../view/base');
 	require('../view/column');
 	return taurus.view('taurus.grid.Header',Base.extend({
 		tpl:'<table class="table"><thead><tr><%=items%></tr></thead></table>',

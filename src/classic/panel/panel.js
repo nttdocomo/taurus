@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../view/base','../spinner/wave'], factory);
+			define(['../../view/base','../spinner/wave'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../view/base'),require('../spinner/wave'));
+				return factory(require('../../view/base'),require('../spinner/wave'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../view/base'),require('../spinner/wave'));
+		module.exports = factory(require('../../view/base'),require('../spinner/wave'));
 	}
 }(this, function(Base,Spinner){
 	return Base.extend({

@@ -2,7 +2,7 @@
  * @author nttdocomo
  */
 define(function(require){
-	require("view/base");
+	require("../../view/base");
 	taurus.augmentString('taurus.templates.form.label', '<label class="control-label" for="<%=inputId%>"<%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%=fieldLabel%></label><div class="controls"><%=field%></div>');
 	taurus.view("taurus.form.Label",taurus.views.Base.extend({
 		className:"control-group",

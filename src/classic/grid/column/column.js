@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../view/base','../plugin/headerResizer'], factory);
+			define(['../../../view/base','../plugin/headerResizer'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../../view/base'),require('../plugin/headerResizer'));
+				return factory(require('../../../view/base'),require('../plugin/headerResizer'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../view/base'),require('../plugin/headerResizer'));
+		module.exports = factory(require('../../../view/base'),require('../plugin/headerResizer'));
 	}
 }(this, function(Base,HeaderResizer) {
 	return Base.extend({

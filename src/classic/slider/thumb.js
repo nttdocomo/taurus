@@ -2,7 +2,7 @@
  * @author nttdocomo
  */
 define(function(require){
-	var Base = require('../view/base'),
+	var Base = require('../../view/base'),
 		dragTarget;
 	$(document).on('mouseenter','.' + taurus.baseCSSPrefix + 'slider-thumb',function(e){
 		$(e.target).addClass(taurus.baseCSSPrefix + 'slider-thumb-over')

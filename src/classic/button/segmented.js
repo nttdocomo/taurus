@@ -1,5 +1,5 @@
 define(function(require){
-	var Base = require('../view/base'),
+	var Base = require('../../view/base'),
 	Manager = require('../manager');
 	return Base.extend({
 		xtype: 'segmentedbutton',

@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../view/base','./manager','underscore','backbone'], factory);
+			define(['../../view/base','./manager','underscore','backbone'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../view/base'),require('./manager'),require('underscore'),require('backbone'));
+				return factory(require('../../view/base'),require('./manager'),require('underscore'),require('backbone'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../view/base'),require('./manager'),require('underscore'),require('backbone'));
+		module.exports = factory(require('../../view/base'),require('./manager'),require('underscore'),require('backbone'));
 	}
 }(this, function(Base,Manager,_,Backbone) {
 	return Base.extend({
