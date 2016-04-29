@@ -125,12 +125,6 @@
 	     * @protected
 	     */
 	    beforeReset: taurus.emptyFn,
-		setValue : function(value) {
-			this.setRawValue(this.valueToRaw(value));
-			this.value = value;
-			this.checkChange();
-			return this;
-		},
 		setRawValue : function(value) {
 			this.rawValue = value;
 			this.inputEl && this.inputEl.val(value);

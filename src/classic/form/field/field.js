@@ -72,7 +72,13 @@
 	            this.suspendCheckChange--;
 	        }
 	        this.checkChange();
-	    }
+	    },
+		setValue : function(value) {
+			this.setRawValue(this.valueToRaw(value));
+			this.value = value;
+			this.checkChange();
+			return this;
+		}
 	}
 	return Field;
 }));

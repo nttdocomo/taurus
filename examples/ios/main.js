@@ -4,13 +4,13 @@
 		    // Now we're wrapping the factory and assigning the return
 		    // value to the root (window) and returning it as well to
 		    // the AMD loader.
-		    define(["../../src/ios/bar/navBar","../../src/ios/page/pages",'../../src/ios/view/table','../../src/ios/form/form','../../src/ios/form/switch',"backbone","underscore",'chance'], function(NavBar,Pages,Table,Form,Switch,Backbone,_,chance){
+		    define(["../../src/ios/bar/navBar","../../src/ios/page/pages",'../../src/ios/view/table','../../src/ios/form/form','../../src/ios/form/field/text',"backbone","underscore",'chance'], function(NavBar,Pages,Table,Form,Switch,Backbone,_,chance){
 		    	return (root.myModule = factory(NavBar,Pages,Table,Backbone,_,chance));
 		    });
 		}
 	  	if(define.cmd){
 	  		define(function(require, exports, module){
-				return factory(require,require('../../src/ios/bar/navBar'),require('../../src/ios/page/pages'),require('../../src/ios/view/table'),require('../../src/ios/form/form'),require('../../src/ios/form/switch'),require('backbone'),require('underscore'),require('chance'));
+				return factory(require,require('../../src/ios/bar/navBar'),require('../../src/ios/page/pages'),require('../../src/ios/view/table'),require('../../src/ios/form/form'),require('../../src/ios/form/field/text'),require('backbone'),require('underscore'),require('chance'));
 			})
 	  	}
 	} else if(typeof module === "object" && module.exports) {
@@ -18,11 +18,11 @@
 	    // run into a scenario where plain modules depend on CommonJS
 	    // *and* I happen to be loading in a CJS browser environment
 	    // but I'm including it for the sake of being thorough
-	    module.exports = (root.myModule = factory(require('../../src/ios/bar/navBar'),require('../../src/ios/page/pages'),require('../../src/ios/view/table'),require('../../src/ios/form/form'),require('../../src/ios/form/switch'),require("backbone"),require('underscore'),require('chance')));
+	    module.exports = (root.myModule = factory(require('../../src/ios/bar/navBar'),require('../../src/ios/page/pages'),require('../../src/ios/view/table'),require('../../src/ios/form/form'),require('../../src/ios/form/field/text'),require("backbone"),require('underscore'),require('chance')));
 	} else {
 	    root.myModule = factory(root.postal);
 	}
-}(this, function(require,NavBar,Pages,Table,Form,Switch,Backbone,_,chance) {
+}(this, function(require,NavBar,Pages,Table,Form,Text,Backbone,_,chance) {
 	var Router = Backbone.Router.extend({
 		routes: {
 			"*action":"index"
@@ -99,7 +99,7 @@
 	    			item = {
 						cls:Form,
 						items:[{
-							cls:Switch
+							cls:Text
 						}]
 					};
 	    		}
@@ -108,7 +108,7 @@
 	    			items:[{
 						cls:Form,
 						items:[{
-							cls:Switch,
+							cls:Text,
 							name:chance.word(),
 							fieldLabel:chance.word()
 						}]

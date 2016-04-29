@@ -38,7 +38,7 @@
 		checked:false,
 		initialize:function(){
 			var me = this;
-			TableCell.prototype.initialize.apply(me,arguments)
+			this._super.apply(me,arguments)
 		},
 		getTpl:function(){
 			return '<div class="item-content"><%if(image){%><div class="item-media"><img class="img" src="<%=image%>"/></div><%}%><div class="item-inner"><div class="item-title"><%=fieldLabel%></div><%=itemInput%></div></div>'

@@ -115,7 +115,7 @@
 					this.inputEl.attr('checked',Ext.Array.contains(checked, box.inputValue))
 				}
 			} else {
-				this.constructor.__super__.setValue.apply(this, arguments);
+				this._super.apply(this, arguments);
 				this.inputEl.attr('checked',checked)
 			}
 

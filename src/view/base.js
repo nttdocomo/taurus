@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../state/stateful','underscore','../taurus','backbone','../lang/number','../mixins','../jquery.ui.position'], factory);
+			define(['../state/stateful','underscore','../taurus','backbone','backbone-super','../lang/number','../mixins','../jquery.ui.position'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../state/stateful'),require('underscore'),require('../taurus'),require('backbone'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
+				return factory(require('../state/stateful'),require('underscore'),require('../taurus'),require('backbone'),require('backbone-super'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../state/stateful'),require('underscore'),require('../taurus'),require('backbone'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
+		module.exports = factory(require('../state/stateful'),require('underscore'),require('../taurus'),require('backbone'),require('backbone-super'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
 	}
 }(this, function(Stateful,_,taurus,Backbone) {
 	return Backbone.View.extend({
