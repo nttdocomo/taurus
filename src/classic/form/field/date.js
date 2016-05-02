@@ -4,15 +4,15 @@
 (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(["./picker","../../picker/date",'../../underscore','../../moment','../../lang/date'], factory);
+			define(["./picker","../../picker/date",'underscore','moment','../../../lang/date'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-		        return factory(require('./picker'),require("../../picker/date"),require('../../underscore'),require('../../moment'),require("../../lang/date"));
+		        return factory(require('./picker'),require("../../picker/date"),require('underscore'),require('moment'),require("../../../lang/date"));
 		     })
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require("./picker"),require("../../picker/date"),require('../../underscore'),require('../../moment'),require("../../lang/date"));
+		module.exports = factory(require("./picker"),require("../../picker/date"),require('underscore'),require('moment'),require("../../../lang/date"));
 	} else {
 		root.myModule = factory();
 	}

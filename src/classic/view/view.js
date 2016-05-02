@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./abstractView','backbone','../lang/event'], factory);
+			define(['./abstractView','backbone','../../lang/event'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./abstractView'),require('backbone'),require("../lang/event"));
+				return factory(require('./abstractView'),require('backbone'),require("../../lang/event"));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./abstractView'),require('backbone'),require("../lang/event"));
+		module.exports = factory(require('./abstractView'),require('backbone'),require("../../lang/event"));
 	}
 }(this, function(Base,Backbone){
 	return Base.extend({
@@ -85,7 +85,7 @@
 	        if (me.processUIEvent(e) !== false) {
 	            me.processSpecialEvent(e);
 	        }
-	        
+
 	        // We need to prevent default action on navigation keys
 	        // that can cause View element scroll unless the event is from an input field.
 	        // We MUST prevent browser's default action on SPACE which is to focus the event's target element.

@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./trigger','../../lang/number','../../lang/string'], factory);
+			define(['./trigger','../../../lang/number','../../../lang/string'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./trigger'),require('../../lang/number'),require('../../lang/string'));
+				return factory(require('./trigger'),require('../../../lang/number'),require('../../../lang/string'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./trigger'),require('../../lang/number'),require('../../lang/string'));
+		module.exports = factory(require('./trigger'),require('../../../lang/number'),require('../../../lang/string'));
 	}
 }(this, function(Trigger) {
 	return Trigger.extend({

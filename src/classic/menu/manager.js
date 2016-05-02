@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../class','underscore'], factory);
+			define(['class','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../class'),require('underscore'));
+				return factory(require('class'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../class'),require('underscore'));
+		module.exports = factory(require('class'),require('underscore'));
 	}
 }(this, function(Class,_) {
 	return new (Class.extend({
@@ -27,7 +27,7 @@
 	            $(document).on('mousedown',_.bind(me.checkActiveMenus,me))
 	            return me.onShow.apply(me, arguments); // do the real thing
 	        };
-	        
+
 	        me.active = [];
 	        $(document).on('keypress',_.bind(function(e) {
 	        	if(e.keyCode == 27){
@@ -45,7 +45,7 @@
 	     */
 	    get: function(menu) {
 	        var menus = this.menus;
-	        
+
 	        if (typeof menu == 'string') { // menu id
 	            if (!menus) {  // not initialized, no menus to return
 	                return null;

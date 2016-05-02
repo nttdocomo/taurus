@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./dialog','../i18n'], factory);
+			define(['./dialog','../../i18n'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./dialog'),require('../i18n'));
+				return factory(require('./dialog'),require('../../i18n'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./dialog'),require('../i18n'));
+		module.exports = factory(require('./dialog'),require('../../i18n'));
 	}
 }(this, function(Dialog,i18n) {
 	return Dialog.extend({

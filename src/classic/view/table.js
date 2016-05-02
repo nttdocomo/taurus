@@ -4,17 +4,17 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./view','./tableHeader','./tableBody','../grid/cellContext','backbone','underscore'], factory);
+			define(['./view','../grid/cellContext','backbone','underscore','taurus'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./view'),require('./tableHeader'),require('./tableBody'),require('../grid/cellContext'),require('backbone'),require('underscore'));
+				return factory(require('./view'),require('../grid/cellContext'),require('backbone'),require('underscore'),require('taurus'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./view'),require('./tableHeader'),require('./tableBody'),require('../grid/cellContext'),require('backbone'),require('underscore'));
+		module.exports = factory(require('./view'),require('../grid/cellContext'),require('backbone'),require('underscore'),require('taurus'));
 	}
-}(this, function(Base,Thead,TableBody,CellContext,Backbone,_){
+}(this, function(Base,CellContext,Backbone,_){
 	return Base.extend({
 		header:true,
 		tpl:'<div class="grid-item-container"><table><%=rows%></table></div>',
@@ -210,6 +210,7 @@
 	        }
 	        me.setPendingStripe(index);*/
 	    },
+        onCellClick: taurus.emptyFn,
 		processItemEvent:function(record, item, rowIndex, e){
 	        var me = this,
 	            self = me.self,

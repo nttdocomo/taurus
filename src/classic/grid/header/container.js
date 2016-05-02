@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../view/base','../column/column','../columnManager'], factory);
+			define(['../../../view/base','../column/column','../columnManager'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../../view/base'),require('../column/column'),require('../columnManager'));
+				return factory(require('../../../view/base'),require('../column/column'),require('../columnManager'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../view/base'),require('../column/column'),require('../columnManager'));
+		module.exports = factory(require('../../../view/base'),require('../column/column'),require('../columnManager'));
 	}
 }(this, function(Base,Column,ColumnManager) {
 	return taurus.view('taurus.grid.header.Container',Base.extend({

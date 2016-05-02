@@ -10,7 +10,7 @@
 * Repository: git://github.com/FineUploader/fine-uploader.git
 *
 * Licensed only under the Widen Commercial License (http://fineuploader.com/licensing).
-*/ 
+*/
 
 
 /*globals window, navigator, document, FormData, File, HTMLInputElement, XMLHttpRequest, Blob, Storage, ActiveXObject */
@@ -10597,9 +10597,9 @@ qq.extend(qq.Scaler.prototype, {
 
 var ExifRestorer = (function()
 {
-   
+
 	var ExifRestorer = {};
-	 
+
     ExifRestorer.KEY_STR = "ABCDEFGHIJKLMNOP" +
                          "QRSTUVWXYZabcdef" +
                          "ghijklmnopqrstuv" +
@@ -10640,7 +10640,7 @@ var ExifRestorer = (function()
 
         return output;
     };
-    
+
     ExifRestorer.restore = function(origFileBase64, resizedFileBase64)
     {
         var expectedBase64Header = "data:image/jpeg;base64,";
@@ -10648,15 +10648,15 @@ var ExifRestorer = (function()
         if (!origFileBase64.match(expectedBase64Header))
         {
         	return resizedFileBase64;
-        }       
-        
+        }
+
         var rawImage = this.decode64(origFileBase64.replace(expectedBase64Header, ""));
         var segments = this.slice2Segments(rawImage);
-                
+
         var image = this.exifManipulation(resizedFileBase64, segments);
-        
+
         return expectedBase64Header + this.encode64(image);
-        
+
     };
 
 
@@ -10700,7 +10700,7 @@ var ExifRestorer = (function()
     };
 
 
-    
+
     ExifRestorer.slice2Segments = function(rawImageArray)
     {
         var head = 0,
@@ -10728,8 +10728,8 @@ var ExifRestorer = (function()
     };
 
 
-    
-    ExifRestorer.decode64 = function(input) 
+
+    ExifRestorer.decode64 = function(input)
     {
         var output = "",
             chr1, chr2, chr3 = "",
@@ -10772,7 +10772,7 @@ var ExifRestorer = (function()
         return buf;
     };
 
-    
+
     return ExifRestorer;
 })();
 

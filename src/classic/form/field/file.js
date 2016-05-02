@@ -4,23 +4,24 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./trigger','../../taurus','underscore','../../fine-uploader'], factory);
+			define(['./trigger','taurus','underscore','i18n','fine-uploader'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./trigger'),require('../../taurus'),require('underscore'),require('../../fine-uploader'));
+				return factory(require('./trigger'),require('taurus'),require('underscore'),require('i18n'),require('fine-uploader'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./trigger'),require('../../taurus'),require('underscore'),require('../../fine-uploader'));
+		module.exports = factory(require('./trigger'),require('taurus'),require('underscore'),require('i18n'),require('fine-uploader'));
 	}
-}(this, function(Trigger,taurus,_) {
+}(this, function(Trigger,taurus,_,i18n) {
 	return Trigger.extend({
 		iconTpl:'<i id="<%=id%>-btnIconEl" class="<%=_hasIconCls%>" style="<%if(iconUrl){%>background-image:url(<%=iconUrl%>);<%}%>"></i>',
-		buttonText : 'Browse...',
+		buttonText : i18n.__('Browse...'),
+        inputType:'file',
 		_hasIconCls: taurus.baseCSSPrefix + 'btn-icon',
 		childEls : {
-			'fileInputEl' : '#fileInputEl',
+			'fileInputEl' : '#buttonEl > input',
 			'inputEl' : '.form-control',
 			'buttonEl' : '#buttonEl',
 			'spinnerEl' : '.spinner',
@@ -29,6 +30,7 @@
 		},
 		events : {
 			'change #fileInputEl' : 'onFileChange',
+    		'change #buttonEl > input' : 'onFileSelect',
 			'click .qq-upload-cancel' : 'cancel'
 		},
 		initialize : function(options) {
@@ -42,18 +44,36 @@
 		 * Gets the markup to be inserted into the subTplMarkup.
 		 */
 		getTriggerMarkup : function() {
-			return _.template((this.buttonOnly ? '' : '<span id="<%=id%>" class="input-group-btn <%=cls%>">') + '<div id="buttonEl" class="btn btn-primary' + (this.buttonOnly ? ' <%=cls%>' : '') + '" <%if(disabled){%> disabled="disabled"<%}%>><%=icon%><%=text%></div>' + (this.buttonOnly ? '' : '</span>'))({
+            var me = this;
+			return _.template((me.buttonOnly ? '' : '<span id="<%=id%>" class="input-group-btn <%=cls%>">') + '<div id="buttonEl" class="btn btn-primary' + (me.buttonOnly ? ' <%=cls%>' : '') + '" <%if(disabled){%> disabled="disabled"<%}%>><%=icon%><%=text%>'+/*(me.buttonOnly ? '<input type="file" />':'')+*/'</div>' + (me.buttonOnly ? '' : '</span>'))({
 				id : 'buttonEl',
 				cls : taurus.baseCSSPrefix + 'form-file-btn',
-				text : this.buttonText,
-				icon:this.renderIcon({
-					id:this.id,
-					iconUrl:this.iconUrl,
-					_hasIconCls:this._hasIconCls
+				text : me.buttonText,
+				icon:me.renderIcon({
+					id:me.id,
+					iconUrl:me.iconUrl,
+					_hasIconCls:me._hasIconCls
 				}),
-				disabled : this.disabled
+				disabled : me.disabled
 			});
 		},
+        onFileSelect:function(e){
+            var me = this,file = e.target.files[0],
+            fr = new FileReader();
+            fr.onload = function(){
+                console.log(arguments)
+                if(file.type == 'image/jpeg'){
+                    me.$el.append('<img src="'+fr.result+'">');
+                }
+                //me.$el.append('<img src="'+fr.result+'">');
+            };
+            //fr.readAsText(file);
+            if(file.type == 'image/jpeg'){
+                fr.readAsDataURL(file);
+            } else {
+                fr.readAsText(file);
+            }
+        },
 
 	    renderIcon: function(values) {
 	        return _.template(this.iconTpl)(values);
@@ -85,10 +105,11 @@
 		    return me;
 		},
 		afterRender:function(){
-			Trigger.prototype.afterRender.apply(this,arguments);
-			this.initFineUploader();
-			if(this.buttonOnly){
-				this.inputEl.hide();
+            var me = this;
+			me._super.apply(me,arguments);
+			me.initFineUploader();
+			if(me.buttonOnly){
+				me.inputEl.hide();
 			}
 		},
         didIconStateChange: function(old, current) {
@@ -99,10 +120,19 @@
 			var me = this;
 			me.uploader = new qq.FineUploaderBasic(_.extend({
 				button:me.buttonEl.get(0),
+                autoUpload:false,
+                multiple:false,
+                request:{
+                    endpoint:'/uploads'
+                },
 				callbacks:{
 					onComplete:function(id,name,responseJSON,xhr){
+                        console.log(me.buttonEl.find('input').get(0))
 						me.trigger('complete',id,name,responseJSON,xhr)
-					}
+					},
+                    onProgress:function(id,name,uploadedBytes,totalBytes){
+                        console.log(arguments)
+                    }
 				}
 			},this.fineUploaderOptions));
 		},

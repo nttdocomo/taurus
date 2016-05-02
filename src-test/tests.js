@@ -4,38 +4,52 @@ QUnit.config.autostart = false;
 
 // file: test/main.js
 seajs.use([
-	'../src/view/base'
-], function(Base
+	'../src/view/base',
+	'../src/classic/panel/panel'
+], function(Base,Panel
 	/* remember: the test modules don't export anything */) {
+	var shadowEl = $('<div></div>')
 	var base = new Base({
 		renderTo:$(document.body)
-	});
+	}),
+	panel = new Panel({
+		collapsible: true,
+		renderTo:shadowEl
+	})
 
 	// All the test files have been loaded, and all the tests have been
 	// defined--we're ready to start testing!
 	QUnit.init();
-	QUnit.test( "base init", function( assert ) {
+	QUnit.test( "base", function( assert ) {
 		assert.ok( undefined !== base.$el, "base has a $el" );
 		assert.ok( true === base.isRendered, "base isRendered is not true" );
-	});
-	QUnit.test( "base setSize", function( assert ) {
 		base.setSize(20,10)
 		assert.ok( 20 == base.getWidth(), "base width is not correcr" );
 		assert.ok( 10 == base.getHeight(), "base height is correcr" );
-	});
-	QUnit.test( "base setSize", function( assert ) {
 		base.setHeight(20)
 		assert.ok( 20 == base.getHeight(), "base width is correcr after set height" );
-	});
-	QUnit.test( "base setSize", function( assert ) {
 		base.setWidth(30)
 		assert.ok( 30 == base.getWidth(), "base width is correcr after set width" );
-	});
-	QUnit.test( "base showAt", function( assert ) {
 		base.$el.css('position','absolute')
 		base.showAt(10,10)
-		assert.ok( 10 == base.$el.position().left, "base width is correcr after set width" );
-		assert.ok( 10 == base.$el.position().top, "base width is correcr after set width" );
+		assert.ok( 10 == base.$el.position().left, "base position left is not correct" );
+		assert.ok( 10 == base.$el.position().top, "base position top is not correct" );
+		base.remove();
+	});
+
+	QUnit.test( "panel collapsible", function( assert ) {
+		panel.toggleCollapse({target:panel.$el.find('.tool-collapse-top')})
+		assert.ok( true == panel.collapsed, "panel is not collapsed" );
+		panel.toggleCollapse({target:panel.$el.find('.tool-expand-bottom')})
+		assert.ok( false == panel.collapsed, "panel is not expanded" );
+		var event = jQuery.Event('click');//模拟出发代理事件
+		event.target = panel.$el.find('.tool-collapse-top')[0];
+		panel.$el.trigger(event)
+		assert.ok( true == panel.collapsed, "panel is not collapsed" );
+		event = jQuery.Event('click');
+		event.target = panel.$el.find('.tool-expand-bottom')[0];
+		panel.$el.trigger(event)
+		assert.ok( false == panel.collapsed, "panel is not expanded" );
 	});
 	/*QUnit.test( "base showAt", function( assert ) {
 		function fmoney(s, n) {

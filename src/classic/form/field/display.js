@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./base','../../taurus'], factory);
+			define(['./base','taurus'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./base'),require('../../taurus'));
+				return factory(require('./base'),require('taurus'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./base'),require('../../taurus'));
+		module.exports = factory(require('./base'),require('taurus'));
 	}
 }(this, function(Base,taurus) {
 	return Base.extend({
@@ -21,7 +21,7 @@
 		getRawValue:function(){
 			return this.rawValue;
 		},
-    
+
 	    valueToRaw: function(value) {
 	        if (value || value === 0 || value === false) {
 	            return value;
@@ -32,7 +32,7 @@
 
 	    setRawValue: function(value) {
 	        var me = this;
-	            
+
 	        value = taurus.value(value, '');
 	        me.rawValue = value;
 	        if (me.rendered) {

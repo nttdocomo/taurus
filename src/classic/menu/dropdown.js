@@ -2,7 +2,7 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Base = require('../view/base');
+	var Base = require('../../view/base');
 	return Base.extend({
 		type : 'warning',
 		tagName:'ul',

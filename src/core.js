@@ -34,7 +34,7 @@
 					}
 				}
 				if(define.cmd){
-					define(function(require, exports, module){
+					define(dependencies,function(require, exports, module){
 						var getDeps = function(dependencies){
 							var deps = [];
 							for (var i = 0; i < dependencies.length; i++) {

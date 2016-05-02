@@ -13,15 +13,15 @@
 (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(["./comboBox","./picker","../../picker/time",'../../underscore','../../moment','../../backbone'], factory);
+			define(["./comboBox","./picker","../../picker/time",'underscore','moment','backbone'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-		        return factory(require('./comboBox'),require("./picker"),require("../../picker/time"),require('../../underscore'),require('../../moment'),require('../../backbone'));
+		        return factory(require('./comboBox'),require("./picker"),require("../../picker/time"),require('underscore'),require('moment'),require('backbone'));
 		     })
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require("./comboBox"),require("./picker"),require("../../picker/time"),require('../../underscore'),require('../../moment'),require('../../backbone'));
+		module.exports = factory(require("./comboBox"),require("./picker"),require("../../picker/time"),require('underscore'),require('moment'),require('backbone'));
 	} else {
 		root.myModule = factory();
 	}
@@ -71,13 +71,13 @@
 	        	m: minutes || 0,
 	        	s:seconds || 0,
 	        	ms:0
-	        });    
+	        });
 	    },
 		initComponent: function() {
 	        var me = this,
 	            min = me.minValue,
 	            max = me.maxValue;
-	        
+
 	        if (min) {
 	            me.setMinValue(min);
 	        }

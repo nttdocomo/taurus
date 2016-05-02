@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../class','underscore'], factory);
+			define(['class','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../class'),require('underscore'));
+				return factory(require('class'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../class'),require('underscore'));
+		module.exports = factory(require('class'),require('underscore'));
 	}
 }(this, function(Class,_){
 	return Class.extend({
@@ -40,7 +40,7 @@
 	    cacheColumns: function() {
 	        var columns = this.getHeaderColumns(this.headerCt),
 	            second = this.secondHeaderCt;
-	            
+
 	        if (second) {
 	            columns = columns.concat(this.getHeaderColumns(second));
 	        }
@@ -63,7 +63,7 @@
 	        var columns = this.getColumns(),
 	            len = columns.length,
 	            i, header;
-	            
+
 	        for (i = 0; i < len; ++i) {
 	            header = columns[i];
 	            if (header.getItemId() === id) {
@@ -72,7 +72,7 @@
 	        }
 	        return null;
 	    },
-    
+
 	    getHeaderColumns: function(header) {
 	        var result = this.visibleOnly ? header.getVisibleGridColumns() : header.getGridColumns();
 	        return _.clone(result);

@@ -32,27 +32,28 @@
 				'header':'.panel-title',
 				'frameBody' : '.panel-body'
 			}, childEls);
-			Base.prototype.applyChildEls.call(this,childEls);
+			this._super.call(this,childEls);
 		},
 		initialize:function(){
-			Base.prototype.initialize.apply(this,arguments);
+			this._super.apply(this,arguments);
 			if(this.header){
 				this.$el.addClass('has-header');
 			}
 		},
 		afterRender:function(){
-			Base.prototype.afterRender.apply(this,arguments);
 			var me = this,headEl = me.headEl,headElHeight;
+    		me._super.apply(this,arguments);
 			me.setHeaderStyle();
 		},
 		getTplData : function() {
+            var me = this;
 			return {
-				header:this.header,
-				title:this.collapsible ? this.title + '<span class="tool-collapse-top"></span>' : this.title,
-				content:this.loading ? (new Spinner({
-					renderTo:this.$el
-				})).renderHtml() : this.content,
-				tool:this.refreshable ? '<a href="" class="pull-right halflings refresh" data-name="refresh" data-type="" data-prefix="halflings" data-utf="E031"></a>':''
+				header:me.header,
+				title:me.collapsible ? me.title + '<span class="tool-collapse-top"></span>' : me.title,
+				content:me.loading ? (new Spinner({
+					renderTo:me.$el
+				})).renderHtml() : me.content,
+				tool:me.refreshable ? '<a href="" class="pull-right halflings refresh" data-name="refresh" data-type="" data-prefix="halflings" data-utf="E031"></a>':''
 			};
 		},
 
@@ -61,9 +62,10 @@
 	     * @return {Ext.panel.Panel} this
 	     */
 	    toggleCollapse: function(e) {
-	        this.collapsed ? this.expand() : this.collapse();
+            var me = this;
+	        me.collapsed ? me.expand() : me.collapse();
 	    	$(e.target).toggleClass('tool-collapse-top').toggleClass('tool-expand-bottom');
-	    	this.$el.toggleClass('collapsed');
+	    	me.$el.toggleClass('collapsed');
 	    	return false;
 	    },
 	    expand:function(){
@@ -79,7 +81,7 @@
 			return false;
 		},
 		getItemContainer : function() {
-			return Base.prototype.getItemContainer.apply(this,arguments).find('.panel-body');
+			return this._super.apply(this,arguments).find('.panel-body');
 		},
 		/**
          * This is used to determine where to insert the 'html', 'contentEl' and 'items' in this component.
@@ -103,7 +105,7 @@
 	        var me = this,
 	            oldTitle = me.title,
 	            header = me.header
-	        
+
 	        if (title !== oldTitle) {
 	            me.title = title;
 

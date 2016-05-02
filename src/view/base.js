@@ -1,36 +1,37 @@
 /**
  * @author nttdocomo
  */
- (function (root, factory) {
+ /*(function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
 			define(['../state/stateful','underscore','../taurus','backbone','backbone-super','../lang/number','../mixins','../jquery.ui.position'], factory);
 		}
 		if(define.cmd){
-			define(function(require, exports, module){
+			define(['../state/stateful','underscore','../taurus','backbone','backbone-super','../lang/number','../mixins','../jquery.ui.position'],function(require, exports, module){
 				return factory(require('../state/stateful'),require('underscore'),require('../taurus'),require('backbone'),require('backbone-super'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
 		module.exports = factory(require('../state/stateful'),require('underscore'),require('../taurus'),require('backbone'),require('backbone-super'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
 	}
-}(this, function(Stateful,_,taurus,Backbone) {
+}(this, */taurus.klass(['../state/stateful','underscore','../taurus','backbone','backbone-super','../lang/number','../mixins','../jquery.ui.position'],function(Stateful,_,taurus,Backbone) {
 	return Backbone.View.extend({
 		isRendered : false,
 		doc : taurus.$doc,
 		_ensureElement : function() {
-			if (!this.el) {
-				var attrs = _.extend({}, _.result(this, 'attributes'));
-				if (this.id)
-					attrs.id = _.result(this, 'id');
+            var me = this;
+			if (!me.el) {
+				var attrs = _.extend({}, _.result(me, 'attributes'));
+				if (me.id)
+					attrs.id = _.result(me, 'id');
 				else
-					this.id = attrs.id = _.result(this, 'cid');
-				if (this.className)
-					attrs['class'] = _.result(this, 'className');
-				var $el = Backbone.$('<' + _.result(this, 'tagName') + '>').attr(attrs);
-				this.setElement($el, false);
+					me.id = attrs.id = _.result(me, 'cid');
+				if (me.className)
+					attrs['class'] = _.result(me, 'className');
+				var $el = Backbone.$('<' + _.result(me, 'tagName') + '>').attr(attrs);
+				me.setElement($el, false);
 			} else {
-				this.setElement(_.result(this, 'el'), false);
+				me.setElement(_.result(me, 'el'), false);
 			}
 		},
 		addClass:function(cls){
@@ -174,11 +175,10 @@
 	            this.show();
 	        }
 			this.$el.data('component', this);
-			this.on(this.listeners);
 			if (this.cls) {
 	            this.$el.addClass(this.cls);
 	        }
-	        this.delegateEvents();
+			this.on(this.listeners);
 		},
 
         /**
@@ -724,4 +724,4 @@
 		INVALID_ID_CHARS_Re: /[\.,\s]/g,
 		updateLayout:function(){}
 	}).mixins(Stateful);
-}));
+})/*)*/;
