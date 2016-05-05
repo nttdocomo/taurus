@@ -29,7 +29,8 @@
 		baseCls:'form-field',
 		invalidText : 'The value in this field is invalid',
 		checkChangeBuffer : 50,
-		fieldSubTpl:'<input id="<%=id%>" type="<%=type%>" class="form-control <%=fieldCls%>"<%if(typeof(placeholder) !== "undefined"){%> placeholder="<%=placeholder%>"<%}%><%if(typeof(value) !== "undefined"){%> value="<%=value%>"<%}%><%if(typeof(checked) !== "undefined"){%> checked="<%=checked%>"<%}%><%if(readOnly){%> readonly="readonly"<%}%> name="<%=name%>"<%if(typeof(maxLength) !== "undefined"){%> maxLength="<%=maxLength%>"<%}%><%if(disabled){%> disabled="<%=disabled%>"<%}%> />',
+        fieldTpl:'<input id="<%=id%>" type="<%=type%>" class="form-control <%=fieldCls%>"<%if(typeof(placeholder) !== "undefined"){%> placeholder="<%=placeholder%>"<%}%><%if(typeof(value) !== "undefined"){%> value="<%=value%>"<%}%><%if(typeof(checked) !== "undefined"){%> checked="<%=checked%>"<%}%><%if(readOnly){%> readonly="readonly"<%}%> name="<%=name%>"<%if(typeof(maxLength) !== "undefined"){%> maxLength="<%=maxLength%>"<%}%><%if(disabled){%> disabled="<%=disabled%>"<%}%> />',
+		fieldSubTpl:'<%=field%>',
 		checkChangeEvents : !Modernizr.hasEvent('dragdrop',document.createElement('input')) && (!document.documentMode || document.documentMode < 9) ? ['change', 'propertychange','keyup'] : ['change', 'input', 'textInput', 'keyup', 'dragdrop'],
 		/**
 		 * @private
@@ -163,8 +164,22 @@
 	            type = me.inputType,
 	            inputId = me.getInputId(),
 	            data;
-	        
-	        data = $.extend({
+
+	        data = {
+	            field: me.getFieldMarkup()
+	        };
+
+	        //me.getInsertionRenderData(data, me.subTplInsertions);
+
+	        return data;
+	    },
+        getFieldTplData:function(){
+	        var me = this,
+	            type = me.inputType,
+	            inputId = me.getInputId(),
+	            data;
+
+	        data = {
 	            id         : inputId,
 	            cmpId      : me.cid,
 	            name       : me.name || inputId,
@@ -176,26 +191,14 @@
 	            fieldStyle : me.getInputStyle(),
 	            tabIdx     : me.tabIndex,
 	            typeCls    : 'form-' + (type === 'password' ? 'text' : type)
-	        }, me.subTplData);
-	
+	        };
+
 	        //me.getInsertionRenderData(data, me.subTplInsertions);
-	
+
 	        return data;
-	    },
-		getFieldHtml : function() {
-			var div = document.createElement("div");
-			div.appendChild((new Backbone.View({
-				id : 'inputEl',
-				className:(this.readOnly || !this.editable) ? 'trigger-noedit form-control':'form-control',
-				attributes : {
-					style:this.getInputStyle(),
-					type : this.inputType,
-					value : this.value,
-					readonly : (this.readOnly || !this.editable)
-				},
-				tagName : this.editable ? 'input':'div'
-			})).render().el);
-			return div.innerHTML;
+        },
+		getFieldMarkup : function() {
+			return _.template(this.fieldTpl)(this.getFieldTplData());
 		},
 		getInputStyle:function(){
 			var style = '';
@@ -225,7 +228,7 @@
 	                me.markInvalid(errors);
 	            }
 	        }
-	
+
 	        return isValid;
 		},
 		clearInvalid : function() {

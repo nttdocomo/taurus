@@ -30,7 +30,7 @@
 		},
 		events : {
 			'change #fileInputEl' : 'onFileChange',
-    		'change #buttonEl > input' : 'onFileSelect',
+    		'change #buttonEl > input' : '_onInputChange',
 			'click .qq-upload-cancel' : 'cancel'
 		},
 		initialize : function(options) {
@@ -45,7 +45,7 @@
 		 */
 		getTriggerMarkup : function() {
             var me = this;
-			return _.template((me.buttonOnly ? '' : '<span id="<%=id%>" class="input-group-btn <%=cls%>">') + '<div id="buttonEl" class="btn btn-primary' + (me.buttonOnly ? ' <%=cls%>' : '') + '" <%if(disabled){%> disabled="disabled"<%}%>><%=icon%><%=text%>'+/*(me.buttonOnly ? '<input type="file" />':'')+*/'</div>' + (me.buttonOnly ? '' : '</span>'))({
+			return _.template((me.buttonOnly ? '' : '<span id="<%=id%>" class="input-group-btn <%=cls%>">') + '<div id="buttonEl" class="btn btn-primary' + (me.buttonOnly ? ' <%=cls%>' : '') + '" <%if(disabled){%> disabled="disabled"<%}%>><%=icon%><%=text%>'+(me.buttonOnly ? me.getFieldMarkup():'')+'</div>' + (me.buttonOnly ? '' : '</span>'))({
 				id : 'buttonEl',
 				cls : taurus.baseCSSPrefix + 'form-file-btn',
 				text : me.buttonText,
@@ -57,7 +57,7 @@
 				disabled : me.disabled
 			});
 		},
-        onFileSelect:function(e){
+        _onInputChange:function(e){
             var me = this,file = e.target.files[0],
             fr = new FileReader();
             fr.onload = function(){
@@ -108,9 +108,9 @@
             var me = this;
 			me._super.apply(me,arguments);
 			me.initFineUploader();
-			if(me.buttonOnly){
+			/*if(me.buttonOnly){
 				me.inputEl.hide();
-			}
+			}*/
 		},
         didIconStateChange: function(old, current) {
             var currentEmpty = _.isEmpty(current);
@@ -118,7 +118,7 @@
         },
 		initFineUploader:function(){
 			var me = this;
-			me.uploader = new qq.FineUploaderBasic(_.extend({
+			/*me.uploader = new qq.FineUploaderBasic(_.extend({
 				button:me.buttonEl.get(0),
                 autoUpload:false,
                 multiple:false,
@@ -134,7 +134,7 @@
                         console.log(arguments)
                     }
 				}
-			},this.fineUploaderOptions));
+			},this.fineUploaderOptions));*/
 		},
 		_syncHasIconCls: function() {
             var me = this,
