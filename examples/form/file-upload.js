@@ -2,7 +2,7 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var File = require("../../src/classic/form/field/file"),
+	var File = require("../../src/classic/form/field/fileUpload"),
 	Backbone = require("../../src/backbone"),
 	$body = $("#main");
 	new File({
