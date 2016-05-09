@@ -28,7 +28,7 @@
 		tpl:'<ul></ul>'
 	})
 }));*/
-taurus.klass('taurus.IOS.form.Form',["../../view/base","./tableCell","underscore"],function(Base,TableCell,_) {
+taurus.klass('taurus.IOS.form.Form',["../../view/base","underscore"],function(Base,TableCell,_) {
 	return Base.extend({
 		className:'list-block',
 		tpl:'<ul></ul>',
