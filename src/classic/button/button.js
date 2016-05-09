@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../view/base','../menu/menu','../menu/manager','./manager','../taurus','underscore'], factory);
+			define(['../../view/base','../menu/menu','../menu/manager','./manager','taurus','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../../view/base'),require('../menu/menu'),require('../menu/manager'),require('./manager'),require('../taurus'),require('underscore'));
+				return factory(require('../../view/base'),require('../menu/menu'),require('../menu/manager'),require('./manager'),require('taurus'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../view/base'),require('../menu/menu'),require('../menu/manager'),require('./manager'),require('../taurus'),require('underscore'));
+		module.exports = factory(require('../../view/base'),require('../menu/menu'),require('../menu/manager'),require('./manager'),require('taurus'),require('underscore'));
 	}
 }(this, function(Base,Menu,MenuManager,ButtonManager,taurus,_) {
 	return Base.extend({
@@ -269,11 +269,11 @@
 	    setMenu: function(menu, destroyMenu) {
 	        var me = this,
 	            oldMenu = me.menu;
-	            
+
 	        if (oldMenu) {
 	            delete oldMenu.parentMenu;
 	            delete oldMenu.ownerItem;
-	            
+
 	            if (destroyMenu === true || (destroyMenu !== false && me.destroyMenu)) {
 	                //Ext.destroy(oldMenu);
 	            }

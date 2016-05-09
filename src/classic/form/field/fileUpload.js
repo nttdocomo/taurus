@@ -31,6 +31,7 @@
                     },
                     onProgress:function(id,name,uploadedBytes,totalBytes){
                         console.log(arguments)
+                        me.onProgress(id,name,uploadedBytes,totalBytes)
                     }
                 }
             },this.fineUploaderOptions));
