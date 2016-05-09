@@ -31,9 +31,11 @@
 		};
 	})();
 	return Base.extend({
-		trickle:true,
+		isTrickle:true,
 		trickleSpeed:500,
-		speed:
+		speed:350,
+        minimum: 0.08,
+        status:null,
 		tpl:'<div class="progress-bar"></div>',
 		className:'progress',
 		childEls : {
@@ -63,6 +65,12 @@
 			if (n > max) return max;
 			return n;
 		},
+        done : function(force) {
+            var me = this;
+            if (!force && !me.status) return this;
+
+            return me.inc(0.3 + 0.5 * Math.random()).set(1);
+        },
 		getPositioningCSS:function(){
 			// Sniff on document.body.style
 		    var bodyStyle = document.body.style,
@@ -85,7 +93,7 @@
 		    }
 		},
 		inc : function(amount) {
-			var n = me.status;
+			var me = this,n = me.status;
 
 			if (!n) {
 				return me.start();
@@ -114,6 +122,7 @@
 				n = me.clamp(n + amount, 0, 0.994);
 				return me.set(n);
 			}
+            return me;
 		},
 		isStarted : function() {
 			return typeof this.status === 'number';
@@ -130,7 +139,7 @@
 					work();
 				}, me.trickleSpeed);
 			};
-			if (me.trickle) work();
+			if (me.isTrickle) work();
 		},
 		set:function(n){
 			var me = this;started = me.isStarted();
@@ -174,6 +183,7 @@
 					setTimeout(next, speed);
 				}
 		    });
+            return me;
 		},
 		/**
 	    * (Internal) converts a percentage (`0..1`) to a bar translateX
@@ -183,7 +193,7 @@
 			return (-1 + n) * 100;
 		},
 		trickle : function() {
-			return me.inc();
+			return this.inc();
 		}
 	})
 }));
