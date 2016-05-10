@@ -45,10 +45,13 @@
 		 */
 		getTriggerMarkup : function() {
             var me = this;
-			return _.template((me.buttonOnly ? '' : '<span id="<%=id%>" class="input-group-btn <%=cls%>">') + '<div id="buttonEl" class="btn btn-primary' + (me.buttonOnly ? ' <%=cls%>' : '') + '" <%if(disabled){%> disabled="disabled"<%}%>><%=icon%><%=text%>'+(me.buttonOnly ? me.getFieldMarkup():'')+'</div>' + (me.buttonOnly ? '' : '</span>'))({
+			return _.template((me.buttonOnly ? '' : '<span id="<%=id%>" class="input-group-btn <%=cls%>">') + '<div id="buttonEl" class="btn btn-primary' + (me.buttonOnly ? ' <%=cls%>' : '') + '" <%if(disabled){%> disabled="disabled"<%}%>><%=icon%><%=text%>'+(me.buttonOnly ? me.fieldSubTpl:'')+'</div>' + (me.buttonOnly ? '' : '</span>'))({
 				id : 'buttonEl',
 				cls : taurus.baseCSSPrefix + 'form-file-btn',
 				text : me.buttonText,
+				type : me.inputType,
+				fieldCls : me.fieldCls,
+				readOnly : me.readOnly || !me.editable,
 				icon:me.renderIcon({
 					id:me.id,
 					iconUrl:me.iconUrl,

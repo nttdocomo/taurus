@@ -46,7 +46,7 @@
 		
 		afterRender:function(){
 			Base.prototype.afterRender.apply(this,arguments);
-			this.initShadowInputEl();
+			//this.initShadowInputEl();
 		},
 		initShadowInputEl:function(){
 			var checked = this.checked;
