@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../label','./field','underscore','backbone','modernizr'], factory);
+			define(['../label','./field','underscore','backbone','modernizr','i18n'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../label'),require('./field'),require('underscore'),require('backbone'),require('modernizr'));
+				return factory(require('../label'),require('./field'),require('underscore'),require('backbone'),require('modernizr'),require('i18n'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../label'),require('./field'),require('underscore'),require('backbone'),require('modernizr'));
+		module.exports = factory(require('../label'),require('./field'),require('underscore'),require('backbone'),require('modernizr'),require('i18n'));
 	}
 }(this, function(Label,Field,_,Backbone,Modernizr) {
 	return Label.extend({
@@ -27,7 +27,7 @@
 	    submitValue: true,
 		fieldCls : taurus.baseCSSPrefix + 'form-field',
 		baseCls:'form-field',
-		invalidText : 'The value in this field is invalid',
+		invalidText : i18n.__('The value in this field is invalid'),
 		checkChangeBuffer : 50,
 		fieldSubTpl:'<input id="<%=id%>" type="<%=type%>" class="form-control <%=fieldCls%>"<%if(typeof(placeholder) !== "undefined"){%> placeholder="<%=placeholder%>"<%}%><%if(typeof(value) !== "undefined"){%> value="<%=value%>"<%}%><%if(typeof(checked) !== "undefined"){%> checked="<%=checked%>"<%}%><%if(readOnly){%> readonly="readonly"<%}%> name="<%=name%>"<%if(typeof(maxLength) !== "undefined"){%> maxLength="<%=maxLength%>"<%}%><%if(disabled){%> disabled="<%=disabled%>"<%}%> />',
 		checkChangeEvents : !Modernizr.hasEvent('dragdrop',document.createElement('input')) && (!document.documentMode || document.documentMode < 9) ? ['change', 'propertychange','keyup'] : ['change', 'input', 'textInput', 'keyup', 'dragdrop'],
@@ -163,7 +163,7 @@
 	            type = me.inputType,
 	            inputId = me.getInputId(),
 	            data;
-	        
+
 	        data = $.extend({
 	            id         : inputId,
 	            cmpId      : me.cid,
@@ -177,9 +177,9 @@
 	            tabIdx     : me.tabIndex,
 	            typeCls    : 'form-' + (type === 'password' ? 'text' : type)
 	        }, me.subTplData);
-	
+
 	        //me.getInsertionRenderData(data, me.subTplInsertions);
-	
+
 	        return data;
 	    },
 		getFieldHtml : function() {
@@ -225,7 +225,7 @@
 	                me.markInvalid(errors);
 	            }
 	        }
-	
+
 	        return isValid;
 		},
 		clearInvalid : function() {
