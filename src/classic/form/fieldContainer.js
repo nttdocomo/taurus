@@ -58,7 +58,8 @@
 			if(this.combineErrors){
 				cmp.msgTarget = false;
 			}
-			var Cls;
+			return this._super.apply(this,arguments)
+			/*var Cls;
 			if (_.has(cmp, 'cls')) {
 				Cls = cmp['cls'];
 			} else {
@@ -69,7 +70,7 @@
 					//renderTo:this.getItemContainer(cmp)
 				}));
 			}
-			return false;
+			return false;*/
 		},
         render:function(){
         	this.$el.addClass('form-fieldcontainer-' + this.direction)

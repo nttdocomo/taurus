@@ -16,28 +16,29 @@
 	}
 }(this, function(File,taurus,_,i18n) {
 	return File.extend({
-        addFiles:function(data, params, endpoint){
-            var me = this;
-            if (data) {
-                _.each(data,function(idx, fileContainer){
-                    if (me.isFileOrInput(fileContainer)) {
-                        processFileOrInput(fileContainer);
+        initFineUploader:function(){
+            var me = this,
+            button = document.createElement('div');
+            me.uploader = new qq.FineUploaderBasic(_.extend({
+                button:button,
+                multiple:false,
+                request:{
+                    endpoint:'/uploads'
+                },
+                callbacks:{
+                    onComplete:function(id,name,responseJSON,xhr){
+                        me.trigger('complete',id,name,responseJSON,xhr)
+                    },
+                    onProgress:function(id,name,uploadedBytes,totalBytes){
+                        console.log(arguments)
+                        me.onProgress(id,name,uploadedBytes,totalBytes)
                     }
-                })
-            }
-        },
-        isFile:function(maybeFile){
-            return window.File && Object.prototype.toString.call(maybeFile) === "[object File]";
-        },
-        isFileOrInput:function(maybeFileOrInput){
-            return me.isFile(maybeFileOrInput) || me.isInput(maybeFileOrInput);
-        },
-        isInput:function(maybeInput){
-            return _.isElement(maybeInput)
+                }
+            },this.fineUploaderOptions));
         },
         _onInputChange:function(e){
-            var me = this,input = e.target
-            me.addFiles(input)
+            var me = this,input = $(e.target)
+            me.uploader.addFiles(e.target)
         }
 	});
 }));

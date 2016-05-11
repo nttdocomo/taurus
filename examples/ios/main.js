@@ -89,7 +89,7 @@
 	    		var item,deps = [];
 	    		if(chance.bool()){
 	    			item = {
-						cls:Table,
+						'class':Table,
 						collection:new Backbone.Collection(cells),
 						columns:[{
 							dataIndex:'text'
@@ -97,24 +97,30 @@
 					};
 	    		} else {
 	    			item = {
-						cls:Form,
+						'class':Form,
 						items:[{
-							cls:Text
+							'class':Text
 						}]
 					};
 	    		}
-	    		var page = new Page({
-	    			title:chance.word(),
-	    			items:[{
-						cls:Form,
-						items:[{
-							cls:Text,
-							name:chance.word(),
-							fieldLabel:chance.word()
+	    		require.async(['../../src/ios/form/field/switch'],function(Switch){
+		    		var page = new Page({
+		    			title:chance.word(),
+		    			items:[{
+							'class':Form,
+							items:[{
+								'class':Text,
+								name:chance.word(),
+								fieldLabel:chance.word()
+							},{
+								'class':Switch,
+								name:chance.word(),
+								fieldLabel:chance.word()
+							}]
 						}]
-					}]
+		    		})
+	    			me.setActivePage(page)
 	    		})
-	    		me.setActivePage(page)
 	    	})
 	    },
 		setActivePage:function(page){

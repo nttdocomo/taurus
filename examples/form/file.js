@@ -2,19 +2,12 @@
  * @author nttdocomo
  */
 define(function(require) {
-	require("backbone");
-	var File = require("../../src/form/field/file.js");
-	var $body = $("#main");
+	var File = require("../../src/classic/form/field/file"),
+	Backbone = require("../../src/backbone"),
+	$body = $("#main");
 	new File({
 		renderTo : $body,
-		name : 'textfield1',
-		fieldLabel : 'country',
-		id:'textfield1'
+		fieldLabel : '应用平台',
+		buttonOnly:true
 	});
-	new File({
-		renderTo : $body,
-		buttonOnly: true,
-		name : 'textfield1',
-		id:'textfield1'
-	});
-})
+});

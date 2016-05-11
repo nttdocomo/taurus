@@ -584,13 +584,13 @@
 		},
 		lookupComponent : function(cmp) {
 			var Cls;
-			if (_.has(cmp, 'cls')) {
-				Cls = cmp['cls'];
+			if (_.has(cmp, 'class')) {
+				Cls = cmp['class'];
 			} else {
 				Cls = this.defaultType;
 			}
 			if(Cls){
-				return new Cls($.extend(_.omit(cmp, 'cls'),{
+				return new Cls($.extend(_.omit(cmp, 'class'),{
 					//renderTo:this.getItemContainer(cmp)
 				}));
 			}
@@ -630,7 +630,11 @@
 					item.onAdded(me, pos);
 				} else {
 					me.items.splice(pos, 0, item);
-					item.onAdded(me, pos);
+					try{
+						item.onAdded(me, pos);
+					} catch(e){
+						console.log(e)
+					}
 					me.onAdd(item, pos);
 					layout && layout.onAdd(item, pos);
 				}

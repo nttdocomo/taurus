@@ -4,13 +4,13 @@
 		    // Now we're wrapping the factory and assigning the return
 		    // value to the root (window) and returning it as well to
 		    // the AMD loader.
-		    define(["../view/listItem",'../../form/field/checkbox','../../classic/form/checkboxManager',"underscore"], function(Base,_){
+		    define(["../../view/listItem",'../../../form/field/checkbox','../../../classic/form/checkboxManager',"underscore"], function(Base,_){
 		    	return (root.myModule = factory(Base));
 		    });
 		}
 	  	if(define.cmd){
 	  		define(function(require, exports, module){
-				return factory(require('../view/listItem'),require('../../form/field/checkbox'),require('../../classic/form/checkboxManager'),require('underscore'));
+				return factory(require('../../view/listItem'),require('../../../form/field/checkbox'),require('../../../classic/form/checkboxManager'),require('underscore'));
 			})
 	  	}
 	} else if(typeof module === "object" && module.exports) {
@@ -18,7 +18,7 @@
 	    // run into a scenario where plain modules depend on CommonJS
 	    // *and* I happen to be loading in a CJS browser environment
 	    // but I'm including it for the sake of being thorough
-	    module.exports = (root.myModule = factory(require("../view/listItem"),require('../../form/field/checkbox'),require('../../classic/form/checkboxManager'),require('underscore')));
+	    module.exports = (root.myModule = factory(require("../../view/listItem"),require('../../../form/field/checkbox'),require('../../../classic/form/checkboxManager'),require('underscore')));
 	} else {
 	    root.myModule = factory(root.postal);
 	}
