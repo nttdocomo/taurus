@@ -15,3 +15,15 @@
 	opacity: 0;
 	font-size: 1000px
 }
+.form-file-btn input{
+	position: absolute;
+    right: 0px;
+    top: 0px;
+    font-family: Arial;
+    font-size: 118px;
+    margin: 0px;
+    padding: 0px;
+    cursor: pointer;
+    opacity: 0;
+    height: 100%;
+}

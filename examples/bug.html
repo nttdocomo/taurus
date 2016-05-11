@@ -1,54 +1,190 @@
-<!DOCTYPE html>
-<html>
+
+ <!DOCTYPE html>
+ <!--[if lte IE 8]> <html class="no-backgroundsize"> <![endif]-->
+<html class="backgroundsize">
 <head>
-  <title>iPad input focus</title>
-  <style type="text/css">
-
-    body, body * { margin: 0; padding: 0; }
-
-    #page{ width: 100%; height: 200px; text-align: center;
-      position: absolute; top:50%; margin-top: -100px; }
-
-    #page .input, #page .button {
-      font-size: 48px; border-radius: 10px; padding: 5px;
-    }
-
-    #page .input {
-      border: 3px solid orange; outline-style: none; text-align: center;
-    }
-
-    #page p { margin-bottom: 60px; }
-  </style>
-  <script type="text/javascript">
-    window.addEventListener('DOMContentLoaded', function() {
-      var button = document.querySelector('#button');
-      var input = document.querySelector('#input');
-      var focus = function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        var clone = input.cloneNode(true);
-        var parent = input.parentElement;
-        parent.appendChild(clone);
-        parent.replaceChild(clone, input);
-        input = clone;
-        window.setTimeout(function() {
-          input.value = input.value || "";
-          input.focus();
-        }, 0);
-      }
-      button.addEventListener('mousedown', focus);
-      button.addEventListener('touchstart', focus);
-    }, false);
-  </script>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="Keywords" content="滴滴出行平台,滴滴出行,打车平台,滴滴,打车,滴滴企业版,小橘科技">
+    <meta name="description" content="基于滴滴出行平台，为企业用车提供一站式解决方案：海量优质车型，实时调度，会议、商务用车尽享便捷；多种灵活用车方式，专车、包车、接送机一键完成！" />
+    <title>滴滴企业版</title>
+    <link rel="shortcut icon" href="//static-es.xiaojukeji.com/fukit/app/public/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="//static-es.xiaojukeji.com/fukit/app/public/images/favicon.ico" type="image/x-icon">
+    <link href="//static-es.xiaojukeji.com/fukit/app/home/sales/201601/css/reset.css" rel="stylesheet" />
+    <link href="//static-es.xiaojukeji.com/fukit/app/home/sales/201601/css/idangerous.swiper.css" rel="stylesheet" />
+    <link href="//static-es.xiaojukeji.com/fukit/app/home/sales/201601/css/index20160413.css" rel="stylesheet" />
+    <link href="//static-es.xiaojukeji.com/fukit/app/home/styles/sidebar.css" rel="stylesheet" type="text/css">
+    <link href="//static-es.xiaojukeji.com/fukit/app/public/styles/font.css" rel="stylesheet" type="text/css">
+    <style>
+        @-webkit-keyframes rotate {
+            from {-webkit-transform:rotate(0deg);}
+            to {-webkit-transform:rotate(360deg);}
+        }
+        .loading{ background:#333; height:100%; position:relative; width:100%; z-index:111;}
+        .icon-spinner2{ width:80px; height:80px; position:absolute; left:50%; top:50%; margin-left:-40px; margin-top:-40px; z-index:111;
+            -webkit-transform:rotate(0deg);
+            -moz-transform:rotate(0deg);
+            transform:rotate(0deg);
+            -webkit-mask-size: 62px 62px;
+            -webkit-animation-name: rotate;
+            -webkit-animation-duration: 1.5s;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-animation-timing-function: linear;
+        }
+    </style>
+    <script type="text/javascript" src="//static-es.xiaojukeji.com/fukit/app/public/js/utmSourceCnzz1.1.js"></script>
 </head>
 <body>
-  <div id="page">
-    <p>
-      <input id="input" type="text" class="input" />
-    </p>
-    <p>
-      <div id="button" class="button">Focus</div>
-    </p>
-  </div>
+    <div class="loading">
+        <svg class="icon icon-spinner2" viewBox="0 0 1024 1024">
+            <path class="path1" fill="#ff8903" d="M1024 512c-1.278-66.862-15.784-133.516-42.576-194.462-26.704-61-65.462-116.258-113.042-161.92-47.552-45.696-103.944-81.82-164.984-105.652-61.004-23.924-126.596-35.352-191.398-33.966-64.81 1.282-129.332 15.374-188.334 41.356-59.048 25.896-112.542 63.47-156.734 109.576-44.224 46.082-79.16 100.708-102.186 159.798-23.114 59.062-34.128 122.52-32.746 185.27 1.286 62.76 14.964 125.148 40.134 182.206 25.088 57.1 61.476 108.828 106.11 151.548 44.61 42.754 97.472 76.504 154.614 98.72 57.118 22.304 118.446 32.902 179.142 31.526 60.708-1.29 120.962-14.554 176.076-38.914 55.15-24.282 105.116-59.48 146.366-102.644 41.282-43.14 73.844-94.236 95.254-149.43 13.034-33.458 21.88-68.4 26.542-103.798 1.246 0.072 2.498 0.12 3.762 0.12 35.346 0 64-28.652 64-64 0-1.796-0.094-3.572-0.238-5.332h0.238zM922.306 681.948c-23.472 53.202-57.484 101.4-99.178 141.18-41.67 39.81-91 71.186-144.244 91.79-53.228 20.678-110.29 30.452-166.884 29.082-56.604-1.298-112.596-13.736-163.82-36.474-51.25-22.666-97.684-55.49-135.994-95.712-38.338-40.198-68.528-87.764-88.322-139.058-19.87-51.284-29.228-106.214-27.864-160.756 1.302-54.552 13.328-108.412 35.254-157.69 21.858-49.3 53.498-93.97 92.246-130.81 38.73-36.868 84.53-65.87 133.874-84.856 49.338-19.060 102.136-28.006 154.626-26.644 52.5 1.306 104.228 12.918 151.562 34.034 47.352 21.050 90.256 51.502 125.624 88.782 35.396 37.258 63.21 81.294 81.39 128.688 18.248 47.392 26.782 98.058 25.424 148.496h0.238c-0.144 1.76-0.238 3.536-0.238 5.332 0 33.012 24.992 60.174 57.086 63.624-6.224 34.822-16.53 68.818-30.78 100.992z"></path>
+        </svg>
+    </div>
+    <div class="header-x clearfix">
+        <div class="header-x-lot">
+            <a href="javascript:void(0);" class="side-btn"><span class="icon icon-hamburg"></span></a>
+            <a class="logo" href="//es.xiaojukeji.com/" boss="source"></a>
+            <ul id="headnav" class="nav clearfix">
+                <li class="current"><a href="//es.xiaojukeji.com/" boss="source">首页</a></li>
+                <li class="current give-3000"><a class="user-give-3000" href="//es.xiaojukeji.com/web/activity/index.html" boss="source">送3000</a></li>
+                <li class=""><a href="//static-es.xiaojukeji.com/site/pages/publicity_es/channel/index.html" boss="source">合作伙伴</a></li>
+                <li class=""><a href="//open.es.xiaojukeji.com" boss="source">开放平台</a></li>
+                <!-- <li class=""><a href="//es.xiaojukeji.com/Welcome/actintro" boss="source">促销</a></li> -->
+                <li class=""><a href="//static-es.xiaojukeji.com/fukit/app/zeus/150910/faq/index.html" boss="source">常见问题</a></li>
+            </ul>
+            <div class="links"><a boss="source" href="/Auth/login" auto-track-click='{"e":"zeus_w_x_home_navlog_ck"}'>登录</a><a class="btn" boss="source" href="/Auth/register" auto-track-click='{"e":"zeus_w_x_home_navreg_ck"}'>注册</a></div>
+        </div>
+    </div>
+    <div class="side-nav fadeInLeft">
+        <ul class="menu">
+            <li><a href="//es.xiaojukeji.com/" boss="source"><span class="icon icon-home"></span>首页</a></li>
+            <li><a href="//static-es.xiaojukeji.com/site/pages/publicity_es/channel/index.html" boss="source"><span class="icon icon-partner"></span>合作伙伴</a></li>
+            <li><a href="//open.es.xiaojukeji.com" boss="source"><span class="icon icon-open"></span>开放平台</a></li>
+           <!--  <li><a href="//es.xiaojukeji.com/Welcome/actintro" boss="source"><span class="icon icon-sell"></span>促销</a></li> -->
+        </ul>
+    </div>
+    <div class="main">
+        <div class="banner">
+            <div class="reg">
+                <img src="//static-es.xiaojukeji.com/fukit/app/home/sales/201601/img/intro-pc.png" />
+                <a class="btn btnReg" href="/Auth/register" boss="source">免费注册</a>
+                <p class="btn_active_t"><span>加入即送3000元，单单7.7折</span><a class="btn_active" href="//es.xiaojukeji.com/web/activity/index.html?__utm_source=nosource" boss="source">点击查看&gt;&gt;</a></p>
+            </div>
+        </div>
+        <div class="slide slide1">
+            <h1>员工叫车出行</h1>
+            <h1>企业账户支付，无需后续报销</h1>
+            <img src="//static-es.xiaojukeji.com/fukit/app/home/sales/201601/img/01.jpg" />
+        </div>
+        <div class="slide slide2">
+            <h1>智能企业用车管控，行程记录</h1>
+            <h1>用车规则设定，确保使用更合规</h1>
+            <div class="container container-large">
+                <a class="arrow-left swiper1-left" href="#"></a> 
+                <a class="arrow-right swiper1-right" href="#"></a>
+                <div class="swiper-container swiper1">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="//static-es.xiaojukeji.com/fukit/app/home/sales/201601/img/021.png" /></div>
+                        <div class="swiper-slide"><img src="//static-es.xiaojukeji.com/fukit/app/home/sales/201601/img/022.png" /></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide slide3">
+            <h1>滴滴企业版APP</h1>
+            <h1>满足更全面的商务用车需求</h1>
+            <p>已开通企业版的用户可到App Store或安卓应用商店进行下载</p>
+            <img src="//static-es.xiaojukeji.com/fukit/app/home/sales/201601/img/03.jpg" />
+        </div>
+        <div class="slide slide4">
+            <h1 class="title">滴滴企业版使用步骤</h1>
+            <div class="pagination pagination-parent"></div>
+            <div class="container">
+                <a class="arrow-left swiper2-left" href="#"></a> 
+                <a class="arrow-right swiper2-right" href="#"></a>
+                <div class="swiper-container swiper2">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="//static-es.xiaojukeji.com/fukit/app/home/sales/201601/img/041.jpg" /></div>
+                        <div class="swiper-slide"><img src="//static-es.xiaojukeji.com/fukit/app/home/sales/201601/img/042.jpg" /></div>
+                        <div class="swiper-slide"><img src="//static-es.xiaojukeji.com/fukit/app/home/sales/201601/img/043.jpg" /></div>
+                        <div class="swiper-slide"><img src="//static-es.xiaojukeji.com/fukit/app/home/sales/201601/img/044.jpg" /></div>
+                        <div class="swiper-slide"><img src="//static-es.xiaojukeji.com/fukit/app/home/sales/201601/img/045.jpg" /></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="top">
+            <h1>滴滴企业版上线至今</h1> 
+            <h1>已有联想、华为、阿里等近15000家企业开通使用</h1>
+        </div>
+        <div class="middle">
+            <a href="/Auth/register" boss="source" auto-track-click='{"e":"zeus_w_x_home_fregbtn_ck"}'>免费注册</a>
+        </div>
+        <div class="bottom">
+            ©2016 北京小桔科技有限公司 京公网安备11010802015048号 京ICP备12043664号-5
+        </div>
+    </div> 
+    <!-- customer-service s -->
+    <div class="customer-service" id="customer-service">
+        <ul>
+            <li class="qq-service">
+                <a boss="click" title="咨询" href="//crm2.qq.com/page/portalpage/wpa.php?uin=4000000777&f=1&ty=1" target="_blank"><span class="icon"></span><span class="text"></span></a>
+                <div class="tips">
+                    <div class="con">
+                        <h2>合作咨询、问题反馈</h2>
+                    </div>
+                    <i class="arrow-right"></i>
+                </div>
+            </li>
+            <li class="tel-service">
+                <a boss="click" title="电话" href="tel:4000000777"><span class="icon"></span><span class="text"></span></a>
+                <div class="tips">
+                    <div class="con">
+                        <h2>400-000-0777</h2>
+                        <h3>工作时间是每天8:00-22:00</h3>
+                    </div>
+                    <i class="arrow-right"></i>
+                </div>
+            </li>
+            <li class="wx-service">
+                <a boss="click" title="微信" href="#"><span class="icon"></span><span class="text"></span></a>
+                <div class="tips">
+                    <div class="con">
+                        <img src="//static-es.xiaojukeji.com/fukit/app/home/images/ewm.jpg" alt="">
+                    </div>
+                    <i class="arrow-right"></i>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!-- customer-service e -->
+    <script type="text/javascript" data-main="//static-es.xiaojukeji.com/fukit/app/home/js/index20160413" src="//static-es.xiaojukeji.com/fukit/app/public/js/require-jquery.js"></script>
+    <script>
+        var omg = omg || [],Omega = {
+            productName: 'zeus-tracker', // 具体产品线使用Omega统计时必须设置此参数，不同产品线不能定义重复，所以此参数的分配统一由工具平台团队来管理。
+            //debugMode: false // 配置参数，默认值true
+        };
+        omg.push(['enableClickAutoTracker',{attr: 'auto-track-click'}])
+        // 初始化数据统计
+        UtmSource.init();
+        UtmSource.push(['_trackEvent', source, '首页', '加载']);
+    </script>
+    <!--[if lte IE 8]>
+        <script>
+            $(".pagination-parent span:eq(1)").css("background-position","-186px -103px");
+            $(".pagination-parent span:eq(2)").css("background-position","-386px -103px");
+            $(".pagination-parent span:eq(3)").css("background-position","-586px -103px");
+            $(".pagination-parent span:eq(4)").css("background-position","-786px -103px");
+            $(".pagination-parent span:eq(5)").css("background-position","-930px -103px");
+        </script>
+    <![endif]-->
+    <script src="//static-es.xiaojukeji.com/fukit/app/public/js/omega.min.js" language="JavaScript"></script>
+    <div style="display:none"><script src="//s4.cnzz.com/z_stat.php?id=1255043551&web_id=1255043551" language="JavaScript"></script></div>
+    <style media="screen">
+        .loading{display:none;}
+    </style>
 </body>
 </html>

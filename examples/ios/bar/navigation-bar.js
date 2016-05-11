@@ -2,17 +2,56 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Navigation = require("../../../src/ios/bar/navigationBar"),
-	BarItem = require("../../../src/ios/bar/barItem"),
-	Button = require("../../../src/ios/button/button");
-	new Navigation({
-		title:'信息',
+	var View = require("../../../src/ios/view/view"),
+	TableView = require("../../../src/ios/view/table"),
+	NavBar = require("../../../src/ios/bar/navBar"),
+	Navigation = require("../../../src/ios/view/navigation"),
+	Backbone = require("backbone"),
+	chance = require('chance'),
+	Button = require("../../../src/ios/button/button"),
+	navBar = new NavBar({
+		items:[{                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+			title:'信息'
+		}],
+		renderTo:$('.page')
+	}),
+	pageContent = $('<div class="page-content"><div class="content-block"></div></div>').appendTo($('.page'))
+	button = new Button({
+		text:'Usual Button 1',
+		renderTo:pageContent.find('.content-block'),
+		listeners:{
+			click: {
+				selector:'',
+				fn:function(){
+					navBar.pushItem({                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+						title:chance.word()/*,
+						backBarButtonItem:{
+							title:'取消'
+						}*/
+					})
+				}
+			}
+		}
+	});
+	/*navigation = new Navigation({
 		items:[{
-			cls:Button,
-			text:'信息',
-			side:'left',
-			iconClass:'back'
+			cls:NavBar,
+			items:[{
+				title:'信息'
+			}],
+		},{
+			cls:TableView,
+			collection:collection,
+			columns:[{
+				dataIndex : 'firstName',
+				renderer:function(value){
+					return value
+				}
+			}],
+			navigationItem:{
+				title:'信息'
+			}
 		}],
 		renderTo:$(document.body)
-	})
+	})*/
 });

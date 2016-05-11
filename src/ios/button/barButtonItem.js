@@ -26,10 +26,21 @@
 }(this, function(Base) {
 	return Base.extend({
 		className:'bar-button-item',
-		tpl:'<%=text%>',
+		tagName:'button',
+		iconClass:'icon-back',
+		style:'plain',
+		getTpl:function(){
+			var me = this,style = me.style,tpl;
+			switch(style){
+				case 'plain':
+					return '<i class="icon <%=iconClass%>"></i><span><%=title%></span>'
+			}
+		},
 		getTplData:function(){
+			var me = this;
 			return {
-				text:this.text
+				title:me.title,
+				iconClass:me.iconClass
 			}
 		}
 	})

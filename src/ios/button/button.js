@@ -25,14 +25,12 @@
 	}
 }(this, function(Base) {
 	return Base.extend({
+		tagName:'button',
 		className:'button',
-		iconClass:"",
-		tpl:'<%if(hasIcon){%><i class="icon icon-<%=iconClass%>"></i><%}%><span><%=text%></span>',
+		tpl:'<%=text%>',
 		getTplData:function(){
 			return {
-				text:this.text,
-				iconClass:this.iconClass,
-				hasIcon:this.iconClass
+				text:this.text
 			}
 		}
 	})

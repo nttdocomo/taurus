@@ -1,36 +1,37 @@
 /**
  * @author nttdocomo
  */
- (function (root, factory) {
+ /*(function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../state/stateful','underscore','../taurus','backbone','../lang/number','../mixins','../jquery.ui.position'], factory);
+			define(['../state/stateful','underscore','../taurus','backbone','backbone-super','../lang/number','../mixins','../jquery.ui.position'], factory);
 		}
 		if(define.cmd){
-			define(function(require, exports, module){
-				return factory(require('../state/stateful'),require('underscore'),require('../taurus'),require('backbone'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
+			define(['../state/stateful','underscore','../taurus','backbone','backbone-super','../lang/number','../mixins','../jquery.ui.position'],function(require, exports, module){
+				return factory(require('../state/stateful'),require('underscore'),require('../taurus'),require('backbone'),require('backbone-super'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../state/stateful'),require('underscore'),require('../taurus'),require('backbone'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
+		module.exports = factory(require('../state/stateful'),require('underscore'),require('../taurus'),require('backbone'),require('backbone-super'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
 	}
-}(this, function(Stateful,_,taurus,Backbone) {
+}(this, */taurus.klass(['../state/stateful','underscore','../taurus','backbone','backbone-super','../lang/number','../mixins','../jquery.ui.position'],function(Stateful,_,taurus,Backbone) {
 	return Backbone.View.extend({
 		isRendered : false,
 		doc : taurus.$doc,
 		_ensureElement : function() {
-			if (!this.el) {
-				var attrs = _.extend({}, _.result(this, 'attributes'));
-				if (this.id)
-					attrs.id = _.result(this, 'id');
+            var me = this;
+			if (!me.el) {
+				var attrs = _.extend({}, _.result(me, 'attributes'));
+				if (me.id)
+					attrs.id = _.result(me, 'id');
 				else
-					this.id = attrs.id = _.result(this, 'cid');
-				if (this.className)
-					attrs['class'] = _.result(this, 'className');
-				var $el = Backbone.$('<' + _.result(this, 'tagName') + '>').attr(attrs);
-				this.setElement($el, false);
+					me.id = attrs.id = _.result(me, 'cid');
+				if (me.className)
+					attrs['class'] = _.result(me, 'className');
+				var $el = Backbone.$('<' + _.result(me, 'tagName') + '>').attr(attrs);
+				me.setElement($el, false);
 			} else {
-				this.setElement(_.result(this, 'el'), false);
+				me.setElement(_.result(me, 'el'), false);
 			}
 		},
 		addClass:function(cls){
@@ -136,15 +137,32 @@
 	        return this.xtype;
 	    },
 		initialize : function(options) {
-      var me = this;
+			var me = this;
 			this.initialConfig = options;
 			_.extend(this, options);
 			this.initComponent();
-      if (me.style) {
-          me.initialStyle = me.style;
-          me.$el.css(me.style);
-      }
+			if (me.style) {
+				me.initialStyle = me.style;
+				me.$el.css(me.style);
+			}
 			//Stateful.prototype.initialize.apply(this,arguments);
+		},
+		on:function(options){
+			var me = this,delegateEvents = {},events = {};
+			for (var ename in options) {
+                var config = options[ename];
+                if(typeof config.selector !== 'undefined'){
+                	if(config.selector){
+                		delegateEvents[[ename,options.selector].join(' ')] = config.fn
+                	} else {
+                		delegateEvents[ename] = config.fn
+                	}
+                } else {
+                	events[ename] = config
+                }
+            }
+            me.delegateEvents(delegateEvents)
+            Backbone.View.prototype.on.call(this, events);
 		},
 		initComponent:function(){
 			/*
@@ -157,11 +175,10 @@
 	            this.show();
 	        }
 			this.$el.data('component', this);
-			this.on(this.listeners);
 			if (this.cls) {
 	            this.$el.addClass(this.cls);
 	        }
-	        this.delegateEvents();
+			this.on(this.listeners);
 		},
 
         /**
@@ -219,6 +236,9 @@
 		delegateEvents : function(events) {
 			var events = $.extend(events || {}, this.events/*, this.listeners*/);
 			Backbone.View.prototype.delegateEvents.call(this, events);
+		},
+		getTpl : function(data) {
+			return this.tpl
 		},
 		getTplData : function(data) {
 			return _.extend({
@@ -425,7 +445,7 @@
 			} else {
 				data = data || this.getTplData();
 				if(data){
-					html = this.tpl ? _.template(this.tpl)(data || this) : "";
+					html = this.getTpl() ? _.template(this.getTpl())(data || this) : "";
 				}
 			}
 			if(this.html){
@@ -564,13 +584,13 @@
 		},
 		lookupComponent : function(cmp) {
 			var Cls;
-			if (_.has(cmp, 'cls')) {
-				Cls = cmp['cls'];
+			if (_.has(cmp, 'class')) {
+				Cls = cmp['class'];
 			} else {
 				Cls = this.defaultType;
 			}
 			if(Cls){
-				return new Cls($.extend(_.omit(cmp, 'cls'),{
+				return new Cls($.extend(_.omit(cmp, 'class'),{
 					//renderTo:this.getItemContainer(cmp)
 				}));
 			}
@@ -610,7 +630,11 @@
 					item.onAdded(me, pos);
 				} else {
 					me.items.splice(pos, 0, item);
-					item.onAdded(me, pos);
+					try{
+						item.onAdded(me, pos);
+					} catch(e){
+						console.log(e)
+					}
 					me.onAdd(item, pos);
 					layout && layout.onAdd(item, pos);
 				}
@@ -704,4 +728,4 @@
 		INVALID_ID_CHARS_Re: /[\.,\s]/g,
 		updateLayout:function(){}
 	}).mixins(Stateful);
-}));
+})/*)*/;

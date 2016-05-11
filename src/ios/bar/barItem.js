@@ -26,7 +26,7 @@
 }(this, function(Base) {
 	return Base.extend({
 		className:'navbar-inner',
-		tpl:'<div class="left toolbar"></div><h1><%=title%></h1><div class="right toolbar">1</div>',
+		tpl:'<div class="left"></div><div class="center"><%=title%></div><div class="right">1</div>',
 		getTplData:function(){
 			return {
 				title:this.text

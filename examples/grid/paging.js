@@ -3,10 +3,10 @@
  */
 define(function(require) {
 	var PageableCollection = require("backbone-pageable"),
-	Panel = require("../../src/panel/panel.js"),
-	Table = require("../../src/panel/table.js"),
-	ActionColumn = require("../../src/grid/column/action"),
-	NumberColumn = require("../../src/grid/column/rowNumberer"),
+	Panel = require("../../src/classic/panel/panel"),
+	Table = require("../../src/classic/panel/table"),
+	ActionColumn = require("../../src/classic/grid/column/action"),
+	NumberColumn = require("../../src/classic/grid/column/rowNumberer"),
 	$body = $("#main"),
 	Collection =PageableCollection.extend({
 		//url: "json/pageable-territories.json",
