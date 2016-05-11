@@ -41,6 +41,40 @@
 				fieldLabel:me.fieldLabel,
 				image:null
 			}
-		}
+		},
+		getRawValue : function() {
+			var v = (this.inputEl ? this.inputEl.val() : taurus.valueFrom(this.rawValue, ''));
+			this.rawValue = v;
+			return v;
+		},
+		getValue : function() {
+			var me = this, val = me.rawToValue(me.processRawValue(me.getRawValue()));
+			me.value = val;
+			return val;
+		},
+		processRawValue: taurus.emptyFn,
+		rawToValue: taurus.emptyFn,
+		setRawValue : function(value) {
+			this.rawValue = value;
+			this.inputEl && this.inputEl.val(value);
+		},
+
+        /**
+         * Converts a mixed-type value to a raw representation suitable for displaying in the field. This allows controlling
+         * how value objects passed to {@link #setValue} are shown to the user, including localization. For instance, for a
+         * {@link Ext.form.field.Date}, this would control how a Date object passed to {@link #setValue} would be converted
+         * to a String for display in the field.
+         *
+         * See {@link #rawToValue} for the opposite conversion.
+         *
+         * The base implementation simply does a standard toString conversion, and converts {@link Ext#isEmpty empty values}
+         * to an empty string.
+         *
+         * @param {Object} value The mixed-type value to convert to the raw representation.
+         * @return {Object} The converted raw value.
+         */
+        valueToRaw: function(value) {
+            return '' + taurus.valueFrom(value, '');
+        }
 	}).mixins(Field)
 }));

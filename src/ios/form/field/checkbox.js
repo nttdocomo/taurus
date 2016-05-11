@@ -4,13 +4,13 @@
 		    // Now we're wrapping the factory and assigning the return
 		    // value to the root (window) and returning it as well to
 		    // the AMD loader.
-		    define(["./text",'../../../form/field/checkbox','../../../classic/form/checkboxManager',"underscore"], function(Base,_){
+		    define(["./text",'../../../classic/form/checkboxManager',"underscore"], function(Base,_){
 		    	return (root.myModule = factory(Base));
 		    });
 		}
 	  	if(define.cmd){
 	  		define(function(require, exports, module){
-				return factory(require('./text'),require('../../../form/field/checkbox'),require('../../../classic/form/checkboxManager'),require('underscore'));
+				return factory(require('./text'),require('../../../classic/form/checkboxManager'),require('underscore'));
 			})
 	  	}
 	} else if(typeof module === "object" && module.exports) {
@@ -18,11 +18,11 @@
 	    // run into a scenario where plain modules depend on CommonJS
 	    // *and* I happen to be loading in a CJS browser environment
 	    // but I'm including it for the sake of being thorough
-	    module.exports = (root.myModule = factory(require("./text"),require('../../../form/field/checkbox'),require('../../../classic/form/checkboxManager'),require('underscore')));
+	    module.exports = (root.myModule = factory(require("./text"),require('../../../classic/form/checkboxManager'),require('underscore')));
 	} else {
 	    root.myModule = factory(root.postal);
 	}
-}(this, function(TableCell,CheckBox,CheckboxManager,_) {
+}(this, function(TableCell,CheckboxManager,_) {
 
 			/*<div class="item-input">
             <label class="label-switch">
@@ -33,7 +33,6 @@
 	return TableCell.extend({
 		childEls:{
 			'itemInner':'.item-inner',
-			'checkBox':':checkbox',
 			'inputEl':':checkbox'
 		},
 		checked:false,
@@ -42,15 +41,11 @@
 			this._super.apply(me,arguments)
 		},
 		getTpl:function(){
-			return '<div class="item-content"><%if(image){%><div class="item-media"><img class="img" src="<%=image%>"/></div><%}%><div class="item-inner"><div class="item-title"><%=fieldLabel%></div><%=itemInput%></div></div>'
+			return '<label class="label-checkbox item-content"><input type="checkbox" name="<%=name%>" /><div class="item-media"><i class="icon icon-form-checkbox"></i></div><div class="item-inner"><div class="item-title"><%=fieldLabel%></div></div></label>'
 		},
 		getTplData:function(){
 			return {
-				fieldLabel:this.fieldLabel,
-				image:null,
-				itemInput:_.template('<div class="item-input"><label class="label-switch"><input type="checkbox" name="<%=name%>"><div class="checkbox"></div></label></div>')({
-					name:this.name
-				})
+				fieldLabel:this.fieldLabel
 			}
 		},
 		onSwitch:function(){

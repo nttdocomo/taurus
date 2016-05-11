@@ -4,17 +4,17 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../label','./field','underscore','backbone','modernizr','i18n'], factory);
+			define(['../label','./field','underscore','backbone','modernizr','i18n','taurus'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../label'),require('./field'),require('underscore'),require('backbone'),require('modernizr'),require('i18n'));
+				return factory(require('../label'),require('./field'),require('underscore'),require('backbone'),require('modernizr'),require('i18n'),require('taurus'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../label'),require('./field'),require('underscore'),require('backbone'),require('modernizr'),require('i18n'));
+		module.exports = factory(require('../label'),require('./field'),require('underscore'),require('backbone'),require('modernizr'),require('i18n'),require('taurus'));
 	}
-}(this, function(Label,Field,_,Backbone,Modernizr) {
+}(this, function(Label,Field,_,Backbone,Modernizr,i18n,taurus) {
 	return Label.extend({
 		inputType : 'text',
 		readOnly:false,
@@ -129,9 +129,24 @@
 			this.rawValue = value;
 			this.inputEl && this.inputEl.val(value);
 		},
-		valueToRaw : function(value) {
-			return '' + value ? value : "";
-		},
+
+        /**
+         * Converts a mixed-type value to a raw representation suitable for displaying in the field. This allows controlling
+         * how value objects passed to {@link #setValue} are shown to the user, including localization. For instance, for a
+         * {@link Ext.form.field.Date}, this would control how a Date object passed to {@link #setValue} would be converted
+         * to a String for display in the field.
+         *
+         * See {@link #rawToValue} for the opposite conversion.
+         *
+         * The base implementation simply does a standard toString conversion, and converts {@link Ext#isEmpty empty values}
+         * to an empty string.
+         *
+         * @param {Object} value The mixed-type value to convert to the raw representation.
+         * @return {Object} The converted raw value.
+         */
+        valueToRaw: function(value) {
+            return '' + taurus.valueFrom(value, '');
+        },
 		getTplData : function(data) {
 			data = $.extend({
 				inputId : this.cid,

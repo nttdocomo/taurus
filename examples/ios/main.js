@@ -87,46 +87,54 @@
 					}
 	    		}
 	    		var item,deps = [];
-	    		if(chance.bool()){
-	    			item = {
-						'class':Table,
-						collection:new Backbone.Collection(cells),
-						columns:[{
-							dataIndex:'text'
-						}]
-					};
+	    		if(0){
+	    			item = (function(){
+						require.async(['../../src/ios/form/field/switch'],function(Switch){
+				    		var page = new Page({
+				    			title:chance.word(),
+				    			items:[{
+									'class':Table,
+									collection:new Backbone.Collection(cells),
+									columns:[{
+										dataIndex:'text'
+									}]
+								}]
+				    		})
+			    			me.setActivePage(page)
+			    		})
+					})();
 	    		} else {
-	    			item = {
-						'class':Form,
-						items:[{
-							'class':Text
-						}]
-					};
+	    			item = (function(){
+						require.async(['../../src/ios/form/field/switch','../../src/ios/form/field/checkbox'],function(Switch,CheckBox){
+				    		var page = new Page({
+				    			title:chance.word(),
+				    			items:[{
+									'class':Form,
+									items:[{
+										'class':Text,
+										name:chance.word(),
+										fieldLabel:chance.word()
+									},{
+										'class':CheckBox,
+										name:chance.word(),
+										fieldLabel:chance.word()
+									},{
+										'class':Switch,
+										name:chance.word(),
+										fieldLabel:chance.word()
+									}]
+								}]
+				    		})
+			    			me.setActivePage(page)
+			    		})
+					})();
 	    		}
-	    		require.async(['../../src/ios/form/field/switch'],function(Switch){
-		    		var page = new Page({
-		    			title:chance.word(),
-		    			items:[{
-							'class':Form,
-							items:[{
-								'class':Text,
-								name:chance.word(),
-								fieldLabel:chance.word()
-							},{
-								'class':Switch,
-								name:chance.word(),
-								fieldLabel:chance.word()
-							}]
-						}]
-		    		})
-	    			me.setActivePage(page)
-	    		})
 	    	})
 	    },
 		setActivePage:function(page){
 			var me = this;
 			me.activePage = page;
-			me.navBar.pushItem({                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+			me.navBar.pushItem({
 				title:page.title/*,
 				backBarButtonItem:{
 					title:'取消'
