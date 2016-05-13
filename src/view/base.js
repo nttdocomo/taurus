@@ -14,7 +14,7 @@
 	} else if(typeof module === "object" && module.exports) {
 		module.exports = factory(require('../state/stateful'),require('underscore'),require('../taurus'),require('backbone'),require('backbone-super'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
 	}
-}(this, */taurus.klass(['../state/stateful','underscore','../taurus','backbone','backbone-super','../lang/number','../mixins','../jquery.ui.position'],function(Stateful,_,taurus,Backbone) {
+}(this, */taurus.klass(['../state/stateful','underscore','taurus','backbone','backbone-super','../lang/number','../mixins','../jquery.ui.position'],function(Stateful,_,taurus,Backbone) {
 	return Backbone.View.extend({
 		isRendered : false,
 		doc : taurus.$doc,

@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../view/base','./bar','./tab','../view/card','../view/tabContent'], factory);
+			define(['../../view/base','./bar','./tab','../../view/card','../../view/tabContent'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../../view/base'),require('./bar'),require('./tab'),require('../view/card'),require('../view/tabContent'));
+				return factory(require('../../view/base'),require('./bar'),require('./tab'),require('../../view/card'),require('../../view/tabContent'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../view/base'),require('./bar'),require('./tab'),require('../view/card'),require('../view/tabContent'));
+		module.exports = factory(require('../../view/base'),require('./bar'),require('./tab'),require('../../view/card'),require('../../view/tabContent'));
 	}
 }(this, function(Base,Bar,Tab,Card,TabContent) {
 	return Base.extend({

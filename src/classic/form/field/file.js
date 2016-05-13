@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./trigger','taurus','underscore','i18n'], factory);
+			define(['./trigger','taurus','underscore','../../../i18n'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./trigger'),require('taurus'),require('underscore'),require('i18n'));
+				return factory(require('./trigger'),require('taurus'),require('underscore'),require('../../../i18n'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./trigger'),require('taurus'),require('underscore'),require('i18n'));
+		module.exports = factory(require('./trigger'),require('taurus'),require('underscore'),require('../../../i18n'));
 	}
 }(this, function(Trigger,taurus,_,i18n) {
 	return Trigger.extend({
