@@ -107,6 +107,17 @@
 	    onFocusLeave:function(){
 	    	//this.completeEdit();
 	    },
+        /**
+         * Sets a data value into the field and runs the change detection and validation. To set the value directly
+         * without these inspections see {@link #setRawValue}.
+         * @param {Object} value The value to set
+         * @return {Ext.form.field.Field} this
+         */
+        setValue:function(value){
+            var me = this;
+            me.setRawValue(me.valueToRaw(value));
+            return Field.prototype.setValue.call(me, value);
+        },
 	    /**
 	     * Resets the current field value to the originally loaded value and clears any validation messages. See {@link
 	     * Ext.form.Basic}.{@link Ext.form.Basic#trackResetOnLoad trackResetOnLoad}

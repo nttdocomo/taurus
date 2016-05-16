@@ -5,8 +5,9 @@ QUnit.config.autostart = false;
 // file: test/main.js
 seajs.use([
 	'../src/view/base',
-	'../src/classic/panel/panel'
-], function(Base,Panel
+	'../src/classic/panel/panel',
+	'../src/classic/form/field/base'
+], function(Base,Panel,BaseField
 	/* remember: the test modules don't export anything */) {
 	var shadowEl = $('<div></div>')
 	var base = new Base({
@@ -35,6 +36,15 @@ seajs.use([
 		assert.ok( 10 == base.$el.position().left, "base position left is not correct" );
 		assert.ok( 10 == base.$el.position().top, "base position top is not correct" );
 		base.remove();
+	});
+	QUnit.test( "form field base", function( assert ) {
+		var baseField = new BaseField({
+			renderTo:$(document.body)
+		});
+		assert.ok( '' === baseField.valueToRaw(''), "valueToRaw return a not empty string" );
+		assert.ok( '1' === baseField.valueToRaw('1'), "valueToRaw return is not equal to '1'" );
+		assert.ok( '1' === baseField.valueToRaw(1), "valueToRaw return is not equal to '1'" );
+		baseField.remove();
 	});
 
 	QUnit.test( "panel collapsible", function( assert ) {

@@ -16,6 +16,11 @@
 	}
 }(this, function(File,taurus,_,i18n) {
 	return File.extend({
+        afterRender:function(){
+            var me = this;
+            me._super.apply(me,arguments);
+            me.initFineUploader();
+        },
         initFineUploader:function(){
             var me = this,
             button = document.createElement('div');

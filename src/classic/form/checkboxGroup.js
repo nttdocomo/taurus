@@ -135,10 +135,8 @@ define(function(require) {
 
             for (b = 0; b < bLen; b++) {
             	boxes[b].reset();
-            	console.log(boxes[b].inputEl)
-            	console.log(boxes[b].inputEl.is(':checked'))
 	        }
-               
+
 	        me.unsetActiveError();
 	        /*if (hadError) {
 	            me.updateLayout();
@@ -200,7 +198,7 @@ define(function(require) {
 		setValue : function(value) {
 			var me = this, boxes = me.getBoxes(), b, bLen = boxes.length, box, name, cbValue;
 
-			
+
 			for ( b = 0; b < bLen; b++) {
 				box = boxes[b];
 				box = $(box);

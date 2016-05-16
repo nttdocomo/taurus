@@ -221,7 +221,6 @@
             // That implementation calls parent and then ensures the previous sibling's joining lines are correct.
             else {
                 me.add(toAdd,{at:insertIndex});
-                console.log(me)
             }
         },
         updateRoot:function(newRoot,oldRoot){

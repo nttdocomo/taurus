@@ -107,38 +107,10 @@
 		    }
 		    return me;
 		},
-		afterRender:function(){
-            var me = this;
-			me._super.apply(me,arguments);
-			me.initFineUploader();
-			/*if(me.buttonOnly){
-				me.inputEl.hide();
-			}*/
-		},
         didIconStateChange: function(old, current) {
             var currentEmpty = _.isEmpty(current);
             return _.isEmpty(old) ? !currentEmpty : currentEmpty;
         },
-		initFineUploader:function(){
-			var me = this;
-			/*me.uploader = new qq.FineUploaderBasic(_.extend({
-				button:me.buttonEl.get(0),
-                autoUpload:false,
-                multiple:false,
-                request:{
-                    endpoint:'/uploads'
-                },
-				callbacks:{
-					onComplete:function(id,name,responseJSON,xhr){
-                        console.log(me.buttonEl.find('input').get(0))
-						me.trigger('complete',id,name,responseJSON,xhr)
-					},
-                    onProgress:function(id,name,uploadedBytes,totalBytes){
-                        console.log(arguments)
-                    }
-				}
-			},this.fineUploaderOptions));*/
-		},
 		_syncHasIconCls: function() {
             var me = this,
                 btnEl = me.btnEl,

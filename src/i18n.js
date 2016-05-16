@@ -10,7 +10,7 @@
 			});
 		}
 		if(define.cmd){
-			define(function(require, exports, module){
+			define(['./util/sprintf','i18n/'+locale],function(require, exports, module){
 				return factory(require('./util/sprintf'),require('i18n/{locale}'),locale,require('underscore'));
 			})
 		}
@@ -21,24 +21,24 @@
 	var vsprintf = sprintf.vsprintf,
 	i18n = function(opt){
 		var self = this;
-	
+
 		// Put into dev or production mode
 		//this.devMode = process.env.NODE_ENV !== "production";
-	
+
 		// Copy over options
 		for (var prop in opt) {
 			this[prop] = opt[prop];
 		}
-	
+
 		// implicitly read all locales
 		// if it's an array of locale names, read in the data
 		/*if (opt.locales && _.isArray(opt.locales)) {
 			this.locales = {};
-	
+
 			_.each(opt.locales,function(locale) {
 				self.readFile(locale);
 			});
-	
+
 			this.defaultLocale = this.locale = locale;
 		}*/
 		this.defaultLocale = this.locale = locale;
@@ -51,11 +51,11 @@
 
 		__: function() {
 			var msg = this.translate(locale, arguments[0]);
-	
+
 			if (arguments.length > 1) {
 				msg = vsprintf(msg, Array.prototype.slice.call(arguments, 1));
 			}
-	
+
 			return msg;
 		},
 		// read locale file, translate a msg and write to fs if new
@@ -65,22 +65,22 @@
 					console.warn("WARN: No locale found. Using the default (" +
 						this.defaultLocale + ") as current locale");
 				}
-	
+
 				locale = this.defaultLocale;
-	
+
 				this.initLocale(locale, {});
 			}
-	
+
 			if (!locales[singular]) {
 				locales[singular] = plural ?
 					{ one: singular, other: plural } :
 					singular;
-	
+
 				if (this.devMode) {
 					this.writeFile(locale);
 				}
 			}
-	
+
 			return locales[singular];
 		},
 		// try reading a file

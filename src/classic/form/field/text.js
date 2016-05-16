@@ -18,8 +18,68 @@
 	return Base.extend({
 		allowBlank : true,
 		blankText : 'This field is required',
+        emptyCls : taurus.baseCSSPrefix + 'form-empty-field',
 		minLengthText : 'The minimum length for this field is <%=len%>',
 		maxLengthText:'The maximum length for this field is <%=len%>',
+        /**
+         * @private
+         */
+        valueContainsPlaceholder : false,
+        applyEmptyText:function(){
+            var me = this,
+            emptyText = me.emptyText,
+            isEmpty;
+
+            if (me.rendered && emptyText) {
+                isEmpty = me.getRawValue().length < 1/* && !me.hasFocus*/;
+
+                if (Modernizr.input.placeholder) {
+                    me.inputEl.attr('placeholder',emptyText);
+                } else if (isEmpty) {
+                    me.setRawValue(emptyText);
+                    me.valueContainsPlaceholder = true;
+                }
+
+                //all browsers need this because of a styling issue with chrome + placeholders.
+                //the text isnt vertically aligned when empty (and using the placeholder)
+                if (isEmpty) {
+                    me.inputEl.addClass(me.emptyUICls);
+                }
+                else {
+                    me.inputEl.removeClass(me.emptyUICls);
+                }
+
+                me.autoSize();
+            }
+        },
+        applyState: function(state) {
+            this._super.apply(this,arguments);
+            if(state.hasOwnProperty('value')) {
+                this.setValue(state.value);
+            }
+        },
+        beforeFocus: function(){
+            var me = this,
+                inputEl = me.inputEl,
+                emptyText = me.emptyText,
+                isEmpty;
+
+            me._super.apply(me,arguments);
+            if ((emptyText && !Modernizr.input.Placeholder) && (inputEl.val() === me.emptyText && me.valueContainsPlaceholder)) {
+                me.setRawValue('');
+                isEmpty = true;
+                inputEl.removeClass(me.emptyUICls);
+                me.valueContainsPlaceholder = false;
+            } else if (Modernizr.input.Placeholder) {
+                inputEl.removeClass(me.emptyUICls);
+            }
+        },
+        initComponent:function(){
+            var me = this,
+            emptyCls = me.emptyCls;
+            me._super.apply(me,arguments);
+            me.emptyUICls = emptyCls + ' ' + emptyCls + '-' + me.ui;
+        },
 		getErrors : function(value) {
 			var errors = Base.prototype.getErrors.apply(this, arguments), regex = this.regex, validator = this.validator;
 			if (value.length < 1 || value === this.emptyText) {
@@ -67,6 +127,7 @@
 					placeholder = me.emptyText;
 				} else {
 					value = me.emptyText;
+                    me.valueContainsPlaceholder = true;
 				}
 			}
 			if (me.enforceMaxLength && Modernizr.input.max) {
@@ -77,9 +138,11 @@
 	            maxLength = undefined;
 	        }
 
-			return $.extend(Base.prototype.getSubTplData.apply(this, arguments), {
+			return $.extend(me._super.apply(this, arguments), {
 				placeholder : placeholder,
-				maxLength:maxLength
+				maxLength:maxLength,
+                value:value,
+                fieldCls: me.fieldCls + ((isEmpty && (placeholder || value)) ? ' ' + me.emptyUICls : '') + (me.allowBlank ? '' :  ' ' + me.requiredCls)
 			});
 		},
 
@@ -113,7 +176,24 @@
 	                'keypress': 'onKeyPress'
 	            });
 	        }
+            $.extend(events,{
+                'focus input':'onFocus'
+            });
 			Base.prototype.delegateEvents.call(this, events);
-		}
+		},
+        setValue:function(){
+            var me = this,
+            inputEl = me.inputEl;
+
+            if (inputEl && me.emptyText && !_.isEmpty(value)) {
+                inputEl.removeClass(me.emptyUICls);
+                me.valueContainsPlaceholder = false;
+            }
+
+            me._super.apply(this,arguments);
+
+            me.applyEmptyText();
+            return me;
+        }
 	});
 }));

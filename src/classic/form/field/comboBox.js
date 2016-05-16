@@ -217,13 +217,13 @@
 			return this.value;
 		},
 		createPicker : function() {
-			var picker = this.picker = new BoundList($.extend({
+			var me = this,picker = this.picker = new BoundList($.extend({
 				displayField : this.displayField,
 				collection : this.collection
 			}, this.listConfig)), me = this;
 			picker.on({
 				'itemclick': this.onItemClick,
-				'refresh': this.onListRefresh
+				'refresh': _.bind(this.onListRefresh,this)
 			}, this);
 			this.doAutoSelect();
 			return picker;
