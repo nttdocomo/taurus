@@ -15,6 +15,11 @@
 	}
 }(this, function(Base) {
 	return Base.extend({
-		
+		layout:'auto',
+		initialize:function(){
+			var me = this;
+			me._super.apply(me,arguments);
+			me.$el.addClass('box-'+me.layout)
+		}
 	})
 }));

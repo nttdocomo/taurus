@@ -49,7 +49,7 @@
                     me.inputEl.removeClass(me.emptyUICls);
                 }
 
-                me.autoSize();
+                //me.autoSize();
             }
         },
         applyState: function(state) {
@@ -181,7 +181,7 @@
             });
 			Base.prototype.delegateEvents.call(this, events);
 		},
-        setValue:function(){
+        setValue:function(value){
             var me = this,
             inputEl = me.inputEl;
 

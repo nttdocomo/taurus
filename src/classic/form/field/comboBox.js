@@ -217,14 +217,14 @@
 			return this.value;
 		},
 		createPicker : function() {
-			var me = this,picker = this.picker = new BoundList($.extend({
-				displayField : this.displayField,
-				collection : this.collection
-			}, this.listConfig)), me = this;
+			var me = this,picker = me.picker = new BoundList($.extend({
+				displayField : me.displayField,
+				collection : me.collection
+			}, me.listConfig));
 			picker.on({
-				'itemclick': this.onItemClick,
-				'refresh': _.bind(this.onListRefresh,this)
-			}, this);
+				'itemclick': me.onItemClick,
+				'refresh': _.bind(me.onListRefresh,me)
+			}, me);
 			this.doAutoSelect();
 			return picker;
 		},

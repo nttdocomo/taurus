@@ -637,7 +637,7 @@
 						console.log(e)
 					}
 					me.onAdd(item, pos);
-					layout && layout.onAdd(item, pos);
+					//layout && layout.onAdd(item, pos);
 				}
 			}
 			//me.items = items;
