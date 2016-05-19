@@ -229,17 +229,18 @@
 		        	column = me.getHeaderByCell(cell);
 		        	cellIndex = me.ownerCt.getColumnManager().getHeaderIndex(column);
 		        }
-            eventPosition.setAll(
-                me,
-                rowIndex,
-                column ? me.getVisibleColumnManager().getHeaderIndex(column) : -1,
-                record,
-                column
-            );
-            eventPosition.cellElement = cell;
-            // if the element whose event is being processed is not an actual cell (for example if using a rowbody
-            // feature and the rowbody element's event is being processed) then do not fire any "cell" events
-            // Don't handle cellmouseenter and cellmouseleave events for now
+	            eventPosition.setAll(
+	                me,
+	                rowIndex,
+	                column ? me.getVisibleColumnManager().getHeaderIndex(column) : -1,
+	                record,
+	                column
+	            );
+	            eventPosition.cellElement = cell;
+	            me.trigger('uievent', type, me, cell, rowIndex, cellIndex, e, record, row);
+	            // if the element whose event is being processed is not an actual cell (for example if using a rowbody
+	            // feature and the rowbody element's event is being processed) then do not fire any "cell" events
+	            // Don't handle cellmouseenter and cellmouseleave events for now
 		        if(cell && type !== 'mouseover' && type !== 'mouseout'){
 		        	result = !(me['onCell' + map[type]](cell, cellIndex, record, row, rowIndex, e) === false)
 		        }

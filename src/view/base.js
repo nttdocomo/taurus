@@ -163,7 +163,7 @@
                 }
             }
             me.delegateEvents(delegateEvents)
-            Backbone.View.prototype.on.call(this, events);
+            Backbone.View.prototype.on.call(this, events,arguments[1]);
 		},
 		initComponent:function(){
 			/*

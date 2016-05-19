@@ -1,3 +1,5 @@
-.box-hbox > div {
-	float: left;
+.box-hbox > div,.box-hbox > button {
+	display: inline-block;
+	margin-bottom: 0;
+	vertical-align: bottom;
 }
