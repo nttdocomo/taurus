@@ -1,4 +1,4 @@
-.box-hbox > div,.box-hbox > button {
+.hbox > * {
 	display: inline-block;
 	margin-bottom: 0;
 	vertical-align: bottom;

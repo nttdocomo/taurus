@@ -408,6 +408,9 @@
 	        var value = this.getValue();
 	        // If the value is null/undefined, we still return an empty string. If we
 	        // don't, the field will never get posted to the server since nulls are ignored.
+	        if(_.isNumber(value)){
+	        	return value
+	        }
 	        if (_.isEmpty(value)) {
 	            value = '';
 	        }

@@ -115,9 +115,9 @@
 			}else{
 				this.collection.fetch();
 			}
-			this.collection.on('sync',function(){
-				this.html();
-			},this);*/
+			me.collection.on('sync',function(){
+				me.html();
+			},me);*/
 		},
 		afterRender:function(){
 			Panel.prototype.afterRender.apply(this,arguments);

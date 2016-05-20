@@ -334,18 +334,18 @@
 		renderRow:function(record, recordIndex, rowIndex){
 			var me = this,
   			columns,
-  	    itemCls = me.itemCls,
+  	    	itemCls = me.itemCls,
   			rowValues = me.rowValues,
-  	    itemClasses = rowValues.itemClasses;
+  	    	itemClasses = rowValues.itemClasses;
 			rowValues.record = record;
-      rowValues.rowId = me.getRowId(record);
-      rowValues.itemCls = rowValues.rowCls = '';
+			rowValues.rowId = me.getRowId(record);
+			rowValues.itemCls = rowValues.rowCls = '';
 			if (!rowValues.columns) {
-          columns = rowValues.columns = me.ownerCt.getVisibleColumnManager().getColumns();
-      } else {
-      	columns = rowValues.columns;
-      }
-      itemClasses.push(itemCls);
+				columns = rowValues.columns = me.ownerCt.getVisibleColumnManager().getColumns();
+			} else {
+				columns = rowValues.columns;
+			}
+    		itemClasses.push(itemCls);
 			return _.template(this.rowTpl)(_.extend(rowValues,{
 				cell:me.renderCells(columns, record, recordIndex, rowIndex)
 			},me.tableValues));

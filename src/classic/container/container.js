@@ -19,7 +19,7 @@
 		initialize:function(){
 			var me = this;
 			me._super.apply(me,arguments);
-			me.$el.addClass('box-'+me.layout)
+			me.$el.addClass(me.layout)
 		}
 	})
 }));
