@@ -167,6 +167,7 @@
 	            me.maybeShowMenu();
 	            me.fireHandler(e);
 	        }
+            me.trigger('click')
 	    },
 		/*onClick : function(e) {
 			var me = this;

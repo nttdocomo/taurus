@@ -3,20 +3,20 @@
         // Now we're wrapping the factory and assigning the return
         // value to the root (window) and returning it as well to
         // the AMD loader.
-        define(['../model/tree','../subscribeModule','backbone','underscore'],function(Tree,Backbone){
+        define(['../model/tree','../../subscribeModule','backbone','underscore'],function(Tree,Backbone){
           return (root.Class = factory(Tree,Backbone));
         });
     }
     if(define.cmd){
         define(function(require, exports, module){
-            return (root.Class = factory(require('../model/tree'),require('../subscribeModule'),require('backbone'),require('underscore')));
+            return (root.Class = factory(require('../model/tree'),require('../../subscribeModule'),require('backbone'),require('underscore')));
         })
     } else if(typeof module === "object" && module.exports) {
         // I've not encountered a need for this yet, since I haven't
         // run into a scenario where plain modules depend on CommonJS
         // *and* I happen to be loading in a CJS browser environment
         // but I'm including it for the sake of being thorough
-        module.exports = (root.Class = factory(require('../model/tree'),require('../subscribeModule'),require('backbone'),require('underscore')));
+        module.exports = (root.Class = factory(require('../model/tree'),require('../../subscribeModule'),require('backbone'),require('underscore')));
     } else {
         root.Class = factory();
     }

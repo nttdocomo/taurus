@@ -75,7 +75,7 @@
 	            scope = me.origScope || me,
 	            items = me.items,
 	            len = items.length,
-	            i, item, ret, disabled, tooltip, altText, icon;
+	            i, item, text,ret, disabled, tooltip, altText, icon;
 
 	        // Allow a configured renderer to create initial value (And set the other values in the "metadata" argument!)
 	        // Assign a new variable here, since if we modify "v" it will also modify the arguments collection, meaning
@@ -86,6 +86,7 @@
 	        for (i = 0; i < len; i++) {
 	            item = items[i];
 	            icon = item.icon;
+                text = item.text || '';
 
 	            disabled = item.disabled || (item.isDisabled ? item.isDisabled.call(item.scope || scope, view, rowIdx, colIdx, item, record) : false);
 	            tooltip = disabled ? null : (item.tooltip || (item.getTip ? item.getTip.apply(item.scope || scope, arguments) : null));
@@ -104,7 +105,7 @@
 	                ' class="' + me.actionIconCls + ' ' + taurus.baseCSSPrefix + 'action-col-' + String(i) + ' ' +
 	                (disabled ? me.disabledCls + ' ' : ' ') +
 	                (_.isFunction(item.getClass) ? item.getClass.apply(item.scope || scope, arguments) : (item.iconCls || me.iconCls || '')) + '"' +
-	                (tooltip ? ' data-qtip="' + tooltip + '"' : '') + (icon ? '/>' : '>'+item.text+'</div>');
+	                (tooltip ? ' data-qtip="' + tooltip + '"' : '') + (icon ? '/>' : '>'+text+'</div>');
 	        }
 	        return ret;
 	    },

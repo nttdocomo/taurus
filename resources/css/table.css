@@ -144,3 +144,29 @@
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
 }
+.action-col-icon {
+    display: inline-block;
+    line-height: 1;
+}
+.action-col-icon {
+    color: #919191;
+    font-size: 18px;
+    height: 18px;
+    width: 18px;
+    cursor: pointer;
+}
+.array-grid-sell-col:before {
+    font: 18px/1 FontAwesome;
+    color: #dd6550;
+    content: "\f056";
+}
+.array-grid-buy-col:before {
+    font: 18px/1 FontAwesome;
+    color: #81cb31;
+    content: "\f058";
+}
+.array-grid-alert-col:before {
+    font: 18px/1 FontAwesome;
+    color: #ffc839;
+    content: "\f071";
+}

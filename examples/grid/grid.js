@@ -5,6 +5,7 @@ define(function(require) {
 	var PageableCollection = require("backbone-pageable");
 	var Panel = require("../../src/classic/panel/panel.js"),
 		Table = require("../../src/classic/panel/table.js"),
+		ActionColumn = require("../../src/classic/grid/column/action.js"),
 		$body = $("#main"),
 		Collection = PageableCollection.extend({
 			//url: "json/pageable-territories.json",
@@ -224,6 +225,38 @@ define(function(require) {
 			width : 105,
 			sortable : false,
 			dataIndex : 'lastChange'
+		},{
+			text:'',
+			'class':ActionColumn,
+			items:[{
+                iconCls: 'array-grid-sell-col fa fa-minus-circle',
+                tooltip: 'Sell stock',
+                handler: function(grid, rowIndex, colIndex) {
+                    var rec = grid.getStore().getAt(rowIndex);
+                    Ext.Msg.alert('Sell', 'Sell ' + rec.get('name'));
+                }
+            }, {
+                getClass: function(v, meta, rec) {
+                    if (rec.get('change') < 0) {
+                        return 'array-grid-alert-col';
+                    } else {
+                        return 'array-grid-buy-col';
+                    }
+                },
+                getTip: function(v, meta, rec) {
+                    if (rec.get('change') < 0) {
+                        return 'Hold stock';
+                    } else {
+                        return 'Buy stock';
+                    }
+                },
+                handler: function(grid, rowIndex, colIndex) {
+                    var rec = grid.getStore().getAt(rowIndex),
+                        action = (rec.get('change') < 0 ? 'Hold' : 'Buy');
+
+                    Ext.Msg.alert(action, action + ' ' + rec.get('name'));
+                }
+            }]
 		}],
 		collection : collection,
 		renderTo : $body

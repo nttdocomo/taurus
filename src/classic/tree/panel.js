@@ -91,7 +91,7 @@
                 }
                 me.$el.addClass(me.autoWidthCls);
                 me.columns = [{
-                    cls    : Column,
+                    'class'    : Column,
                     text     : 'Name',
                     flex     : 1,
                     dataIndex: me.displayField

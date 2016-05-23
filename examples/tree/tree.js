@@ -5,9 +5,9 @@ define(function(require) {
 	var backbone = require("backbone"),
 	chance = require('chance'),
 	_ = require('underscore'),
-	Tree = require("../../src/tree/panel"),
-	TreeCollection = require("../../src/collection/tree"),
-	TreeModel = require("../../src/model/tree"),
+	Tree = require("../../src/classic/tree/panel"),
+	TreeCollection = require("../../src/classic/collection/tree"),
+	TreeModel = require("../../src/classic/model/tree"),
 	$body = $(document.body),
 	likelihood = 30;
 	function randomMenu(){

@@ -30,7 +30,7 @@
 	                // and Features need a reference to the grid.
 	                // For these reasons, we configure a reference to this grid into the View
 	                grid: me,
-	                cls:me.viewType,
+	                'class':me.viewType,
 	                renderTo:me.bodyEl,
 	                collection:me.collection,
 	                ownerGrid: me.ownerGrid,

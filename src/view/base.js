@@ -148,7 +148,7 @@
 			}
 			//Stateful.prototype.initialize.apply(this,arguments);
 		},
-		on:function(options){
+		/*on:function(options){
 			var me = this,delegateEvents = {},events = {};
 			for (var ename in options) {
                 var config = options[ename];
@@ -164,7 +164,7 @@
             }
             me.delegateEvents(delegateEvents)
             Backbone.View.prototype.on.call(this, events,arguments[1]);
-		},
+		},*/
 		initComponent:function(){
 			/*
 			 * if has selector then render, for let the user see the ui as soon as possible
@@ -180,6 +180,7 @@
 	            this.$el.addClass(this.cls);
 	        }
 			this.on(this.listeners);
+	        this.delegateEvents();
 		},
 
         /**

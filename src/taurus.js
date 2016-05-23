@@ -199,8 +199,8 @@
 		create:function(){
 			var cls;
 			if(arguments.length == 1){
-				cls = arguments[0].cls;
-				delete arguments[0].cls;
+				cls = arguments[0].class;
+				delete arguments[0].class;
 			}
 			return new cls(arguments[0]);
 		},
