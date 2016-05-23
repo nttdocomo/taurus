@@ -78,6 +78,7 @@
             var me = this,
             emptyCls = me.emptyCls;
             me._super.apply(me,arguments);
+            me.fieldFocusCls = me.baseCls + '-focus';
             me.emptyUICls = emptyCls + ' ' + emptyCls + '-' + me.ui;
         },
 		getErrors : function(value) {
@@ -145,6 +146,17 @@
                 fieldCls: me.fieldCls + ((isEmpty && (placeholder || value)) ? ' ' + me.emptyUICls : '') + (me.allowBlank ? '' :  ' ' + me.requiredCls)
 			});
 		},
+		onFocus:function(){
+			console.log(arguments[0])
+			var me = this;
+			me._super.apply(me,arguments)
+			me.addClass(me.fieldFocusCls);
+		},
+		onFocusLeave:function(){
+			var me = this;
+			me._super.apply(me,arguments)
+			me.removeClass(me.fieldFocusCls);
+		},
 
 	    onKeyDown: function(e) {
 	        this.trigger('keydown', e);
@@ -169,17 +181,18 @@
 			return value;
 		},
 		delegateEvents : function(events) {
-			if (this.enableKeyEvents) {
-	            $.extend(events,{
+			var me = this;
+			if (me.enableKeyEvents) {
+	            events = $.extend(events,{
 	                'keyup': 'onKeyUp',
 	                'keydown': 'onKeyDown',
 	                'keypress': 'onKeyPress'
 	            });
 	        }
-            $.extend(events,{
-                'focus input':'onFocus'
+            events = $.extend(events,{
+                'focusin input':'onFocus'
             });
-			Base.prototype.delegateEvents.call(this, events);
+			me._super.call(me, events);
 		},
         setValue:function(value){
             var me = this,

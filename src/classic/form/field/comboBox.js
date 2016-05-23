@@ -150,6 +150,7 @@
 			} else {
 				this.collapse();
 			}
+			console.log(collection)
 
 			me.afterQuery();
 		},
@@ -219,7 +220,7 @@
 		createPicker : function() {
 			var me = this,picker = me.picker = new BoundList($.extend({
 				displayField : me.displayField,
-				collection : me.collection
+				collection : me.collection.clone()
 			}, me.listConfig));
 			picker.on({
 				'itemclick': me.onItemClick,

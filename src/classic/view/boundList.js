@@ -28,9 +28,11 @@
 		renderTo:$(document.body),
 		itemSelector:'li',
 		initialize:function(){
-			this.$el.css('top',0);
-			Base.prototype.initialize.apply(this,arguments);
-			this.collection.on('sync',_.bind(this.refresh,this));
+			var me = this;
+			me.$el.css('top',0);
+			Base.prototype.initialize.apply(me,arguments);
+			me.collection.on('sync',_.bind(me.refresh,me));
+			me.collection.on('reset',_.bind(me.refresh,me));
 		},
 		initComponent:function(){
 			var me = this,

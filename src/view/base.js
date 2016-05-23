@@ -38,6 +38,9 @@
 		addClass:function(cls){
 			this.$el.addClass(cls)
 		},
+		removeClass:function(cls){
+			this.$el.removeClass(cls)
+		},
 	    disable:function(){
 	    	var me = this;
 	    	if (!me.disabled) {

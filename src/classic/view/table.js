@@ -358,6 +358,7 @@
 		},
 		renderCell:function(column, record, recordIndex, rowIndex, columnIndex){
 			var me = this,
+			value,
 			cellValues = me.cellValues,
 			classes = cellValues.classes,
 			clsInsertPoint,

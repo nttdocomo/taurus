@@ -41,7 +41,7 @@
 	            /*add: me.onAdd,*/
 	            remove: me.onRemove,
 	            change: me.onUpdate,
-              update: me.onAdd,
+                update: me.onAdd,
 	            clear: me.onDataRefresh,
 	            beginupdate: me.onBeginUpdate,
 	            endupdate: me.onEndUpdate
