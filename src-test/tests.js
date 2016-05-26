@@ -4,10 +4,13 @@ QUnit.config.autostart = false;
 
 // file: test/main.js
 seajs.use([
+	'../src/backbone',
 	'../src/view/base',
 	'../src/classic/panel/panel',
-	'../src/classic/form/field/base'
-], function(Base,Panel,BaseField
+	'../src/classic/form/field/base',
+	'../src/classic/form/field/comboBox',
+	'../src/classic/view/boundList'
+], function(Backbone,Base,Panel,BaseField,ComboBox,BoundList
 	/* remember: the test modules don't export anything */) {
 	var shadowEl = $('<div></div>')
 	var base = new Base({
@@ -61,24 +64,114 @@ seajs.use([
 		panel.$el.trigger(event)
 		assert.ok( false == panel.collapsed, "panel is not expanded" );
 	});
-	/*QUnit.test( "base showAt", function( assert ) {
-		function fmoney(s, n) {
-			n = n > 0 && n <= 20 ? n : 2;
-			s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
-			var l = s.split(".")[0].split("").reverse(),
-			r = s.split(".")[1],
-			t = "";
-			for (i = 0; i < l.length; i++) {
-				t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+	QUnit.test( "BoundList", function( assert ) {
+		var collection = new Backbone.Collection([{
+			name:'a',
+			value:'0'
+		},{
+			name:'b',
+			value:'1'
+		}]),
+		boundList = new BoundList({
+			displayField : 'name',
+			collection : collection
+		}),
+		result,
+		event = $.Event('click',{
+			target : boundList.$el.find('a').get(1)
+		});
+		boundList.on({
+			'itemclick': function(record){
+				result = record
 			}
-			return (t.split("").reverse().join("") + "." + r).replace(/(^\-),(.*)/,'$1$2');
-		}
-		assert.ok( '-900.00' == fmoney(-900), "base width is correcr after set width" );
-		assert.ok( '-900.00' == fmoney(-900.0), "base width is correcr after set width" );
-		assert.ok( '100.00' == fmoney(100), "base width is correcr after set width" );
-		assert.ok( '1,000.00' == fmoney(1000), "base width is correcr after set width" );
-		assert.ok( '-1,000.00' == fmoney(-1000), "base width is correcr after set width" );
-		assert.ok( '10,000,000.00' == fmoney(10000000), "base width is correcr after set width" );
-		assert.ok( '-100,000.00' == fmoney(-100000), "base width is correcr after set width" );
-	});*/
+		});
+		boundList.$el.trigger(event);
+		assert.ok( collection.at(0) == boundList.getRecord(boundList.$el.find('a').eq(0)), "getRecord return a not correct result" );
+		assert.ok( collection.at(1) == result, "select a not correct result" );
+		boundList.remove();
+		boundList = undefined;
+		collection = undefined;
+		event = undefined;
+	});
+	QUnit.test( "ComboBox", function( assert ) {
+		assert.expect( 5 );
+		var done = assert.async(5),collection = new Backbone.Collection([{
+			name:'aaaa',
+			value:'0'
+		},{
+			name:'bbbb',
+			value:'1'
+		},{
+			name:'aabb',
+			value:'2'
+		}]),
+		$el = $('<div></div>'),
+		comboBox = new ComboBox({
+			queryDelay:10,
+			renderTo:$el,
+			displayField : 'name',
+			valueField:'value',
+			queryMode : 'local',
+			collection : collection
+		}),
+		event = $.Event('keyup',{
+			target : comboBox.inputEl.get(0),
+			keyCode:65//8
+		}),
+		test1 = function(){
+			comboBox.inputEl.val('a')
+			//触发一个普通输入
+			comboBox.$el.trigger(event);
+			setTimeout(function() {
+			    assert.equal(comboBox.getPicker().collection.length, 2, "Input was focused" );
+			    done();
+			    test2();
+			},11);
+		},
+		test2 = function(){
+			//测试a和b
+			comboBox.inputEl.val('ab')
+			event.keyCode = 46;
+			comboBox.$el.trigger(event);
+			setTimeout(function() {
+			    assert.equal(comboBox.getPicker().collection.length, 1, "Input was focused" );
+			    done();
+			    test3();
+			},11);
+		},
+		test3 = function(){
+			//测试a和b
+			comboBox.inputEl.val('abc')
+			event.keyCode = 46;
+			comboBox.$el.trigger(event);
+			setTimeout(function() {
+				console.log(comboBox.getPicker().collection)
+			    assert.equal(comboBox.getPicker().collection.length, 0, "Input was focused" );
+			    done();
+			    test4();
+			},11);
+		},
+		test4 = function(){
+			//测试a和b
+			comboBox.inputEl.val('b')
+			event.keyCode = 66;
+			comboBox.$el.trigger(event);
+			setTimeout(function() {
+			    assert.equal(comboBox.getPicker().collection.length, 2, "Input was focused" );
+			    done();
+			    test5()
+			},11);
+		},
+		test5 = function(){
+			//测试a和b
+			comboBox.inputEl.val('')
+			event.keyCode = 46;
+			comboBox.$el.trigger(event);
+			setTimeout(function() {
+			    assert.equal(comboBox.value, null, "当输入框的值是空时，值重置为null" );
+			    done();
+			},11);
+		};
+		test1();
+	});
 });

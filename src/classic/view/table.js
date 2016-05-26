@@ -133,7 +133,9 @@
 				}
 			}
 			return _.map(cells,function(cell){
-				return $(cell).outerWidth();
+				var clientRect = cell.getBoundingClientRect();
+				//http://stackoverflow.com/questions/20087491/setting-font-family-to-sans-serif-causes-jquery-to-calculate-incorrect-outerwidt
+				return clientRect.width || (clientRect.right - clientRect.left);//original version $(cell).innerWidth();
 			})
 		},
 		initFeatures:function(grid){

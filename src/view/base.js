@@ -731,6 +731,25 @@
 		}
 	},{
 		INVALID_ID_CHARS_Re: /[\.,\s]/g,
-		updateLayout:function(){}
+		updateLayout:function(){},
+		decorate:function(decorator){
+			var Decorator = function(){},
+			overrides = decorator,
+			list = this.decoratorList,
+			i, newobj;
+
+			if(list.indexOf(decorator) == -1){
+				this.decoratorList.push(decorator);
+				Decorator.prototype = this;
+				newobj = new Decorator();
+				newobj.parent = Decorator.prototype;
+				for(i in overrides){
+					if(overrides.hasOwnProperty(i)){
+						newobj[i] = overrides[i];
+					}
+				}
+				return newobj;
+			}
+		}
 	}).mixins(Stateful).mixins(Focusable);
 })/*)*/;

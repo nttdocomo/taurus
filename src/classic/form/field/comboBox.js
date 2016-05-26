@@ -17,8 +17,13 @@
 }(this, function(Picker,BoundList,_,Backbone) {
 	return Picker.extend({
 		allQuery: '',
+		/**
+	     * @private
+	     */
+	    clearValueOnEmpty: true,
 		delimiter : ', ',
 		isExpanded : false,
+		queryDelay:1000,
 		queryMode : 'remote',
 		queryParam : 'query',
 		triggerAction: 'all',
@@ -86,16 +91,16 @@
 			//Picker.prototype.alignPicker.apply(this,arguments);
 		},
 		delegateEvents : function(events) {
-			var events = $.extend(events || {}, {
-				'keyup input' : _.throttle(this.onKeyUp, 1000)
+			var me = this,events = $.extend(events || {}, {
+				'keyup input' : _.throttle(me.onKeyUp, me.queryDelay)
 			});
-			if (!this.editable) {
+			if (!me.editable) {
 				events = $.extend(events, {
 					'click input' : 'onTriggerClick'
 				});
 			}
 			//Backbone.View.prototype.delegateEvents.call(this, events);
-			Picker.prototype.delegateEvents.call(this, events);
+			Picker.prototype.delegateEvents.call(me, events);
 		},
 
 		doTypeAhead : function() {
@@ -144,23 +149,23 @@
 			}
 
 			// Expand after adjusting the filter unless there are no matches
+			me.getPicker().collection.reset(collection);
 			if (collection.length || me.getPicker().emptyText) {
-				this.getPicker().collection.reset(collection);
-				this.expand();
+				me.expand();
 			} else {
-				this.collapse();
+				me.collapse();
 			}
-			console.log(collection)
 
 			me.afterQuery();
 		},
 		doQuery : function(queryString, forceAll, rawQuery) {
-			var me = this, isLocalMode = this.queryMode === 'local', collection = this.collection;
+			var me = this, isLocalMode = me.queryMode === 'local', collection = me.collection;
 			/*if(!queryString){
 				return false;
 			}*/
 			if (isLocalMode) {
-				if(!collection.length){
+				me.doLocalQuery(queryString);
+				/*if(!collection.length){
 					collection.fetch({
 						success:function(){
 							me.expand()
@@ -170,20 +175,20 @@
 					//if (!this.multiSelect){
 						this.doLocalQuery(queryString);
 					//}
-				}
+				}*/
 			} else {
-				this.doRemoteQuery(queryString);
+				me.doRemoteQuery(queryString);
 			}
 		},
 		doRemoteQuery : function(queryString) {
-			var me = this, collection = this.collection;
+			var me = this, collection = me.collection;
 			if(!queryString){
 				return false;
 			}
 			collection.fetch({
 				data : this.getParams(queryString),
 				success : function() {
-					//me.getPicker().collection.reset(collection.models);
+					me.getPicker().collection.reset(collection.models);
 					me.expand();
 					//me.doLocalQuery(queryString);
 					if (!me.multiSelect){
@@ -249,7 +254,7 @@
 			this.collection.fetch(options);
 			this.triggerEl.attr('disabled', 'disabled');
 		},
-		onItemClick : function(e, record) {
+		onItemClick : function(record) {
 			var valueField = this.valueField, picker = this.getPicker(), value = this.value, lastSelected;
 			if (value) {
 				value = $.makeArray(value);
@@ -284,13 +289,34 @@
 			} else {
 				this.setValue(selection);
 			}
+			return false;
 			//Picker.prototype.onItemClick.apply(this,arguments);
 		},
 		onKeyUp : function(e) {
-			var key = e.getKey();
+			var me = this,key = e.getKey(),
+			isDelete = key === e.BACKSPACE || key === e.DELETE,
+			rawValue = me.inputEl.val(),
+			len = rawValue.length;
 			//if (!e.isSpecialKey() && key !== 229) {
 			this.doQuery(this.getRawValue(), false, true);
-			Picker.prototype.onKeyUp.call(this,arguments);
+			if (!len && (!key || isDelete)) {
+				// This portion of code may end up calling setValue will check for change. But since
+                // it's come from field mutations, we need to respect the checkChangeBuffer, so
+                // we suspend checks here, it will be handled by callParent
+                ++me.suspendCheckChange;
+                // Essentially a silent setValue.
+                // Clear our value, and the tplData used to construct a mathing raw value.
+                if (!me.multiSelect) {
+                    me.value = null;
+                    me.displayTplData = undefined;
+                }
+				/*if(clearValueOnEmpty){
+
+				}*/
+				me.collapse();
+                --me.suspendCheckChange;
+			}
+			me._super.apply(this,arguments);
 			//}
 		},
 

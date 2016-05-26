@@ -34,6 +34,12 @@
 			me.collection.on('sync',_.bind(me.refresh,me));
 			me.collection.on('reset',_.bind(me.refresh,me));
 		},
+	    indexOf: function(node) {
+	        return this.$el.find('a.boundlist-item').index(node);
+	    },
+		getRecord: function(node){
+	        return this.collection.at(this.indexOf(node));
+	    },
 		initComponent:function(){
 			var me = this,
 			itemCls = me.itemCls;
@@ -42,7 +48,7 @@
 		},
 		delegateEvents : function(events) {
 			events = events || {};
-			events['click ' + this.itemSelector] = 'onItemClick';
+			/*events['click ' + this.itemSelector] = 'onItemClick';*/
 			var events = $.extend({}, this.events, events);
 			Base.prototype.delegateEvents.call(this, events);
 			this.selection = new Backbone.Collection;

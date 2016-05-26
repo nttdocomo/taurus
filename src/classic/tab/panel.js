@@ -132,7 +132,7 @@
 		},
 		onAdd : function(item, index) {
 			var me = this, cfg = item.tabConfig || {}, defaultConfig = {
-				cls : Tab,
+				'class' : Tab,
 				card : item,
 				title: item.title,
 				disabled : item.disabled,

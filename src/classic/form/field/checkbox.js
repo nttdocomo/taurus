@@ -147,12 +147,9 @@
 		 */
 		setRawValue : function(value) {
 			var me = this, inputEl = me.inputEl, checked = me.isChecked(value, me.inputValue);
-			if (this.shadowInputEl) {
+			if (me.inputEl) {
 				//this.inputEl.prop('checked', checked);
-				//me.inputEl[checked ? 'addClass' : 'removeClass'](me.checkedCls);
-				me.shadowInputEl.style({
-					opacity:checked ? 1:0
-				})
+				me[checked ? 'addClass' : 'removeClass'](me.checkedCls);
 			}
 
 			me.checked = me.rawValue = checked;
