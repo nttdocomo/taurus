@@ -94,7 +94,7 @@ seajs.use([
 		event = undefined;
 	});
 	QUnit.test( "ComboBox", function( assert ) {
-		assert.expect( 5 );
+		assert.expect( 6 );
 		var done = assert.async(5),collection = new Backbone.Collection([{
 			name:'aaaa',
 			value:'0'
@@ -107,7 +107,7 @@ seajs.use([
 		}]),
 		$el = $('<div></div>'),
 		comboBox = new ComboBox({
-			queryDelay:10,
+			queryDelay:1,
 			renderTo:$el,
 			displayField : 'name',
 			valueField:'value',
@@ -126,7 +126,7 @@ seajs.use([
 			    assert.equal(comboBox.getPicker().collection.length, 2, "Input was focused" );
 			    done();
 			    test2();
-			},11);
+			},2);
 		},
 		test2 = function(){
 			//测试a和b
@@ -137,7 +137,7 @@ seajs.use([
 			    assert.equal(comboBox.getPicker().collection.length, 1, "Input was focused" );
 			    done();
 			    test3();
-			},11);
+			},2);
 		},
 		test3 = function(){
 			//测试a和b
@@ -149,7 +149,7 @@ seajs.use([
 			    assert.equal(comboBox.getPicker().collection.length, 0, "Input was focused" );
 			    done();
 			    test4();
-			},11);
+			},2);
 		},
 		test4 = function(){
 			//测试a和b
@@ -157,10 +157,10 @@ seajs.use([
 			event.keyCode = 66;
 			comboBox.$el.trigger(event);
 			setTimeout(function() {
-			    assert.equal(comboBox.getPicker().collection.length, 2, "Input was focused" );
+			    assert.equal(comboBox.getPicker().collection.length, 2, "当输入b时，筛选后的集合长度为2" );
 			    done();
 			    test5()
-			},11);
+			},2);
 		},
 		test5 = function(){
 			//测试a和b
@@ -169,8 +169,9 @@ seajs.use([
 			comboBox.$el.trigger(event);
 			setTimeout(function() {
 			    assert.equal(comboBox.value, null, "当输入框的值是空时，值重置为null" );
+				assert.equal(comboBox.picker.$el.is(':hidden'), true, "当输入框的值是空时，下拉框收起" );
 			    done();
-			},11);
+			},2);
 		};
 		test1();
 	});
