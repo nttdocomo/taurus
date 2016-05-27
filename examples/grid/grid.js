@@ -196,6 +196,7 @@ define(function(require) {
 		collapsible: true,
 		height : 350,
 		width : 600,
+		emptyText:'空的',
 		title : 'Array Grid',
 		columns : [{
 			text : 'Company',
@@ -261,4 +262,5 @@ define(function(require) {
 		collection : collection,
 		renderTo : $body
 	});
+	//collection.reset();
 });

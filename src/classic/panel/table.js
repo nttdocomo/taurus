@@ -19,6 +19,7 @@
 		pager:false,
 		viewType:Table,
 		className:'panel panel-default grid',
+		emptyCls: taurus.baseCSSPrefix + 'grid-empty',
 		hiddenHeaderCtCls: 'grid-header-ct-hidden',
 		colLinesCls: taurus.baseCSSPrefix + 'grid-with-col-lines',
 		initComponent:function(options){
@@ -130,6 +131,42 @@
 				});
 				me.$el.addClass('has-pager');
 			};
+		},
+		getView:function(cls){
+			var me = this,
+            scroll, scrollable, viewConfig;
+            if (!me.view) {
+            	viewConfig = _.extend({
+	                // TableView injects the view reference into this grid so that we have a reference as early as possible
+	                // and Features need a reference to the grid.
+	                // For these reasons, we configure a reference to this grid into the View
+	                grid: me,
+	                'class':me.viewType,
+	                //renderTo:me.bodyEl,
+	                collection:me.collection,
+	                ownerGrid: me.ownerGrid,
+                	columnLines: me.columnLines,
+	                headerCt: me.headerCt,
+	                panel: me,
+	                features: me.features,
+	                emptyText: me.emptyText || ''
+	            }, me.viewConfig);
+
+				me.view = taurus.create(viewConfig);
+				// Normalize the application of the markup wrapping the emptyText config.
+	            // `emptyText` can now be defined on the grid as well as on its viewConfig, and this led to the emptyText not
+	            // having the wrapping markup when it was defined in the viewConfig. It should be backwards compatible.
+	            // Note that in the unlikely event that emptyText is defined on both the grid config and the viewConfig that the viewConfig wins.
+	            if (me.view.emptyText) {
+	                me.view.emptyText = '<div class="' + me.emptyCls + '">' + me.view.emptyText + '</div>';
+	            }
+
+				me.view.on({
+	                uievent: me.processEvent,
+	                scope: me
+	            });
+            }
+            return me.view;
 		},
 		updateLayout:function(){
 			Panel.prototype.updateLayout.apply(this,arguments);

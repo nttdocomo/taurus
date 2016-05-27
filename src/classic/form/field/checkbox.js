@@ -4,17 +4,17 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./base','../checkboxManager','svg','underscore'], factory);
+			define(['./base','../checkboxManager','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./base'),require('../checkboxManager'),require('svg'),require('underscore'));
+				return factory(require('./base'),require('../checkboxManager'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./base'),require('../checkboxManager'),require('svg'),require('underscore'));
+		module.exports = factory(require('./base'),require('../checkboxManager'),require('underscore'));
 	}
-}(this, function(Base,CheckboxManager,Svg,_) {
+}(this, function(Base,CheckboxManager,_) {
 	return Base.extend({
 		fieldSubTpl : '<div class="<%=type%>"><%if(boxLabel){%><label id="<%=cmpId%>-boxLabelEl" for="<%=id%>"><%}%><input id="<%=id%>" type="<%=type%>"<%if(checked){%> checked="<%=checked%>"<%}%> name="<%=name%>" value="<%=value%>"/><%if(boxLabel){%><%=boxLabel%></label><%}%></div>',
 		inputType : 'checkbox',

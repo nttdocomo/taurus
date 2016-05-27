@@ -201,8 +201,12 @@
 	    // after adding a row stripe rows from then on
 	    onAdd: function(store, options) {
 	        var me = this,
+	        	collection = me.collection,
 	            bufferedRenderer = me.bufferedRenderer;
 	        me.refresh(store, options)
+            if (collection.length) {
+            	me.reset();
+            }
 
 	        /*if (me.rendered && bufferedRenderer) {
 	        	me.refresh(store, index, [], records)
@@ -411,8 +415,13 @@
 	        }
 		},
 		refresh:function(store, options){
-			this.collection = store;
-			this.reset();
+			var me = this;
+			me._super.apply(me,arguments)
+		},
+		onReset:function(){
+			var me = this;
+			me._super.apply(me,arguments)
+			me.renderHtml();
 		},
 		reset:function(){
 			this.renderHtml();

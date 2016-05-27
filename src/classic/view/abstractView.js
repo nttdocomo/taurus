@@ -31,13 +31,24 @@
             }
             Base.prototype.initComponent.apply(this,arguments);
             me.bindStoreListeners(me.collection)
+            me.refresh()
 		},
+
+        addEmptyText: function() {       
+            var me = this/*,
+                store = me.getStore()*/;
+
+            if (me.emptyText/* && !store.isLoading() && (!me.deferEmptyText || me.refreshCounter > 1 || store.isLoaded())*/) {
+                me.emptyEl = $(me.emptyText).insertBefore(me.getTargetEl());
+            }
+        },
 
 	    getStoreListeners: function() {
 	        var me = this;
 	        return {
 	            refresh: me.onDataRefresh,
 	            replace: me.onReplace,
+                reset: me.onReset,
 	            /*add: me.onAdd,*/
 	            remove: me.onRemove,
 	            change: me.onUpdate,
@@ -47,11 +58,28 @@
 	            endupdate: me.onEndUpdate
 	        };
 	    },
+        onReset:function(){
+            this.refresh();
+        },
 	    onUpdate:function(store, record, operation, modifiedFieldNames, details){
 	    	console.log(arguments)
 	    },
-      onRemove:function(){
-	    	console.log(arguments)
-      }
+        onRemove:function(){
+        	console.log(arguments)
+        },
+        refresh:function(){
+            var me = this,collection = me.collection;
+            if (!me.rendered) {
+                return;
+            }
+            if (collection.length < 1) {
+                // Process empty text unless the store is being cleared.
+                me.addEmptyText();
+                //items.clear();
+            }/* else {
+                me.collectNodes(targetEl.dom);
+                me.updateIndexes(0);
+            }*/
+        }
 	}).mixins(StoreHolder)
 }))
