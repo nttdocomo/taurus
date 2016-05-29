@@ -30,16 +30,58 @@
                 me.itemSelector = '.' + me.itemCls;
             }
             Base.prototype.initComponent.apply(this,arguments);
-            me.bindStoreListeners(me.collection)
+            me.bindStore(me.collection)
             me.refresh()
 		},
 
-        addEmptyText: function() {       
+        addEmptyText: function() {
             var me = this/*,
                 store = me.getStore()*/;
 
             if (me.emptyText/* && !store.isLoading() && (!me.deferEmptyText || me.refreshCounter > 1 || store.isLoaded())*/) {
-                me.emptyEl = $(me.emptyText).insertBefore(me.getTargetEl());
+                me.emptyEl = $(me.emptyText).prependTo(me.getTargetEl());
+            }
+        },
+
+        /**
+         * Changes the data store bound to this view and refreshes it.
+         * @param {Ext.data.Store} store The store to bind to this view
+         * @since 3.4.0
+         */
+        bindStore: function(store, initial) {
+            var me = this;
+            StoreHolder.prototype.bindStore.apply(me,arguments)
+            // If we have already achieved our first layout, refresh immediately.
+            // If we bind to the Store before the first layout, then beforeLayout will
+            // call doFirstRefresh
+            if (store/* && me.componentLayoutCounter*/) {
+                // If not the initial bind, we enforce noDefer.
+                me.doFirstRefresh(store, !initial);
+            }
+        },
+
+        /**
+         * @private
+         * Perform the first refresh of the View from a newly bound store.
+         *
+         * This is called when this View has been sized for the first time.
+         */
+        doFirstRefresh: function(store, noDefer) {
+            var me = this;
+
+            // If we are configured to defer, and *NOT* called from the defer call below
+            if (me.deferInitialRefresh && !noDefer) {
+                Ext.defer(me.doFirstRefresh, 1, me, [store, true]);
+            }
+
+            else {
+                // 4.1.0: If we have a store, and the Store is *NOT* already loading (a refresh is on the way), then
+                // on first layout, refresh regardless of record count.
+                // Template may contain boilerplate HTML outside of record iteration loop.
+                // Also, emptyText is appended by the refresh method.
+                if (store && !store.isLoading) {
+                    me.refresh();
+                }
             }
         },
 

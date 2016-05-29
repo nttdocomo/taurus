@@ -2,7 +2,7 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var PageableCollection = require("backbone-pageable");
+	var PageableCollection = require("../../src/classic/collection/collection");
 	var Panel = require("../../src/classic/panel/panel.js"),
 		Table = require("../../src/classic/panel/table.js"),
 		ActionColumn = require("../../src/classic/grid/column/action.js"),
@@ -262,5 +262,5 @@ define(function(require) {
 		collection : collection,
 		renderTo : $body
 	});
-	//collection.reset();
+	collection.reset();
 });

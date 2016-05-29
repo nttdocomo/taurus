@@ -18,7 +18,11 @@
 	height:100%;
 	overflow: auto;
 }
-
+.grid-empty {
+    padding: 10px;
+    color: grey;
+    background-color: #fff;
+}
 .panel-body table{
 	margin-bottom:0;
 	table-layout: fixed;

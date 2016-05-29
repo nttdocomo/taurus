@@ -145,7 +145,6 @@ seajs.use([
 			event.keyCode = 46;
 			comboBox.$el.trigger(event);
 			setTimeout(function() {
-				console.log(comboBox.getPicker().collection)
 			    assert.equal(comboBox.getPicker().collection.length, 0, "Input was focused" );
 			    done();
 			    test4();

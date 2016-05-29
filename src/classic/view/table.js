@@ -420,8 +420,8 @@
 		},
 		onReset:function(){
 			var me = this;
-			me._super.apply(me,arguments)
 			me.renderHtml();
+			me._super.apply(me,arguments)
 		},
 		reset:function(){
 			this.renderHtml();

@@ -23,11 +23,22 @@
 }(this, function() {
     var StoreHolder = function(){};
     StoreHolder.prototype = {
+        bindStore:function(store){
+            var me = this;
+            if (store) {
+                //me[propertyName] = store = Ext.data.StoreManager.lookup(store);
+                me.bindStoreListeners(store);
+                //me.onBindStore(store, oldStore);
+            } else {
+                me[propertyName] = null;
+            }
+            return me
+        },
         /**
          * Binds listeners for this component to the store. By default it will add
          * anything bound by the getStoreListeners method, however it can be overridden
          * in a subclass to provide any more complicated handling.
-         * @protected 
+         * @protected
          * @param {Ext.data.AbstractStore} store The store to bind to
          */
         bindStoreListeners: function(collection) {
