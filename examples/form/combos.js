@@ -4,8 +4,8 @@
 define(function(require) {
 	var Backbone = require("backbone");
 	var chance = require('chance');
-	var ComboBox = require("../../src/form/field/comboBox"),
-	Button = require("../../src/button/button"),
+	var ComboBox = require("../../src/classic/form/field/comboBox"),
+	Button = require("../../src/classic/button/button"),
 	$body = $("#main"), data_with_src=[],states = [{
 		"abbr" : "AL",
 		"name" : "Alabama",
@@ -217,13 +217,14 @@ define(function(require) {
 		id : 'textfield1',
 		displayField : 'name',
 		fieldLabel : 'country',
+		emptyText:'aaaaa',
 		value:"AK",
 		valueField : 'abbr',
 		width:250,
 		collection : collection
 	});
 	types = ['abstract','animals','business','cats','city','food','nightlife','fashion','people','nature','sports','technics','transport']
-	for (var i = chance.natural({min: 1, max: 100}); i >= 0; i--) {
+	for (var i = chance.natural({min: 1, max: 20}); i >= 0; i--) {
 		data_with_src.push({
 			"src":'http://lorempixel.com/20/20/'+[types[chance.natural({min: 0, max: 12})],chance.natural({min: 1, max: 10})].join('/'),
 			"name" : chance.word(),
@@ -270,6 +271,7 @@ define(function(require) {
 		queryMode : 'local',
 		width : 250,
 		displayField : 'name',
+		emptyText:'aaaaa',
 		valueField : 'abbr',
 		fieldLabel : 'city',
 		collection : collection

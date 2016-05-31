@@ -147,10 +147,17 @@
 			});
 		},
 		onFocus:function(){
-			console.log(arguments[0])
-			var me = this;
+			var me = this,
+			emptyText = me.emptyText;
 			me._super.apply(me,arguments)
 			me.addClass(me.fieldFocusCls);
+			if((emptyText && !Modernizr.input.Placeholder) && (me.inputEl.val() == emptyText && me.valueContainsPlaceholder)){
+				me.setRawValue('')
+				inputEl.removeClass(me.emptyUICls);
+            	me.valueContainsPlaceholder = false;
+			} else if (Modernizr.input.Placeholder) {
+	            inputEl.removeClass(me.emptyUICls);
+	        }
 		},
 		onFocusLeave:function(){
 			var me = this;

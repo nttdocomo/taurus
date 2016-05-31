@@ -1,0 +1,4 @@
+.input-group > input + .input-group-btn > .btn, .input-group > input + .input-group-btn > .btn-group{
+	z-index: 2;
+    margin-left: -1px;
+}

@@ -203,10 +203,11 @@
 	        var me = this,
 	        	collection = me.collection,
 	            bufferedRenderer = me.bufferedRenderer;
+            me.reset();
 	        me.refresh(store, options)
-            if (collection.length) {
+            /*if (collection.length) {
             	me.reset();
-            }
+            }*/
 
 	        /*if (me.rendered && bufferedRenderer) {
 	        	me.refresh(store, index, [], records)

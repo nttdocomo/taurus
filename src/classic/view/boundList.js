@@ -4,17 +4,17 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./view','./boundListItem','underscore','backbone'], factory);
+			define(['./view','./boundListItem','underscore','backbone','taurus'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./view'),require('./boundListItem'),require("underscore"),require('backbone'));
+				return factory(require('./view'),require('./boundListItem'),require("underscore"),require('backbone'),require('taurus'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./view'),require('./boundListItem'),require("underscore"),require('backbone'));
+		module.exports = factory(require('./view'),require('./boundListItem'),require("underscore"),require('backbone'),require('taurus'));
 	}
-}(this, function(Base,BoundListItem,_,Backbone) {
+}(this, function(Base,BoundListItem,_,Backbone,taurus) {
 	return Base.extend({
 		//tpl:'<%=content%>',
 		id : 'listEl',
@@ -130,7 +130,7 @@
 			var me = this;
 			this.$el.css('z-index','1051');
 			if(this.lazyload){
-				require.async('jquery.lazyload',function(){
+				taurus.async('jquery.lazyload',function(){
 					me.$el.find("img.lazy").lazyload({
 						container: me.$el
 					});

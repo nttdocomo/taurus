@@ -91,6 +91,7 @@
 	            refresh: me.onDataRefresh,
 	            replace: me.onReplace,
                 reset: me.onReset,
+                sync: me.onAdd,
 	            /*add: me.onAdd,*/
 	            remove: me.onRemove,
 	            change: me.onUpdate,
@@ -100,6 +101,9 @@
 	            endupdate: me.onEndUpdate
 	        };
 	    },
+        onSync:function(){
+            this.refresh();
+        },
         onReset:function(){
             this.refresh();
         },

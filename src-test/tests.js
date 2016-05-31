@@ -1,6 +1,6 @@
 // Don't forget to prevent automatic test execution if your test runner of
 // choice is one of the more excitable frameworks.
-QUnit.config.autostart = false;
+//QUnit.config.autostart = false;
 
 // file: test/main.js
 seajs.use([
@@ -8,9 +8,10 @@ seajs.use([
 	'../src/view/base',
 	'../src/classic/panel/panel',
 	'../src/classic/form/field/base',
+	'../src/classic/form/field/text',
 	'../src/classic/form/field/comboBox',
 	'../src/classic/view/boundList'
-], function(Backbone,Base,Panel,BaseField,ComboBox,BoundList
+], function(Backbone,Base,Panel,BaseField,TextField,ComboBox,BoundList
 	/* remember: the test modules don't export anything */) {
 	var shadowEl = $('<div></div>')
 	var base = new Base({
@@ -20,10 +21,10 @@ seajs.use([
 		collapsible: true,
 		renderTo:shadowEl
 	})
+	QUnit.init();
 
 	// All the test files have been loaded, and all the tests have been
 	// defined--we're ready to start testing!
-	QUnit.init();
 	QUnit.test( "base", function( assert ) {
 		assert.ok( undefined !== base.$el, "base has a $el" );
 		assert.ok( true === base.isRendered, "base isRendered is not true" );
@@ -39,6 +40,34 @@ seajs.use([
 		assert.ok( 10 == base.$el.position().left, "base position left is not correct" );
 		assert.ok( 10 == base.$el.position().top, "base position top is not correct" );
 		base.remove();
+	});
+	QUnit.test( "form field text", function( assert ) {
+		var expect = 0;
+		if(!Modernizr.placeholder){
+			expect = 2
+		}
+		assert.expect( expect );
+		//测试a和b
+		var $el = $('<div></div>'),
+		text = new TextField({
+			renderTo:$el,
+			name : 'first_name',
+			emptyText:'emptyText',
+			fieldLabel : 'First Name:'
+		});
+		//assert.equal('', '', "触发focus事件后，input的值为emptyText" );
+		if (!Modernizr.placeholder) {
+			assert.equal(text.inputEl.val(), 'emptyText', "初始化结束后input的值等于emptyText" );
+		}
+		var focusEvent = $.Event('focusin',{
+			target : text.inputEl.get(0)
+		});
+		text.$el.trigger(focusEvent);
+		if (!Modernizr.placeholder) {
+			assert.equal(text.inputEl.val(), '', "触发focus事件后，input的值为emptyText" );
+		}
+		text.remove();
+		$el.remove()
 	});
 	QUnit.test( "form field base", function( assert ) {
 		var baseField = new BaseField({
@@ -109,6 +138,7 @@ seajs.use([
 		comboBox = new ComboBox({
 			queryDelay:1,
 			renderTo:$el,
+			emptyText:'emptyText',
 			displayField : 'name',
 			valueField:'value',
 			queryMode : 'local',
@@ -170,6 +200,7 @@ seajs.use([
 			    assert.equal(comboBox.value, null, "当输入框的值是空时，值重置为null" );
 				assert.equal(comboBox.picker.$el.is(':hidden'), true, "当输入框的值是空时，下拉框收起" );
 			    done();
+			    comboBox.remove();
 			},2);
 		};
 		test1();

@@ -21,6 +21,7 @@
 		content:null,
 		header:true,
 		fullscreen:false,
+		closeAction:'destroy',
 		events:{
 			'click [data-dismiss="modal"]' : 'close'
 		},
@@ -62,9 +63,21 @@
 			}
 		},
 		close:function(){
-			this.$el.removeClass('in').hide();
+			var me = this;
+			me.$el.removeClass('in').hide();
 			$(document.body).removeClass('modal-open');
+			me.doClose();
 			return false;
+		},
+    
+	    destroy: function() {
+	        /*this.callParent();
+	        this.dockedItems = this.bodyContainer = null;*/
+	    },
+		doClose:function(){
+			var me = this;
+			me.trigger('close');
+			me[me.closeAction]()
 		},
 		delegateEvents : function(events) {
 			var events = $.extend({}, this.events, {

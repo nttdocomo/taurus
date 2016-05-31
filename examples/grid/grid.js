@@ -2,7 +2,7 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var PageableCollection = require("../../src/classic/collection/collection");
+	var PageableCollection = require("../../src/backbone-pageable");
 	var Panel = require("../../src/classic/panel/panel.js"),
 		Table = require("../../src/classic/panel/table.js"),
 		ActionColumn = require("../../src/classic/grid/column/action.js"),

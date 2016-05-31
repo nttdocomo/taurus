@@ -374,27 +374,27 @@
 	        }
 		},
 		doSetValue:function(value){
-			var me = this, displayField = this.displayField, valueField = this.valueField || displayField, processedValue = [], displayTplData = [], model, record, displayValue,
+			var me = this, displayField = me.displayField, valueField = me.valueField || displayField, processedValue = [], displayTplData = [], model, record, displayValue,
 			displayIsValue = me.displayField === me.valueField,
 			displayTplData = me.displayTplData || (me.displayTplData = []);
 			displayTplData.length = 0;
 			if (_.isUndefined(value)) {
-				return Picker.prototype.setValue.apply(this, value);
+				return Picker.prototype.setValue.apply(me, value);
 			}
 			if (_.isString(value) && value == '') {
-				return Picker.prototype.setValue.apply(this, [value]);
+				return Picker.prototype.setValue.apply(me, [value]);
 			}
 			value = $.makeArray(value);
 			for ( i = 0, len = value.length; i < len; i++) {
 				val = value[i];
-				if ((_.isString(val) || _.isNumber(val) || _.isObject(val)) && this.collection.length) {
+				if ((_.isString(val) || _.isNumber(val) || _.isObject(val)) && me.collection.length) {
 					if (_.isString(val) || _.isNumber(val)) {
-						record = this.collection.find(function(model) {
+						record = me.collection.find(function(model) {
 							return model.get(valueField) == val;
 						});
 					}
 					if (_.isObject(val)) {
-						record = this.collection.find(function(model) {
+						record = me.collection.find(function(model) {
 							var value;
 							if ( val instanceof Backbone.Model) {
 								value = val.get(valueField);
@@ -413,21 +413,33 @@
 					}
 					displayTplData.push(record);
 					processedValue.push(record[valueField]);
+					me.updateValue();
 				} else {
 
 				}
 			}
-			this.displayTplData = displayTplData;
-			this.value = processedValue.length ? this.multiSelect ? processedValue : processedValue[0] || '' : value ? value : '';
+			me.displayTplData = displayTplData;
+			me.value = processedValue.length ? me.multiSelect ? processedValue : processedValue[0] || '' : value ? value : '';
+			me.applyEmptyText();
 			return Picker.prototype.setValue.apply(this, [this.value]);
+		},
+		updateValue:function(){
+			var me = this,
+            inputEl = me.inputEl;
+			if (inputEl && me.emptyText && !_.isEmpty(me.value)) {
+	            inputEl.removeClass(me.emptyCls);
+	        }
 		},
 		clearValue : function() {
 			this.setValue(null);
 		},
 		getSubTplData : function() {
-			var me = this;
-			var data = Picker.prototype.getSubTplData.apply(this, arguments);
-			data.value = this.getDisplayValue();
+			var me = this,
+			displayValue = me.getDisplayValue(),
+			data = me._super.apply(this, arguments);
+			if(displayValue){
+				data.value = displayValue;
+			}
 			return data;
 		},
 
