@@ -73,6 +73,7 @@
 	    destroy: function() {
 	        /*this.callParent();
 	        this.dockedItems = this.bodyContainer = null;*/
+	        this.$el.remove();
 	    },
 		doClose:function(){
 			var me = this;
