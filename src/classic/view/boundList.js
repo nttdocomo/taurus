@@ -35,7 +35,7 @@
 			me.collection.on('reset',_.bind(me.refresh,me));
 		},
 	    indexOf: function(node) {
-	        return this.$el.find('a.boundlist-item').index(node);
+	        return this.$el.find('.boundlist-item').index(node);
 	    },
 		getRecord: function(node){
 	        return this.collection.at(this.indexOf(node));
@@ -70,7 +70,7 @@
 	     * @return {String} The inner template
 	     */
 	    getInnerTpl: function(displayField) {
-	        return '<a href="#" class="boundlist-item"><%=item.' + displayField + '%></a>';
+	        return '<a href="#"><%=item.' + displayField + '%></a>';
 	    },
 		getNode:function(model){
 			return model ? this.getNodeByRecord(model):undefined;

@@ -245,7 +245,7 @@ define(function(require) {
 			lazyload:true,
 			getInnerTpl:function(displayField){
 				console.log(this)
-				return '<a href="#" class="boundlist-item"><%if(item.src){%><img class="lazy" '+(this.lazyload ?' data-original':'src') +'="<%=item.src%>" height="20" width="20"> <%}%><%=item.' + displayField + '%></a>';
+				return '<a href="#"><%if(item.src){%><img class="lazy" '+(this.lazyload ?' data-original':'src') +'="<%=item.src%>" height="20" width="20"> <%}%><%=item.' + displayField + '%></a>';
 			}
 		},
 		width:250,
