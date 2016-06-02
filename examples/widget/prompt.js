@@ -2,8 +2,9 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Prompt = require("../../src/widget/prompt"),
-	Button = require("../../src/button/button"),
+	var Prompt = require("../../src/classic/widget/prompt"),
+	Dialog = require("../../src/classic/widget/dialog"),
+	Button = require("../../src/classic/button/button"),
 	$body = $("#main");
 	new Button({
 		renderTo : $body,
@@ -15,4 +16,14 @@ define(function(require) {
 			})).show();
 		}
 	})
-}); 
+	new Button({
+		renderTo : $body,
+		text:'Dialog',
+		handler:function(){
+			(new Dialog({
+				title:'Dialog',
+				content:'Dialog'
+			})).show();
+		}
+	})
+});
