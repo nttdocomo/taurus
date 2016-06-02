@@ -46,12 +46,13 @@
 			this.position();
 		},
 		position:function(){
-			if(this.fullscreen){
-				this.$el.addClass('modal-fullscreen')
+            var me = this,$el = me.$el,dialog = me.dialog;
+			if(me.fullscreen){
+				$el.addClass('modal-fullscreen')
 			}
-			var height = this.$el.find('.modal-dialog').height(),width = this.$el.find('.modal-dialog').width();
-			if(!this.fullscreen){
-				this.$el.find('.modal-dialog').css({
+			var height = dialog.height(),width = dialog.width();
+			if(!me.fullscreen){
+				dialog.css({
 					'margin-top':(height/2)*-1,
 					'margin-left':(width/2)*-1,
 					'position':'absolute',
@@ -69,8 +70,10 @@
 			me.doClose();
 			return false;
 		},
-    
+
 	    destroy: function() {
+            var me = this;
+            me.remove();
 	        /*this.callParent();
 	        this.dockedItems = this.bodyContainer = null;*/
 	    },
@@ -90,14 +93,16 @@
 				'modal':'.modal',
 				'headerEl':'.modal-header',
 				'header':'.modal-title',
+                'dialog':'modal-dialog',
 				'bodyEl':'.modal-body'
 			});
 			Base.prototype.applyChildEls.call(this,childEls);
 		},
 		render : function() {
-			Base.prototype.render.apply(this, arguments);
-			this.$el.find('.modal-dialog').height(this.height);
-			this.$el.find('.modal-dialog').width(this.width);
+            var me = this;
+			me._super.apply(me, arguments);
+			me.dialog.height(me.height);
+			me.dialog.width(me.width);
 		},
 		setHeight : function(height) {
 		},
@@ -105,7 +110,7 @@
 	        var me = this,
 	            oldTitle = me.title,
 	            header = me.header
-	        
+
 	        if (title !== oldTitle) {
 	            me.title = title;
 
