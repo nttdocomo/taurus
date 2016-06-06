@@ -35,18 +35,36 @@
 			'itemInner':'.item-inner',
 			'inputEl':':checkbox'
 		},
+		inputType : 'checkbox',
 		checked:false,
 		initialize:function(){
 			var me = this;
 			this._super.apply(me,arguments)
 		},
 		getTpl:function(){
-			return '<label class="label-checkbox item-content"><input type="checkbox" name="<%=name%>" /><div class="item-media"><i class="icon icon-form-checkbox"></i></div><div class="item-inner"><div class="item-title"><%=fieldLabel%></div></div></label>'
+			return '<label class="label-<%=type%> item-content"><input type="<%=type%>" name="<%=name%>" /><div class="item-media"><i class="icon icon-form-checkbox"></i></div><div class="item-inner"><div class="item-title"><%=fieldLabel%></div></div></label>'
 		},
 		getTplData:function(){
-			return {
-				fieldLabel:this.fieldLabel
-			}
+			var me =this;
+			return _.extend(me._super.apply(me,arguments),{
+				fieldLabel:me.fieldLabel,
+				type:me.inputType,
+				name:me.name,
+				value:me.value
+			})
+		},
+
+	    // inherit docs
+	    getManager: function() {
+	        return CheckboxManager;
+	    },
+
+		/**
+		 * Returns the checked state of the checkbox.
+		 * @return {Boolean} True if checked, else false
+		 */
+		getValue : function() {
+			return this.checked;
 		},
 		onSwitch:function(){
 			var me = this;
@@ -55,9 +73,8 @@
 			}
 		},
 		delegateEvents:function(events){
-			_.extend(events,{
-				'change :checkbox':'onSwitch'
-			})
+			events = events || {};
+			events['change :'+this.inputType] = 'onSwitch'
 			TableCell.prototype.delegateEvents.call(this,events)
 		},
 

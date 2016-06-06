@@ -52,12 +52,29 @@
 			me.value = val;
 			return val;
 		},
+		onChange : function(newVal, oldVal) {
+			/*if (this.validateOnChange) {
+				this.validate();
+			}*/
+			//this.checkDirty();
+		},
 		processRawValue: taurus.emptyFn,
 		rawToValue: taurus.emptyFn,
 		setRawValue : function(value) {
 			this.rawValue = value;
 			this.inputEl && this.inputEl.val(value);
 		},
+        /**
+         * Sets a data value into the field and runs the change detection and validation. To set the value directly
+         * without these inspections see {@link #setRawValue}.
+         * @param {Object} value The value to set
+         * @return {Ext.form.field.Field} this
+         */
+        setValue:function(value){
+            var me = this;
+            me.setRawValue(me.valueToRaw(value));
+            return Field.prototype.setValue.call(me, value);
+        },
 
         /**
          * Converts a mixed-type value to a raw representation suitable for displaying in the field. This allows controlling

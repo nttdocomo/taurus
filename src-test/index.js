@@ -12,9 +12,11 @@ seajs.config({
 //QUnit.config.autoload = false;
 //QUnit.config.autostart = false;
 seajs.use([
-	'./form/field/combos'
-], function(combos){
+	'./form/field/combos',
+	'./form/field/radio'
+], function(combos,radio){
 	combos.run()
+	radio.run()
     // start QUnit.
     //QUnit.load();
     //QUnit.start();

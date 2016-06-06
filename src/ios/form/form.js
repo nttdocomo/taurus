@@ -31,9 +31,14 @@
 taurus.klass('taurus.IOS.form.Form',["../../view/base","underscore"],function(Base,TableCell,_) {
 	return Base.extend({
 		className:'list-block',
-		tpl:'<ul></ul>',
+		tpl:'<div class="content-block-title"><%=title%></div><ul></ul>',
 		getTargetEl:function(item){
 			return this.$el.find('ul');
+		},
+		getTplData:function(){
+			return {
+				title:this.title
+			}
 		}
 	})
 })

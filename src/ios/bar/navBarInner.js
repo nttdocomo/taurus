@@ -38,11 +38,8 @@
 				me.backBarButtonItem = new BarButtonItem(_.extend({
 					renderTo:me.$el.find('.left'),
 					listeners:{
-						click:{
-							selector:'button',
-							fn:function(){
-								me.navBar.back()
-							}
+						click:function(){
+							me.navBar.back()
 						}
 					}
 				},me.backBarButtonItem))

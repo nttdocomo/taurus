@@ -5,6 +5,18 @@
   color: #6d6d72;
   box-sizing: border-box;
 }
+.content-block-title {
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    text-transform: uppercase;
+    line-height: 1;
+    color: #6d6d72;
+    margin: 35px 15px 10px;
+}
 .content-block-title+.list-block,
 .content-block-title+.content-block,
 .content-block-title+.card {
