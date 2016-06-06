@@ -37,10 +37,23 @@
 		},
 		inputType : 'checkbox',
 		checked:false,
+		onRe : /^on$/i,
 		initialize:function(){
 			var me = this;
 			this._super.apply(me,arguments)
 		},
+
+		initComponent: function() {
+	        var me = this,
+	            value = me.value;
+
+	        if (value !== undefined) {
+	            me.checked = me.isChecked(value, me.inputValue);
+	        }
+
+	        me._super.apply(me,arguments);
+	        me.getManager().add(me);
+	    },
 		getTpl:function(){
 			return '<label class="label-<%=type%> item-content"><input type="<%=type%>" name="<%=name%>" /><div class="item-media"><i class="icon icon-form-checkbox"></i></div><div class="item-inner"><div class="item-title"><%=fieldLabel%></div></div></label>'
 		},
@@ -65,6 +78,23 @@
 		 */
 		getValue : function() {
 			return this.checked;
+		},
+
+	    getFormId: function(){
+	        var me = this,
+	            form;
+
+	        if (!me.formId) {
+	            form = me.up('form');
+	            if (form) {
+	                me.formId = form.id;
+	            }
+	        }
+	        return me.formId;
+	    },
+
+		isChecked : function(rawValue, inputValue) {
+			return (rawValue === true || rawValue === 'true' || rawValue === '1' || rawValue === 1 || (((_.isString(rawValue) || _.isNumber(rawValue)) && inputValue) ? rawValue == inputValue : this.onRe.test(rawValue)));
 		},
 		onSwitch:function(){
 			var me = this;
@@ -106,6 +136,25 @@
 			}
 
 			return me;
+		},
+
+		/**
+		 * Sets the checked state of the checkbox.
+		 *
+		 * @param {Boolean/String/Number} value The following values will check the checkbox:
+		 * `true, 'true', '1', 1, or 'on'`, as well as a String that matches the {@link #inputValue}.
+		 * Any other value will uncheck the checkbox.
+		 * @return {Boolean} the new checked state of the checkbox
+		 */
+		setRawValue : function(value) {
+			var me = this, inputEl = me.inputEl, checked = me.isChecked(value, me.inputValue);
+			if (me.inputEl) {
+				//this.inputEl.prop('checked', checked);
+				me[checked ? 'addClass' : 'removeClass'](me.checkedCls);
+			}
+
+			me.checked = me.rawValue = checked;
+			return checked;
 		}
 	})/*.mixins(CheckBox)*/
 }));

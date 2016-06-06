@@ -2,7 +2,7 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Radio = require("../../src/form/field/radio"),
+	var Radio = require("../../src/classic/form/field/radio"),
 	$body = $("#main");
 	new Radio({
 		renderTo:$body,
