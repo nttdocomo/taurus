@@ -249,45 +249,45 @@
 			var success = options.success, me = this;
 			options.success = function() {
 				me.triggerEl.removeAttr('disabled');
-				success && success.apply(this, arguments);
+				success && success.apply(me, arguments);
 			};
-			this.collection.fetch(options);
-			this.triggerEl.attr('disabled', 'disabled');
+			me.collection.fetch(options);
+			me.triggerEl.attr('disabled', 'disabled');
 		},
 		onItemClick : function(record) {
-			var valueField = this.valueField, picker = this.getPicker(), value = this.value, lastSelected;
+			var me = this, valueField = me.valueField, picker = me.getPicker(), value = me.value, lastSelected;
 			if (value) {
 				value = $.makeArray(value);
 			} else {
 				value = [];
 			}
-			var index = _.indexOf(value, record.get(this.valueField));
-			if (!this.multiSelect){
-				lastSelected = this.collection.find(function(item) {
-					return value[0] == item.get(this.valueField);
-				}, this);
+			var index = _.indexOf(value, record.get(me.valueField));
+			if (!me.multiSelect){
+				lastSelected = me.collection.find(function(item) {
+					return value[0] == item.get(me.valueField);
+				}, me);
 				picker.onItemDeselect(lastSelected);
 			}
-			if (index != -1 && this.multiSelect) {
+			if (index != -1 && me.multiSelect) {
 				value.splice(index, 1);
 				picker.onItemDeselect(record);
 			} else {
-				value.push(record.get(this.valueField));
+				value.push(record.get(me.valueField));
 				picker.onItemSelect(record);
 			}
-			var selection = this.collection.filter(function(item) {
-				return _.contains(value, item.get(this.valueField));
-			}, this);
-			if (!this.multiSelect && selection.length) {
+			var selection = me.collection.filter(function(item) {
+				return _.contains(value, item.get(me.valueField));
+			}, me);
+			if (!me.multiSelect && selection.length) {
 				if (_.find(selection, function(item) {
 					return record.get(valueField) === item.get(valueField);
 				})) {
-					this.setValue(record);
-					this.trigger('select', record);
-					this.collapse();
+					me.setValue(record);
+					me.trigger('select', record);
+					me.collapse();
 				};
 			} else {
-				this.setValue(selection);
+				me.setValue(selection);
 			}
 			return false;
 			//Picker.prototype.onItemClick.apply(this,arguments);

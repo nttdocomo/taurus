@@ -162,6 +162,53 @@
 			//comboBox.getPicker().remove();
 			//comboBox.remove();
 		});
+		QUnit.test("Multi ComboBox", function( assert ) {
+			var collection = new Backbone.Collection([{
+				name:'aaaa',
+				value:'0'
+			},{
+				name:'bbbb',
+				value:'1'
+			},{
+				name:'aabb',
+				value:'2'
+			}]),
+			$el = $('<div></div>'),
+			comboBox = new ComboBox({
+				queryDelay:1,
+				renderTo:$el,
+				emptyText:'emptyText',
+				displayField : 'name',
+				valueField:'value',
+				queryMode : 'local',
+				collection : collection,
+				multiSelect:true
+			}),
+			event = $.Event('click',{
+				target : comboBox.triggerEl.get(0)
+			}),
+			picker,
+			listEvent;
+			comboBox.$el.trigger(event);
+			assert.equal(comboBox.getPicker().$el.is(':hidden'), false, "当点击下拉按钮时，显示下拉框" );
+			comboBox.$el.trigger(event);
+			assert.equal(comboBox.getPicker().$el.is(':hidden'), true, "当点击下拉按钮时，隐藏下拉框" );
+			comboBox.$el.trigger(event);
+			assert.equal(comboBox.getPicker().$el.is(':hidden'), false, "当点击下拉按钮时，显示下拉框" );
+			picker = comboBox.getPicker();
+			listEvent = $.Event('click',{
+				target : picker.$el.find('a').eq(0).get(0)
+			});
+			comboBox.getPicker().$el.trigger(listEvent);
+			listEvent = $.Event('click',{
+				target : picker.$el.find('a').eq(1).get(0)
+			});
+			comboBox.getPicker().$el.trigger(listEvent);
+			console.log(comboBox.value)
+			assert.ok(comboBox.value == new Array("0","1"), "当点击下拉框第一个选项时" );
+			//comboBox.getPicker().remove();
+			//comboBox.remove();
+		});
     };
     return {run: run}
 }));
