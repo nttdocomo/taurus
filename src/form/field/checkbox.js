@@ -17,6 +17,21 @@
 }(this, function(CheckboxManager,_) {
 	var CheckBox = function(){};
 	CheckBox.prototype = {
+		inputType : 'checkbox',
+		checked:false,
+		onRe : /^on$/i,
+
+		initComponent: function() {
+	        var me = this,
+	            value = me.value;
+
+	        if (value !== undefined) {
+	            me.checked = me.isChecked(value, me.inputValue);
+	        }
+
+	        me._super.apply(me,arguments);
+	        me.getManager().add(me);
+	    },
 	    getFormId: function(){
 	        var me = this,
 	            form;

@@ -84,7 +84,10 @@
 									'class':Table,
 									collection:new Backbone.Collection([{
 										text:'Checkboxes and Radios',
-										href:'forms/checkboxes-and-radios'
+										href:'forms/checkboxes-and-radios/'
+									},{
+										text:'Smart Selects',
+										href:'forms/smart-select/'
 									}]),
 									columns:[{
 										dataIndex:'text'
@@ -137,6 +140,35 @@
 			    			me.setActivePage(page)
 			    		})
 			    		break;
+			    	case 'forms/smart-select/':
+	    				require.async(['../../src/ios/form/field/smartSelect','../../src/ios/form/field/radio'],function(SmartSelect,Radio){
+	    					var name = chance.word(),
+				    		page = new Page({
+				    			title:chance.word(),
+				    			items:[{
+									'class':Form,
+									title:'Smart select',
+									items:_.map(_.range(chance.natural({min: 2, max: 4})),function(){
+										return {
+											'class':SmartSelect,
+											router:me,
+											multiSelect:chance.bool(),
+											name:chance.word(),
+											valueField:'value',
+											fieldLabel:chance.word(),
+											collection:new Backbone.Collection(_.map(_.range(chance.natural({min: 2, max: 4})),function(){
+												return {
+													value:chance.word(),
+													fieldLabel:chance.word()
+												}
+											}))
+										}
+									})
+								}]
+				    		})
+			    			me.setActivePage(page)
+			    		})
+			    		break;
 			    	default:
 			    		require.async(['../../src/ios/form/field/switch'],function(Switch){
 				    		var cells = [];
@@ -156,7 +188,10 @@
 				    			title:chance.word(),
 				    			items:[{
 									'class':Table,
-									collection:new Backbone.Collection(cells),
+									collection:new Backbone.Collection([{
+										text:'Forms',
+										href:'forms/'
+									}]),
 									columns:[{
 										dataIndex:'text'
 									}]

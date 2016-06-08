@@ -38,11 +38,6 @@
 		inputType : 'checkbox',
 		checked:false,
 		onRe : /^on$/i,
-		initialize:function(){
-			var me = this;
-			this._super.apply(me,arguments)
-		},
-
 		initComponent: function() {
 	        var me = this,
 	            value = me.value;

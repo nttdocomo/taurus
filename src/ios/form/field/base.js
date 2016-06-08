@@ -28,10 +28,6 @@
 		childEls:{
 			'itemInner':'.item-inner',
 		},
-		initialize:function(){
-			var me = this;
-			this._super.apply(me,arguments)
-		},
 		getTpl:function(){
 			return '<div class="item-content"><%if(image){%><div class="item-media"><img class="img" src="<%=image%>"/></div><%}%><div class="item-inner"><div class="item-title"><%=fieldLabel%></div><%=itemInput%></div></div>'
 		},
@@ -58,8 +54,12 @@
 			}*/
 			//this.checkDirty();
 		},
-		processRawValue: taurus.emptyFn,
-		rawToValue: taurus.emptyFn,
+		processRawValue : function(value) {
+			return value;
+		},
+		rawToValue : function(rawValue) {
+			return rawValue;
+		},
 		setRawValue : function(value) {
 			this.rawValue = value;
 			this.inputEl && this.inputEl.val(value);
