@@ -32,6 +32,20 @@
 					type:me.type,
 				})
 			},this._super.apply(me,arguments))
-		}
+		},
+		getRawValue : function() {
+			var v = Base.prototype.getRawValue.apply(this, arguments);
+			if (v === this.emptyText) {
+				v = '';
+			}
+			return v;
+		},
+        setValue:function(value){
+            var me = this
+            me._super.apply(me,arguments);
+            me.applyEmptyText();
+            return me;
+        },
+		applyEmptyText:function(){}
 	})
 }));

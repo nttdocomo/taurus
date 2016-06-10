@@ -29,6 +29,7 @@
 			'itemInner':'.item-inner',
 			'itemAfter':'.item-after'
 		},
+		delimiter:',',
 		getTpl:function(){
 			return '<div class="item-link smart-select"><div class="item-content"><div class="item-inner"><div class="item-title"><%=fieldLabel%></div><div class="item-after"><%=value%></div></div></div></div>'
 		},
@@ -46,6 +47,14 @@
 			events['click'] = function(){
 				me.getPicker(function(picker){
 					me.picker = picker;
+					me.navBar.pushItem({
+						title:picker.title/*,
+						backBarButtonItem:{
+							title:'取消'
+						}*/
+					})
+					me.pages.pushItem(picker)
+					me.trigger('click');
 				});
 			}/*'onClick'*/;
 			TableCell.prototype.delegateEvents.call(this,events);
@@ -67,8 +76,6 @@
 							})
 						})
 					})
-					me.router.setActivePage(smartSelect)
-					me.picker = smartSelect;
 					smartSelect.on({
 						'itemclick': me.onItemClick
 					}, me);
@@ -77,7 +84,7 @@
 			}
 		},
 		onItemClick:function(event, record){
-			var me = this, valueField = me.valueField, picker = me.getPicker(function(picker){
+			var me = this, valueField = me.valueField, value = me.value, lastSelected, picker = me.getPicker(function(picker){
 				if (value) {
 					value = $.makeArray(value);
 				} else {
@@ -112,7 +119,7 @@
 					me.setValue(selection);
 				}
 	        	console.log(me.getValue())
-			}), value = me.value, lastSelected;
+			});
 			return false;
 		},
 		setValue : function(value) {
@@ -181,6 +188,27 @@
 			if (inputEl && me.emptyText && !_.isEmpty(me.value)) {
 	            inputEl.removeClass(me.emptyCls);
 	        }
+		},
+		getDisplayTpl : function() {
+			if (this.displayTpl) {
+				return this.displayTpl;
+			}
+			return '<%_.each(value,function(item,index){%><%=item.' + this.displayField + '%><%if(index < value.length - 1){%>' + this.delimiter + '<%}%><%})%>';
+		},
+		getDisplayValue : function() {
+			return _.template(this.getDisplayTpl())({
+				value : this.displayTplData
+			});
+		},
+		getValue : function() {
+			return this.value;
+		},
+		setRawValue : function(value) {
+			this.rawValue = value;
+			this.itemAfter && this.itemAfter.text(value);
+		},
+		valueToRaw : function(value) {
+			return TableCell.prototype.valueToRaw.apply(this, [this.getDisplayValue()]);
 		},
 		applyEmptyText:function(){}
 	})/*.mixins(CheckBox)*/

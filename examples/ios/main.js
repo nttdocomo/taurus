@@ -151,17 +151,24 @@
 									items:_.map(_.range(chance.natural({min: 2, max: 4})),function(){
 										return {
 											'class':SmartSelect,
-											router:me,
+											navBar:me.navBar,
+											pages:me.pages,
 											multiSelect:chance.bool(),
 											name:chance.word(),
 											valueField:'value',
+											displayField:'fieldLabel',
 											fieldLabel:chance.word(),
 											collection:new Backbone.Collection(_.map(_.range(chance.natural({min: 2, max: 4})),function(){
 												return {
 													value:chance.word(),
 													fieldLabel:chance.word()
 												}
-											}))
+											})),
+											listeners:{
+												'click':function(){
+													me.history.push("")
+												}
+											}
 										}
 									})
 								}]

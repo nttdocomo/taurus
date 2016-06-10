@@ -31,6 +31,26 @@ input[type="checkbox"]{
   font-size: 17px;
   font-family: inherit;
 }
+.list-block .item-after{
+    white-space: nowrap;
+    color: #8e8e93;
+    -webkit-flex-shrink: 0;
+    -ms-flex: 0 0 auto;
+    flex-shrink: 0;
+    margin-left: 5px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    max-height: 28px;
+}
+.list-block .autocomplete-opener .item-after, .list-block .smart-select .item-after {
+    max-width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    display: block;
+}
 .list-block .item-title.label {
   vertical-align: top;
 }
