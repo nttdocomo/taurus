@@ -94,7 +94,7 @@
 				'modal':'.modal',
 				'headerEl':'.modal-header',
 				'header':'.modal-title',
-                'dialog':'modal-dialog',
+                'dialog':'.modal-dialog',
 				'bodyEl':'.modal-body'
 			});
 			Base.prototype.applyChildEls.call(this,childEls);
