@@ -24,6 +24,7 @@
 	    showDelay: 500,
 	    autoHide: true,
 	    renderTo:$(document.body),
+	    disabled:false,
 	    hideAction: 'hide',
 		initialize:function(){
 	        var me = this;
