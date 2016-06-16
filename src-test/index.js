@@ -14,11 +14,13 @@ seajs.config({
 seajs.use([
 	'./form/field/combos',
 	'./form/field/radio',
-	'./form/field/text'
-], function(combos,radio,text){
+	'./form/field/text',
+	'./tip/toolTip'
+], function(combos,radio,text,toolTip){
 	combos.run()
 	radio.run()
 	text.run()
+	toolTip.run()
     // start QUnit.
     //QUnit.load();
     //QUnit.start();
