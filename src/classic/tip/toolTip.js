@@ -22,6 +22,7 @@
 	     * Delay in milliseconds before the tooltip displays after the mouse enters the target element.
 	     */
 	    showDelay: 500,
+        hideDelay: 200,
 	    autoHide: true,
 	    renderTo:$(document.body),
 	    disabled:false,
