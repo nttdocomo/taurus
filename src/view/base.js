@@ -369,8 +369,10 @@ taurus.klass(['../state/stateful','../util/focusable','underscore','taurus','bac
 	        return me;
 	    },
 		hide : function() {
-			this.$el.hide();
-			return this;
+			var me = this;
+			me.hidden = true;
+			me.$el.hide();
+			return me;
 		},
 		render : function(renderTo, operation) {
 			this.operation = operation || "append";
