@@ -2,9 +2,9 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Panel = require("../../src/tab/panel"),
-		$body = $("#main");
-	new Panel({
+	var Panel = require("../../src/classic/tab/panel"),
+		$body = $("#main"),
+	tabPanel = new Panel({
 		width: 450,
         activeTab: 0,
         defaults :{
@@ -26,4 +26,7 @@ define(function(require) {
         }*/],
 		renderTo : $body
 	});
+    tabPanel.on('tabchange',function(){
+        console.log(arguments)
+    })
 });

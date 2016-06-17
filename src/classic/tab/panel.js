@@ -23,22 +23,22 @@
 			Base.prototype.initialize.apply(this, arguments);
 		},
 		initItems:function(){
-			var activeTab = this.activeTab || (this.activeTab = 0);
+			var me = this,activeTab = me.activeTab || (me.activeTab = 0);
 			this.layout = new TabContent({
-				renderTo : this.$el,
+				renderTo : me.$el,
 				activeItem: activeTab
 			});
-			this.frameBody = this.layout.$el;
-			this.tabBar = new Bar({
+			me.frameBody = me.layout.$el;
+			me.tabBar = new Bar({
 				operation : 'prepend',
-				renderTo : this.$el,
-				tabPanel : this
+				renderTo : me.$el,
+				tabPanel : me
 			});
-			Base.prototype.initItems.apply(this,arguments);
-			activeTab = this.activeTab = this.tabBar.getComponent(activeTab);
+			Base.prototype.initItems.apply(me,arguments);
+			activeTab = me.activeTab = me.tabBar.getComponent(activeTab);
 			console.log(activeTab);
 			if (activeTab !== 'undefined') {
-				this.tabBar.setActiveTab(activeTab, true);
+				me.tabBar.setActiveTab(activeTab, true);
 			}
 		},
 		getTabBar:function(){
@@ -89,17 +89,16 @@
 
 				 // Update the active tab in the tab bar and resume layouts.
 				 me.tabBar.setActiveTab(card.tab);
-				 Ext.resumeLayouts(true);
+				 Ext.resumeLayouts(true);*/
 
-				 // previous will be undefined or this.activeTab at instantiation
-				 if (previous !== card) {
-				 me.fireEvent('tabchange', me, card, previous);
-				 }
-				 }
-				 // Card switch was vetoed by an event listener. Resume layouts (Nothing should have changed on a veto).
-				 else {
-				 Ext.resumeLayouts(true);
-				 }*/
+				// Card switch was not vetoed by an event listener
+	            if (card !== previous) {
+
+	                // Update the active tab in the tab bar and resume layouts.
+	                me.tabBar.setActiveTab(card.tab);
+	                me.trigger('tabchange', me, card, previous);
+	                //Ext.resumeLayouts(true);
+	            }
 				return card;
 			}
 		},
@@ -173,6 +172,7 @@
 					item.setBorder(false);
 				}
 			}*/
+			me.setActiveTab(0);
 		}
 	});
 }));
