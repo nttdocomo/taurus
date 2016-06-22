@@ -17,7 +17,8 @@
 }(this, function(Base,Spinner){
 	return Base.extend({
 		autoHeight:false,
-		header:true,
+		header:false,
+        frame: false,
 		referTo:$(window),
 		tpl:'<%if(header){%><div class="panel-heading clearfix"><h4 class="panel-title"><%=title%></h4></div><%}%><div class="panel-body"><%=content%></div>',
 		className:'panel panel-default',
@@ -35,9 +36,13 @@
 			this._super.call(this,childEls);
 		},
 		initialize:function(){
-			this._super.apply(this,arguments);
-			if(this.header){
-				this.$el.addClass('has-header');
+            var me = this;
+            if (me.frame) {
+                me.setUI(me.ui + '-framed');
+            }
+			me._super.apply(me,arguments);
+			if(me.header){
+				me.$el.addClass('has-header');
 			}
 		},
 		afterRender:function(){
@@ -114,6 +119,19 @@
 	            me.trigger('titlechange', me, title, oldTitle);
 	            me.setHeaderStyle();
 	        }
-		}
+		},
+
+        /**
+         * @inheritdoc
+         */
+        setUI: function(ui) {
+            var me = this;
+
+            me._super.apply(me,arguments);
+
+            if (me.header && me.header.rendered) {
+                me.header.setUI(ui);
+            }
+        }
 	});
 }));

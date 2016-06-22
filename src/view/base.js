@@ -403,8 +403,12 @@ taurus.klass(['../state/stateful','../util/focusable','underscore','taurus','bac
 			this.initItems();
 			return el.innerHTML;
 		},
-		setUI:function(){
-			var classes = me.addClsWithUI(uiCls, true);
+		setUI:function(ui){
+			var me = this,
+            uiCls = me.uiCls,
+            activeUI = me.activeUI,
+            classes;
+			classes = me.addClsWithUI(uiCls, true);
 		},
 		addClsWithUI:function(classes, skip){
 			var clsArray = [];

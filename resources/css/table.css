@@ -2,6 +2,9 @@
 	padding:37px 0 0;
 	height:100%;
 }
+.panel{
+	border-width: 0;
+}
 .grid {
 }
 .grid .panel-heading{
@@ -22,6 +25,9 @@
     padding: 10px;
     color: grey;
     background-color: #fff;
+}
+.panel-body{
+	padding:0;
 }
 .panel-body table{
 	margin-bottom:0;

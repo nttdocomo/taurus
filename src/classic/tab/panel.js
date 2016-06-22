@@ -4,28 +4,37 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../view/base','./bar','./tab','../../view/card','../../view/tabContent'], factory);
+			define(['../panel/panel','./bar','./tab','../../view/card','../../view/tabContent'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../../view/base'),require('./bar'),require('./tab'),require('../../view/card'),require('../../view/tabContent'));
+				return factory(require('../panel/panel'),require('./bar'),require('./tab'),require('../layout/container/card'),require('../../view/card'),require('../../view/tabContent'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../view/base'),require('./bar'),require('./tab'),require('../../view/card'),require('../../view/tabContent'));
+		module.exports = factory(require('../panel/panel'),require('./bar'),require('./tab'),require('../layout/container/card'),require('../../view/card'),require('../../view/tabContent'));
 	}
-}(this, function(Base,Bar,Tab,Card,TabContent) {
+}(this, function(Base,Bar,Tab,LayoutCard,Card,TabContent) {
 	return Base.extend({
-		tpl : '',
+        /**
+         * @cfg {String} [itemCls='x-tabpanel-child']
+         * The class added to each child item of this TabPanel.
+         */
+
+        itemCls: 'tabpanel-child',
 		defaultType:Card,
+        deferredRender:true,
 		initialize : function(options) {
 			var me = this;
 			Base.prototype.initialize.apply(this, arguments);
 		},
 		initItems:function(){
 			var me = this,activeTab = me.activeTab || (me.activeTab = 0);
-			this.layout = new TabContent({
+			this.layout = new LayoutCard({
 				renderTo : me.$el,
+                owner:me,
+                deferredRender: me.deferredRender,
+                itemCls:me.itemCls,
 				activeItem: activeTab
 			});
 			me.frameBody = me.layout.$el;
@@ -173,6 +182,20 @@
 				}
 			}*/
 			me.setActiveTab(0);
+		},
+        getActiveItem:function(){
+            return this.layout.getActiveItem();
+        },
+		updateItems:function(){
+			var me = this,
+            activeItem = me.getActiveItem();
+            if (me.deferredRender) {
+                if (activeItem) {
+                    return activeItem.render(me.getTargetEl())
+                }
+            } else {
+                return me._super.apply(me,arguments);
+            }
 		}
 	});
 }));

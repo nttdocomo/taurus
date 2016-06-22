@@ -20,6 +20,29 @@
 			var me = this;
 			me._super.apply(me,arguments);
 			me.$el.addClass(me.layout)
+		},
+
+	    /**
+	     * Adds layout's itemCls and owning Container's itemCls
+	     * @protected
+	     */
+		configureItem:function(item){
+			var me = this,
+	            itemCls = me.itemCls,
+				needsCopy,
+	            addClasses;
+			if (itemCls) {
+	            // itemCls can be a single class or an array
+	            if (typeof itemCls === 'string') {
+	                addClasses = [itemCls];
+	            } else {
+	                addClasses = itemCls;
+	                needsCopy = !!addClasses;
+	            }
+	        }
+			if (addClasses) {
+	            item.addClass(addClasses);
+	        }
 		}
 	})
 }));
