@@ -68,6 +68,14 @@
 	    getRenderTarget: function() {
 	        return this.owner.getTargetEl();
 	    },
+	    onAdd:function(item){
+	    	var me = this;
+	    	if (!item.rendered) {
+	            me.configureItem(item);
+
+	            //item.render(target, position);
+	        }
+	    },
 
 	    /**
 	     * Renders the given Component into the target Element.

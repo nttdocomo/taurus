@@ -37,6 +37,9 @@ taurus.klass(['../state/stateful','../util/focusable','underscore','taurus','bac
 			}
 		},
 		addClass:function(cls){
+			if(_.isArray(cls)){
+				cls = cls.join(' ')
+			}
 			this.$el.addClass(cls)
 		},
 		removeClass:function(cls){
@@ -646,7 +649,7 @@ taurus.klass(['../state/stateful','../util/focusable','underscore','taurus','bac
 						console.log(e)
 					}
 					me.onAdd(item, pos);
-					//layout && layout.onAdd(item, pos);
+					layout && layout.onAdd(item, pos);
 				}
 			}
 			//me.items = items;
