@@ -192,6 +192,7 @@ define(function(require) {
 	tabPanel = new Panel({
 		width: 450,
         activeTab: 0,
+        frame:true,
         defaults :{
             bodyPadding: 10
         },

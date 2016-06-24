@@ -411,15 +411,31 @@ taurus.klass(['../state/stateful','../util/focusable','underscore','taurus','bac
             uiCls = me.uiCls,
             activeUI = me.activeUI,
             classes;
+            // Set the UI
+        	me.ui = ui;
+        	me.addUIToElement();
 			classes = me.addClsWithUI(uiCls, true);
 		},
 		addClsWithUI:function(classes, skip){
-			var clsArray = [];
+			var clsArray = [],
+			i=0;
 			for (; i < length; i++) {
 		        cls = classes[i];
 		        clsArray = clsArray.concat(me.addUIClsToElement(cls));
 		    }
 		    return clsArray;
+		},
+
+        /**
+         * Method which adds a specified UI to the components element.
+         * @private
+         */
+		addUIToElement:function(){
+			var me = this,
+                baseClsUI = me.baseCls + '-' + me.ui,
+                childEls, childElName, el, suffix;
+
+            me.addClass(baseClsUI);
 		},
 		/**
 	     * Method which adds a specified UI + `uiCls` to the components element. Can be overridden

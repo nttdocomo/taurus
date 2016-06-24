@@ -20,6 +20,7 @@
 		header:false,
         frame: false,
 		referTo:$(window),
+		baseCls: 'panel',
 		tpl:'<%if(header){%><div class="panel-heading clearfix"><h4 class="panel-title"><%=title%></h4></div><%}%><div class="panel-body"><%=content%></div>',
 		className:'panel panel-default',
 		events:{
@@ -37,10 +38,10 @@
 		},
 		initialize:function(){
             var me = this;
+			me._super.apply(me,arguments);
             if (me.frame) {
                 me.setUI(me.ui + '-framed');
             }
-			me._super.apply(me,arguments);
 			if(me.header){
 				me.$el.addClass('has-header');
 			}

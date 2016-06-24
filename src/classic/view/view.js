@@ -95,7 +95,7 @@
 	                e.preventDefault();
 	            }
 	        }
-	        return false;
+	        //return false;
 	    },
 	    processSpecialEvent: taurus.emptyFn,
 	    processItemEvent: taurus.emptyFn,

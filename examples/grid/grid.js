@@ -192,6 +192,7 @@ define(function(require) {
 	new Table({
 		hideHeaders:true,
 		loading : true,
+		frame:true,
 		refreshable : true,
 		collapsible: true,
 		height : 350,
@@ -262,5 +263,4 @@ define(function(require) {
 		collection : collection,
 		renderTo : $body
 	});
-	collection.reset();
 });
