@@ -16,9 +16,14 @@
 	}
 }(this, function(Base,CheckboxManager,_) {
 	return Base.extend({
-		fieldSubTpl : '<div class="<%=type%>"><%if(boxLabel){%><label id="<%=cmpId%>-boxLabelEl" for="<%=id%>"><%}%><input id="<%=id%>" type="<%=type%>"<%if(checked){%> checked="<%=checked%>"<%}%> name="<%=name%>" value="<%=value%>"/><%if(boxLabel){%><%=boxLabel%></label><%}%></div>',
+		fieldSubTpl : '<div class="<%=type%>"><%if(boxLabel){%><label id="<%=cmpId%>-boxLabelEl" for="<%=id%>" class="<%=boxLabelCls%>"><%}%><input id="<%=id%>" type="<%=type%>"<%if(checked){%> checked="<%=checked%>"<%}%> name="<%=name%>" value="<%=value%>"/><%if(boxLabel){%><%=boxLabel%></label><%}%></div>',
 		inputType : 'checkbox',
 		checked : false,
+		/**
+	     * @cfg {String} [boxLabelCls='x-form-cb-label']
+	     * The CSS class to be applied to the {@link #boxLabel} element
+	     */
+	    boxLabelCls: taurus.baseCSSPrefix + 'form-cb-label',
 		checkedCls : taurus.baseCSSPrefix + 'form-cb-checked',
 		onRe : /^on$/i,
 
@@ -83,7 +88,9 @@
 		getSubTplData : function() {
 			return $.extend(Base.prototype.getSubTplData.apply(this, arguments), {
 				boxLabel : this.boxLabel || false,
-				checked:this.checked
+				checked:this.checked,
+				boxLabelCls:this.boxLabelCls,
+				value:this.inputValue
 			})
 		},
 

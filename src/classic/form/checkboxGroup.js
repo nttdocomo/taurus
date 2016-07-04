@@ -242,6 +242,13 @@ define(function(require) {
 		},
 		getTargetEl:function(){
 			return this.$el.find('> div');
-		}
+		},
+
+	    /*
+	     * Don't return any data for submit; the form will get the info from the individual checkboxes themselves.
+	     */
+	    getSubmitData: function() {
+	        return null;
+	    }
 	});
 });

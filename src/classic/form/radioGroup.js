@@ -51,10 +51,14 @@ define(function(require) {
 			return box.val();
 		},*/
 		getSubmitData:function(){
-			var values = {}, boxes = this.getBoxes(':checked'), b, bLen = boxes.length, box, name, inputValue, bucket;
+			var values = {}, boxes = this.getBoxes(':radio'), b, bLen = boxes.length, box, name, inputValue, bucket;
 			_.each(boxes,function(box,i) {
 				name = box.getName();
-				inputValue = box.getValue();
+				value = box.getValue();
+				inputValue = box.inputValue;
+				if(value){
+					values[name] = inputValue;
+				}/*
 				if (values.hasOwnProperty(name)) {
                     bucket = values[name];
                     if (!_.isArray(bucket)) {
@@ -63,7 +67,7 @@ define(function(require) {
                     bucket.push(inputValue);
                 } else {
                     values[name] = inputValue;
-                }
+                }*/
 			});
 			return values;
 		}

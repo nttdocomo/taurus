@@ -4,7 +4,7 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../panel/panel','./bar','./tab','../../view/card','../../view/tabContent'], factory);
+			define(['../panel/panel','./bar','./tab','../layout/container/card','../../view/card','../../view/tabContent'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){

@@ -37,12 +37,6 @@
 	     * {@link #msgTarget}. Defaults to false.
 	     */
 	    combineErrors:false,
-	    initialize:function(){
-	    	this._super.apply(this,arguments)
-	    	if(this.layout){
-	    		this.$el.addClass(this.layout)
-	    	}
-	    },
 	    query:function(queryString){
 	    	var query = queryString.match(/\[(.+?)\]/),
 	    	items = [];

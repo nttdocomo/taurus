@@ -15,7 +15,7 @@
 		module.exports = factory(require('../state/stateful'),require('underscore'),require('../taurus'),require('backbone'),require('backbone-super'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
 	}
 }(this, */
-taurus.klass(['../state/stateful','../util/focusable','underscore','taurus','backbone','backbone-super','../lang/number','../mixins','../jquery.ui.position'],function(Stateful,Focusable,_,taurus,Backbone) {
+taurus.klass(['../state/stateful','../util/focusable','../util/itemCollection','underscore','taurus','backbone','backbone-super','../lang/number','../mixins','../jquery.ui.position'],function(Stateful,Focusable,ItemCollection,_,taurus,Backbone) {
 	return Backbone.View.extend({
 		isRendered : false,
 		doc : taurus.$doc,
@@ -197,7 +197,10 @@ taurus.klass(['../state/stateful','../util/focusable','underscore','taurus','bac
         },
 		initItems : function() {
 			var me = this, items = me.items;
-			me.items = [];
+			if(!items || !(items instanceof ItemCollection)){
+				me.items = new ItemCollection();
+			}
+			//me.items = [];
 			if (items) {
 				if (!_.isArray(items)) {
 					items = [items];
@@ -378,15 +381,14 @@ taurus.klass(['../state/stateful','../util/focusable','underscore','taurus','bac
 			return me;
 		},
 		render : function(renderTo, operation) {
+			if(this.isRendered){
+				return false;
+			}
 			this.operation = operation || "append";
 			renderTo = renderTo || this.renderTo || $(document.body);
 			/*run html brfore append el because the el must has html*/
 			$(renderTo)[this.operation](this.$el);
-			if(this.isRendered){
-				return this;
-			}
 			this.renderHtml();
-			this.isRendered = true;
 			this.rendered = true;
 			this.setSize(this.width, this.height);
 			return this;
@@ -398,6 +400,7 @@ taurus.klass(['../state/stateful','../util/focusable','underscore','taurus','bac
 				this.$el.addClass(this.uiClass);
 			}
 			el.appendChild(this.el.cloneNode(true));
+			this.isRendered = true;
 			this.afterRender();
 			/*var height = this.height;
 			if (height) {
@@ -670,7 +673,9 @@ taurus.klass(['../state/stateful','../util/focusable','underscore','taurus','bac
 			}
 			//me.items = items;
 			me.updateLayout()
-			me.updateItems();
+			if(me.isRendered){
+				me.updateItems();
+			}
 			return ret;
 			/*var me = this, len = this.items.length;
 			 _.each(this.items, function(item, i) {
@@ -684,6 +689,18 @@ taurus.klass(['../state/stateful','../util/focusable','underscore','taurus','bac
 	        me.doRemove(c,autoDestroy);
 			me.updateItems();
 			return c;
+		},
+		removeAll:function(autoDestroy){
+			var me = this,removeItems = me.items.slice(),items = [],i = 0,len = removeItems.length;
+			for (; i < len; i++) {
+	            item = removeItems[i];
+	            me.removeItem(item, autoDestroy);
+	 
+	            if (item.ownerCt !== me) {
+	                items.push(item);
+	            }
+	        }
+	        return items;
 		},
 		doRemove:function(component,doDestroy){
 			var me = this,

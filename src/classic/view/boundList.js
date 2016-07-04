@@ -81,6 +81,11 @@
 		clearHighlight:function(){
 			this.$el.find('li').removeClass(this.overItemCls);
 		},
+
+	    handleEvent: function(e) {
+	        this._super.apply(this,arguments)
+	        return false;
+	    },
 		highlightItem:function(item){
 			this.clearHighlight();
 			this.highlightedItem = item;

@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../view/base','../view/activeErrors'], factory);
+			define(['../container/container','../view/activeErrors'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../../view/base'),require('../view/activeErrors'));
+				return factory(require('../container/container'),require('../view/activeErrors'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../view/base'),require('../view/activeErrors'));
+		module.exports = factory(require('../container/container'),require('../view/activeErrors'));
 	}
 }(this, function(Base,ActiveErrors) {
 	return Base.extend({

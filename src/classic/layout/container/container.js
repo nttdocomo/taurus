@@ -1,8 +1,8 @@
 (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../../class','underscore'], function(Base) {
-				return factory(Base);
+			define(['../../../class','underscore'], function(Base,_) {
+				return factory(Base,_);
 			});
 		}
 		if(define.cmd){
@@ -15,7 +15,7 @@
 	}
 }(this, function(Base,_) {
 	return Base.extend({
-		layout:'auto',
+		isLayout:true,
 		init:function(config){
 			var me = this;
 			//me.initConfig(config);
