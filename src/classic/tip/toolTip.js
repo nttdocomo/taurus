@@ -196,7 +196,7 @@
 
 	        // If disabled, moving within the current target, ignore the mouseout
 	        // e.within is the only correct way to determine this.
-	        if (me.disabled || !triggerEl || target.has(e.target).length) {
+	        if (me.disabled || !triggerEl || (target.has(e.target).length && target.is(e.target))) {
 	            return;
 	        }
 	        if (me.showTimer) {

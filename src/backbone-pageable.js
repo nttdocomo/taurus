@@ -16,14 +16,6 @@
   else if (typeof define == "function" && define.amd) {
     define(["underscore", "backbone"], factory);
   }
-  // CMD
-  else if (typeof define == "function" && define.cmd) {
-    define(function(require, exports, module){
-      var _ = require('underscore'),
-      backbone = require('backbone');
-      return factory(_, backbone);
-    });
-  }
   // Browser
   else if (typeof _ !== "undefined" && typeof Backbone !== "undefined") {
     var oldPageableCollection = Backbone.PageableCollection;
