@@ -4,13 +4,13 @@
             // Now we're wrapping the factory and assigning the return
             // value to the root (window) and returning it as well to
             // the AMD loader.
-            define(['./base','../util/storeHolder'],function(Base,StoreHolder){
+            define(['./base','../util/storeHolder','underscore'],function(Base,StoreHolder,_){
               return (root.Class = factory(Base,StoreHolder));
             });
         }
         if(define.cmd){
             define(function(require, exports, module){
-                return (root.Class = factory(require('./base'),require('../util/storeHolder')));
+                return (root.Class = factory(require('./base'),require('../util/storeHolder'),require('underscore')));
             })
         }
     } else if(typeof module === "object" && module.exports) {
@@ -18,11 +18,11 @@
         // run into a scenario where plain modules depend on CommonJS
         // *and* I happen to be loading in a CJS browser environment
         // but I'm including it for the sake of being thorough
-        module.exports = (root.Class = factory(require('./base'),require('../util/storeHolder')));
+        module.exports = (root.Class = factory(require('./base'),require('../util/storeHolder'),require('underscore')));
     } else {
         root.Class = factory();
     }
-}(this, function(Base,StoreHolder) {
+}(this, function(Base,StoreHolder,_) {
 	return Base.extend({
 		initComponent:function(){
 			var me = this;
@@ -39,7 +39,7 @@
 	            refresh: me.onDataRefresh,
 	            replace: me.onReplace,
 	            /*add: me.onAdd,*/
-	            remove: me.onRemove,
+	            remove: _.debounce(me.onRemove, 200),
 	            change: me.onUpdate,
               update: me.onAdd,
 	            clear: me.onDataRefresh,
