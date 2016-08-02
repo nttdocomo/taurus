@@ -17,6 +17,20 @@
 }(this, function(Class,_){
 	// I am the constructor function.
 	function Collection(){
+		if (!Object.create) {
+		    Object.create = function(o, properties) {
+		        if (typeof o !== 'object' && typeof o !== 'function') throw new TypeError('Object prototype may only be an Object: ' + o);
+		        else if (o === null) throw new Error("This browser's implementation of Object.create is a shim and doesn't support 'null' as the first argument.");
+
+		        if (typeof properties != 'undefined') throw new Error("This browser's implementation of Object.create is a shim and doesn't support a second argument.");
+
+		        function F() {}
+
+		        F.prototype = o;
+
+		        return new F();
+		    };
+		}
 
 		// When creating the collection, we are going to work off
 		// the core array. In order to maintain all of the native
@@ -151,7 +165,7 @@
 		remove : function(o) {
 	        var me = this;
 	        me.getIndexBy('id',o.id)
-	        me.splice(me.getIndexBy('id',o.id) - 1, 1);
+	        me.splice(me.getIndexBy('id',o.id), 1);
 
 	        /*return (index === -1) ? false : me.removeAt(index);*/
 	    }

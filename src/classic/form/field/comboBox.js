@@ -282,8 +282,8 @@
 				if (_.find(selection, function(item) {
 					return record.get(valueField) === item.get(valueField);
 				})) {
-					me.setValue(record);
 					me.trigger('select', record);
+					me.setValue(record);
 					me.collapse();
 				};
 			} else {

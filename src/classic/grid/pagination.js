@@ -4,24 +4,24 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../view/base','../../i18n'], factory);
+			define(['../../view/base','../../i18n','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../../view/base'),require('../../i18n'));
+				return factory(require('../../view/base'),require('../../i18n'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../view/base'),require('../../i18n'));
+		module.exports = factory(require('../../view/base'),require('../../i18n'),require('underscore'));
 	}
-}(this, function(Base,i18n) {
+}(this, function(Base,i18n,_) {
 	return Base.extend({
 		//tpl:'<ul><li<% if (currentPage <= firstPage) { %> class="disabled"<%}%>><a href="#">Prev</a></li><% for(p=1;p<=totalPages;p++){%><li<% if (currentPage == p) { %> class="disabled"<% } %>><a href="#"><%= p %></a></li><%}%><li<% if (currentPage == totalPages) { %> class="disabled"<%}%>><a href="#">Next</a></li></ul>',
 		tpl:'<%=page%>',
 		pageTpl:'<%=fastBackward%><%=backward%><span><%=pageDesc%></span><%=forward%><%=fastForward%>',
 		tagName:'div',
 		className:'pagination',
-		events:{
+		/*events:{
 			'click .backward':function(){
 				this.collection.hasPreviousPage() && this.collection.getPreviousPage();
 			},
@@ -34,18 +34,19 @@
 			'click .fast-forward':function(){
 				this.collection.getPage(this.collection.state.totalPages);
 			}
-		},
+		},*/
 		initialize : function() {
-			var me = this;collection = me.collection,renderHtml = me.renderHtml;
+			var me = this;collection = me.collection,renderHtml = me.renderHtml,
+			debounceRenderHtml = _.debounce(renderHtml, 500);
 			Base.prototype.initialize.apply(me,arguments);
 			if(collection.mode != "server"){
-				collection.fullCollection.on('reset', renderHtml, me)
-				collection.on('remove', renderHtml, me);
+				collection.fullCollection.on('reset',  debounceRenderHtml, me)
+				collection.on('remove', debounceRenderHtml, me);
 			}
-			collection.on('sync', renderHtml, me);
-			collection.on('reset', renderHtml, me);
-			collection.on('update', me.onCollectionChange, me);
-			collection.on('sort', renderHtml, me);
+			collection.on('sync', debounceRenderHtml, me);
+			collection.on('reset', debounceRenderHtml, me);
+			collection.on('update',  debounceRenderHtml, me);
+			collection.on('sort', debounceRenderHtml, me);
 		},
 		delegateEvents:function(){
 			var events = $.extend({}, this.events, {

@@ -119,6 +119,7 @@
 			me.collection.on('sync',function(){
 				me.html();
 			},me);*/
+            me.collection.on('sync',me.updateLayout,me)
 		},
 		afterRender:function(){
 			Panel.prototype.afterRender.apply(this,arguments);
@@ -180,7 +181,6 @@
 					'margin-bottom':-1*height
 				})
 			}
-            me.collection.on('sync',me.updateLayout,me)
 		},
 		applyState:function(state){
 			var me = this,

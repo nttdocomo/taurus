@@ -1,10 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Base = require('./field/base'),
-	_ = require('underscore'),
-	Checkbox = require('./field/checkbox');
+(function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./field/base','underscore','./field/checkbox'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./field/base'),require('underscore'),require('./field/checkbox'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./field/base'),require('underscore'),require('./field/checkbox'));
+	}
+}(this, function(Base,_,Checkbox) {
 	return Base.extend({
 		events : {
 			'change input' : 'checkChange'
@@ -251,4 +261,4 @@ define(function(require) {
 	        return null;
 	    }
 	});
-});
+}));

@@ -86,16 +86,17 @@
         },
 
 	    getStoreListeners: function() {
-	        var me = this;
+	        var me = this,
+            debounceOnAdd = _.debounce(me.onAdd, 500);
 	        return {
 	            refresh: me.onDataRefresh,
 	            replace: me.onReplace,
                 reset: me.onReset,
-                sync: me.onAdd,
+                sync: debounceOnAdd,
 	            /*add: me.onAdd,*/
 	            //remove: _.debounce(me.onRemove, 200),//backbone-pageable will trigger remove event on add models.
-	            change: me.onAdd,
-                update: me.onAdd,
+	            change: debounceOnAdd,
+                update:debounceOnAdd,
 	            clear: me.onDataRefresh,
 	            beginupdate: me.onBeginUpdate,
 	            endupdate: me.onEndUpdate

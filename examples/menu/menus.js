@@ -5,8 +5,8 @@ define(function(require) {
 	var backbone = require("backbone"),
 	chance = require('chance'),
 	_ = require('underscore'),
-	Navbar = require("../../src/menu/navbar"),
-	Menu = require("../../src/menu/menu.js"),
+	Navbar = require("../../src/classic/menu/navbar"),
+	Menu = require("../../src/classic/menu/menu.js"),
 	$body = $(document.body),
 	likelihood = 30;
 	function randomMenu(){

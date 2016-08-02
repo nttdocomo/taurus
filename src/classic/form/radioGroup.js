@@ -1,11 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Base = require('./field/base'),
-	_ = require('underscore'),
-	CheckboxGroup = require('./checkboxGroup'),
-	Radio = require('./field/radio');
+(function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./field/base','underscore','./checkboxGroup','./field/radio'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./field/base'),require('underscore'),require('./checkboxGroup'),require('./field/radio'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./field/base'),require('underscore'),require('./field/checkbox'),require('./field/radio'));
+	}
+}(this, function(Base,_,CheckboxGroup,Radio) {
 	return CheckboxGroup.extend({
 		blankText : 'You must select one item in this group',
 		defaultType:Radio,
@@ -72,4 +81,4 @@ define(function(require) {
 			return values;
 		}
 	});
-});
+}));
