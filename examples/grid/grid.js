@@ -234,8 +234,8 @@ define(function(require) {
                 iconCls: 'array-grid-sell-col fa fa-minus-circle',
                 tooltip: 'Sell stock',
                 handler: function(grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex);
-                    Ext.Msg.alert('Sell', 'Sell ' + rec.get('name'));
+                    var rec = grid.collection.at(rowIndex);
+                    alert('Sell', 'Sell ' + rec.get('name'));
                 }
             }, {
                 getClass: function(v, meta, rec) {
@@ -245,18 +245,12 @@ define(function(require) {
                         return 'array-grid-buy-col';
                     }
                 },
-                getTip: function(v, meta, rec) {
-                    if (rec.get('change') < 0) {
-                        return 'Hold stock';
-                    } else {
-                        return 'Buy stock';
-                    }
-                },
                 handler: function(grid, rowIndex, colIndex) {
-                    var rec = grid.getStore().getAt(rowIndex),
+                	console.log(arguments)
+                    var rec = grid.collection.at(rowIndex),
                         action = (rec.get('change') < 0 ? 'Hold' : 'Buy');
 
-                    Ext.Msg.alert(action, action + ' ' + rec.get('name'));
+                    alert(action, action + ' ' + rec.get('name'));
                 }
             }]
 		}],
