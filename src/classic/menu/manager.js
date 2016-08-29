@@ -4,17 +4,17 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['class','underscore'], factory);
+			define(['class', 'jquery', 'underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('class'),require('underscore'));
+				return factory(require('class'), require('jquery'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('class'),require('underscore'));
+		module.exports = factory(require('class'), require('jquery'),require('underscore'));
 	}
-}(this, function(Class,_) {
+}(this, function(Class, $, _) {
 	return new (Class.extend({
 		menus: {},
 		visible:[],

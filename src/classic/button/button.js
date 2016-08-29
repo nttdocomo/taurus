@@ -207,6 +207,9 @@
 			this.beforeRender()
 			Base.prototype.render.apply(this,arguments);
 			ButtonManager.register(this);
+			if(this.size){
+				this.$el.addClass('btn-' + this.size)
+			}
 		},
 
 		/**

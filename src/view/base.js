@@ -536,6 +536,12 @@ taurus.klass(['../state/stateful','../util/focusable','../util/itemCollection','
 			}
 			this.updateLayout();
 		},
+		update:function(htmlOrData){
+      var me = this;
+      if (_.isString(htmlOrData)) {
+         me.bodyEl.html(htmlOrData)
+      }
+		},
 		updateLayout : function() {
 			var me = this, width = me.width, height = me.height;
 			if (typeof width == 'number') {
