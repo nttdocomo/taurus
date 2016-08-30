@@ -15,7 +15,7 @@
 		module.exports = factory(require('../../../view/base'),require('../column/column'),require('../columnManager'));
 	}
 }(this, function(Base,Column,ColumnManager) {
-	return taurus.view('taurus.grid.header.Container',Base.extend({
+	return Base.extend({
 		className : 'grid-header-ct',
 		defaultType : Column,
 		events:{
@@ -278,5 +278,5 @@
 			})
 			me.ownerCt.updateLayout()
 		}
-	}));
+	});
 }));

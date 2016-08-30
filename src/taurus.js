@@ -256,7 +256,7 @@
 		}
 		return K
 	};
-	taurus.klass = function(name, prop) {
+	/*taurus.klass = function(name, prop) {
 		var K = prop || Class.extend();
 		var E = taurus.augmentString(name, K);
 		var g = name.split(".").pop();
@@ -274,7 +274,7 @@
 			return this;
 		}
 		return E
-	};
+	};*/
 	taurus.view = function(name, cls) {
 		var C = taurus.klass(name, cls);
 		return C
