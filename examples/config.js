@@ -11,7 +11,7 @@ seajs.config({
   paths: {
     'taurus': './'
   },
-  base: location.pathname.replace(/^(\/taurus)?\/.*/, '$1') + '/src',
+  base: '../../src',
   charset: 'utf-8',
   vars: {
     'locale': (navigator.language || navigator.browserLanguage).toLowerCase()
