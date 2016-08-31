@@ -289,6 +289,56 @@ define(function(require) {
 		fieldLabel : 'city',
 		collection : collection
 	});
+	$body.append('<h3>自定义下拉框样式</h3>')
+	new ComboBox({
+		renderTo : $body,
+		name : 'textfield2',
+		id : 'textfield2',
+		queryMode : 'local',
+		displayField : 'name',
+		fieldLabel : 'city',
+		multiSelect : true,
+		value : ['AK','WA'],
+		valueField : 'abbr',
+		width:250,
+		collection : collection,
+		listConfig:{
+			emptyText:'手欠了吧23333',
+			lazyload:true,
+			getInnerTpl:function(displayField){
+				console.log(this)
+				console.log(arguments)
+				return '<a href="#"><%=item.abbr%><%console.log(item)%><br/><%=item.' + displayField + '%><div class="btn btn-default">添加</div></a>';
+			},
+			onItemSelect:function(record){
+				var node = this.getNode(record);
+				node.addClass(this.selectedItemCls);
+				node.find('.btn').text('已添加').attr('disabled',true)
+			},
+			onItemDeselect:function(record){
+				var node = this.getNode(record);
+				if(record){
+					node.removeClass(this.selectedItemCls);
+					node.find('.btn').text('添加').attr('disabled',false)
+				}
+			},
+			highlightItem:function(item){
+				this.clearHighlight();
+				this.highlightedItem = item;
+				item.addClass(this.selectedItemCls);
+				item.find('.btn').text('已添加').attr('disabled',true)
+				this.trigger('highlightitem', this, item);
+			},
+			onItemClick:function(e){
+				if($(e.target).hasClass('btn')){
+					var node = $(e.target).parents(this.itemSelector);
+					var record = this.collection.at(this.$el.children().index(node));
+					this.trigger('itemclick',e,record);
+				}
+				return false;
+			},
+		}
+	});
 	new Button({
 		renderTo : $body,
 		text:'Clear Value',
