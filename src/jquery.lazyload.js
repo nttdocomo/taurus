@@ -19,6 +19,13 @@
     {
         // AMD. Register as an anonymous module.
         define(['jquery'], factory);
+    }
+    
+    if(define.cmd){
+        define(function(require, exports, module){
+          var $ = require('jquery');
+          factory($);
+        })
     } else if (typeof exports === 'object')
     {
         // Node/CommonJS

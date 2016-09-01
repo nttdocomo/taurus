@@ -1,7 +1,23 @@
 /**
  * @author nttdocomo
  */
-define(function() {
+ (function(factory) {
+    if (typeof define === 'function') {
+        if(define.amd){
+            define(['jquery'],function($){
+                factory($);
+            })
+        }
+        if(define.cmd){
+            define(function(require, exports, module){
+              var $ = require('jquery');
+              factory($);
+            })
+        }
+
+      // Finally, as a browser global.
+    }
+}(function($) {
 	$.extend(jQuery.Event.prototype, {
 
 		/** Key constant @type Number */
@@ -233,4 +249,4 @@ define(function() {
 			this.preventDefault();
 		}
 	});
-});
+}));

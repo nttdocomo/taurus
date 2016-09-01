@@ -20,10 +20,12 @@ define(function(require) {
 		renderTo : $body,
 		text:'Dialog',
 		handler:function(){
-			(new Dialog({
+			var dialog = new Dialog({
 				title:'Dialog',
 				content:'Dialog'
-			})).show();
+			})
+			dialog.show();
+			dialog.update('asdadasdasd')
 		}
 	})
 });
