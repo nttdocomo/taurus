@@ -254,7 +254,7 @@
 			me.collection.fetch(options);
 			me.triggerEl.attr('disabled', 'disabled');
 		},
-		onItemClick : function(record) {
+		onItemClick : function(e, record) {
 			var me = this, valueField = me.valueField, picker = me.getPicker(), value = me.value, lastSelected;
 			if (value) {
 				value = $.makeArray(value);
