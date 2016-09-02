@@ -18,14 +18,17 @@
     if (typeof define === 'function' && define.amd)
     {
         // AMD. Register as an anonymous module.
-        define(['jquery'], factory);
-    }
+        if(define.amd){
+            define(['jquery'], factory);   
+        }
+
     
-    if(define.cmd){
-        define(function(require, exports, module){
-          var $ = require('jquery');
-          factory($);
-        })
+        if(define.cmd){
+            define(function(require, exports, module){
+              var $ = require('jquery');
+              factory($);
+            })
+        }
     } else if (typeof exports === 'object')
     {
         // Node/CommonJS
