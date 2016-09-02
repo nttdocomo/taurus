@@ -41,8 +41,9 @@
 			if(!this.isRendered){
 				this.render(renderTo || $(document.body));
 			}
-			this.$el.addClass('in').show();
+			this.$el.addClass('in');
 			$(document.body).addClass('modal-open');
+			this._super();
 			this.position();
 		},
 		position:function(){
