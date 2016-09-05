@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../state/stateful','../util/focusable','../util/itemCollection','underscore','../taurus','backbone','backbone-super','../lang/number','../mixins','../jquery.ui.position'], factory);
+			define(['../state/stateful','../util/focusable','../util/itemCollection','underscore','taurus','backbone','backbone-super','../lang/number','../mixins','../jquery.ui.position'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../state/stateful'),require('../util/focusable'),require('../util/itemCollection'),require('underscore'),require('../taurus'),require('backbone'),require('backbone-super'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
+				return factory(require('../state/stateful'),require('../util/focusable'),require('../util/itemCollection'),require('underscore'),require('taurus'),require('backbone'),require('backbone-super'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../state/stateful'),require('../util/focusable'),require('../util/itemCollection'),require('underscore'),require('../taurus'),require('backbone'),require('backbone-super'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
+		module.exports = factory(require('../state/stateful'),require('../util/focusable'),require('../util/itemCollection'),require('underscore'),require('taurus'),require('backbone'),require('backbone-super'),require('../lang/number'),require('../mixins'),require('../jquery.ui.position'));
 	}
 }(this, /*taurus.klass(['../state/stateful','../util/focusable','../util/itemCollection','underscore','taurus','backbone','backbone-super','../lang/number','../mixins','../jquery.ui.position'],*/function(Stateful,Focusable,ItemCollection,_,taurus,Backbone) {
 	return Backbone.View.extend({
