@@ -35,8 +35,8 @@
             keypress: 'KeyPress',
             focus: 'Focus'
         },
-		onItemClick:function(e){
-			var node = $(e.target).parents(this.itemSelector);
+		onItemClick:function(record, node, index, e){
+			//var node = $(e.target).parents(this.itemSelector);
 			var record = this.collection.at(this.$el.children().index(node));
 			/*if(e.ctrlKey){
 				if(this.selection.contains(record)){

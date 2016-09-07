@@ -15,7 +15,7 @@
 
 ;(function (factory)
 {
-    if (typeof define === 'function' && define.amd)
+    if (typeof define === 'function')
     {
         // AMD. Register as an anonymous module.
         if(define.amd){
