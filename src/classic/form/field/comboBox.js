@@ -149,12 +149,13 @@
 			}
 
 			// Expand after adjusting the filter unless there are no matches
-			me.getPicker().collection.reset(collection);
+			var picker = me.getPicker()
 			if (collection.length || me.getPicker().emptyText) {
 				me.expand();
 			} else {
 				me.collapse();
 			}
+			picker.collection.reset(collection);
 
 			me.afterQuery();
 		},
@@ -185,11 +186,11 @@
 			if(!queryString){
 				return false;
 			}
+			var picker = me.getPicker()
 			collection.fetch({
 				data : this.getParams(queryString),
 				success : function() {
-					me.getPicker().collection.reset(collection.models);
-					me.expand();
+					picker.collection.reset(collection.models);
 					//me.doLocalQuery(queryString);
 					if (!me.multiSelect){
 						//me.doLocalQuery(queryString);
@@ -197,6 +198,7 @@
 				},
 				reset:true
 			});
+			me.expand();
 			/*if (!collection.length) {
 				collection.fetch({
 					data : this.getParams(),
@@ -231,7 +233,7 @@
 				'itemclick': me.onItemClick,
 				'refresh': _.bind(me.onListRefresh,me)
 			}, me);
-			this.doAutoSelect();
+			//this.doAutoSelect();
 			return picker;
 		},
 		getDisplayTpl : function() {

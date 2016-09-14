@@ -155,6 +155,7 @@
 			return $(window).height() - taurus.getPositionAbove(el) - el.height()
 		},
 		getPositionAbove:function(el){
+			console.log($(window).scrollTop())
 			return el.offset().top - $(window).scrollTop();
 		},
 		getPositionRight:function(el){
