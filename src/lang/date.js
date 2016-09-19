@@ -1,8 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var taurus = require('taurus');
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['taurus'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('taurus'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('taurus'));
+	}
+}(this, function(taurus) {
 	return taurus.augmentObject('taurus.Date', {
 		parse : function(input, format, strict) {
 			var p = taurus.Date.parseFunctions;
@@ -113,4 +125,4 @@ define(function(require) {
 			return date;
 		}
 	})
-})
+}))
