@@ -16,6 +16,7 @@
 	}
 }(this, function(Button,taurus,_,qq) {
 	return Button.extend({
+        tagName : 'div',
         afterRender:function(){
             var me = this;
             me._super.apply(me,arguments);
