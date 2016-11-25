@@ -2,7 +2,9 @@
  * @author nttdocomo
  */
 define(function(require) {
- 	var ButtonDropdown = require("../../src/button/buttonDropdown.js");
+ 	var ButtonDropdown = require("../../src/classic/button/buttonDropdown.js")
+ 	var $ = require('jquery')
+ 	var Backbone = require('backbone') 
  	var $body = $(document.body);
 	var collection = new Backbone.Collection([{
 		name : "Tim",

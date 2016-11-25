@@ -50,7 +50,7 @@ define(function(require){
 		},
 		setMenu:function(){
 			this.menu = new Menu({
-				menu:this.menu,
+				items:this.menu,
 				width:this.$el.width(),
 				renderTo:$(document.body)
 			})
