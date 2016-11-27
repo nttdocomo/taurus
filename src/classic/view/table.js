@@ -49,6 +49,10 @@
         taurus.baseCSSPrefix + 'grid-cell ' + taurus.baseCSSPrefix + 'grid-td' // for styles shared between cell and rowwrap
       ]
     },
+    constructor: function (config) {
+      Base.call(this, config)
+      this.applySelectionModel(config.selectionModel)
+    },
     initialize: function (config) {
       // Adjust our base class if we are inside a TreePanel
       if (config.grid.isTree) {
@@ -439,6 +443,8 @@
      * @private
      * Create a config object for this view's selection model based upon the passed grid's configurations.
      */
-    applySelectionModel: function(selModel, oldSelModel) {}
+    applySelectionModel: function(selModel, oldSelModel) {
+      console.log('asdasd')
+    }
   })
 }))
