@@ -339,6 +339,16 @@
     getRowId: function (record) {
       return this.id + '-record-' + record.id
     },
+    beforeRender: function () {
+      this.getSelectionModel().beforeViewRender(this)
+    },
+    getSelectionModel: function(){
+      return this.selectionModel
+    },
+    render: function () {
+      this.beforeRender()
+      return Base.prototype.render.apply(this, arguments)
+    },
     renderRows: function (rows, viewStartIndex) {
       var me = this,
         rowValues = this.rowValues,
