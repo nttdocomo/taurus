@@ -22,7 +22,7 @@
 		events:{
 			'mouseleave':'onMouseLeave',
 			'mouseenter li':'onMouseOver',
-			'click li a': 'onClick'
+			'mousedown li': 'onClick'
 		},
 		initialize:function(){
 			var me = this;

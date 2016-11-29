@@ -5,7 +5,7 @@ define(function(require){
 	var Button = require('./button'),
 	Menu = require("../menu/menu");
 	return Button.extend({
-		tpl:'<button type="button" class="btn btn-danger"><%=text%></button><button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>',
+		tpl:'<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><%=text%> <span class="caret"></span></button>',
 		className:'btn-group',
 		tagName : 'div',
 		initialize:function(){
