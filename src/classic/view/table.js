@@ -44,6 +44,14 @@
       itemClasses: [],
       rowClasses: []
     },
+    config: {
+      selectionModel: {
+        type: 'rowmodel'
+      }
+    },
+    selectionModel: {
+      type: 'rowmodel'
+    },
     cellValues: {
       classes: [
         taurus.baseCSSPrefix + 'grid-cell ' + taurus.baseCSSPrefix + 'grid-td' // for styles shared between cell and rowwrap
@@ -51,7 +59,7 @@
     },
     constructor: function (config) {
       Base.call(this, config)
-      this.applySelectionModel(config.selectionModel)
+      this.selectionModel = this.applySelectionModel(this.selectionModel)
     },
     initialize: function (config) {
       // Adjust our base class if we are inside a TreePanel
@@ -354,6 +362,7 @@
       var me = this,
         columns,
         itemCls = me.itemCls,
+        selModel = me.selectionModel,
         rowValues = me.rowValues,
         itemClasses = rowValues.itemClasses
       rowValues.record = record
@@ -445,6 +454,52 @@
      */
     applySelectionModel: function(selModel, oldSelModel) {
       console.log('asdasd')
+      var me = this,
+          grid = me.grid,
+          defaultType = selModel.type;
+
+      // If this is the initial configuration, pull overriding configs in from the owning TablePanel.
+      if (!oldSelModel) {
+          // Favour a passed instance
+          if (!(selModel && selModel.isSelectionModel)) {
+              selModel = grid.selModel || selModel;
+          }
+      }
+
+      if (selModel) {
+          if (selModel.isSelectionModel) {
+              selModel.allowDeselect = grid.allowDeselect || selModel.selectionMode !== 'SINGLE';
+              selModel.locked = grid.disableSelection;
+          } else {
+              if (typeof selModel === 'string') {
+                  selModel = {
+                      type: selModel
+                  };
+              }
+              // Copy obsolete selType property to type property now that selection models are Factoryable
+              // TODO: Remove selType config after deprecation period
+              else {
+                  selModel.type = grid.selType || selModel.selType || selModel.type || defaultType;
+              }
+              if (!selModel.mode) {
+                  if (grid.simpleSelect) {
+                      selModel.mode = 'SIMPLE';
+                  } else if (grid.multiSelect) {
+                      selModel.mode = 'MULTI';
+                  }
+              }
+              var SelModel = selModel.type
+              selModel = new SelModel({
+                  allowDeselect: grid.allowDeselect,
+                  locked: grid.disableSelection
+              })
+              /*selModel = Ext.Factory.selection(Ext.apply({
+                  allowDeselect: grid.allowDeselect,
+                  locked: grid.disableSelection
+              }, selModel));*/
+          }
+      }
+      return selModel;
     }
   })
 }))

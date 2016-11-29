@@ -8,6 +8,7 @@ define(function (require) {
   var Table = require('../../src/classic/panel/table.js')
   var ActionColumn = require('../../src/classic/grid/column/action.js')
   var CheckColumn = require('../../src/classic/grid/column/check.js')
+  var CheckboxModel = require('../../src/selection/checkboxModel.js')
   var $body = $('#main')
   var Collection = PageableCollection.extend({
       // url: "json/pageable-territories.json",
@@ -200,11 +201,8 @@ define(function (require) {
     width: 600,
     emptyText: '空的',
     title: 'Array Grid',
-    selType: 'checkboxmodel',
+    selType: CheckboxModel,
     columns: [{
-      'class': CheckColumn,
-      text: 'Active'
-    },{
       text: 'Company',
       flex: 1,
       sortable: false,
