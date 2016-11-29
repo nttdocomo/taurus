@@ -21,16 +21,18 @@ define(function(require) {
     triggerEvent:'mouseenter',
 		text: 'name',
     renderTo:$body.find('#example-1'),
-    menu : [{
-    	text: 'Item 1',
-    	onClick:function(){
-    		console.log('asdasd')
-    	}
-    },
-			{text: 'Item 2'},
-			{text: 'Item 3'},
-			{text: 'Item 4'}
-		]
+    menu : {
+    	items:[{
+	    	text: 'Item 1',
+	    	onClick:function(){
+	    		console.log('asdasd')
+	    	}
+	    },
+				{text: 'Item 2'},
+				{text: 'Item 3'},
+				{text: 'Item 4'}
+			]
+    }
 	});
  	var button = new SplitButtonDropdown({
     collection:collection,

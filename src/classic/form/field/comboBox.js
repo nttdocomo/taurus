@@ -335,13 +335,13 @@
 			if (me.isExpanded) {
 				me.collapse();
 			} else {
-                if (me.triggerAction === 'all') {
-                    me.doQuery(me.allQuery, true);
-                } else if (me.triggerAction === 'last') {
-                    me.doQuery(me.lastQuery, true);
-                } else {
-                    me.doQuery(me.getRawValue(), false, true);
-                }
+        if (me.triggerAction === 'all') {
+            me.doQuery(me.allQuery, true);
+        } else if (me.triggerAction === 'last') {
+            me.doQuery(me.lastQuery, true);
+        } else {
+            me.doQuery(me.getRawValue(), false, true);
+        }
 
 			}
 			me.inputEl.focus();

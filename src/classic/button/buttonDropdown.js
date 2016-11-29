@@ -5,8 +5,8 @@ define(function(require){
 	var Button = require('./button'),
 	Menu = require("../menu/menu");
 	return Button.extend({
-		tpl:'<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown"><%=text%> <span class="caret"></span></button>',
-		className:'btn-group',
+		tpl:'<%=text%> <span class="caret"></span>',
+		className:'btn dropdown-toggle',
 		tagName : 'div',
 		initialize:function(){
 			Button.prototype.initialize.apply(this, arguments);
@@ -50,7 +50,7 @@ define(function(require){
 		},
 		setMenu:function(){
 			this.menu = new Menu({
-				items:this.menu,
+				items:this.menu.items,
 				width:this.$el.width(),
 				renderTo:$(document.body)
 			})
