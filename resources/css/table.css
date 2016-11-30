@@ -185,3 +185,13 @@
 .grid-checkcolumn-checked:after {
     content: "\f046";
 }
+.grid-row-checker {
+    height: 18px;
+    width: 18px;
+    font: 18px/1;
+    color: #919191;
+}
+.grid-row-checker:before {
+	font: 18px/1 FontAwesome;
+	content: "\f096";
+}
