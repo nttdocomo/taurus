@@ -103,8 +103,8 @@
         menuDisabled: true,
         dataIndex: '',
         tdCls: me.tdCls,
-        cls: showCheck ? taurus.baseCSSPrefix + 'column-header-checkbox ' : ''/*,
-        defaultRenderer: me.renderer.bind(me),
+        cls: showCheck ? taurus.baseCSSPrefix + 'column-header-checkbox ' : '',
+        defaultRenderer: _.bind(me.renderer, me)/*,
         editRenderer: me.editRenderer || me.renderEmpty,
         locked: me.hasLockedHeader(),
         processEvent: me.processColumnEvent*/
@@ -122,6 +122,33 @@
         }
       }
       return false
+    },
+
+    /**
+     * Toggle between selecting all and deselecting all when clicking on
+     * a checkbox header.
+     */
+    onHeaderClick: function(headerCt, header, e) {
+      if (header === this.column) {
+        e.stopEvent();
+        var me = this
+        var isChecked = header.el.hasCls(taurus.baseCSSPrefix + 'grid-hd-checker-on');
+
+        if (isChecked) {
+          me.deselectAll();
+        } else {
+          me.selectAll();
+        }
+      }
+    },
+
+    /**
+     * Generates the HTML to be rendered in the injected checkbox column for each row.
+     * Creates the standard checkbox markup by default; can be overridden to provide custom rendering.
+     * See {@link Ext.grid.column.Column#renderer} for description of allowed parameters.
+     */
+    renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+      return '<div class="' + taurus.baseCSSPrefix + 'grid-row-checker" role="presentation">&#160;</div>';
     }
   })
   return CheckboxModel

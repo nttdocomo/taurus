@@ -9,6 +9,7 @@ define(function(require) {
 	$body = $("#main"),
 	Number = require("../../src/classic/form/field/number"),
 	Panel = require("../../src/classic/form/panel"),
+	FormBase = require("../../src/classic/form/base"),
 	DateType = require("../../src/classic/form/field/date"),
 	DateTime = require("../../src/classic/form/field/datetime"),
 	Time = require("../../src/classic/form/field/time"),
@@ -38,6 +39,23 @@ define(function(require) {
 		name : "007",
 		age : 7
 	}]);
+	var form = new FormBase({
+		renderTo : $body,
+		items:[{
+			'class':Text,
+			msgTarget:'under',
+			name : 'first_name',
+			emptyText:'First Name',
+			fieldLabel : 'First Name:'
+		}]
+	})
+	form.add(0, {
+		'class':Text,
+		msgTarget:'under',
+		name : 'first_name',
+		emptyText:'Two Name',
+		fieldLabel : 'First Name:'
+	})
 	new Panel({
 		renderTo : $body,
 		title:'Simple Form',

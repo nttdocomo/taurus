@@ -394,11 +394,12 @@
       return me
     },
     render: function (renderTo, operation) {
+      renderTo = renderTo || this.renderTo || $(document.body)
+      this.operation = operation || 'append'
       if (this.isRendered) {
+        $(renderTo)[this.operation](this.$el)
         return false
       }
-      this.operation = operation || 'append'
-      renderTo = renderTo || this.renderTo || $(document.body)
       /*run html brfore append el because the el must has html*/
       $(renderTo)[this.operation](this.$el)
       this.renderHtml()
@@ -736,7 +737,10 @@
     updateItems: function () {
       var me = this
       _.each(this.items, function (item) {
+        var el = $('<div></div>')
+        el.append(item.$el)
         item.render(me.getTargetEl(item))
+        el.remove()
       })
     },
     insert: function (index, comp) {

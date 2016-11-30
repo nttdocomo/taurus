@@ -6,9 +6,9 @@ define(function (require) {
   var Panel = require('../../src/classic/panel/panel.js')
   var $ = require('../../src/jquery.js')
   var Table = require('../../src/classic/panel/table.js')
-  var ActionColumn = require('../../src/classic/grid/column/action.js')
-  var CheckColumn = require('../../src/classic/grid/column/check.js')
-  var CheckboxModel = require('../../src/selection/checkboxModel.js')
+  var ActionColumn = require('../../src/classic/grid/column/action')
+  var CheckColumn = require('../../src/classic/grid/column/check')
+  var CheckboxModel = require('../../src/selection/checkboxModel')
   var $body = $('#main')
   var Collection = PageableCollection.extend({
       // url: "json/pageable-territories.json",

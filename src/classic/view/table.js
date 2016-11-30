@@ -4,17 +4,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./view', '../grid/cellContext', 'backbone', 'underscore', 'taurus'], factory)
+      define(['./view', '../grid/cellContext', '../../selection/checkboxModel', 'backbone', 'underscore', 'taurus'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./view'), require('../grid/cellContext'), require('backbone'), require('underscore'), require('taurus'))
+        return factory(require('./view'), require('../grid/cellContext'), require('../../selection/checkboxModel'), require('backbone'), require('underscore'), require('taurus'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./view'), require('../grid/cellContext'), require('backbone'), require('underscore'), require('taurus'))
+    module.exports = factory(require('./view'), require('../grid/cellContext'), require('../../selection/checkboxModel'), require('backbone'), require('underscore'), require('taurus'))
   }
-}(this, function (Base, CellContext, Backbone, _, taurus) {
+}(this, function (Base, CellContext, CheckboxModel, Backbone, _, taurus) {
   return Base.extend({
     header: true,
     tpl: '<div class="grid-item-container"><table><%=rows%></table></div>',
@@ -46,11 +46,11 @@
     },
     config: {
       selectionModel: {
-        type: 'rowmodel'
+        type: CheckboxModel
       }
     },
     selectionModel: {
-      type: 'rowmodel'
+      type: CheckboxModel
     },
     cellValues: {
       classes: [
@@ -269,7 +269,7 @@
         // feature and the rowbody element's event is being processed) then do not fire any "cell" events
         // Don't handle cellmouseenter and cellmouseleave events for now
         if (cell && type !== 'mouseover' && type !== 'mouseout') {
-          result = !(me['onCell' + map[type]](cell, cellIndex, record, row, rowIndex, e) === false)
+          result = !((me['onCell' + map[type]](cell, cellIndex, record, row, rowIndex, e) === false) || (me.trigger('cell' + type, me, cell, cellIndex, record, row, rowIndex, e) === false))
         }
         eventPosition.column = column
       }

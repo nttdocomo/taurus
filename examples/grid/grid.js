@@ -191,7 +191,7 @@ define(function (require) {
       'lastChange': '9/1 12:00am'
     }])
   new Table({
-    hideHeaders: true,
+    //hideHeaders: true,
     loading: true,
     frame: true,
     refreshable: true,
