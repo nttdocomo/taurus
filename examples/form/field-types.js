@@ -142,6 +142,7 @@ define(function(require) {
         },{
 			'class':RadioGroup,
 			fieldLabel : '应用平台:',
+			msgTarget:'under',
 			items:[{
 				boxLabel:'iOS',
 				checked:true,

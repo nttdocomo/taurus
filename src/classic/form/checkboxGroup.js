@@ -251,7 +251,7 @@
 			return isValid;
 		},
 		getTargetEl:function(){
-			return this.$el.find('> div');
+			return this.$el.find('> div:eq(0)');
 		},
 
 	    /*
