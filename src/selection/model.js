@@ -23,12 +23,12 @@
 }(this, function (Class, mixins, StoreHolder, Backbone, _) {
   var Model = Class.extend({
     selected: [],
-    config:{
+    config: {
       selected: []
     },
     init: function () {
       var me = this
-        
+
       me.modes = {
         SINGLE: true,
         SIMPLE: true,
@@ -36,8 +36,8 @@
       }
       me.setSelectionMode(me.mode)
       me.selected = me.applySelected(me.selected)
-      if (me.selectionMode !== 'SINGLE') {    
-        me.allowDeselect = true;    
+      if (me.selectionMode !== 'SINGLE') {
+        me.allowDeselect = true
       }
     },
     beforeViewRender: function (view) {
@@ -46,76 +46,76 @@
       }
       this.views.push(view)
     },
-    doMultiSelect: function(records, keepExisting, suppressEvent) {
+    doMultiSelect: function (records, keepExisting, suppressEvent) {
       var me = this
       var selected = me.selected
-      var len, commit
-      records = !_.isArray(records) ? [records] : records;
+      var len, commit, record, change
+      records = !_.isArray(records) ? [records] : records
       len = records.length
-      commit = function() {
+      commit = function () {
         if (!selected.length) {
-          me.selectionStart = record;
+          me.selectionStart = record
         }
         if (!suppressEvent) {
-          selected.add(record);
+          selected.add(record)
         }
-        change = true;
-      };
-      for (i = 0; i < len; i++) {
-        record = records[i];
+        change = true
+      }
+      for (var i = 0; i < len; i++) {
+        record = records[i]
         if (me.isSelected(record)) {
-          continue;
+          continue
         }
 
-        me.onSelectChange(record, true, suppressEvent, commit);
+        me.onSelectChange(record, true, suppressEvent, commit)
         if (me.destroyed) {
-          return;
+          return
         }
       }
     },
 
     // records can be an index, a record or an array of records
-    doDeselect: function(records, suppressEvent) {
+    doDeselect: function (records, suppressEvent) {
       var me = this
       var selected = me.selected
       var attempted = 0
       var accepted = 0
-      if (typeof records === "number") {
-        record = me.store.get(records);
+      if (typeof records === 'number') {
+        record = me.store.get(records)
         // No matching record, jump out
         if (!record) {
-          return false;
+          return false
         }
-        records = [record];
+        records = [record]
       } else if (!_.isArray(records)) {
-        records = [records];
+        records = [records]
       }
-      commit = function() {
+      commit = function () {
         ++accepted
         if (!suppressEvent) {
-          selected.remove(record);
+          selected.remove(record)
         }
         if (record === me.selectionStart) {
-          me.selectionStart = null;
+          me.selectionStart = null
         }
       }
-      var len = records.length;
+      var len = records.length
       for (var i = 0; i < len; i++) {
-        record = records[i];
+        record = records[i]
         if (me.isSelected(record)) {
           if (me.lastSelected === record) {
-            me.lastSelected = selected.last();
+            me.lastSelected = selected.last()
           }
-          ++attempted;
-          me.onSelectChange(record, false, suppressEvent, commit);
+          ++attempted
+          me.onSelectChange(record, false, suppressEvent, commit)
           if (me.destroyed) {
-            return false;
+            return false
           }
         }
       }
     },
 
-    doSelect: function(records, keepExisting, suppressEvent) {
+    doSelect: function (records, keepExisting, suppressEvent) {
       var me = this
       var record
 
@@ -123,16 +123,16 @@
         return
       }
 
-      if (typeof records === "number") {
+      if (typeof records === 'number') {
         record = me.store.get(records)
         // No matching record, jump out.
         if (!record) {
-            return
+          return
         }
         records = [record]
       }
 
-      if (me.selectionMode === "SINGLE") {
+      if (me.selectionMode === 'SINGLE') {
         if (records.isModel) {
           records = [records]
         }
@@ -149,32 +149,32 @@
      * Deselects all records in the view.
      * @param {Boolean} [suppressEvent] True to suppress any deselect events
      */
-    deselectAll: function(suppressEvent) {
+    deselectAll: function (suppressEvent) {
       var me = this
       var selections = me.store.models
-      me.doDeselect(selections, suppressEvent);
+      me.doDeselect(selections, suppressEvent)
     },
 
     /**
      * Selects all records in the view.
      * @param {Boolean} suppressEvent True to suppress any select events
      */
-    selectAll: function(suppressEvent) {
+    selectAll: function (suppressEvent) {
       var me = this
       var selections = me.store.models
-      //var start = me.getSelection().length
+      // var start = me.getSelection().length
 
-      //me.suspendChanges();
-      me.doSelect(selections, true, suppressEvent);
-      //me.resumeChanges();
-      // fire selection change only if the number of selections differs
-      /*if (!suppressEvent && !me.destroyed) {
-        me.maybeFireSelectionChange(me.getSelection().length !== start);
-      }*/
+      // me.suspendChanges()
+      me.doSelect(selections, true, suppressEvent)
+    // me.resumeChanges()
+    // fire selection change only if the number of selections differs
+    /*if (!suppressEvent && !me.destroyed) {
+      me.maybeFireSelectionChange(me.getSelection().length !== start)
+    }*/
     },
 
-    getStoreListeners: function() {
-      var me = this;
+    getStoreListeners: function () {
+      var me = this
       return {
         add: me.onStoreAdd,
         clear: me.onStoreClear,
@@ -187,7 +187,7 @@
         // BufferedStore events
         pageadd: me.onPageAdd,
         pageremove: me.onPageRemove
-      };
+      }
     },
 
     /**
@@ -196,10 +196,10 @@
      * @return {Boolean}
      */
     isSelected: function (record) {
-      record = _.isNumber(record) ? this.store.get(record) : record;
-      return this.selected ? this.selected.contains(record) : false;
+      record = _.isNumber(record) ? this.store.get(record) : record
+      return this.selected ? this.selected.contains(record) : false
     },
-    onNavigate: function(e){
+    onNavigate: function (e) {
       console.log('onNavigate')
       var me = this
       var record = e.record
@@ -214,46 +214,46 @@
      * Sets the current selectionMode.
      * @param {String} selMode 'SINGLE', 'MULTI' or 'SIMPLE'.
      */
-    setSelectionMode: function(selMode) {
-      selMode = selMode ? selMode.toUpperCase() : 'SINGLE';
+    setSelectionMode: function (selMode) {
+      selMode = selMode ? selMode.toUpperCase() : 'SINGLE'
       // set to mode specified unless it doesnt exist, in that case
       // use single.
-      this.selectionMode = this.modes[selMode] ? selMode : 'SINGLE';
+      this.selectionMode = this.modes[selMode] ? selMode : 'SINGLE'
     },
-    selectWithEvent: function(record, e){
+    selectWithEvent: function (record, e) {
       var me = this
       var isSelected = me.isSelected(record)
       switch (me.selectionMode) {
         case 'MULTI':
-          me.selectWithEventMulti(record, e, isSelected);
-          break;
+          me.selectWithEventMulti(record, e, isSelected)
+          break
         case 'SIMPLE':
-          me.selectWithEventSimple(record, e, isSelected);
-          break;
+          me.selectWithEventSimple(record, e, isSelected)
+          break
         case 'SINGLE':
-          me.selectWithEventSingle(record, e, isSelected);
-          break;
+          me.selectWithEventSingle(record, e, isSelected)
+          break
       }
     },
-    selectWithEventMulti: function(record, e, isSelected) {
-      var me = this;
+    selectWithEventMulti: function (record, e, isSelected) {
+      var me = this
 
       if (!e.shiftKey && !e.ctrlKey && e.getTarget(me.checkSelector)) {
         if (isSelected) {
-          me.doDeselect(record);
-        } else {  
-          me.doSelect(record, true);
+          me.doDeselect(record)
+        } else {
+          me.doSelect(record, true)
         }
       } else {
-        me.callParent([record, e, isSelected]);
+        me.callParent([record, e, isSelected])
       }
     },
 
-    applySelected: function(selected) {
+    applySelected: function (selected) {
       if (!selected.isCollection) {
-          selected = new Backbone.Collection(selected);
+        selected = new Backbone.Collection(selected)
       }
-      return selected;
+      return selected
     }
   }).extend(Backbone.Events).extend(StoreHolder.prototype)
   return Model

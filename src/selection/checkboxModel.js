@@ -23,7 +23,7 @@
 }(this, function (RowModel, Column, _, taurus) {
   var CheckboxModel = RowModel.extend({
     injectCheckbox: 0,
-    headerWidth: 36,
+    headerWidth: 32,
     /**
      * @cfg {"SINGLE"/"SIMPLE"/"MULTI"} mode
      * Modes of selection.
@@ -179,7 +179,7 @@
           hdSelectStatus = false,
           selectedCount = 0,
           selected, len, i;
-          
+
       if (!store.isBufferedStore && storeCount > 0) {
           selected = me.selected;
           hdSelectStatus = true;
@@ -190,7 +190,7 @@
           }
           hdSelectStatus = storeCount === selectedCount;
       }
-          
+
       if (views && views.length) {
           me.toggleUiHeader(hdSelectStatus);
       }

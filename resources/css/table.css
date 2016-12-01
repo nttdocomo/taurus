@@ -198,3 +198,14 @@
 .item-selected .grid-row-checker:before,.grid-hd-checker-on .column-header-text:before {
 	content: "\f14a";
 }
+.column-header-checkbox .column-header-text {
+    display: block;
+    background-repeat: no-repeat;
+    font-size: 0;
+}
+.grid-row-checker, .column-header-checkbox .column-header-text{
+	height: 18px;
+	width: 18px;
+	font: 18px/1 ExtJS;
+	color: #919191;
+}
