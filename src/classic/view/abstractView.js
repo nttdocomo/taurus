@@ -4,13 +4,13 @@
             // Now we're wrapping the factory and assigning the return
             // value to the root (window) and returning it as well to
             // the AMD loader.
-            define(['../../view/base','../../util/storeHolder','underscore'],function(Base,StoreHolder,_){
+            define(['../../view/base','../../util/storeHolder','../../selection/dataViewModel', '../grid/navigationModel', 'backbone', 'underscore'],function(Base,StoreHolder,_){
               return (root.Class = factory(Base,StoreHolder,_));
             });
         }
         if(define.cmd){
             define(function(require, exports, module){
-                return (root.Class = factory(require('../../view/base'),require('../../util/storeHolder'),require('underscore')));
+                return (root.Class = factory(require('../../view/base'),require('../../util/storeHolder'),require('../../selection/dataViewModel'),require('../grid/navigationModel'),require('backbone'),require('underscore')));
             })
         }
     } else if(typeof module === "object" && module.exports) {
@@ -18,19 +18,32 @@
         // run into a scenario where plain modules depend on CommonJS
         // *and* I happen to be loading in a CJS browser environment
         // but I'm including it for the sake of being thorough
-        module.exports = (root.Class = factory(require('../../view/base'),require('../../util/storeHolder'),require('underscore')));
+        module.exports = (root.Class = factory(require('../../view/base'),require('../../util/storeHolder'),require('../../selection/dataViewModel'),require('../grid/navigationModel'),require('backbone'),require('underscore')));
     } else {
         root.Class = factory();
     }
-}(this, function(Base,StoreHolder,_) {
+}(this, function(Base,StoreHolder,DataViewModel,NavigationModel,Backbone,_) {
 	return Base.extend({
+        config: {
+          selectionModel: {
+            type: DataViewModel
+          }
+        },
+        selectionModel: {
+          type: DataViewModel
+        },
+        navigationModel: NavigationModel,
 		initComponent:function(){
 			var me = this;
+      
+            me.selectionModel = me.applySelectionModel(me.selectionModel)
+            me.applyNavigationModel(this.navigationModel)
 			if (!me.itemSelector) {
                 me.itemSelector = '.' + me.itemCls;
             }
             Base.prototype.initComponent.apply(this,arguments);
             me.bindStore(me.collection)
+            me.getNavigationModel().bindComponent(this);
             me.refresh()
 		},
 
@@ -50,13 +63,16 @@
          */
         bindStore: function(store, initial) {
             var me = this;
+            var selModel = me.getSelectionModel()
+            selModel.bindStore(store, initial)
+            selModel.bindComponent(store ? me : null)
             StoreHolder.prototype.bindStore.apply(me,arguments)
             // If we have already achieved our first layout, refresh immediately.
             // If we bind to the Store before the first layout, then beforeLayout will
             // call doFirstRefresh
             if (store/* && me.componentLayoutCounter*/) {
                 // If not the initial bind, we enforce noDefer.
-                me.doFirstRefresh(store, !initial);
+                me.doFirstRefresh(store, !initial)
             }
         },
 
@@ -83,6 +99,38 @@
                     me.refresh();
                 }
             }
+        },
+
+        /**
+         * Gets a template node.
+         * @param {HTMLElement/String/Number/Ext.data.Model} nodeInfo An HTMLElement template node, index of a template node,
+         * the id of a template node or the record associated with the node.
+         * @return {HTMLElement} The node or null if it wasn't found
+         * @since 2.3.0
+         */
+        getNode: function(nodeInfo) {
+            var me = this,
+                out;
+
+            if (me.rendered && (nodeInfo || nodeInfo === 0)) {
+                if (_.isString(nodeInfo)) {
+                    // Id
+                    out = document.getElementById(nodeInfo);
+                } else if (nodeInfo instanceof Backbone.Model) {
+                    // Record
+                    out = me.getNodeByRecord(nodeInfo);
+                } else if (_.isNumber(nodeInfo)) {
+                    // Index
+                    out = me.all.elements[nodeInfo];
+                } else {
+                    if (nodeInfo.target && nodeInfo.target.nodeType) {
+                        // An event. Check that target is a node: <a target="_blank"> must pass unchanged
+                        nodeInfo = nodeInfo.target;
+                    }
+                    out = Ext.fly(nodeInfo).findParent(me.itemSelector, me.getTargetEl()); // already an HTMLElement
+                }
+            }
+            return out || null;
         },
 
 	    getStoreListeners: function() {
@@ -127,6 +175,19 @@
                 me.collectNodes(targetEl.dom);
                 me.updateIndexes(0);
             }*/
+        },
+        applyNavigationModel: function (navigationModel) {
+          return this.navigationModel = new navigationModel
+        },
+        getNavigationModel: function () {
+          return this.navigationModel
+        },
+        getSelectionModel: function(){
+            return this.selectionModel
+        },
+        applySelectionModel: function(selModel, oldSelModel) {
+            var SelModel = selModel.type
+            return new SelModel
         }
 	}).mixins(StoreHolder)
 }))

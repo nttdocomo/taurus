@@ -14,7 +14,7 @@
 	} else if(typeof module === "object" && module.exports) {
 		module.exports = factory(require('./button'),require('taurus'),require('underscore'),require('fine-uploader'));
 	}
-}(this, function(Button,taurus,_) {
+}(this, function(Button,taurus,_,qq) {
 	return Button.extend({
         tagName : 'div',
         afterRender:function(){

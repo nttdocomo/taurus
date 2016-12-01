@@ -177,3 +177,24 @@
     color: #ffc839;
     content: "\f071";
 }
+.column-header-checkbox .column-header-checkbox:after, .grid-checkcolumn:after {
+    content: "\f096";
+    font: 18px/1 FontAwesome;
+    color: #919191;
+}
+.grid-checkcolumn-checked:after {
+    content: "\f046";
+}
+.grid-row-checker {
+    height: 18px;
+    width: 18px;
+    font: 18px/1;
+    color: #919191;
+}
+.grid-row-checker:before, .column-header-checkbox .column-header-text:before{
+	font: 18px/1 FontAwesome;
+	content: "\f096";
+}
+.item-selected .grid-row-checker:before,.grid-hd-checker-on .column-header-text:before {
+	content: "\f14a";
+}

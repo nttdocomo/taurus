@@ -4,17 +4,17 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./panel','./mixins','../view/table','../grid/header/container','../grid/pagination','backbone.paginator','underscore','taurus'], factory);
+			define(['./panel','./mixins','../view/table','../grid/header/container','../grid/pagination','../grid/navigationModel', 'backbone.paginator','underscore','taurus'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./panel'),require('./mixins'),require('../view/table'),require('../grid/header/container'),require('../grid/pagination'),require('backbone.paginator'),require('underscore'),require('taurus'));
+				return factory(require('./panel'),require('./mixins'),require('../view/table'),require('../grid/header/container'),require('../grid/pagination'),require('../grid/navigationModel'),require('backbone.paginator'),require('underscore'),require('taurus'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./panel'),require('./mixins'),require('../view/table'),require('../grid/header/container'),require('../grid/pagination'),require('backbone.paginator'),require('underscore'),require('taurus'));
+		module.exports = factory(require('./panel'),require('./mixins'),require('../view/table'),require('../grid/header/container'),require('../grid/pagination'),require('../grid/navigationModel'),require('backbone.paginator'),require('underscore'),require('taurus'));
 	}
-}(this, function(Panel,mixins,Table,Header,Pagination,PageableCollection,_,taurus){
+}(this, function(Panel,mixins,Table,Header,Pagination,NavigationModel,PageableCollection, _,taurus){
 	return Panel.extend({
 		pager:false,
 		viewType:Table,
@@ -148,6 +148,7 @@
 	                ownerGrid: me.ownerGrid,
                 	columnLines: me.columnLines,
 	                headerCt: me.headerCt,
+	                navigationModel: NavigationModel,
 	                panel: me,
 	                features: me.features,
 	                emptyText: me.emptyText || ''
