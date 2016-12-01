@@ -12,6 +12,9 @@
 		<link type="text/css" rel="stylesheet" href="../../resources/css/datepicker.css"/>
 		<link type="text/css" rel="stylesheet" href="../../resources/css/panel.css"/>
 		<link type="text/css" rel="stylesheet" href="../../resources/css/table.css"/>
+		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
 		<!--[if IE]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
@@ -41,6 +44,29 @@
 					These forms do not do anything and have very little validation. They solely demonstrate
 					how you can use Ext Forms to build and layout forms on the fly.
 				</p>
+				<pre><code class="js">define(function (require) {
+  var tDate = require('../../src/classic/form/field/date')
+  var Button = require('../../src/classic/button/button')
+  var $body = $('#main')
+  var date = new tDate({
+    renderTo: $body,
+    name: 'textfield2',
+    displayField: 'name',
+    fieldLabel: 'date'
+  })
+  new Button({
+    renderTo: $body,
+    text: '禁用',
+    handler: function () {
+      if (date.isDisabled()) {
+        date.enable()
+      } else {
+        date.disable()
+      }
+    }
+  })
+})
+				</code></pre>
 
 			</div>
 

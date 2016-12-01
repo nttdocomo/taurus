@@ -1,11 +1,7 @@
 /**
  * @author nttdocomo
  */
-/**
- * @author nttdocomo
- */
 define(function (require) {
-  require('backbone')
   var tDate = require('../../src/classic/form/field/date')
   var Button = require('../../src/classic/button/button')
   var $body = $('#main')
