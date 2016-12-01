@@ -4,17 +4,17 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['backbone'], factory);
+			define(['backbone', 'class'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('backbone'));
+				return factory(require('backbone'), require('class'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('backbone'));
+		module.exports = factory(require('backbone'), require('class'));
 	}
-}(this, function(Backbone){
+}(this, function(Backbone, Class){
 	var mixins = function(givingClass) {
 		var receivingClass = this;
 
@@ -41,7 +41,8 @@
 	            // }
 	        }
 	    }
+	    receivingClass.mixins = arguments.callee;
 	    return receivingClass;
 	};
-	Backbone.Model.mixins = Backbone.Collection.mixins = Backbone.View.mixins = mixins;
+	Class.mixins = Backbone.Model.mixins = Backbone.Collection.mixins = Backbone.View.mixins = mixins;
 }))

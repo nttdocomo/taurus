@@ -37,7 +37,7 @@
         cellmousedown: me.onCellMouseDown,*/
 
         // We focus on click if the mousedown handler did not focus because it was a translated "touchstart" event.
-        cellclick: me.onCellClick/*,
+        cellclick: _.bind(me.onCellClick, me)/*,
         itemmousedown: me.onItemMouseDown,
 
         // We focus on click if the mousedown handler did not focus because it was a translated "touchstart" event.
@@ -45,10 +45,13 @@
         itemcontextmenu: me.onItemClick*/
       };
     },
-    onCellClick: function(){
-      console.log('aaaa')
+    onCellClick: function(view, cell, cellIndex, record, row, recordIndex, clickEvent){
+      console.log(record)
       var me = this
-      me.trigger('navigate'/*, {
+      me.trigger('navigate', {
+        record: record,
+        keyEvent: clickEvent
+      }/*, {
           view: view,
           navigationModel: me,
           keyEvent: clickEvent,

@@ -23,10 +23,11 @@
 }(this, function() {
     var StoreHolder = function(){};
     StoreHolder.prototype = {
-        bindStore:function(store){
-            var me = this;
+        bindStore:function(store, initial, propertyName){
+            var me = this
+            propertyName = propertyName || 'store'
             if (store) {
-                //me[propertyName] = store = Ext.data.StoreManager.lookup(store);
+                me[propertyName] = store
                 me.bindStoreListeners(store);
                 //me.onBindStore(store, oldStore);
             } else {

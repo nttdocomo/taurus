@@ -11323,10 +11323,17 @@ qq.FilenameEditHandler = function(s, inheritedInternalApi) {
         }
     });
 };
-if (typeof define === 'function' && define.amd) {
-   define(function() {
-       return qq;
-   });
+if (typeof define === 'function') {
+    if(define.amd){
+        define(function(){
+          return qq;
+        });
+    }
+    if(define.cmd){
+        define(function(require, exports, module){
+            return qq;
+        })
+    }
 }
 else if (typeof module !== 'undefined' && module.exports) {
    module.exports = qq;

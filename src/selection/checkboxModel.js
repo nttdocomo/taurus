@@ -3,30 +3,43 @@
     // Now we're wrapping the factory and assigning the return
     // value to the root (window) and returning it as well to
     // the AMD loader.
-    define(['./dataViewModel', '../classic/grid/column/column', 'underscore', 'taurus'], function (Backbone) {
+    define(['./rowModel', '../classic/grid/column/column', 'underscore', 'taurus'], function (Backbone) {
       return (root.Class = factory(Backbone))
     })
   }
   if (define.cmd) {
     define(function (require, exports, module) {
-      return (root.Class = factory(require('./dataViewModel'), require('../classic/grid/column/column'), require('underscore'), require('taurus')))
+      return (root.Class = factory(require('./rowModel'), require('../classic/grid/column/column'), require('underscore'), require('taurus')))
     })
   } else if (typeof module === 'object' && module.exports) {
     // I've not encountered a need for this yet, since I haven't
     // run into a scenario where plain modules depend on CommonJS
     // *and* I happen to be loading in a CJS browser environment
     // but I'm including it for the sake of being thorough
-    module.exports = (root.Class = factory(require('./dataViewModel'), require('../classic/grid/column/column'), require('underscore'), require('taurus')))
+    module.exports = (root.Class = factory(require('./rowModel'), require('../classic/grid/column/column'), require('underscore'), require('taurus')))
   } else {
     root.Class = factory()
   }
-}(this, function (Model, Column, _, taurus) {
-  var CheckboxModel = Model.extend({
+}(this, function (RowModel, Column, _, taurus) {
+  var CheckboxModel = RowModel.extend({
     injectCheckbox: 0,
-    headerWidth: 32,
-    constructor: function () {
+    headerWidth: 36,
+    /**
+     * @cfg {"SINGLE"/"SIMPLE"/"MULTI"} mode
+     * Modes of selection.
+     * Valid values are `"SINGLE"`, `"SIMPLE"`, and `"MULTI"`.
+     */
+    mode: 'MULTI',
+    /**
+     * @cfg {String} [checkSelector="x-grid-row-checker"]
+     * The selector for determining whether the checkbox element is clicked. This may be changed to
+     * allow for a wider area to be clicked, for example, the whole cell for the selector.
+     */
+    checkSelector: '.' + taurus.baseCSSPrefix + 'grid-row-checker',
+    checkerOnCls: taurus.baseCSSPrefix + 'grid-hd-checker-on',
+    init: function () {
       var me = this
-      me._super.apply(me, arguments)
+      this._super.apply(me, arguments)
 
       // If mode is single and showHeaderCheck isn't explicity set to
       // true, hide it.
@@ -144,12 +157,72 @@
     },
 
     /**
+     * Synchronize header checker value as selection changes.
+     * @private
+     */
+    onSelectChange: function() {
+      this._super.apply(this, arguments)
+      if (!this.suspendChange) {
+        this.updateHeaderState()
+      }
+    },
+
+    /**
+     * @private
+     */
+    updateHeaderState: function() {
+      // check to see if all records are selected
+      var me = this,
+          store = me.store,
+          storeCount = store.length,
+          views = me.views,
+          hdSelectStatus = false,
+          selectedCount = 0,
+          selected, len, i;
+          
+      if (!store.isBufferedStore && storeCount > 0) {
+          selected = me.selected;
+          hdSelectStatus = true;
+          for (i = 0, len = selected.length; i < len; ++i) {
+              if (store.indexOf(selected.at(i)) > -1) {
+                  ++selectedCount;
+              }
+          }
+          hdSelectStatus = storeCount === selectedCount;
+      }
+          
+      if (views && views.length) {
+          me.toggleUiHeader(hdSelectStatus);
+      }
+    },
+
+    /**
      * Generates the HTML to be rendered in the injected checkbox column for each row.
      * Creates the standard checkbox markup by default; can be overridden to provide custom rendering.
      * See {@link Ext.grid.column.Column#renderer} for description of allowed parameters.
      */
     renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
       return '<div class="' + taurus.baseCSSPrefix + 'grid-row-checker" role="presentation">&#160;</div>';
+    },
+
+    /**
+     * Toggle the ui header between checked and unchecked state.
+     * @param {Boolean} isChecked
+     * @private
+     */
+    toggleUiHeader: function(isChecked) {
+      var view     = this.views[0],
+          headerCt = view.headerCt,
+          checkHd  = headerCt.$el.find('> .column-header-checkbox')//child('gridcolumn[isCheckerHd]'),
+          cls = this.checkerOnCls;
+
+      if (checkHd) {
+          if (isChecked) {
+              checkHd.addClass(cls);
+          } else {
+              checkHd.removeClass(cls);
+          }
+      }
     }
   })
   return CheckboxModel

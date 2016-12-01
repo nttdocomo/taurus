@@ -18,7 +18,7 @@
   return Base.extend({
     header: true,
     tpl: '<div class="grid-item-container"><table><%=rows%></table></div>',
-    rowTpl: ['<tr class="<%=itemClasses.join(" ")%>" data-item-id="<%=record.cid%>">',
+    rowTpl: ['<tr class="<%=itemClasses.join(" ")%>" data-item-id="<%=record.cid%>" id="<%=id%>">',
       '<%=cell%>',
       '</tr>'].join(''),
     cellTpl: [
@@ -69,8 +69,6 @@
     },
     initComponent: function () {
       var me = this
-      
-      me.selectionModel = me.applySelectionModel(me.selectionModel)
       if (me.columnLines) {
         me.$el.addClass(me.grid.colLinesCls)
       }
@@ -158,6 +156,22 @@
         return clientRect.width || (clientRect.right - clientRect.left); // original version $(cell).innerWidth()
       })
     },
+
+    getNodeByRecord: function(record) {
+        return this.retrieveNode(this.getRowId(record), false);
+    },
+
+    getRowId: function(record){
+        return this.id + '-record-' + record.cid;
+    },
+
+    indexOf: function(node) {
+      node = this.getNode(node);
+      if (!node && node !== 0) {
+        return -1;
+      }
+      return this.$el.find('tr').index(node);
+    },
     initFeatures: function (grid) {
       /*var me = this,
           i,
@@ -214,6 +228,19 @@
       return false
     },
 
+    /**
+     * Returns the table row given the passed Record, or index or node.
+     * @param {HTMLElement/String/Number/Ext.data.Model} nodeInfo The node or record, or row index.
+     * to return the top level row.
+     * @return {HTMLElement} The node or null if it wasn't found
+     */
+    getRow: function(nodeInfo) {
+      if (_.isNumber(nodeInfo)) {
+          fly = this.$el.find('tr').eq(nodeInfo);
+          return fly;
+      }
+    },
+
     getVisibleColumnManager: function () {
       return this.ownerCt.getVisibleColumnManager()
     },
@@ -239,6 +266,48 @@
     },
     onCellClick: taurus.emptyFn,
     onCellMouseDown: taurus.emptyFn,
+
+    // GridSelectionModel invokes onRowSelect as selection changes
+    onRowSelect: function(rowIdx) {
+      var me = this,
+          rowNode;
+
+      //me.addItemCls(rowIdx, me.selectedItemCls);
+      
+      rowNode = me.getRow(rowIdx)
+      rowNode.addClass(me.selectedItemCls)
+      
+      if (rowNode) {
+        rowNode.attr('aria-selected', true);
+      }
+
+      //<feature legacyBrowser>
+      /*if (Ext.isIE8) {
+        me.repaintBorder(rowIdx + 1);
+      }*/
+      //</feature>
+    },
+
+    // GridSelectionModel invokes onRowDeselect as selection changes
+    onRowDeselect: function(rowIdx) {
+      var me = this,
+          rowNode;
+
+      //me.removeItemCls(rowIdx, me.selectedItemCls);
+      
+      rowNode = me.getRow(rowIdx)
+      rowNode.removeClass(me.selectedItemCls)
+      
+      if (rowNode) {
+        rowNode.removeAttr('aria-selected');
+      }
+
+      //<feature legacyBrowser>
+      /*if (Ext.isIE8) {
+          me.repaintBorder(rowIdx + 1);
+      }*/
+      //</feature>
+    },
     processItemEvent: function (record, item, rowIndex, e) {
       var me = this,
         self = me.self,
@@ -338,7 +407,16 @@
       }
     },
     getRowId: function (record) {
-      return this.id + '-record-' + record.id
+      return this.id + '-record-' + record.cid
+    },
+
+    retrieveNode: function(id, dataRow){
+      var result = this.$el.find('#' + id);
+
+      /*if (dataRow && result) {
+          return Ext.fly(result).down(this.rowSelector, true);
+      }*/
+      return result;
     },
     beforeRender: function () {
       this.getSelectionModel().beforeViewRender(this)
@@ -386,7 +464,8 @@
       }
       itemClasses.push(itemCls)
       return _.template(this.rowTpl)(_.extend(rowValues, {
-        cell: me.renderCells(columns, record, recordIndex, rowIndex)
+        cell: me.renderCells(columns, record, recordIndex, rowIndex),
+        id:me.getRowId(record)
       }, me.tableValues))
     },
     renderCells: function (columns, record, recordIndex, rowIndex) {
@@ -464,7 +543,6 @@
      * Create a config object for this view's selection model based upon the passed grid's configurations.
      */
     applySelectionModel: function(selModel, oldSelModel) {
-      console.log('asdasd')
       var me = this,
           grid = me.grid,
           defaultType = selModel.type;

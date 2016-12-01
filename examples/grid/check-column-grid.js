@@ -6,6 +6,7 @@ define(function (require) {
   var Panel = require('../../src/classic/panel/panel.js')
   var $ = require('../../src/jquery.js')
   var Table = require('../../src/classic/panel/table.js')
+  var Button = require('../../src/classic/button/button')
   var ActionColumn = require('../../src/classic/grid/column/action')
   var CheckColumn = require('../../src/classic/grid/column/check')
   var CheckboxModel = require('../../src/selection/checkboxModel')
@@ -192,7 +193,7 @@ define(function (require) {
       'pctChange': 1.63,
       'lastChange': '9/1 12:00am'
     }])
-  new Table({
+  var table = new Table({
     loading: true,
     frame: true,
     refreshable: true,
@@ -259,5 +260,22 @@ define(function (require) {
     }],
     collection: collection,
     renderTo: $body
+  })
+  table.view.selectionModel.on({
+    'select':function(){
+      console.log('select')
+      console.log(arguments)
+    },
+    'deselect':function(){
+      console.log('deselect')
+      console.log(arguments)
+    }
+  })
+  new Button({
+    renderTo: $body,
+    text:'asdasdads',
+    handler: function(){
+      console.log(table.view.selectionModel.selected)
+    }
   })
 })

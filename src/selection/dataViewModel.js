@@ -40,7 +40,7 @@
           me.navigationModel = view.getNavigationModel();
           //me.viewListeners = view.on(viewListeners);
           me.navigationListeners = me.navigationModel.on({
-            navigate: me.onNavigate/*,
+            navigate: _.bind(me.onNavigate, me)/*,
             scope: me,
             destroyable: true*/
           });

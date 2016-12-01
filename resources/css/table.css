@@ -191,7 +191,10 @@
     font: 18px/1;
     color: #919191;
 }
-.grid-row-checker:before {
+.grid-row-checker:before, .column-header-checkbox .column-header-text:before{
 	font: 18px/1 FontAwesome;
 	content: "\f096";
+}
+.item-selected .grid-row-checker:before,.grid-hd-checker-on .column-header-text:before {
+	content: "\f14a";
 }
