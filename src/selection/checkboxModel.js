@@ -146,7 +146,7 @@
       if (header === this.column) {
         e.stopEvent();
         var me = this
-        var isChecked = header.el.hasCls(taurus.baseCSSPrefix + 'grid-hd-checker-on');
+        var isChecked = header.$el.hasClass(taurus.baseCSSPrefix + 'grid-hd-checker-on');
 
         if (isChecked) {
           me.deselectAll();

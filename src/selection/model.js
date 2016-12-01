@@ -145,6 +145,34 @@
       }
     },
 
+    /**
+     * Deselects all records in the view.
+     * @param {Boolean} [suppressEvent] True to suppress any deselect events
+     */
+    deselectAll: function(suppressEvent) {
+      var me = this
+      var selections = me.store.models
+      me.doDeselect(selections, suppressEvent);
+    },
+
+    /**
+     * Selects all records in the view.
+     * @param {Boolean} suppressEvent True to suppress any select events
+     */
+    selectAll: function(suppressEvent) {
+      var me = this
+      var selections = me.store.models
+      //var start = me.getSelection().length
+
+      //me.suspendChanges();
+      me.doSelect(selections, true, suppressEvent);
+      //me.resumeChanges();
+      // fire selection change only if the number of selections differs
+      /*if (!suppressEvent && !me.destroyed) {
+        me.maybeFireSelectionChange(me.getSelection().length !== start);
+      }*/
+    },
+
     getStoreListeners: function() {
       var me = this;
       return {
