@@ -3,20 +3,20 @@
     // Now we're wrapping the factory and assigning the return
     // value to the root (window) and returning it as well to
     // the AMD loader.
-    define(['./model', '../classic/grid/column/column', 'underscore', 'taurus'], function (Backbone) {
+    define(['./dataViewModel', '../classic/grid/column/column', 'underscore', 'taurus'], function (Backbone) {
       return (root.Class = factory(Backbone))
     })
   }
   if (define.cmd) {
     define(function (require, exports, module) {
-      return (root.Class = factory(require('./model'), require('../classic/grid/column/column'), require('underscore'), require('taurus')))
+      return (root.Class = factory(require('./dataViewModel'), require('../classic/grid/column/column'), require('underscore'), require('taurus')))
     })
   } else if (typeof module === 'object' && module.exports) {
     // I've not encountered a need for this yet, since I haven't
     // run into a scenario where plain modules depend on CommonJS
     // *and* I happen to be loading in a CJS browser environment
     // but I'm including it for the sake of being thorough
-    module.exports = (root.Class = factory(require('./model'), require('../classic/grid/column/column'), require('underscore'), require('taurus')))
+    module.exports = (root.Class = factory(require('./dataViewModel'), require('../classic/grid/column/column'), require('underscore'), require('taurus')))
   } else {
     root.Class = factory()
   }

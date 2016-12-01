@@ -4,7 +4,8 @@
  /* global location*/
 seajs.config({
   alias: {
-    'button': 'taurus/button/button'
+    'button': 'taurus/button/button'/*,
+    'fine-uploader': '../../src/fine-uploader',*/
   // 'backbone-pageable':'../../src/backbone-pageable'/*,
   // 'underscore':'../../src/backbone-pageable'
   },

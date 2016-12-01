@@ -26,11 +26,13 @@
 	return Base.extend({
 		initComponent:function(){
 			var me = this;
+            me.applyNavigationModel(this.navigationModel)
 			if (!me.itemSelector) {
                 me.itemSelector = '.' + me.itemCls;
             }
             Base.prototype.initComponent.apply(this,arguments);
             me.bindStore(me.collection)
+            me.getNavigationModel().bindComponent(this);
             me.refresh()
 		},
 
@@ -50,6 +52,8 @@
          */
         bindStore: function(store, initial) {
             var me = this;
+            var selModel = me.getSelectionModel()
+            selModel.bindComponent(store ? me : null);
             StoreHolder.prototype.bindStore.apply(me,arguments)
             // If we have already achieved our first layout, refresh immediately.
             // If we bind to the Store before the first layout, then beforeLayout will
@@ -127,6 +131,12 @@
                 me.collectNodes(targetEl.dom);
                 me.updateIndexes(0);
             }*/
+        },
+        applyNavigationModel: function (navigationModel) {
+          return this.navigationModel = new navigationModel
+        },
+        getNavigationModel: function () {
+          return this.navigationModel
         }
 	}).mixins(StoreHolder)
 }))

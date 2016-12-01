@@ -6,7 +6,8 @@
  */
 define(function(require) {
 	require("backbone");
-	Button = require("../../src/button/button");
+	var Button = require("../../src/classic/button/button");
+	var FileButton = require("../../src/classic/button/fileButton");
 	var $body = $(document.body);
 	var likelihood = 30;
 	function randomMenu(){
@@ -41,4 +42,8 @@ define(function(require) {
 			items:randomMenu()
 		}
 	});
+	new FileButton({
+		renderTo : $body,
+		text:chance.word()
+	})
 })

@@ -59,7 +59,6 @@
     },
     constructor: function (config) {
       Base.call(this, config)
-      this.selectionModel = this.applySelectionModel(this.selectionModel)
     },
     initialize: function (config) {
       // Adjust our base class if we are inside a TreePanel
@@ -70,7 +69,8 @@
     },
     initComponent: function () {
       var me = this
-
+      
+      me.selectionModel = me.applySelectionModel(me.selectionModel)
       if (me.columnLines) {
         me.$el.addClass(me.grid.colLinesCls)
       }
@@ -238,6 +238,7 @@
     me.setPendingStripe(index);*/
     },
     onCellClick: taurus.emptyFn,
+    onCellMouseDown: taurus.emptyFn,
     processItemEvent: function (record, item, rowIndex, e) {
       var me = this,
         self = me.self,
