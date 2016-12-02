@@ -4,8 +4,8 @@
             // Now we're wrapping the factory and assigning the return
             // value to the root (window) and returning it as well to
             // the AMD loader.
-            define(['../../view/base','../../util/storeHolder','../../selection/dataViewModel', '../grid/navigationModel', 'backbone', 'underscore'],function(Base,StoreHolder,_){
-              return (root.Class = factory(Base,StoreHolder,_));
+            define(['../../view/base','../../util/storeHolder','../../selection/dataViewModel', '../grid/navigationModel', 'backbone', 'underscore'],function(Base,StoreHolder,DataViewModel,NavigationModel,Backbone,_){
+              return (root.Class = factory(Base,StoreHolder,DataViewModel,NavigationModel,Backbone,_));
             });
         }
         if(define.cmd){
