@@ -4,8 +4,8 @@
     // value to the root (window) and returning it as well to
     // the AMD loader.
     if (define.amd) {
-      define(['./dataViewModel', '../classic/grid/column/column', 'underscore', 'taurus'], function (Backbone) {
-        return (root.Class = factory(Backbone))
+      define(['./dataViewModel', '../classic/grid/column/column', 'underscore', 'taurus'], function (DataViewModel, Column, _, taurus) {
+        return (root.Class = factory(DataViewModel, Column, _, taurus))
       })
     }
     if (define.cmd) {

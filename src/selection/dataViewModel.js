@@ -4,8 +4,8 @@
     // value to the root (window) and returning it as well to
     // the AMD loader.
     if (define.amd) {
-      define(['./model', '../classic/grid/column/column', 'underscore', 'taurus'], function (Backbone) {
-        return (root.Class = factory(Backbone))
+      define(['./model', '../classic/grid/column/column', 'underscore', 'taurus'], function (Model, Column, _, taurus) {
+        return (root.Class = factory(Model, Column, _, taurus))
       })
     }
     if (define.cmd) {
