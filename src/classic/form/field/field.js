@@ -32,7 +32,7 @@
 	            me.setValue(me.value);
 	            me.suspendCheckChange--;
 	        }
-	        
+
 	        /**
 	         * @property {Object} originalValue
 	         * The original value of the field as configured in the {@link #value} configuration, or as loaded by the last
@@ -73,10 +73,15 @@
 	        }
 	        this.checkChange();
 	    },
+        /**
+         * Sets a data value into the field and runs the change detection and validation.
+         * @param {Object} value The value to set
+         * @return {Ext.form.field.Field} this
+         */
 		setValue : function(value) {
-			this.setRawValue(this.valueToRaw(value));
-			this.value = value;
-			this.checkChange();
+            var me = this;
+			me.value = value;
+			me.checkChange();
 			return this;
 		}
 	}

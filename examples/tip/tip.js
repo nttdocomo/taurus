@@ -5,9 +5,9 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var Tip = require("../../src/tip/toolTip"),
-	Popover = require("../../src/tip/popover"),
-	Button = require("../../src/button/button"),
+	var Tip = require("../../src/classic/tip/toolTip"),
+	Popover = require("../../src/classic/tip/popover"),
+	Button = require("../../src/classic/button/button"),
 	$body = $(document.body);
 	var button1 = new Button({
 		renderTo : $body,
@@ -36,6 +36,7 @@ define(function(require) {
 	})
 	new Tip({
 		target: button1,
+		closable:true,
 		text: 'My Tip Title'
 	})
 	new Tip({

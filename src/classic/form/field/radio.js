@@ -4,24 +4,24 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./checkbox','../radioManager','underscore','svg'], factory);
+			define(['./checkbox','../radioManager','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./checkbox'),require('../radioManager'),require('underscore'),require('svg'));
+				return factory(require('./checkbox'),require('../radioManager'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./checkbox'),require('../radioManager'),require('underscore'),require('svg'));
+		module.exports = factory(require('./checkbox'),require('../radioManager'),require('underscore'));
 	}
-}(this, function(Base,RadioManager,_,Svg) {
+}(this, function(Base,RadioManager,_) {
 	return Base.extend({
 		inputType : 'radio',
 		formId: null,
 		childEls: {
 			'inputEl' : ':radio'
 		},
-		initShadowInputEl:function(){
+		/*initShadowInputEl:function(){
 			var checked = this.checked;
 			this.checkbox = SVG(this.boxLabelEl.parent().get(0)).size(0, 0);
 			this.shadowInputEl = SVG(this.boxLabelEl.parent().get(0)).size(0, 0);
@@ -32,7 +32,7 @@
 			this.shadowInputEl.style({
 				opacity:checked ? 1:0
 			})
-		},
+		},*/
 
 	    /**
 	     * If this radio is part of a group, it will return the selected value

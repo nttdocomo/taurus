@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>100% Height, Sticky Footer, Centered Layout!</title>
+    <style type="text/css">
+      * {
+        margin:0; /* zero out margin */
+        padding:0; /* zero out padding */
+        box-sizing: border-box;
+      }
+      html, body {
+        height:100%; /* gives layout 100% height */
+        overflow:inherit; /* triggers 100% height in Opera 9.5 */
+        background:#333;
+      }
+      body{
+        padding-top:80px;
+      }
+      #wrapper {
+        min-height:100%; /* gives layout 100% height */
+        width:700px;
+        margin:0 auto; /* centers #wrapper */
+        background:#CCC;
+      }
+      * html #wrapper {
+        height:100%; /* IE6 treats height as min-height */
+      }
+      p {
+        font-size:1.8em;
+        text-align:center;
+        padding:200px 0 80px; /* bottom padding clears the #footer */
+      }
+      #footer {
+        height:80px;
+        margin:-80px auto 0; /* -80px sucks it back in & auto centers it */
+        background:#999;
+      }
+      #nav {
+        height:80px;
+        margin:-80px auto 0; /* -80px sucks it back in & auto centers it */
+        background:#999;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="nav"></div>
+    <div id="wrapper">
+      <p>#wrapper div</p>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+    </div><!-- end #wrapper -->
+
+    <div id="footer"></div><!-- #footer sits outside the #wrapper -->
+  </body>
+</html>

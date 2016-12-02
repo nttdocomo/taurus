@@ -4,18 +4,23 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./file','taurus','underscore','i18n','fine-uploader'], factory);
+			define(['./file','taurus','underscore','fine-uploader'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./file'),require('taurus'),require('underscore'),require('i18n'),require('fine-uploader'));
+				return factory(require('./file'),require('taurus'),require('underscore'),require('fine-uploader'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./file'),require('taurus'),require('underscore'),require('i18n'),require('fine-uploader'));
+		module.exports = factory(require('./file'),require('taurus'),require('underscore'),require('fine-uploader'));
 	}
-}(this, function(File,taurus,_,i18n) {
+}(this, function(File,taurus,_) {
 	return File.extend({
+        afterRender:function(){
+            var me = this;
+            me._super.apply(me,arguments);
+            me.initFineUploader();
+        },
         initFineUploader:function(){
             var me = this,
             button = document.createElement('div');

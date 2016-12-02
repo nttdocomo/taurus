@@ -82,87 +82,101 @@
 			return me.$el.parents('.grid-header-ct').data('component');
 		},
 
-	    isSortable: function() {
-	        var sortable = this.sortable;
-	        return sortable;
-	    },
+    // Find the topmost HeaderContainer
+    getRootHeaderCt: function() {
+      var me = this;
+      return me.isRootHeader ? me : me.ownerCt;
+    },
 
-	    isColumnHidden: function(rootHeader) {
-	        var owner = this.getRefOwner();
-	        while (owner && owner !== rootHeader) {
-	            if (owner.$el.is(':hidden')) {
-	                return true;
-	            }
-	            owner = owner.getRefOwner();
-	        }
-	        return false;
-	    },
+    getView: function() {
+      var rootHeaderCt = this.getRootHeaderCt();
 
-	    onAdd: function (child) {
-	    	console.log('add')
-	        /*var me = this;
+      if (rootHeaderCt) {
+        return rootHeaderCt.view;
+      }
+    },
 
-	        if (child.isColumn) {
-	            child.isSubHeader = true;
-	            child.addCls(me.groupSubHeaderCls);
-	        }
+    isSortable: function() {
+        var sortable = this.sortable;
+        return sortable;
+    },
 
-	        if (me.isGroupHeader && me.hidden && me.hasVisibleChildColumns()) {
-	            me.show();
-	        }
+    isColumnHidden: function(rootHeader) {
+        var owner = this.getRefOwner();
+        while (owner && owner !== rootHeader) {
+            if (owner.$el.is(':hidden')) {
+                return true;
+            }
+            owner = owner.getRefOwner();
+        }
+        return false;
+    },
 
-	        me.callParent([child]);*/
-	    },
+    onAdd: function (child) {
+    	console.log('add')
+        /*var me = this;
+
+        if (child.isColumn) {
+            child.isSubHeader = true;
+            child.addCls(me.groupSubHeaderCls);
+        }
+
+        if (me.isGroupHeader && me.hidden && me.hasVisibleChildColumns()) {
+            me.show();
+        }
+
+        me.callParent([child]);*/
+    },
 		onTitleElClick : function() {
 			this.toggleSortState();
 		},
 
-	    /**
-	     * @private
-	     * Process UI events from the view. The owning TablePanel calls this method, relaying events from the TableView
-	     * @param {String} type Event type, eg 'click'
-	     * @param {Ext.view.Table} view TableView Component
-	     * @param {HTMLElement} cell Cell HTMLElement the event took place within
-	     * @param {Number} recordIndex Index of the associated Store Model (-1 if none)
-	     * @param {Number} cellIndex Cell index within the row
-	     * @param {Ext.event.Event} e Original event
-	     */
-	    processEvent: function(type, view, cell, recordIndex, cellIndex, e) {
-	        /*return this.trigger.apply(this, arguments);*/
-	    },
-	    setupRenderer:function(type){
-	        type = type || 'column';
+    /**
+     * @private
+     * Process UI events from the view. The owning TablePanel calls this method, relaying events from the TableView
+     * @param {String} type Event type, eg 'click'
+     * @param {Ext.view.Table} view TableView Component
+     * @param {HTMLElement} cell Cell HTMLElement the event took place within
+     * @param {Number} recordIndex Index of the associated Store Model (-1 if none)
+     * @param {Number} cellIndex Cell index within the row
+     * @param {Ext.event.Event} e Original event
+     */
+    processEvent: function(type, view, cell, recordIndex, cellIndex, e) {
+        /*return this.trigger.apply(this, arguments);*/
+    },
+    setupRenderer:function(type){
+        type = type || 'column';
 
-	        var me = this,
-	            //format   = me[me.formatterNames[type]],
-	            renderer = me[me.rendererNames[type]],
-	            isColumnRenderer = type === 'column',
-	            scoped;
+        var me = this,
+            //format   = me[me.formatterNames[type]],
+            renderer = me[me.rendererNames[type]],
+            isColumnRenderer = type === 'column',
+            scoped;
 
-	        if (isColumnRenderer && me.defaultRenderer) {
-                me.renderer = me.defaultRenderer;
-                me.usingDefaultRenderer = true;
-            }
-	    },
-	    sort: function(direction) {
-	        var me = this,
-	            grid = me.ownerCt.grid,
-	            oldDirection = me.direction || -1,
-	            collection = grid.collection;
+        if (isColumnRenderer && me.defaultRenderer) {
+              me.renderer = me.defaultRenderer;
+              me.usingDefaultRenderer = true;
+          }
+    },
+    sort: function(direction) {
+        var me = this,
+            grid = me.ownerCt.grid,
+            oldDirection = me.direction || -1,
+            collection = grid.collection;
 
-	        // Maintain backward compatibility.
-	        // If the grid is NOT configured with multi column sorting, then specify "replace".
-	        // Only if we are doing multi column sorting do we insert it as one of a multi set.
-	        // Suspend layouts in case multiple views depend upon this grid's store (eg lockable assemblies)
-	        //Ext.suspendLayouts();
-	        me.sorting = true;
-	        collection.setSorting(me.getSortParam(), direction ? direction : oldDirection*-1, {side: "client"});
-	        collection.fullCollection.sort();
-	        //store.sort(me.getSortParam(), direction, grid.multiColumnSort ? 'multi' : 'replace');
-	        delete me.sorting;
-	        me.setSortState()
-	        //Ext.resumeLayouts(true);
-	    },
+        // Maintain backward compatibility.
+        // If the grid is NOT configured with multi column sorting, then specify "replace".
+        // Only if we are doing multi column sorting do we insert it as one of a multi set.
+        // Suspend layouts in case multiple views depend upon this grid's store (eg lockable assemblies)
+        //Ext.suspendLayouts();
+        me.sorting = true;
+        collection.setSorting(me.getSortParam(), direction ? direction : oldDirection*-1, {side: "client"});
+        collection.fullCollection.sort();
+        //store.sort(me.getSortParam(), direction, grid.multiColumnSort ? 'multi' : 'replace');
+        delete me.sorting;
+        me.setSortState()
+        //Ext.resumeLayouts(true);
+    },
 
 		toggleSortState : function() {
 	        if (this.isSortable()) {

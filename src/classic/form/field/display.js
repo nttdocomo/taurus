@@ -33,7 +33,7 @@
 	    setRawValue: function(value) {
 	        var me = this;
 
-	        value = taurus.value(value, '');
+	        value = taurus.valueFrom(value, '');
 	        me.rawValue = value;
 	        if (me.rendered) {
 	            me.inputEl.html(me.getDisplayValue());

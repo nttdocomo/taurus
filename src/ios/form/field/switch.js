@@ -4,13 +4,13 @@
 		    // Now we're wrapping the factory and assigning the return
 		    // value to the root (window) and returning it as well to
 		    // the AMD loader.
-		    define(["../../view/listItem",'../../../form/field/checkbox','../../../classic/form/checkboxManager',"underscore"], function(Base,_){
+		    define(["./text",'../../../form/field/checkbox','../../../classic/form/checkboxManager',"underscore"], function(Base,_){
 		    	return (root.myModule = factory(Base));
 		    });
 		}
 	  	if(define.cmd){
 	  		define(function(require, exports, module){
-				return factory(require('../../view/listItem'),require('../../../form/field/checkbox'),require('../../../classic/form/checkboxManager'),require('underscore'));
+				return factory(require('./text'),require('../../../form/field/checkbox'),require('../../../classic/form/checkboxManager'),require('underscore'));
 			})
 	  	}
 	} else if(typeof module === "object" && module.exports) {
@@ -18,7 +18,7 @@
 	    // run into a scenario where plain modules depend on CommonJS
 	    // *and* I happen to be loading in a CJS browser environment
 	    // but I'm including it for the sake of being thorough
-	    module.exports = (root.myModule = factory(require("../../view/listItem"),require('../../../form/field/checkbox'),require('../../../classic/form/checkboxManager'),require('underscore')));
+	    module.exports = (root.myModule = factory(require("./text"),require('../../../form/field/checkbox'),require('../../../classic/form/checkboxManager'),require('underscore')));
 	} else {
 	    root.myModule = factory(root.postal);
 	}
@@ -33,7 +33,8 @@
 	return TableCell.extend({
 		childEls:{
 			'itemInner':'.item-inner',
-			'checkBox':':checkbox'
+			'checkBox':':checkbox',
+			'inputEl':':checkbox'
 		},
 		checked:false,
 		initialize:function(){
@@ -63,6 +64,36 @@
 				'change :checkbox':'onSwitch'
 			})
 			TableCell.prototype.delegateEvents.call(this,events)
+		},
+
+		/**
+		 * Sets the checked state of the checkbox, and invokes change detection.
+		 * @param {Boolean/String} checked The following values will check the checkbox: `true, 'true', '1', or 'on'`, as
+		 * well as a String that matches the {@link #inputValue}. Any other value will uncheck the checkbox.
+		 * @return {Ext.form.field.Checkbox} this
+		 */
+		setValue : function(checked) {
+			var me = this, boxes, i, len, box;
+
+			// If an array of strings is passed, find all checkboxes in the group with the same name as this
+			// one and check all those whose inputValue is in the array, unchecking all the others. This is to
+			// facilitate setting values from Ext.form.Basic#setValues, but is not publicly documented as we
+			// don't want users depending on this behavior.
+			if (_.isArray(checked)) {
+				boxes = me.getManager().getByName(me.name, me.getFormId()).items;
+				len = boxes.length;
+
+				for ( i = 0; i < len; ++i) {
+					box = boxes[i];
+					box.setValue(Ext.Array.contains(checked, box.inputValue));
+					this.inputEl.attr('checked',Ext.Array.contains(checked, box.inputValue))
+				}
+			} else {
+				this._super.apply(this, arguments);
+				this.inputEl.attr('checked',checked)
+			}
+
+			return me;
 		}
-	}).mixins(CheckBox)
+	})/*.mixins(CheckBox)*/
 }));

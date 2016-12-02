@@ -22,6 +22,10 @@
 	     */
 	    isButton: true,
 	    /**
+	     * @cfg {String} iconCls
+	     * @inheritdoc Ext.panel.Header#cfg-iconCls
+	     */
+	    /**
 	     * @cfg {String} clickEvent
 	     * The DOM event that will fire the handler of the button. This can be any valid event name (dblclick, contextmenu).
 	     */
@@ -47,7 +51,7 @@
 		_hasIconCls: taurus.baseCSSPrefix + 'btn-icon',
 
 		tpl : '<%if(iconBeforeText){%><%=icon%><%}%><%=text%><%if(menu){%> <span class="caret"></span><%}%>',
-		iconTpl:'<i id="<%=id%>-btnIconEl" class="<%=_hasIconCls%>" style="<%if(iconUrl){%>background-image:url(<%=iconUrl%>);<%}%>"></i>',
+		iconTpl:'<i id="<%=id%>-btnIconEl" class="<%=_hasIconCls%> <%=iconCls%>" style="<%if(iconUrl){%>background-image:url(<%=iconUrl%>);<%}%>"></i>',
 		pressedCls : 'active',
 		tagName : 'button',
 		className : 'btn',
@@ -63,6 +67,16 @@
 		},
 		childEls:{
 			'btnIconEl':'[id$="btnIconEl"]'
+		},
+		constructor: function(options){
+			console.log(options)
+			if(options.href){
+				this.tagName = 'a'
+			}
+			Base.call(this, options)
+			if(options.href){
+				this.$el.attr('href',this.href)
+			}
 		},
 		didIconStateChange: function(old, current) {
 	        var currentEmpty = _.isEmpty(current);
@@ -104,17 +118,19 @@
 	        return href;
 	    },
 		getTplData:function(){
+			var me = this;
 			return $.extend({
-				text:this.text || '',
-				menu:!_.isUndefined(this.menu),
-				comp:this,
-				icon:this.renderIcon({
-					id:this.id,
-					iconUrl:this.iconUrl,
-					_hasIconCls:this._hasIconCls
+				text:me.text || '',
+				menu:!_.isUndefined(me.menu),
+				comp:me,
+				icon:me.renderIcon({
+					id:me.id,
+					iconCls:me.iconCls,
+					iconUrl:me.iconUrl,
+					_hasIconCls:me._hasIconCls
 				}),
-				iconBeforeText:this.iconBeforeText
-			},Base.prototype.getTplData.apply(this,arguments))
+				iconBeforeText:me.iconBeforeText
+			},Base.prototype.getTplData.apply(me,arguments))
 		},
 
 		fireHandler : function(e) {
@@ -161,6 +177,7 @@
 	            me.maybeShowMenu();
 	            me.fireHandler(e);
 	        }
+            me.trigger('click')
 	    },
 		/*onClick : function(e) {
 			var me = this;
@@ -200,6 +217,9 @@
 			this.beforeRender()
 			Base.prototype.render.apply(this,arguments);
 			ButtonManager.register(this);
+			if(this.size){
+				this.$el.addClass('btn-' + this.size)
+			}
 		},
 
 		/**

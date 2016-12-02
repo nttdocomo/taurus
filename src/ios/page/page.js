@@ -57,7 +57,7 @@
 				me.$el.addClass(animateClass).removeClass('page-on-center');
             }, 0);
 			me.$el.one("webkitAnimationEnd, OAnimationEnd, MSAnimationEnd, animationend",function(){
-				me.$el.removeClass(animateClass).addClass('page-on-right').remove();
+				me.$el.removeClass(animateClass).addClass('page-on-right').detach();
 			})
 		},
 		slideCenterToLeftOutToView:function(){

@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./tip','../../lang/date','../taurus','underscore'], factory);
+			define(['./tip','../../lang/date','taurus','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./tip'),require('../../lang/date'),require('../taurus'),require('underscore'));
+				return factory(require('./tip'),require('../../lang/date'),require('taurus'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./tip'),require('../../lang/date'),require('../taurus'),require('underscore'));
+		module.exports = factory(require('./tip'),require('../../lang/date'),require('taurus'),require('underscore'));
 	}
 }(this, function(Tip,DateUtil,taurus,_){
 	return Tip.extend({
@@ -22,8 +22,10 @@
 	     * Delay in milliseconds before the tooltip displays after the mouse enters the target element.
 	     */
 	    showDelay: 500,
+        hideDelay: 200,
 	    autoHide: true,
 	    renderTo:$(document.body),
+	    disabled:false,
 	    hideAction: 'hide',
 		initialize:function(){
 	        var me = this;
@@ -194,7 +196,7 @@
 
 	        // If disabled, moving within the current target, ignore the mouseout
 	        // e.within is the only correct way to determine this.
-	        if (me.disabled || !triggerEl || target.has(e.target).length) {
+	        if (me.disabled || !triggerEl || (target.has(e.target).length && target.is(e.target))) {
 	            return;
 	        }
 	        if (me.showTimer) {

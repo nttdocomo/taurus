@@ -19,6 +19,9 @@
 		className:'tooltip',
 	    anchor:'left',
 		hidden: true,
+		childEls:{
+			'bodyEl' : '.tooltip-inner'
+		},
 		tpl:'<div class="tooltip-arrow"></div><div class="tooltip-inner"><%=text%></div>',
 		initialize:function(){
 	        var me = this;

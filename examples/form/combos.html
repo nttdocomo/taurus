@@ -3,13 +3,18 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
-		<link type="text/css" rel="stylesheet" href="/resources/css/base.css"/>
-		<link type="text/css" rel="stylesheet" href="/resources/css/form.css"/>
-		<link type="text/css" rel="stylesheet" href="/resources/css/bootstrap.css"/>
-		<link type="text/css" rel="stylesheet" href="/resources/css/comboBox.css"/>
-		<!--[if IE]>
-		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-		<![endif]-->
+		<link type="text/css" rel="stylesheet" href="../../resources/css/base.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/form.css"/>
+		<!--[if lte IE 8]>
+	    <link type="text/css" rel="stylesheet" href="/resources/css/form-ie8.css"/>
+	    <![endif]-->
+		<link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/comboBox.css"/>
+		<style>
+			.boundlist-item .btn {
+				float:right;
+			}
+		</style>
 	</head>
 	<body>
 		<div id="wrap">
@@ -25,7 +30,7 @@
 		</footer>
 		<script type="text/javascript" src="../../src/LAB.min.js"></script>
 		<script type="text/javascript">
-			$LAB.script('../../src/sea-debug.js','../../src/modernizr.js').wait().script('../../src/backbone.js','../../src/moment.js').wait().script('../config.js').wait(function(){
+			$LAB.script('../../src/sea-debug.js').wait().script('../config.js').wait(function(){
 				seajs.use("../form/combos");
 			});
 		</script>

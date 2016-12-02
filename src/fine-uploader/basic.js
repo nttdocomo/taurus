@@ -12,7 +12,7 @@
    } else if(typeof module === "object" && module.exports) {
        module.exports = factory(require('./base.api'),require('underscore'));
    }
-}(this, */taurus.klass(['../class','./base.api','underscore'],function(Class,basePublicApi,_) {
+}(this, */taurus.klass(['class','./base.api','underscore'],function(Class,basePublicApi,_) {
     "use strict";
     FineUploaderBasic = function(o) {
         var self = this;

@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./trigger','taurus','underscore','i18n'], factory);
+			define(['./trigger','taurus','underscore','../../../i18n'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./trigger'),require('taurus'),require('underscore'),require('i18n'));
+				return factory(require('./trigger'),require('taurus'),require('underscore'),require('../../../i18n'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./trigger'),require('taurus'),require('underscore'),require('i18n'));
+		module.exports = factory(require('./trigger'),require('taurus'),require('underscore'),require('../../../i18n'));
 	}
 }(this, function(Trigger,taurus,_,i18n) {
 	return Trigger.extend({
@@ -45,10 +45,13 @@
 		 */
 		getTriggerMarkup : function() {
             var me = this;
-			return _.template((me.buttonOnly ? '' : '<span id="<%=id%>" class="input-group-btn <%=cls%>">') + '<div id="buttonEl" class="btn btn-primary' + (me.buttonOnly ? ' <%=cls%>' : '') + '" <%if(disabled){%> disabled="disabled"<%}%>><%=icon%><%=text%>'+(me.buttonOnly ? me.getFieldMarkup():'')+'</div>' + (me.buttonOnly ? '' : '</span>'))({
+			return _.template((me.buttonOnly ? '' : '<span id="<%=id%>" class="input-group-btn <%=cls%>">') + '<div id="buttonEl" class="btn btn-primary' + (me.buttonOnly ? ' <%=cls%>' : '') + '" <%if(disabled){%> disabled="disabled"<%}%>><%=icon%><%=text%>'+(me.buttonOnly ? me.fieldSubTpl:'')+'</div>' + (me.buttonOnly ? '' : '</span>'))({
 				id : 'buttonEl',
 				cls : taurus.baseCSSPrefix + 'form-file-btn',
 				text : me.buttonText,
+				type : me.inputType,
+				fieldCls : me.fieldCls,
+				readOnly : me.readOnly || !me.editable,
 				icon:me.renderIcon({
 					id:me.id,
 					iconUrl:me.iconUrl,
@@ -104,38 +107,10 @@
 		    }
 		    return me;
 		},
-		afterRender:function(){
-            var me = this;
-			me._super.apply(me,arguments);
-			me.initFineUploader();
-			/*if(me.buttonOnly){
-				me.inputEl.hide();
-			}*/
-		},
         didIconStateChange: function(old, current) {
             var currentEmpty = _.isEmpty(current);
             return _.isEmpty(old) ? !currentEmpty : currentEmpty;
         },
-		initFineUploader:function(){
-			var me = this;
-			/*me.uploader = new qq.FineUploaderBasic(_.extend({
-				button:me.buttonEl.get(0),
-                autoUpload:false,
-                multiple:false,
-                request:{
-                    endpoint:'/uploads'
-                },
-				callbacks:{
-					onComplete:function(id,name,responseJSON,xhr){
-                        console.log(me.buttonEl.find('input').get(0))
-						me.trigger('complete',id,name,responseJSON,xhr)
-					},
-                    onProgress:function(id,name,uploadedBytes,totalBytes){
-                        console.log(arguments)
-                    }
-				}
-			},this.fineUploaderOptions));*/
-		},
 		_syncHasIconCls: function() {
             var me = this,
                 btnEl = me.btnEl,

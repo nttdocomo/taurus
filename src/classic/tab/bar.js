@@ -28,9 +28,22 @@
 			var me = this, tabPanel = me.tabPanel, tabEl, tab, isCloseClick, tabInfo;
 			tabEl = $(e.currentTarget).data('component');
 			
-			me.setActiveTab(tabEl);
+			me.doActivateTab(tabEl);
 			return false;
 		},
+        
+        doActivateTab: function(tab) {
+            var tabPanel = this.tabPanel;
+            
+            if (tabPanel) {
+                // TabPanel will call setActiveTab of the TabBar
+                if (!tab.disabled) {
+                    tabPanel.setActiveTab(tab.card);
+                }
+            } else {
+                this.setActiveTab(tab);
+            }
+        },
 
 		/**
 		 * @private
@@ -41,9 +54,9 @@
 		setActiveTab : function(tab, initial) {
 			var me = this,tabPanel = me.tabPanel,
 			tab = this.getComponent(tab);
-			if(tabPanel){
+			/*if(tabPanel){
 				tabPanel.setActiveTab(tab.card);
-			}
+			}*/
 
 			if (!tab.disabled && tab !== me.activeTab) {
 				if (me.activeTab) {

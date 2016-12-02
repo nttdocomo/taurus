@@ -17,8 +17,13 @@
 }(this, function(Picker,BoundList,_,Backbone) {
 	return Picker.extend({
 		allQuery: '',
+		/**
+	     * @private
+	     */
+	    clearValueOnEmpty: true,
 		delimiter : ', ',
 		isExpanded : false,
+		queryDelay:1000,
 		queryMode : 'remote',
 		queryParam : 'query',
 		triggerAction: 'all',
@@ -86,16 +91,16 @@
 			//Picker.prototype.alignPicker.apply(this,arguments);
 		},
 		delegateEvents : function(events) {
-			var events = $.extend(events || {}, {
-				'keyup input' : _.throttle(this.onKeyUp, 1000)
+			var me = this,events = $.extend(events || {}, {
+				'keyup input' : _.throttle(me.onKeyUp, me.queryDelay)
 			});
-			if (!this.editable) {
+			if (!me.editable) {
 				events = $.extend(events, {
 					'click input' : 'onTriggerClick'
 				});
 			}
 			//Backbone.View.prototype.delegateEvents.call(this, events);
-			Picker.prototype.delegateEvents.call(this, events);
+			Picker.prototype.delegateEvents.call(me, events);
 		},
 
 		doTypeAhead : function() {
@@ -144,22 +149,24 @@
 			}
 
 			// Expand after adjusting the filter unless there are no matches
+			var picker = me.getPicker()
 			if (collection.length || me.getPicker().emptyText) {
-				this.getPicker().collection.reset(collection);
-				this.expand();
+				me.expand();
 			} else {
-				this.collapse();
+				me.collapse();
 			}
+			picker.collection.reset(collection);
 
 			me.afterQuery();
 		},
 		doQuery : function(queryString, forceAll, rawQuery) {
-			var me = this, isLocalMode = this.queryMode === 'local', collection = this.collection;
+			var me = this, isLocalMode = me.queryMode === 'local', collection = me.collection;
 			/*if(!queryString){
 				return false;
 			}*/
 			if (isLocalMode) {
-				if(!collection.length){
+				me.doLocalQuery(queryString);
+				/*if(!collection.length){
 					collection.fetch({
 						success:function(){
 							me.expand()
@@ -169,21 +176,21 @@
 					//if (!this.multiSelect){
 						this.doLocalQuery(queryString);
 					//}
-				}
+				}*/
 			} else {
-				this.doRemoteQuery(queryString);
+				me.doRemoteQuery(queryString);
 			}
 		},
 		doRemoteQuery : function(queryString) {
-			var me = this, collection = this.collection;
+			var me = this, collection = me.collection;
 			if(!queryString){
 				return false;
 			}
+			var picker = me.getPicker()
 			collection.fetch({
 				data : this.getParams(queryString),
 				success : function() {
-					//me.getPicker().collection.reset(collection.models);
-					me.expand();
+					picker.collection.reset(collection.models);
 					//me.doLocalQuery(queryString);
 					if (!me.multiSelect){
 						//me.doLocalQuery(queryString);
@@ -191,6 +198,7 @@
 				},
 				reset:true
 			});
+			me.expand();
 			/*if (!collection.length) {
 				collection.fetch({
 					data : this.getParams(),
@@ -217,15 +225,15 @@
 			return this.value;
 		},
 		createPicker : function() {
-			var picker = this.picker = new BoundList($.extend({
-				displayField : this.displayField,
-				collection : this.collection
-			}, this.listConfig)), me = this;
+			var me = this,picker = me.picker = new BoundList($.extend({
+				displayField : me.displayField,
+				collection : me.collection.clone()
+			}, me.listConfig));
 			picker.on({
-				'itemclick': this.onItemClick,
-				'refresh': this.onListRefresh
-			}, this);
-			this.doAutoSelect();
+				'itemclick': me.onItemClick,
+				'refresh': _.bind(me.onListRefresh,me)
+			}, me);
+			//this.doAutoSelect();
 			return picker;
 		},
 		getDisplayTpl : function() {
@@ -243,53 +251,74 @@
 			var success = options.success, me = this;
 			options.success = function() {
 				me.triggerEl.removeAttr('disabled');
-				success && success.apply(this, arguments);
+				success && success.apply(me, arguments);
 			};
-			this.collection.fetch(options);
-			this.triggerEl.attr('disabled', 'disabled');
+			me.collection.fetch(options);
+			me.triggerEl.attr('disabled', 'disabled');
 		},
 		onItemClick : function(e, record) {
-			var valueField = this.valueField, picker = this.getPicker(), value = this.value, lastSelected;
+			var me = this, valueField = me.valueField, picker = me.getPicker(), value = me.value, lastSelected;
 			if (value) {
 				value = $.makeArray(value);
 			} else {
 				value = [];
 			}
-			var index = _.indexOf(value, record.get(this.valueField));
-			if (!this.multiSelect){
-				lastSelected = this.collection.find(function(item) {
-					return value[0] == item.get(this.valueField);
-				}, this);
+			var index = _.indexOf(value, record.get(me.valueField));
+			if (!me.multiSelect){
+				lastSelected = me.collection.find(function(item) {
+					return value[0] == item.get(me.valueField);
+				}, me);
 				picker.onItemDeselect(lastSelected);
 			}
-			if (index != -1 && this.multiSelect) {
+			if (index != -1 && me.multiSelect) {
 				value.splice(index, 1);
 				picker.onItemDeselect(record);
 			} else {
-				value.push(record.get(this.valueField));
+				value.push(record.get(me.valueField));
 				picker.onItemSelect(record);
 			}
-			var selection = this.collection.filter(function(item) {
-				return _.contains(value, item.get(this.valueField));
-			}, this);
-			if (!this.multiSelect && selection.length) {
+			var selection = me.collection.filter(function(item) {
+				return _.contains(value, item.get(me.valueField));
+			}, me);
+			if (!me.multiSelect && selection.length) {
 				if (_.find(selection, function(item) {
 					return record.get(valueField) === item.get(valueField);
 				})) {
-					this.setValue(record);
-					this.trigger('select', record);
-					this.collapse();
+					me.trigger('select', record);
+					me.setValue(record);
+					me.collapse();
 				};
 			} else {
-				this.setValue(selection);
+				me.setValue(selection);
 			}
+			return false;
 			//Picker.prototype.onItemClick.apply(this,arguments);
 		},
 		onKeyUp : function(e) {
-			var key = e.getKey();
+			var me = this,key = e.getKey(),
+			isDelete = key === e.BACKSPACE || key === e.DELETE,
+			rawValue = me.inputEl.val(),
+			len = rawValue.length;
 			//if (!e.isSpecialKey() && key !== 229) {
 			this.doQuery(this.getRawValue(), false, true);
-			Picker.prototype.onKeyUp.call(this,arguments);
+			if (!len && (!key || isDelete)) {
+				// This portion of code may end up calling setValue will check for change. But since
+                // it's come from field mutations, we need to respect the checkChangeBuffer, so
+                // we suspend checks here, it will be handled by callParent
+                ++me.suspendCheckChange;
+                // Essentially a silent setValue.
+                // Clear our value, and the tplData used to construct a mathing raw value.
+                if (!me.multiSelect) {
+                    me.value = null;
+                    me.displayTplData = undefined;
+                }
+				/*if(clearValueOnEmpty){
+
+				}*/
+				me.collapse();
+                --me.suspendCheckChange;
+			}
+			me._super.apply(this,arguments);
 			//}
 		},
 
@@ -306,13 +335,13 @@
 			if (me.isExpanded) {
 				me.collapse();
 			} else {
-                if (me.triggerAction === 'all') {
-                    me.doQuery(me.allQuery, true);
-                } else if (me.triggerAction === 'last') {
-                    me.doQuery(me.lastQuery, true);
-                } else {
-                    me.doQuery(me.getRawValue(), false, true);
-                }
+        if (me.triggerAction === 'all') {
+            me.doQuery(me.allQuery, true);
+        } else if (me.triggerAction === 'last') {
+            me.doQuery(me.lastQuery, true);
+        } else {
+            me.doQuery(me.getRawValue(), false, true);
+        }
 
 			}
 			me.inputEl.focus();
@@ -347,27 +376,27 @@
 	        }
 		},
 		doSetValue:function(value){
-			var me = this, displayField = this.displayField, valueField = this.valueField || displayField, processedValue = [], displayTplData = [], model, record, displayValue,
+			var me = this, displayField = me.displayField, valueField = me.valueField || displayField, processedValue = [], displayTplData = [], model, record, displayValue,
 			displayIsValue = me.displayField === me.valueField,
 			displayTplData = me.displayTplData || (me.displayTplData = []);
 			displayTplData.length = 0;
 			if (_.isUndefined(value)) {
-				return Picker.prototype.setValue.apply(this, value);
+				return Picker.prototype.setValue.apply(me, value);
 			}
 			if (_.isString(value) && value == '') {
-				return Picker.prototype.setValue.apply(this, [value]);
+				return Picker.prototype.setValue.apply(me, [value]);
 			}
 			value = $.makeArray(value);
 			for ( i = 0, len = value.length; i < len; i++) {
 				val = value[i];
-				if ((_.isString(val) || _.isNumber(val) || _.isObject(val)) && this.collection.length) {
+				if ((_.isString(val) || _.isNumber(val) || _.isObject(val)) && me.collection.length) {
 					if (_.isString(val) || _.isNumber(val)) {
-						record = this.collection.find(function(model) {
+						record = me.collection.find(function(model) {
 							return model.get(valueField) == val;
 						});
 					}
 					if (_.isObject(val)) {
-						record = this.collection.find(function(model) {
+						record = me.collection.find(function(model) {
 							var value;
 							if ( val instanceof Backbone.Model) {
 								value = val.get(valueField);
@@ -386,21 +415,33 @@
 					}
 					displayTplData.push(record);
 					processedValue.push(record[valueField]);
+					me.updateValue();
 				} else {
 
 				}
 			}
-			this.displayTplData = displayTplData;
-			this.value = processedValue.length ? this.multiSelect ? processedValue : processedValue[0] || '' : value ? value : '';
+			me.displayTplData = displayTplData;
+			me.value = processedValue.length ? me.multiSelect ? processedValue : processedValue[0] || '' : value ? value : '';
+			me.applyEmptyText();
 			return Picker.prototype.setValue.apply(this, [this.value]);
+		},
+		updateValue:function(){
+			var me = this,
+            inputEl = me.inputEl;
+			if (inputEl && me.emptyText && !_.isEmpty(me.value)) {
+	            inputEl.removeClass(me.emptyCls);
+	        }
 		},
 		clearValue : function() {
 			this.setValue(null);
 		},
 		getSubTplData : function() {
-			var me = this;
-			var data = Picker.prototype.getSubTplData.apply(this, arguments);
-			data.value = this.getDisplayValue();
+			var me = this,
+			displayValue = me.getDisplayValue(),
+			data = me._super.apply(this, arguments);
+			if(displayValue){
+				data.value = displayValue;
+			}
 			return data;
 		},
 
@@ -408,6 +449,9 @@
 	        var value = this.getValue();
 	        // If the value is null/undefined, we still return an empty string. If we
 	        // don't, the field will never get posted to the server since nulls are ignored.
+	        if(_.isNumber(value)){
+	        	return value
+	        }
 	        if (_.isEmpty(value)) {
 	            value = '';
 	        }

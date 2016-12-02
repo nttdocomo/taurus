@@ -21,6 +21,7 @@
 		content:null,
 		header:true,
 		fullscreen:false,
+		closeAction:'destroy',
 		events:{
 			'click [data-dismiss="modal"]' : 'close'
 		},
@@ -40,17 +41,19 @@
 			if(!this.isRendered){
 				this.render(renderTo || $(document.body));
 			}
-			this.$el.addClass('in').show();
+			this.$el.addClass('in');
 			$(document.body).addClass('modal-open');
+			this._super();
 			this.position();
 		},
 		position:function(){
-			if(this.fullscreen){
-				this.$el.addClass('modal-fullscreen')
+            var me = this,$el = me.$el,dialog = me.dialog;
+			if(me.fullscreen){
+				$el.addClass('modal-fullscreen')
 			}
-			var height = this.$el.find('.modal-dialog').height(),width = this.$el.find('.modal-dialog').width();
-			if(!this.fullscreen){
-				this.$el.find('.modal-dialog').css({
+			var height = dialog.height(),width = dialog.width();
+			if(!me.fullscreen){
+				dialog.css({
 					'margin-top':(height/2)*-1,
 					'margin-left':(width/2)*-1,
 					'position':'absolute',
@@ -62,9 +65,24 @@
 			}
 		},
 		close:function(){
-			this.$el.removeClass('in').hide();
+			var me = this;
+			me.$el.removeClass('in').hide();
 			$(document.body).removeClass('modal-open');
+			me.doClose();
 			return false;
+		},
+
+	    destroy: function() {
+            var me = this;
+            me.remove();
+	        /*this.callParent();
+	        this.dockedItems = this.bodyContainer = null;*/
+	        this.$el.remove();
+	    },
+		doClose:function(){
+			var me = this;
+			me.trigger('close');
+			me[me.closeAction]()
 		},
 		delegateEvents : function(events) {
 			var events = $.extend({}, this.events, {
@@ -77,14 +95,16 @@
 				'modal':'.modal',
 				'headerEl':'.modal-header',
 				'header':'.modal-title',
+                'dialog':'.modal-dialog',
 				'bodyEl':'.modal-body'
 			});
 			Base.prototype.applyChildEls.call(this,childEls);
 		},
 		render : function() {
-			Base.prototype.render.apply(this, arguments);
-			this.$el.find('.modal-dialog').height(this.height);
-			this.$el.find('.modal-dialog').width(this.width);
+            var me = this;
+			me._super.apply(me, arguments);
+			me.dialog.height(me.height);
+			me.dialog.width(me.width);
 		},
 		setHeight : function(height) {
 		},
@@ -92,7 +112,7 @@
 	        var me = this,
 	            oldTitle = me.title,
 	            header = me.header
-	        
+
 	        if (title !== oldTitle) {
 	            me.title = title;
 

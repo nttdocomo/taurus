@@ -435,7 +435,7 @@
           }
 
           if (!options.onRemove) {
-            ++state.totalRecords;
+            state.totalRecords = fullCol.length;
             delete options.onRemove;
           }
 

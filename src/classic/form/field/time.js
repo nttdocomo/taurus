@@ -118,7 +118,6 @@
 	        else if (_.isDate(value)) {
 	            d = moment(value);
 	        }
-	        console.log(d)
 	        if (d) {
 	            val = me.getInitDate();
 	            val.hour(d.hour());

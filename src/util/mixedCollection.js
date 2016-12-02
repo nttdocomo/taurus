@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../class','underscore'], factory);
+			define(['class','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../class'),require('underscore'));
+				return factory(require('class'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../class'),require('underscore'));
+		module.exports = factory(require('class'),require('underscore'));
 	}
 }(this, function(Class,_){
 	var array = [],

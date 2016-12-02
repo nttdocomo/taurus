@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript" src="../src/LAB.min.js"></script>
+<script type="text/javascript">
+	$LAB.script('../src/sea-debug.js','../src/core.js').wait().script('./config.js').wait(function(){
+		seajs.use("./backbone-pageable");
+	});
+</script>
+</body>
+</html>

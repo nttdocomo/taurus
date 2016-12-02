@@ -140,7 +140,6 @@ input.trigger-noedit, input.trigger-noedit:focus {
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 }
-
 .dropdown-menu{
 	min-width: 0;
 }
@@ -191,4 +190,7 @@ input.trigger-noedit, input.trigger-noedit:focus {
 .form-fieldcontainer-column .form-group:first-child .input-group-btn:last-child>.btn {
 	border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+}
+.form-empty-field-default{
+	color:gray;
 }

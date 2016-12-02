@@ -1,10 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require) {
-	var Base = require('./field/base'),
-	_ = require('underscore'),
-	Checkbox = require('./field/checkbox');
+(function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['./field/base','underscore','./field/checkbox'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('./field/base'),require('underscore'),require('./field/checkbox'));
+			})
+		}
+	} else if(typeof module === "object" && module.exports) {
+		module.exports = factory(require('./field/base'),require('underscore'),require('./field/checkbox'));
+	}
+}(this, function(Base,_,Checkbox) {
 	return Base.extend({
 		events : {
 			'change input' : 'checkChange'
@@ -135,10 +145,8 @@ define(function(require) {
 
             for (b = 0; b < bLen; b++) {
             	boxes[b].reset();
-            	console.log(boxes[b].inputEl)
-            	console.log(boxes[b].inputEl.is(':checked'))
 	        }
-               
+
 	        me.unsetActiveError();
 	        /*if (hadError) {
 	            me.updateLayout();
@@ -200,7 +208,7 @@ define(function(require) {
 		setValue : function(value) {
 			var me = this, boxes = me.getBoxes(), b, bLen = boxes.length, box, name, cbValue;
 
-			
+
 			for ( b = 0; b < bLen; b++) {
 				box = boxes[b];
 				box = $(box);
@@ -243,7 +251,14 @@ define(function(require) {
 			return isValid;
 		},
 		getTargetEl:function(){
-			return this.$el.find('> div');
-		}
+			return this.$el.find('> div:eq(0)');
+		},
+
+	    /*
+	     * Don't return any data for submit; the form will get the info from the individual checkboxes themselves.
+	     */
+	    getSubmitData: function() {
+	        return null;
+	    }
 	});
-});
+}));

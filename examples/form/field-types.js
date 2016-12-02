@@ -9,6 +9,7 @@ define(function(require) {
 	$body = $("#main"),
 	Number = require("../../src/classic/form/field/number"),
 	Panel = require("../../src/classic/form/panel"),
+	FormBase = require("../../src/classic/form/base"),
 	DateType = require("../../src/classic/form/field/date"),
 	DateTime = require("../../src/classic/form/field/datetime"),
 	Time = require("../../src/classic/form/field/time"),
@@ -38,100 +39,118 @@ define(function(require) {
 		name : "007",
 		age : 7
 	}]);
+	var form = new FormBase({
+		renderTo : $body,
+		items:[{
+			'class':Text,
+			msgTarget:'under',
+			name : 'first_name',
+			emptyText:'First Name',
+			fieldLabel : 'First Name:'
+		}]
+	})
+	form.add(0, {
+		'class':Text,
+		msgTarget:'under',
+		name : 'first_name',
+		emptyText:'Two Name',
+		fieldLabel : 'First Name:'
+	})
 	new Panel({
 		renderTo : $body,
 		title:'Simple Form',
 		width:350,
 		collapsible: true,
 		items:[{
-			cls:Text,
+			'class':Text,
 			msgTarget:'under',
 			name : 'first_name',
+			emptyText:'First Name',
 			fieldLabel : 'First Name:'
 		},{
-			cls:Text,
+			'class':Text,
 			name : 'last_name',
 			fieldLabel : 'Last Name:'
 		},{
-			cls:Text,
+			'class':Text,
 			name : 'company',
 			fieldLabel : 'Company:'
 		}, {
-			cls:Text,
+			'class':Text,
             fieldLabel: 'Email',
             name: 'email',
             allowBlank: false
         }, {
-			cls:DateType,
+			'class':DateType,
 			width:200,
             startDate:'09/08/2015',
             fieldLabel: 'DOB',
             name: 'dob'
         }, {
-			cls:DateTime,
+			'class':DateTime,
             fieldLabel: 'DOB',
             name: 'dob',
             value:1402689600000
         }, {
-			cls:Number,
+			'class':Number,
             fieldLabel: 'Age',
             name: 'age',
             minValue: 0,
             maxValue: 100
         }, {
-			cls:Time,
+			'class':Time,
             fieldLabel: 'Time Field',
             name: 'time',
             minValue: '6:00 AM',
             maxValue: '8:00 PM',
         },{
-        	cls:FieldContainer,
+        	'class':FieldContainer,
             fieldLabel: 'Container',
             direction:'column',
             items:[{
-				cls:Time,
+				'class':Time,
 	            name: 'time',
 	            width:100,
 	            editable:false,
 	            minValue: '6:00 AM',
 	            maxValue: '8:00 PM',
 	        },{
-				cls:Text,
+				'class':Text,
 	            width:200,
 	            name: 'age'
 	        }]
         }, {
-			cls:FieldContainer,
+			'class':FieldContainer,
             fieldLabel: '有效日期',
             direction:'column',
             items:[{
-            	cls:DateType,
+            	'class':DateType,
             	width:150,
 	            name: 'start'
             },{
-	        	cls:Splitter,
+	        	'class':Splitter,
 	        	text:'至'
 	        },{
-            	cls:DateType,
+            	'class':DateType,
             	width:150,
 	            name: 'end'
             }]
         },{
-        	cls:FieldContainer,
+        	'class':FieldContainer,
             fieldLabel: 'Container',
             direction:'column',
             items:[{
-				cls:Time,
+				'class':Time,
 	            name: 'start',
 	            width:100,
 	            editable:false,
 	            minValue: '6:00 AM',
 	            maxValue: '8:00 PM',
 	        },{
-	        	cls:Splitter,
+	        	'class':Splitter,
 	        	text:'至'
 	        },{
-				cls:Time,
+				'class':Time,
 	            name: 'end',
 	            width:100,
 	            editable:false,
@@ -139,8 +158,9 @@ define(function(require) {
 	            maxValue: '8:00 PM',
 	        }]
         },{
-			cls:RadioGroup,
+			'class':RadioGroup,
 			fieldLabel : '应用平台:',
+			msgTarget:'under',
 			items:[{
 				boxLabel:'iOS',
 				checked:true,
@@ -151,7 +171,7 @@ define(function(require) {
 			}],
 			name : 'platform'
 		},{
-			cls:File,
+			'class':File,
 			fieldLabel : '应用平台:',
 			buttonOnly:true
 		}],
@@ -177,10 +197,10 @@ define(function(require) {
 		width:350,
 		collapsible: true,
 		items:[{
-			cls:FieldSet,
+			'class':FieldSet,
 			title: 'Phone Number',
 			items:[{
-				cls:Text,
+				'class':Text,
 				fieldLabel : 'Home:',
 				editable:false,
 				name : 'home',
@@ -188,28 +208,28 @@ define(function(require) {
 				emptyText:'(888) 555-1212',
 				collection:collection
 			},{
-				cls:Text,
+				'class':Text,
 				fieldLabel : 'Business:',
 				editable:false,
 				name : 'business',
 				id:'textfield4',
 				collection:collection
 			},{
-				cls:Text,
+				'class':Text,
 				fieldLabel : 'Mobile:',
 				editable:false,
 				name : 'mobile',
 				id:'textfield4',
 				collection:collection
 			},{
-				cls:Text,
+				'class':Text,
 				fieldLabel : 'Fax:',
 				editable:false,
 				name : 'fax',
 				id:'textfield4',
 				collection:collection
 			},{
-				cls:CheckboxGroup,
+				'class':CheckboxGroup,
 				fieldLabel : '应用平台:',
 				items:[{
 					boxLabel:'iOS',

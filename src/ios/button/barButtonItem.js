@@ -29,6 +29,11 @@
 		tagName:'button',
 		iconClass:'icon-back',
 		style:'plain',
+		events:{
+			'click':function(){
+				this.trigger('click')
+			},
+		},
 		getTpl:function(){
 			var me = this,style = me.style,tpl;
 			switch(style){

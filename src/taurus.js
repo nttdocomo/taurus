@@ -4,17 +4,17 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['backbone'], factory);
+			define(['backbone','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('backbone'));
+				return factory(require('backbone'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('backbone'));
+		module.exports = factory(require('backbone'),require('underscore'));
 	}
-}(this, function(Backbone) {
+}(this, function(Backbone,_) {
 	if(!$.browser){
 		$.browser = {};
 		$.browser.mozilla = /firefox/.test(navigator.userAgent.toLowerCase());
@@ -109,7 +109,7 @@
 		 * @markdown
 		 */
 		isEmpty : function(value, allowEmptyString) {
-			return (value === null) || (value === undefined) || ( allowEmptyString ? value === '' : false) || ($.isArray(value) && value.length === 0);
+			return _.isNull(value) || _.isUndefined(value) || ( !allowEmptyString ? value === '' : false) || (_.isArray(value) && _.isEmpty(value));
 		},
 		isSSL : function() {
 			return taurus.proto === "https";
@@ -148,13 +148,14 @@
 			}
 		},
 		userAgent : navigator.userAgent.toLowerCase(),
-		value : function(value, defaultValue, allowBlank) {
+		valueFrom : function(value, defaultValue, allowBlank) {
 			return taurus.isEmpty(value, allowBlank) ? defaultValue : value;
 		},
 		getPositionBelow:function(el){
 			return $(window).height() - taurus.getPositionAbove(el) - el.height()
 		},
 		getPositionAbove:function(el){
+			console.log($(window).scrollTop())
 			return el.offset().top - $(window).scrollTop();
 		},
 		getPositionRight:function(el){
@@ -173,34 +174,34 @@
 			if(!str){
 				return 0;
 			}
-			var len = 0;  
-		    var i;  
-		    var c;  
-		    for (var i=0;i<str.length;i++){  
-		        c = str.charCodeAt(i);  
-		        if (taurus.isDbcCase(c)) { //半角  
-		            len = len + 1;  
-		        } else { //全角  
-		            len = len + 2;  
-		        }  
-		    }  
+			var len = 0;
+		    var i;
+		    var c;
+		    for (var i=0;i<str.length;i++){
+		        c = str.charCodeAt(i);
+		        if (taurus.isDbcCase(c)) { //半角
+		            len = len + 1;
+		        } else { //全角
+		            len = len + 2;
+		        }
+		    }
 		    return len;
 		},
 		isDbcCase:function(c){
-			// 基本拉丁字母（即键盘上可见的，空格、数字、字母、符号）  
-		    if (c >= 32 && c <= 127) {  
+			// 基本拉丁字母（即键盘上可见的，空格、数字、字母、符号）
+		    if (c >= 32 && c <= 127) {
 		        return true;
-		    }   
-		    // 日文半角片假名和符号  
-		    else if (c >= 65377 && c <= 65439) {  
+		    }
+		    // 日文半角片假名和符号
+		    else if (c >= 65377 && c <= 65439) {
 		        return true;
-		    }  
+		    }
 		},
 		create:function(){
 			var cls;
 			if(arguments.length == 1){
-				cls = arguments[0].cls;
-				delete arguments[0].cls;
+				cls = arguments[0]['class'] || arguments[0]['cls'];
+				delete arguments[0]['class'] || arguments[0]['cls'];
 			}
 			return new cls(arguments[0]);
 		},
@@ -256,7 +257,7 @@
 		}
 		return K
 	};
-	taurus.klass = function(name, prop) {
+	/*taurus.klass = function(name, prop) {
 		var K = prop || Class.extend();
 		var E = taurus.augmentString(name, K);
 		var g = name.split(".").pop();
@@ -274,7 +275,7 @@
 			return this;
 		}
 		return E
-	};
+	};*/
 	taurus.view = function(name, cls) {
 		var C = taurus.klass(name, cls);
 		return C
@@ -368,6 +369,22 @@
 			this.initialize.apply(this, arguments);
 	};
 	taurus.Class.extend = Backbone.View.extend;
+	//add isLoading and event listener in request and sync to set the isLoading
+	_.each(['Collection','Model'],function(name){
+		_.extend(Backbone[name].prototype,{
+			isLoading:false,
+			initialize: function(){
+				this.on({
+					'request':function(){
+						this.isLoading = true;
+					},
+					'sync':function(){
+						this.isLoading = false;
+					}
+				},this)
+			},
+		})
+	})
 	taurus.augmentObject('$.support',{
 		borderRadius:false
 	})

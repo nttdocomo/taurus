@@ -10,7 +10,7 @@ define(function(require) {
 	chance = require('chance'),
 	Button = require("../../../src/ios/button/button"),
 	navBar = new NavBar({
-		items:[{                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+		items:[{
 			title:'信息'
 		}],
 		renderTo:$('.page')
@@ -20,16 +20,13 @@ define(function(require) {
 		text:'Usual Button 1',
 		renderTo:pageContent.find('.content-block'),
 		listeners:{
-			click: {
-				selector:'',
-				fn:function(){
-					navBar.pushItem({                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
-						title:chance.word()/*,
-						backBarButtonItem:{
-							title:'取消'
-						}*/
-					})
-				}
+			click: function(){
+				navBar.pushItem({
+					title:chance.word()/*,
+					backBarButtonItem:{
+						title:'取消'
+					}*/
+				})
 			}
 		}
 	});

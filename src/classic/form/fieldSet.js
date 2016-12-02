@@ -6,19 +6,21 @@ define(function(require) {
 	return Base.extend({
 		tagName : 'fieldset',
 		baseCls: 'fieldset',
+		collapsable:false,
 		delegateEvents : function(events) {
 			var events = $.extend(events || {}, this.events, {
-				'click .caret' : 'toggle'
+				'click legend > .caret' : 'toggle'
 			});
 			Base.prototype.delegateEvents.call(this, events);
 		},
-		tpl:'<legend><span class="caret"></span><%=title%></legend><div class="fieldset-body"></div>',
-		getItemContainer:function(){
-			return this.$el.find(' > div');
+		tpl:'<legend><%if(collapsable){%><span class="caret"></span><%}%><%=title%></legend><div class="fieldset-body"></div>',
+		getTargetEl:function(){
+			return this.$el.find(' > .fieldset-body');
 		},
 		getTplData : function() {
 			return {
-				'title':this.title
+				'title':this.title,
+				'collapsable':this.collapsable
 			};
 		},
 
@@ -28,6 +30,20 @@ define(function(require) {
 	     */
 	    collapse : function() {
 	        return this.setExpanded(false);
+	    },
+	    query:function(queryString){
+	    	var query = queryString.match(/\[(.+?)\]/),
+	    	items = [];
+	    	_.each(this.items,function(item){
+	    		if(item[query[1]]){
+	    			items.push(item)
+	    		} else {
+		    		if(item.query){
+		    			items = items.concat(item.query(queryString))
+		    		}
+	    		}
+	    	})
+	    	return items;
 	    },
 
 	    /**

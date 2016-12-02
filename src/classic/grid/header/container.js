@@ -14,8 +14,8 @@
 	} else if(typeof module === "object" && module.exports) {
 		module.exports = factory(require('../../../view/base'),require('../column/column'),require('../columnManager'));
 	}
-}(this, function(Base,Column,ColumnManager) {
-	return taurus.view('taurus.grid.header.Container',Base.extend({
+}(this, function(Base,Column,ColumnManager,subscribeModule) {
+	return Base.extend({
 		className : 'grid-header-ct',
 		defaultType : Column,
 		events:{
@@ -191,6 +191,12 @@
 	            header = headerEl.data('component');
 	            if (header) {
 	            	activeHeader = header.onTitleElClick(e, targetEl, me.sortOnClick);
+	            	if (activeHeader) {
+                  // If activated by touch, there is no trigger el to align with, so align to the header element.
+                  me.onHeaderTriggerClick(activeHeader, e, e.pointerType === 'touch' ? activeHeader.el : activeHeader.triggerEl);
+                } else {
+                  me.onHeaderClick(header, e, t);
+                }
 	                /*targetEl = header[header.clickTargetName];
 	                // If there's no possibility that the mouseEvent was on child header items,
 	                // or it was definitely in our titleEl, then process it
@@ -220,6 +226,18 @@
 	            column.setSortState();
 	        }
 	    },
+
+    onHeaderClick: function(header, e, t) {
+      var me = this
+      var selModel = header.getView().getSelectionModel()
+
+      header.trigger('headerclick', me, header, e, t);
+      if (me.trigger('headerclick', me, header, e, t) !== false) {
+        if (selModel.onHeaderClick) {
+          selModel.onHeaderClick(me, header, e);
+        }
+      }
+    },
 		setColumnsWidth:function(widths){
 			var me = this,items = me.items,headers = this.$el.find('.column-header');
 			headers.each(function(i,header){
@@ -256,6 +274,12 @@
 			return result;
 		},
 
+    // Find the topmost HeaderContainer
+    getRootHeaderCt: function() {
+      var me = this;
+      return me.isRootHeader ? me : me.up('[isRootHeader]')
+    },
+
 		// invoked internally by a header when not using triStateSorting
 		clearOtherSortStates : function(activeHeader) {
 			var headers = this.getGridColumns(), headersLn = headers.length, i = 0;
@@ -278,5 +302,5 @@
 			})
 			me.ownerCt.updateLayout()
 		}
-	}));
+	});
 }));

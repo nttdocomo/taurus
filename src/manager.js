@@ -1,5 +1,5 @@
 define(function(require){
-	var Class = require('./class');
+	var Class = require('class');
 	return new (Class.extend({
 		init: function(config) {
 	        _.extend(this, config || {});

@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/base.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/bootstrap.css"/>
+		<link href="../../resources/css/jumbotron-narrow.css" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="../../resources/css/glyphicons.css">
+		<link type="text/css" rel="stylesheet" href="../../resources/css/form.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/file.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/checkbox.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/datepicker.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/panel.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/table.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/comboBox.css"/>
+	</head>
+	<body>
+
+		<div class="container">
+			<div class="header">
+				<ul class="nav nav-pills pull-right">
+					<li class="active">
+						<a href="#">Home</a>
+					</li>
+					<li>
+						<a href="#">About</a>
+					</li>
+					<li>
+						<a href="#">Contact</a>
+					</li>
+				</ul>
+				<h3 class="text-muted">Taurus</h3>
+			</div>
+
+			<div class="row marketing" id="main">
+				<h1>Dynamic Forms built with JavaScript</h1>
+
+				<p>
+					These forms do not do anything and have very little validation. They solely demonstrate
+					how you can use Ext Forms to build and layout forms on the fly.
+				</p>
+
+			</div>
+
+			<div class="footer">
+				<p>
+					&copy; Company 2014
+				</p>
+			</div>
+
+		</div>
+		<!-- /container -->
+
+		<!-- Bootstrap core JavaScript
+		================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" src="../../src/LAB.min.js"></script>
+		<script type="text/javascript">
+			$LAB.script('../../src/sea-debug.js','../../src/core.js').wait().script('../config.js').wait(function(){
+				seajs.use("../form/field-set");
+			});
+		</script>
+	</body>
+</html>

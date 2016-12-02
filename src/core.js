@@ -52,6 +52,15 @@
 			} else if(typeof module === "object" && module.exports) {
 				module.exports = definition.apply(global,getDeps(dependencies));
 			}
+		},
+		async:function(deps,callback){
+			var async;
+			if(typeof require !== 'undefined'){
+				async = require;
+			} else {
+				async = seajs.use;
+			}
+			async(deps,callback);
 		}
 	})
 })(this);
