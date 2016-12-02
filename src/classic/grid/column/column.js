@@ -95,6 +95,11 @@
         return rootHeaderCt.view;
       }
     },
+    getVisibleIndex: function(){
+    	// Note that the visibleIndex property is assigned by the owning HeaderContainer
+      // when assembling the visible column set for the view.
+      return this.visibleIndex != null ? this.visibleIndex : this.isGroupColumn ? false : Ext.Array.indexOf(this.getRootHeaderCt().getVisibleGridColumns(), this);
+    }
 
     isSortable: function() {
         var sortable = this.sortable;

@@ -86,7 +86,7 @@
             var me = this;
 
             // If we are configured to defer, and *NOT* called from the defer call below
-            if (me.deferInitialRefresh && !noDefer) {
+            /*if (me.deferInitialRefresh && !noDefer) {
                 Ext.defer(me.doFirstRefresh, 1, me, [store, true]);
             }
 
@@ -98,6 +98,9 @@
                 if (store && !store.isLoading) {
                     me.refresh();
                 }
+            }*/
+            if (store) {
+                me.refresh();
             }
         },
 
@@ -175,6 +178,12 @@
                 me.collectNodes(targetEl.dom);
                 me.updateIndexes(0);
             }*/
+            me.trigger('refresh', me, collection);
+        },
+        render:function(){
+            var me = this
+            me._super.apply(me, arguments)
+            me.doFirstRefresh(me.collection)
         },
         applyNavigationModel: function (navigationModel) {
           return this.navigationModel = new navigationModel

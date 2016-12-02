@@ -393,10 +393,13 @@
       me.$el.hide()
       return me
     },
+    beforeRender: taurus.emptyFn,
     render: function (renderTo, operation) {
+      var me = this
+      me.beforeRender()
       renderTo = renderTo || this.renderTo || $(document.body)
       this.operation = operation || 'append'
-      if (this.isRendered) {
+      if (this.isRendered || this.rendered) {
         $(renderTo)[this.operation](this.$el)
         return false
       }
