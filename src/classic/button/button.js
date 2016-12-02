@@ -68,6 +68,16 @@
 		childEls:{
 			'btnIconEl':'[id$="btnIconEl"]'
 		},
+		constructor: function(options){
+			console.log(options)
+			if(options.href){
+				this.tagName = 'a'
+			}
+			Base.call(this, options)
+			if(options.href){
+				this.$el.attr('href',this.href)
+			}
+		},
 		didIconStateChange: function(old, current) {
 	        var currentEmpty = _.isEmpty(current);
 	        return _.isEmpty(old) ? !currentEmpty : currentEmpty;

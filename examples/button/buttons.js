@@ -49,4 +49,9 @@ define(function(require) {
 			console.log('0')
 		}
 	});
+	new Button({
+		renderTo : $body,
+		text:chance.word(),
+		href:'/google.com'
+	});
 })
