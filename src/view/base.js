@@ -18,6 +18,7 @@
   return Backbone.View.extend({
     isRendered: false,
     doc: taurus.$doc,
+    baseCls: taurus.baseCSSPrefix + 'component',
     ui: 'default',
     constructor: function (config) {
       Backbone.View.call(this, config)
