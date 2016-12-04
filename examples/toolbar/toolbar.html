@@ -12,11 +12,6 @@
 		<link type="text/css" rel="stylesheet" href="../../resources/css/datepicker.css"/>
 		<link type="text/css" rel="stylesheet" href="../../resources/css/panel.css"/>
 		<link type="text/css" rel="stylesheet" href="../../resources/css/table.css"/>
-		<link type="text/css" rel="stylesheet" href="../../resources/css/menu.css"/>
-		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-		<link type="text/css" rel="stylesheet" href="../../resources/css/docs.css"/>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
-		<script>hljs.initHighlightingOnLoad();</script>
 		<!--[if IE]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
@@ -28,6 +23,7 @@
 		</style>
 	</head>
 	<body>
+
 		<div class="container">
 			<div class="header">
 				<ul class="nav nav-pills pull-right">
@@ -45,61 +41,14 @@
 			</div>
 
 			<div class="row marketing" id="main">
-				<h2>按钮</h2>
-				<div class="bs-example" id="example-1"></div>
-				<figure class="highlight">
-					<pre>
-						<code class="language-javascript">new Button({
-  renderTo: $body.find('#example-1'),
-  text: 'Default'
-})
-new Button({
-  renderTo: $body.find('#example-1'),
-  text: 'Primary',
-  ui:'primary'
-})
-new Button({
-  renderTo: $body.find('#example-1'),
-  text: 'Link',
-  ui:'link'
-})</code>
-					</pre>
-				</figure>
-				<h2>尺寸</h2>
-				<div class="bs-example" id="example-2"></div>
-				<figure class="highlight">
-					<pre>
-						<code class="language-javascript">new Button({
-  renderTo: $body.find('#example-2'),
-  text: 'Default'
-})
-new Button({
-  renderTo: $body.find('#example-2'),
-  text: 'Default'
-  scale:'sm'
-})
-new Button({
-  renderTo: $body.find('#example-2'),
-  text: 'Default'
-  scale:'xs'
-})</code>
-					</pre>
-				</figure>
-				<h2>下拉菜单</h2>
-				<div class="bs-example" id="example-3"></div>
-				<figure class="highlight">
-					<pre>
-						<code class="language-javascript">new Button({
-  renderTo: $body.find('#example-3'),
-  text: chance.word(),
-  menu: {
-    items: [{
-      text:'Item 1'
-    }]
-  }
-})</code>
-					</pre>
-				</figure>
+				<h1>带多选框的表格</h1>
+				<p>
+					这个例子展示了给表格添加多选框的例子，多选框可以全选.
+				</p>
+				<p>
+					只要在实例化表格的时候添加selType属性便可，值是<a href="../../src/selection/checkboxModel.js">CheckboxModel</a>（需要引用）
+				</p>
+				<p>脚本链接<a href="./check-column-grid.js">check-column-grid.js</a></p>
 			</div>
 
 			<div class="footer">
@@ -117,8 +66,8 @@ new Button({
 		<script type="text/javascript" src="../../src/LAB.min.js"></script>
 		<script type="text/javascript">
 			$LAB.script('../../src/sea-debug.js').wait().script('../config.js').wait(function(){
-				seajs.use("../button/buttons");
-			});
+					seajs.use("../toolbar/toolbar");
+				});
 		</script>
 	</body>
 </html>

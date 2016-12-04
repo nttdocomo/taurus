@@ -393,7 +393,10 @@
       me.$el.hide()
       return me
     },
-    beforeRender: taurus.emptyFn,
+    beforeRender: function () {
+      var me = this
+      me.setUI(me.ui)
+    },
     render: function (renderTo, operation) {
       var me = this
       me.beforeRender()
@@ -466,7 +469,7 @@
     addUIClsToElement: function (uiCls) {
       var me = this,
         baseClsUI = me.baseCls + '-' + me.ui + '-' + uiCls,
-        result = [ Ext.baseCSSPrefix + uiCls, me.baseCls + '-' + uiCls, baseClsUI ],
+        result = [ taurus.baseCSSPrefix + uiCls, me.baseCls + '-' + uiCls, baseClsUI ],
         childEls, childElName, el, suffix
 
       if (me.rendered && me.frame && !Ext.supports.CSS3BorderRadius) {
