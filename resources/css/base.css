@@ -16,7 +16,7 @@
 	margin: 0;
 	padding: 0;
 }
-*:focus {
+*:focus, *:active {
     outline: none;
 }
 

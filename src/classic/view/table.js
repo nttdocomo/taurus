@@ -4,17 +4,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./view', '../grid/cellContext', '../../selection/checkboxModel', 'backbone', 'underscore', 'taurus'], factory)
+      define(['./view', '../grid/cellContext', '../../selection/rowModel', 'backbone', 'underscore', 'taurus'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./view'), require('../grid/cellContext'), require('../../selection/checkboxModel'), require('backbone'), require('underscore'), require('taurus'))
+        return factory(require('./view'), require('../grid/cellContext'), require('../../selection/rowModel'), require('backbone'), require('underscore'), require('taurus'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./view'), require('../grid/cellContext'), require('../../selection/checkboxModel'), require('backbone'), require('underscore'), require('taurus'))
+    module.exports = factory(require('./view'), require('../grid/cellContext'), require('../../selection/rowModel'), require('backbone'), require('underscore'), require('taurus'))
   }
-}(this, function (Base, CellContext, CheckboxModel, Backbone, _, taurus) {
+}(this, function (Base, CellContext, RowModel, Backbone, _, taurus) {
   return Base.extend({
     header: true,
     tpl: '<div class="grid-item-container"><table><%=rows%></table></div>',
@@ -30,6 +30,7 @@
     itemCls: 'grid-item',
     cellSelector: 'td.' + taurus.baseCSSPrefix + 'grid-cell',
     childEls: {
+      'all':'table tr',
       'gridBody': '.grid-body',
       'gridTable': '.grid-table',
       'gridHeader': '.grid-header',
@@ -46,11 +47,11 @@
     },
     config: {
       selectionModel: {
-        type: CheckboxModel
+        type: RowModel
       }
     },
     selectionModel: {
-      type: CheckboxModel
+      type: RowModel
     },
     cellValues: {
       classes: [
@@ -423,10 +424,6 @@
     },
     getSelectionModel: function(){
       return this.selectionModel
-    },
-    render: function () {
-      this.beforeRender()
-      return Base.prototype.render.apply(this, arguments)
     },
     renderRows: function (rows, viewStartIndex) {
       var me = this,

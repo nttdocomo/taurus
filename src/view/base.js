@@ -18,6 +18,7 @@
   return Backbone.View.extend({
     isRendered: false,
     doc: taurus.$doc,
+    baseCls: taurus.baseCSSPrefix + 'component',
     ui: 'default',
     constructor: function (config) {
       Backbone.View.call(this, config)
@@ -393,10 +394,16 @@
       me.$el.hide()
       return me
     },
+    beforeRender: function () {
+      var me = this
+      me.setUI(me.ui)
+    },
     render: function (renderTo, operation) {
+      var me = this
+      me.beforeRender()
       renderTo = renderTo || this.renderTo || $(document.body)
       this.operation = operation || 'append'
-      if (this.isRendered) {
+      if (this.isRendered || this.rendered) {
         $(renderTo)[this.operation](this.$el)
         return false
       }
@@ -463,7 +470,7 @@
     addUIClsToElement: function (uiCls) {
       var me = this,
         baseClsUI = me.baseCls + '-' + me.ui + '-' + uiCls,
-        result = [ Ext.baseCSSPrefix + uiCls, me.baseCls + '-' + uiCls, baseClsUI ],
+        result = [ taurus.baseCSSPrefix + uiCls, me.baseCls + '-' + uiCls, baseClsUI ],
         childEls, childElName, el, suffix
 
       if (me.rendered && me.frame && !Ext.supports.CSS3BorderRadius) {

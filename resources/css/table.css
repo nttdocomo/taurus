@@ -209,3 +209,6 @@
 	font: 18px/1 ExtJS;
 	color: #919191;
 }
+.grid-cell .form-group{
+	margin-bottom:0px;
+}

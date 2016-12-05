@@ -12,20 +12,18 @@
 		<link type="text/css" rel="stylesheet" href="../../resources/css/datepicker.css"/>
 		<link type="text/css" rel="stylesheet" href="../../resources/css/panel.css"/>
 		<link type="text/css" rel="stylesheet" href="../../resources/css/table.css"/>
-		<link type="text/css" rel="stylesheet" href="../../resources/css/menu.css"/>
-		<link type="text/css" rel="stylesheet" href="../../resources/css/button.css"/>
-		<link type="text/css" rel="stylesheet" href="../../resources/css/form.css"/>
-		<link type="text/css" rel="stylesheet" href="../../resources/css/file.css"/>
-		<link type="text/css" rel="stylesheet" href="../../resources/css/spinner.css"/>
-		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-		<link type="text/css" rel="stylesheet" href="../../resources/css/docs.css"/>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
-		<script>hljs.initHighlightingOnLoad();</script>
 		<!--[if IE]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
+		<style>
+			.refresh {
+				padding-left: 14px;
+				padding-top: 14px;
+			}
+		</style>
 	</head>
 	<body>
+
 		<div class="container">
 			<div class="header">
 				<ul class="nav nav-pills pull-right">
@@ -43,35 +41,14 @@
 			</div>
 
 			<div class="row marketing" id="main">
-				<h2>表单上传</h2>
-				<div class="bs-example" id="example-1"></div>
-				<figure class="highlight">
-					<pre>
-						<code class="language-javascript">new FileField({
-  renderTo: $body.find('#example-1'),
-  fieldLabel: '应用平台',
-  buttonOnly: true,
-  onProgress: function (id, name, uploadedBytes, totalBytes) {
-    progressBar.show()
-    progressBar.set(uploadedBytes / totalBytes)
-  }
-})</code>
-					</pre>
-				</figure>
-				<h2>按钮上传</h2>
-				<div class="bs-example" id="example-2"></div>
-				<figure class="highlight">
-					<pre>
-						<code class="language-javascript">new FileButton({
-  renderTo: $body.find('#example-2'),
-  text:'上传',
-  onProgress: function (id, name, uploadedBytes, totalBytes) {
-    progressBar.show()
-    progressBar.set(uploadedBytes / totalBytes)
-  }
-})</code>
-					</pre>
-				</figure>
+				<h1>带多选框的表格</h1>
+				<p>
+					这个例子展示了给表格添加多选框的例子，多选框可以全选.
+				</p>
+				<p>
+					只要在实例化表格的时候添加selType属性便可，值是<a href="../../src/selection/checkboxModel.js">CheckboxModel</a>（需要引用）
+				</p>
+				<p>脚本链接<a href="./check-column-grid.js">check-column-grid.js</a></p>
 			</div>
 
 			<div class="footer">
@@ -89,8 +66,8 @@
 		<script type="text/javascript" src="../../src/LAB.min.js"></script>
 		<script type="text/javascript">
 			$LAB.script('../../src/sea-debug.js').wait().script('../config.js').wait(function(){
-				seajs.use("../form/file-upload");
-			});
+					seajs.use("../toolbar/toolbar");
+				});
 		</script>
 	</body>
 </html>

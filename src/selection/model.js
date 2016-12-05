@@ -1,26 +1,28 @@
 ;(function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
+  if (typeof define === 'function') {
     // Now we're wrapping the factory and assigning the return
     // value to the root (window) and returning it as well to
     // the AMD loader.
-    define(['class', 'mixins', '../util/storeHolder', 'backbone', 'underscore'], function (Backbone) {
-      return (root.Class = factory(Backbone))
-    })
-  }
-  if (define.cmd) {
-    define(function (require, exports, module) {
-      return (root.Class = factory(require('class'), require('mixins'), require('../util/storeHolder'), require('backbone'), require('underscore')))
-    })
+    if (define.amd) {
+      define(['class', '../util/storeHolder', 'backbone', 'underscore'], function (Class, StoreHolder, Backbone, _) {
+        return (root.Class = factory(Class, StoreHolder, Backbone, _))
+      })
+    }
+    if (define.cmd) {
+      define(function (require, exports, module) {
+        return (root.Class = factory(require('class'), require('../util/storeHolder'), require('backbone'), require('underscore')))
+      })
+    }
   } else if (typeof module === 'object' && module.exports) {
     // I've not encountered a need for this yet, since I haven't
     // run into a scenario where plain modules depend on CommonJS
     // *and* I happen to be loading in a CJS browser environment
     // but I'm including it for the sake of being thorough
-    module.exports = (root.Class = factory(require('class'), require('mixins'), require('../util/storeHolder'), require('backbone'), require('underscore')))
+    module.exports = (root.Class = factory(require('class'), require('../util/storeHolder'), require('backbone'), require('underscore')))
   } else {
     root.Class = factory()
   }
-}(this, function (Class, mixins, StoreHolder, Backbone, _) {
+}(this, function (Class, StoreHolder, Backbone, _) {
   var Model = Class.extend({
     selected: [],
     config: {
