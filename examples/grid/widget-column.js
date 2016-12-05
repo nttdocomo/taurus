@@ -232,7 +232,7 @@ define(function (require) {
       sortable: false,
       dataIndex: 'lastChange'
     }, {
-      text: '',
+      text: '操作',
       'class': WidgetColumn,
       widget: [{
         'class': Button,
