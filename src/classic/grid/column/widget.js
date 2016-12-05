@@ -39,7 +39,10 @@
           Ext.raise('column.Widget requires a widget configuration.')
       }*/
       // </debug>
-      me.widget = widget = _.extend({}, widget)
+      if(!_.isArray(widget)){
+        me.widget = widget = [widget]
+      }
+      //me.widget = widget = _.extend({}, widget)
 
       // Apply the default UI for the xtype which is going to feature in this column.
       /*if (!widget.ui) {
@@ -60,23 +63,53 @@
     getFreeWidget: function () {
       var me = this
       var result = me.freeWidgetStack ? me.freeWidgetStack.pop() : null
-      var klass = me.widget['class']
-      var config = _.omit(me.widget, 'class')
-      if (!result) {
-        result = new klass(config)
+      var widgets = []
+      _.each(me.widget, function(widget){
+        var klass = widget['class']
+        var config = _.omit(widget, 'class')
+        widgets.push(new klass(config))
+        /*if (!result) {
+          widgets.push(new klass(config))
 
-      /*result.resolveListenerScope = me.listenerScopeFn
-      result.getWidgetRecord = me.widgetRecordDecorator
-      result.getWidgetColumn = me.widgetColumnDecorator
-      result.dataIndex = me.dataIndex
-      result.measurer = me
-      result.ownerCmp = me.getView()
-      // The ownerCmp of the widget is the encapsulating view, which means it will be considered
-      // as a layout child, but it isn't really, we always need the layout on the
-      // component to run if asked.
-      result.isLayoutChild = me.returnFalse;*/
-      }
-      return result
+        /*result.resolveListenerScope = me.listenerScopeFn
+        result.getWidgetRecord = me.widgetRecordDecorator
+        result.getWidgetColumn = me.widgetColumnDecorator
+        result.dataIndex = me.dataIndex
+        result.measurer = me
+        result.ownerCmp = me.getView()
+        // The ownerCmp of the widget is the encapsulating view, which means it will be considered
+        // as a layout child, but it isn't really, we always need the layout on the
+        // component to run if asked.
+        result.isLayoutChild = me.returnFalse;
+        }*/
+      })
+      return widgets
+    },
+    updateWidget: function(widgets, cell, record, isFixedSize){
+      var me = this
+      _.each(widgets, function(widget){
+        widget.$widgetRecord = record
+        widget.$widgetColumn = me
+        var el = widget.el
+        var rendered = widget.rendered
+        if (el && rendered) {
+          dom = el
+          if (dom.parentNode !== cell) {
+            //$(cell).empty()
+            cell.appendChild(el)
+          }
+          if (!isFixedSize) {
+            //widget.setWidth(width)
+          }
+          //widget.reattachToBody()
+        } else {
+          if (!isFixedSize) {
+            //widget.width = width
+          }
+          //$(cell).empty()
+          widget.render(cell)
+        }
+      })
     },
 
     onViewRefresh: function (view, records) {
@@ -90,28 +123,8 @@
         var recordId = record.cid
         var cell = rows.get(itemIndex).cells[me.getVisibleIndex()].firstChild
         console.log(cell)
-        var widget = me.liveWidgets[recordId] = oldWidgetMap[recordId] || me.getFreeWidget()
-        widget.$widgetRecord = record
-        widget.$widgetColumn = me
-        var el = widget.el
-        var rendered = widget.rendered
-        if (el && rendered) {
-          dom = el
-          if (dom.parentNode !== cell) {
-            $(cell).empty()
-            cell.appendChild(el)
-          }
-          if (!isFixedSize) {
-            //widget.setWidth(width)
-          }
-          //widget.reattachToBody()
-        } else {
-          if (!isFixedSize) {
-            //widget.width = width
-          }
-          $(cell).empty()
-          widget.render(cell)
-        }
+        var widgets = me.liveWidgets[recordId] = oldWidgetMap[recordId] || me.getFreeWidget()
+        me.updateWidget(widgets, cell, record, isFixedSize)
       })
     },
 

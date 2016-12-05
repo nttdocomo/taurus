@@ -25,31 +25,31 @@
 			}
 		},
 
-	    // @private
-	    getAnchorAlign: function() {
-	        switch (this.anchor) {
-		        case 'top':
-		            return {
-		            	"my" : "center top+10",
+    // @private
+    getAnchorAlign: function() {
+      switch (this.anchor) {
+        case 'top':
+          return {
+						"my" : "center top+10",
 						"at" : "center bottom",
-		            };
-		        case 'left':
-		            return {
-		            	"my" : "left+10 center",
+          };
+      	case 'left':
+          return {
+						"my" : "left+10 center",
 						"at" : "right center",
 						"collision" : "none none"
-		            };
-		        case 'right':
-		            return {
-		            	"my" : "right+10 center",
+          };
+        case 'right':
+          return {
+						"my" : "right+10 center",
 						"at" : "left center",
-		            };
-		        default:
-		            return {
-		            	"my" : "center bottom+10",
+          };
+        default:
+					return {
+						"my" : "center bottom+10",
 						"at" : "center top",
-		            };
-	        }
-	    }
+					};
+      }
+    }
 	})
 }));
