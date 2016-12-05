@@ -11,9 +11,19 @@ define(function (require) {
     renderTo: $body.find('#example-1'),
     fieldLabel: '应用平台',
     buttonOnly: true,
-    onProgress: function (id, name, uploadedBytes, totalBytes) {
-      progressBar.show()
-      progressBar.set(uploadedBytes / totalBytes)
+    fineUploaderOptions: {
+      callbacks: {
+        onProgress: function (id, name, uploadedBytes, totalBytes) {
+          progressBar.show()
+          progressBar.set(uploadedBytes / totalBytes)
+        },
+        onSubmit: function (id, name) {
+          console.log(arguments)
+        },
+        onError: function (id, name, errorReason, xhr) {
+          console.log(arugments)
+        }
+      }
     }
   })
   new FileButton({

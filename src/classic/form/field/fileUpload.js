@@ -22,8 +22,8 @@
       me.initFineUploader()
     },
     initFineUploader: function () {
-      var me = this,
-        button = document.createElement('div')
+      var me = this
+      var button = document.createElement('div')
       me.uploader = new qq.FineUploaderBasic(_.extend({
         button: button,
         multiple: false,

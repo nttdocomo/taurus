@@ -51,9 +51,19 @@
   renderTo: $body.find('#example-1'),
   fieldLabel: '应用平台',
   buttonOnly: true,
-  onProgress: function (id, name, uploadedBytes, totalBytes) {
-    progressBar.show()
-    progressBar.set(uploadedBytes / totalBytes)
+  fineUploaderOptions: {
+    callbacks: {
+      onProgress: function (id, name, uploadedBytes, totalBytes) {
+        progressBar.show()
+        progressBar.set(uploadedBytes / totalBytes)
+      },
+      onSubmit: function (id, name) {
+        console.log(arguments)
+      },
+      onError: function (id, name, errorReason, xhr) {
+        console.log(arugments)
+      }
+    }
   }
 })</code>
 					</pre>
@@ -64,10 +74,20 @@
 					<pre>
 						<code class="language-javascript">new FileButton({
   renderTo: $body.find('#example-2'),
-  text:'上传',
-  onProgress: function (id, name, uploadedBytes, totalBytes) {
-    progressBar.show()
-    progressBar.set(uploadedBytes / totalBytes)
+  text: '上传',
+  fineUploaderOptions: {
+    callbacks: {
+      onProgress: function (id, name, uploadedBytes, totalBytes) {
+        progressBar.show()
+        progressBar.set(uploadedBytes / totalBytes)
+      },
+      onSubmit: function (id, name) {
+        console.log(arguments)
+      },
+      onError: function (id, name, errorReason, xhr) {
+        console.log(arugments)
+      }
+    }
   }
 })</code>
 					</pre>
