@@ -242,9 +242,10 @@ define(function (require) {
         menu: {
           items: [{
     				text:'Item 1',
-            handler: function(){
-              console.log(this.parentMenu.ownerItem.$widgetRecord)
-              console.log(arguments)
+            onClick: function(){
+              console.log(this)
+              //console.log(this.parentMenu.ownerItem.$widgetRecord)
+              //console.log(arguments)
             }
     			}]
         }
