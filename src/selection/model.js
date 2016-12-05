@@ -48,6 +48,24 @@
       }
       this.views.push(view)
     },
+
+    /**
+     * A fast reset of the selections without firing events, updating the ui, etc.
+     * For private usage only.
+     * @private
+     */
+    clearSelections: function() {
+        // Will be a Collection in this and DataView classes.
+        // Will be an Ext.grid.selection.Selection instance for Spreadsheet.
+        // API used in here, clear() is common.
+        var selected = this.getSelected();
+
+        // reset the entire selection to nothing
+        if (selected) {
+            selected.reset();
+        }
+        this.lastSelected = null;
+    },
     doMultiSelect: function (records, keepExisting, suppressEvent) {
       var me = this
       var selected = me.selected
@@ -156,6 +174,9 @@
       var selections = me.store.models
       me.doDeselect(selections, suppressEvent)
     },
+    getSelected: function(){
+      return this.selected
+    },
 
     /**
      * Selects all records in the view.
@@ -210,6 +231,10 @@
         case 'MULTI':
           me.selectWithEvent(record, keyEvent)
       }
+    },
+    refresh: function(){
+      var me = this
+      me.clearSelections()
     },
 
     /**

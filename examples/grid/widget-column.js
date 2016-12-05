@@ -232,22 +232,32 @@ define(function (require) {
       sortable: false,
       dataIndex: 'lastChange'
     }, {
-      text: '',
+      text: '操作',
       'class': WidgetColumn,
-      widget: {
+      widget: [{
         'class': Button,
         scale: 'xs',
         text: '按钮',
+        ui:'link',
         menu: {
           items: [{
-    				text:'Item 1'
+    				text:'Item 1',
+            handler: function(){
+              console.log(this.parentMenu.ownerItem.$widgetRecord)
+              console.log(arguments)
+            }
     			}]
-        },
+        }
+      },{
+        'class': Button,
+        scale: 'xs',
+        text: '按钮',
+        ui:'link',
         handler: function () {
           console.log(this.$widgetRecord)
           console.log(arguments)
         }
-      }
+      }]
     }],
     collection: collection,
     renderTo: $body

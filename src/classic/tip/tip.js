@@ -17,7 +17,7 @@
 }(this, function(Base){
 	return Base.extend({
 		className:'tooltip',
-	    anchor:'left',
+	  anchor:'left',
 		hidden: true,
 		childEls:{
 			'bodyEl' : '.tooltip-inner'

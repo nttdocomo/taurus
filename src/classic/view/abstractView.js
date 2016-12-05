@@ -166,7 +166,9 @@
       console.log(arguments)
     },
     refresh: function () {
-      var me = this,collection = me.collection
+      var me = this
+      var collection = me.collection
+      var selModel = me.selectionModel
       if (!me.rendered) {
         return
       }
@@ -178,6 +180,11 @@
                 me.collectNodes(targetEl.dom)
                 me.updateIndexes(0)
             }*/
+      
+      // Some subclasses do not need to do this. TableView does not need to do this - it renders selected class using its tenmplate.
+      if (me.refreshSelmodelOnRefresh !== false) {
+          selModel.refresh();
+      }
       me.trigger('refresh', me, collection)
     },
     render: function () {
