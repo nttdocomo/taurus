@@ -202,6 +202,7 @@ define(function (require) {
     width: 600,
     emptyText: '空的',
     title: 'Array Grid',
+    refreshSelmodelOnRefresh: true,
     selType: CheckboxModel,
     columns: [{
       text: 'Company',

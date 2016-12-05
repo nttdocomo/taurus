@@ -169,6 +169,12 @@
       }
     },
 
+    // After refresh, ensure that the header checkbox state matches
+    refresh: function() {
+      this._super.apply(this, arguments)
+      this.updateHeaderState()
+    },
+
     /**
      * @private
      */

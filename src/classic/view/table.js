@@ -58,6 +58,7 @@
         taurus.baseCSSPrefix + 'grid-cell ' + taurus.baseCSSPrefix + 'grid-td' // for styles shared between cell and rowwrap
       ]
     },
+    refreshSelmodelOnRefresh: false,
     constructor: function (config) {
       Base.call(this, config)
     },

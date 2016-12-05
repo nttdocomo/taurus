@@ -149,6 +149,7 @@
                 	columnLines: me.columnLines,
 	                headerCt: me.headerCt,
 	                navigationModel: NavigationModel,
+	                refreshSelmodelOnRefresh: me.refreshSelmodelOnRefresh,
 	                panel: me,
 	                features: me.features,
 	                emptyText: me.emptyText || ''
