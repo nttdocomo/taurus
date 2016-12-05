@@ -560,7 +560,7 @@
     update: function (htmlOrData) {
       var me = this
       if (_.isString(htmlOrData)) {
-        me.bodyEl.html(htmlOrData)
+        (me.bodyEl || me.$el).html(htmlOrData)
       }
     },
     updateLayout: function () {
