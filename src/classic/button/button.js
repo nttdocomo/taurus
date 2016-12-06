@@ -50,7 +50,7 @@
     iconBeforeText: false,
     _hasIconCls: taurus.baseCSSPrefix + 'btn-icon',
 
-    tpl: '<%if(iconBeforeText){%><%=icon%><%}%><%=text%><%if(menu){%> <span class="caret"></span><%}%>',
+    tpl: '<%if(split){%><button><%}%><%if(iconBeforeText){%><%=icon%><%}%><%=text%><%if(menu){%> <span class="caret"></span><%}%><%if(split)%><%%>',
     iconTpl: '<i id="<%=id%>-btnIconEl" class="<%=_hasIconCls%> <%=iconCls%>" style="<%if(iconUrl){%>background-image:url(<%=iconUrl%>);<%}%>"></i>',
     pressedCls: 'active',
     tagName: 'button',
@@ -109,6 +109,14 @@
       Base.prototype.enable.apply(me, arguments)
       me.$el.removeClass(me._disabledCls)
     },
+    _ensureElement: function () {
+      var me = this
+      if (me.split) {
+        me.tagName = 'div'
+        me.baseCls = taurus.baseCSSPrefix + 'btn-group'
+      }
+      me._super.apply(me, arguments)
+    },
 
     /**
      * @private
@@ -126,6 +134,7 @@
       var me = this
       return $.extend({
         text: me.text || '',
+        split: me.isSplitButton,
         menu: !_.isUndefined(me.menu),
         comp: me,
         icon: me.renderIcon({
