@@ -413,6 +413,7 @@
       var me = this
       me.hidden = true
       me.$el.hide()
+      me.trigger('hide')
       return me
     },
     beforeRender: function () {
