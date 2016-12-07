@@ -77,87 +77,87 @@ define(function(require) {
 			fieldLabel : 'Company:'
 		}, {
 			'class':Text,
-            fieldLabel: 'Email',
-            name: 'email',
-            allowBlank: false
-        }, {
+      fieldLabel: 'Email',
+      name: 'email',
+      allowBlank: false
+    }, {
 			'class':DateType,
 			width:200,
-            startDate:'09/08/2015',
-            fieldLabel: 'DOB',
-            name: 'dob'
-        }, {
+      startDate:'09/08/2015',
+      fieldLabel: 'DOB',
+      name: 'dob'
+    }, {
 			'class':DateTime,
-            fieldLabel: 'DOB',
-            name: 'dob',
-            value:1402689600000
-        }, {
+      fieldLabel: 'DOB',
+      name: 'dob',
+      value:1402689600000
+    }, {
 			'class':Number,
-            fieldLabel: 'Age',
-            name: 'age',
-            minValue: 0,
-            maxValue: 100
-        }, {
+      fieldLabel: 'Age',
+      name: 'age',
+      minValue: 0,
+      maxValue: 100
+    }, {
 			'class':Time,
-            fieldLabel: 'Time Field',
-            name: 'time',
-            minValue: '6:00 AM',
-            maxValue: '8:00 PM',
-        },{
-        	'class':FieldContainer,
-            fieldLabel: 'Container',
-            direction:'column',
-            items:[{
+      fieldLabel: 'Time Field',
+      name: 'time',
+      minValue: '6:00 AM',
+      maxValue: '8:00 PM',
+    },{
+    	'class':FieldContainer,
+      fieldLabel: 'Container',
+      direction:'column',
+      items:[{
 				'class':Time,
-	            name: 'time',
-	            width:100,
-	            editable:false,
-	            minValue: '6:00 AM',
-	            maxValue: '8:00 PM',
-	        },{
+        name: 'time',
+        width:100,
+        editable:false,
+        minValue: '6:00 AM',
+        maxValue: '8:00 PM',
+    	},{
 				'class':Text,
-	            width:200,
-	            name: 'age'
-	        }]
-        }, {
+        width:200,
+        name: 'age'
+      }]
+    }, {
 			'class':FieldContainer,
-            fieldLabel: '有效日期',
-            direction:'column',
-            items:[{
-            	'class':DateType,
-            	width:150,
-	            name: 'start'
-            },{
-	        	'class':Splitter,
-	        	text:'至'
-	        },{
-            	'class':DateType,
-            	width:150,
-	            name: 'end'
-            }]
-        },{
-        	'class':FieldContainer,
-            fieldLabel: 'Container',
-            direction:'column',
-            items:[{
+      fieldLabel: '有效日期',
+      direction:'column',
+      items:[{
+      	'class':DateType,
+      	width:150,
+        name: 'start'
+      },{
+	    	'class':Splitter,
+	    	text:'至'
+	    },{
+      	'class':DateType,
+      	width:150,
+        name: 'end'
+      }]
+    },{
+    	'class':FieldContainer,
+      fieldLabel: 'Container',
+      direction:'column',
+      items:[{
 				'class':Time,
-	            name: 'start',
-	            width:100,
-	            editable:false,
-	            minValue: '6:00 AM',
-	            maxValue: '8:00 PM',
-	        },{
-	        	'class':Splitter,
-	        	text:'至'
-	        },{
+        name: 'start',
+        width:100,
+        editable:false,
+        minValue: '6:00 AM',
+        maxValue: '8:00 PM',
+      },{
+      	'class':Splitter,
+      	text:'至'
+      },{
 				'class':Time,
-	            name: 'end',
-	            width:100,
-	            editable:false,
-	            minValue: '6:00 AM',
-	            maxValue: '8:00 PM',
-	        }]
-        },{
+        name: 'end',
+        width:100,
+        editable:false,
+        minValue: '6:00 AM',
+        maxValue: '8:00 PM',
+      }]
+    },{
 			'class':RadioGroup,
 			fieldLabel : '应用平台:',
 			msgTarget:'under',
@@ -179,9 +179,10 @@ define(function(require) {
             text: 'Save',
             className:'btn-primary',
             handler: function() {
-                if(this.getForm().isValid()){
-                	console.log(this.getForm().getValues());
-                }
+            	console.log(this.getForm().getValues());
+              if(this.getForm().isValid()){
+              	console.log(this.getForm().getValues());
+              }
             }
         },{
             text: 'Cancel',
@@ -233,26 +234,29 @@ define(function(require) {
 				fieldLabel : '应用平台:',
 				items:[{
 					boxLabel:'iOS',
-					name:'type'
+					name:'type',
+					inputValue:'ios'
 				},{
 					boxLabel:'Android',
-					name:'type'
+					name:'type',
+					inputValue:'android'
 				}],
 				name : 'platform'
 			}]
 		}],
 		buttons: [{
-            text: 'Save',
-            className:'btn-primary',
-            handler: function() {
-                this.up('form').getForm().isValid();
-            }
-        },{
-            text: 'Cancel',
-            className:'btn-default',
-            handler: function() {
-                this.getForm().reset();
-            }
-        }]
+      text: 'Save',
+      className:'btn-primary',
+      handler: function() {
+        console.log(this.getForm().isValid())
+        console.log(this.getForm().getValues());
+      }
+    },{
+      text: 'Cancel',
+      className:'btn-default',
+      handler: function() {
+        this.getForm().reset();
+      }
+    }]
 	});
 });

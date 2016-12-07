@@ -21,6 +21,7 @@
     ascSortCls: 'column-header-sort-ASC',
     descSortCls: 'column-header-sort-DESC',
     sortable: false,
+    stopSelection:true,
     rendererNames: {
       column: 'renderer',
       edit: 'editRenderer',
@@ -147,7 +148,11 @@
      * @param {Ext.event.Event} e Original event
      */
     processEvent: function (type, view, cell, recordIndex, cellIndex, e) {
-      /*return this.trigger.apply(this, arguments);*/
+      var me = this
+      var key = type === 'keydown' && e.getKey()
+      var ret
+      e.stopSelection = !key && me.stopSelection
+      return this.trigger.apply(this, arguments);
     },
     setupRenderer: function (type) {
       type = type || 'column'

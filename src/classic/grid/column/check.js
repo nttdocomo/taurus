@@ -33,6 +33,13 @@
         cls += ' ' + cssPrefix + 'grid-checkcolumn-checked'
       }
       return '<div class="' + cls + '" role="button" tabIndex="0"></div>'
+    },
+    processEvent: function (type, view, cell, recordIndex, cellIndex, e) {
+      var me = this
+      var key = type === 'keydown' && e.getKey()
+      var ret
+      e.stopSelection = !key && me.stopSelection;
+      return ret
     }
   })
 }))

@@ -33,7 +33,7 @@
 	    menuHideDelay:200,
 	    clickHideDelay:0,
 	    activeCls:'active',
-		tpl:'<a href="<%if(href){%><%=href%><%}else{%>#<%}%>"><%=text%><%if(menu){%> <span class="caret"></span><%}%></a>',
+		tpl:'<<%if(href){%>a href="<%=href%>"<%}else{%>span<%}%>><%=text%><%if(menu){%> <span class="caret"></span><%}%></<%if(href){%>a<%}else{%>span<%}%>>',
 		activate: function(skipCheck) {
 	        var me = this;
 

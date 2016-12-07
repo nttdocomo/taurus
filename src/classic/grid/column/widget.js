@@ -57,6 +57,8 @@
       me.freeWidgetStack = [widget = me.getFreeWidget()]
       me.setupViewListeners(me.getView())
     },
+    // Cell must be left blank
+    defaultRenderer: taurus.emptyFn, 
     getDefaultWidgetUI: function () {
       return this.defaultWidgetUI
     },
@@ -87,9 +89,14 @@
     },
     updateWidget: function(widgets, cell, record, isFixedSize){
       var me = this
+      var dataIndex = me.dataIndex
       _.each(widgets, function(widget){
         widget.$widgetRecord = record
         widget.$widgetColumn = me
+        // Call the appropriate setter with this column's data field
+        if (widget.defaultBindProperty && dataIndex) {
+          widget.setConfig(widget.defaultBindProperty, record.get(dataIndex));
+        }
         var el = widget.el
         var rendered = widget.rendered
         if (el && rendered) {

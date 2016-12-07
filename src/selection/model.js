@@ -223,6 +223,9 @@
       return this.selected ? this.selected.contains(record) : false
     },
     onNavigate: function (e) {
+      if (!e.record || this.vetoSelection(e.keyEvent)) {
+        return;
+      }
       console.log('onNavigate')
       var me = this
       var record = e.record
@@ -273,6 +276,11 @@
         }
       } else {
         me.callParent([record, e, isSelected])
+      }
+    },
+    vetoSelection: function(e){
+      if (e.stopSelection) {
+        return true;
       }
     },
 
