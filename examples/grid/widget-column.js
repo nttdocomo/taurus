@@ -276,21 +276,58 @@ define(function (require) {
     collection: collection,
     renderTo: $body
   })
-  table.view.selectionModel.on({
-    'select': function () {
-      console.log('select')
-      console.log(arguments)
-    },
-    'deselect': function () {
-      console.log('deselect')
-      console.log(arguments)
-    }
-  })
-  new Button({
-    renderTo: $body,
-    text: 'asdasdads',
-    handler: function () {
-      console.log(table.view.selectionModel.selected)
-    }
+  new Table({
+    loading: true,
+    frame: true,
+    refreshable: true,
+    collapsible: true,
+    height: 350,
+    width: 600,
+    emptyText: '空的',
+    title: 'Array Grid',
+    columns: [{
+      text: 'Company',
+      flex: 1,
+      sortable: false,
+      dataIndex: 'company',
+      renderer: function (value) {
+        return value
+      }
+    }, {
+      text: 'Price',
+      flex: 1,
+      sortable: true,
+      dataIndex: 'price'
+    }, {
+      text: 'Change',
+      width: 85,
+      sortable: true,
+      dataIndex: 'change'
+    }, {
+      text: '% Change',
+      width: 105,
+      sortable: true,
+      dataIndex: 'pctChange'
+    }, {
+      text: 'Last Change',
+      width: 105,
+      sortable: false,
+      dataIndex: 'lastChange'
+    }, {
+      text: '操作',
+      'class': WidgetColumn,
+      widget: [{
+        'class': Button,
+        scale: 'xs',
+        text: '按钮',
+        ui:'link',
+        handler: function () {
+          console.log(this.$widgetRecord)
+          console.log(arguments)
+        }
+      }]
+    }],
+    collection: collection,
+    renderTo: $body
   })
 })

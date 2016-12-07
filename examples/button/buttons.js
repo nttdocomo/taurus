@@ -7,6 +7,7 @@
 define(function (require) {
   require('backbone')
   var Button = require('../../src/classic/button/button')
+  var Split = require('../../src/classic/button/split')
   var FileButton = require('../../src/classic/button/fileButton')
 	var chance = require('chance')
   var $body = $('#main')
@@ -95,5 +96,9 @@ define(function (require) {
     renderTo: $body,
     text: chance.word(),
     href: '/google.com'
+  })
+  new Split({
+    renderTo: $body,
+    text: chance.word()
   })
 })
