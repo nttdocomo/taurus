@@ -282,7 +282,28 @@
      */
     onDisable: function () {},
     onShow: function () {},
-
+    setConfig: function(name, value, options) {
+      // options can have the following properties:
+      // - defaults `true` to only set the config(s) that have not been already set on
+      // this instance.
+      // - strict `false` to apply properties to the instance that are not configs,
+      // and do not have setters.
+      var me = this
+      var config;
+      if (name) {
+        if (typeof name === 'string') {
+          config = {};
+          config[name] = value;
+        } else {
+          config = name;
+        }
+        _.each(config, function(value, key){
+          me['set' + taurus.util.capitalize(key)](value)
+        })
+        //me.getConfigurator().reconfigure(me, config, options);
+      }
+      return me;
+    },
     setLocalXY: function (x, y) {
       this.$el.css({ top: y, left: x })
     },

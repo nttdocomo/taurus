@@ -107,6 +107,7 @@
 
       return {
         'class': Column,
+        stopSelection:false,
         ignoreExport: true,
         isCheckerHd: showCheck,
         text: '&#160;',

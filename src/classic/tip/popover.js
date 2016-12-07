@@ -17,12 +17,19 @@
 }(this, function(Tip){
 	return Tip.extend({
 		className:'popover',
+		baseCls:'popover',
 		tpl:'<div class="arrow"></div><%if(title){%><h3 class="popover-title"><%=title%></h3><%}%><div class="popover-content"><%=content%></div>',
+    childEls: {
+      'frameBody': '.popover-content'
+    },
 		getTplData:function(){
 			return {
 				title:this.title,
 				content:this.content
 			}
+		},
+		show: function(){
+			this._super()
 		},
 
     // @private

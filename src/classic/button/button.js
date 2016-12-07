@@ -70,6 +70,7 @@
     events: {
       'mousedown': 'onMouseDown'
     },
+    defaultBindProperty: 'text',
     childEls: {
       'btnIconEl': '[id$="btnIconEl"]'
     },
@@ -277,6 +278,7 @@
     },
 
     setText: function (text) {
+      this.text = text
       this.$el.text(text)
     },
 

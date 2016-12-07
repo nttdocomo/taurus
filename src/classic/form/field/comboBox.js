@@ -316,7 +316,7 @@
 
 				}*/
 				me.collapse();
-                --me.suspendCheckChange;
+        --me.suspendCheckChange;
 			}
 			me._super.apply(this,arguments);
 			//}

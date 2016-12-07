@@ -18,6 +18,7 @@
 }(this, function (Column, _, taurus) {
   return Column.extend({
     actionIconCls: taurus.baseCSSPrefix + 'action-col-icon',
+    stopSelection:true,
     actionIdRe: new RegExp(taurus.baseCSSPrefix + 'action-col-(\\d+)'),
     initialize: function (config) {
       var me = this

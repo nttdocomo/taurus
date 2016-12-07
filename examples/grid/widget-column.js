@@ -194,6 +194,18 @@ define(function (require) {
       'pctChange': 1.63,
       'lastChange': '9/1 12:00am'
     }])
+  var CustomButton = Button.extend({
+    setText: function(value){
+      var text
+      if (value < 0) {
+        text = 'alert'
+      } else {
+        text = 'buy'
+      }
+      this.text = text
+      this.$el.text(text)
+    }
+  })
   var table = new Table({
     loading: true,
     frame: true,
@@ -234,6 +246,7 @@ define(function (require) {
     }, {
       text: '操作',
       'class': WidgetColumn,
+      dataIndex: 'change',
       widget: [{
         'class': Button,
         scale: 'xs',
@@ -250,7 +263,7 @@ define(function (require) {
     			}]
         }
       },{
-        'class': Button,
+        'class': CustomButton,
         scale: 'xs',
         text: '按钮',
         ui:'link',

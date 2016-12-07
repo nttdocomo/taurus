@@ -253,12 +253,28 @@
 		getTargetEl:function(){
 			return this.$el.find('> div:eq(0)');
 		},
-
-	    /*
-	     * Don't return any data for submit; the form will get the info from the individual checkboxes themselves.
-	     */
-	    getSubmitData: function() {
-	        return null;
-	    }
+		/*getValue : function() {
+			var values = {}, box = this.getBoxes(':checked');
+			return box.val();
+		},*/
+		getSubmitData:function(){
+			var values = {}, boxes = this.getBoxes(':checkbox'), b, bLen = boxes.length, box, name, inputValue, bucket;
+			_.each(boxes,function(box,i) {
+				name = box.getName();
+				value = box.getValue();
+				inputValue = box.inputValue;
+				
+				if (values.hasOwnProperty(name)) {
+            bucket = values[name];
+            if (!_.isArray(bucket)) {
+                bucket = values[name] = [bucket];
+            }
+            bucket.push(inputValue);
+        } else {
+            values[name] = inputValue;
+        }
+			});
+			return values;
+		}
 	});
 }));
