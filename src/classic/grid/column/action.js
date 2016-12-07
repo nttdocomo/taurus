@@ -138,7 +138,7 @@
         item = me.items[parseInt(match[1], 10)]
         item.handler.apply(this, [view, recordIndex, cellIndex, item, e, record, row])
       }
-      return Column.prototype.initComponent.apply(this, arguments)
+      return me._super.apply(me, arguments)
     }
   })
 }))
