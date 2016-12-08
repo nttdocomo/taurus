@@ -26,7 +26,7 @@ define(function (require) {
       }
     }
   })
-  new FileButton({
+  var fileButton = new FileButton({
     renderTo: $body.find('#example-2'),
     text: '上传',
     fineUploaderOptions: {
@@ -44,6 +44,7 @@ define(function (require) {
       }
     }
   })
+  fileButton.setText('asdasda')
   var progressBar = new ProgressBar({
     renderTo: $body,
     isTrickle: false

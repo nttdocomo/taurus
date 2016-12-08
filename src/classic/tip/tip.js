@@ -16,7 +16,7 @@
 	}
 }(this, function(Base){
 	return Base.extend({
-		className:'tooltip',
+		baseCls:'tooltip',
 	  anchor:'left',
 		hidden: true,
 		childEls:{
