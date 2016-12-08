@@ -20,6 +20,7 @@
     doc: taurus.$doc,
     baseCls: taurus.baseCSSPrefix + 'component',
     ui: 'default',
+    items: undefined,
     constructor: function (config) {
       Backbone.View.call(this, config)
       this.initConfig(config)
@@ -191,6 +192,7 @@
       /*
        * if has selector then render, for let the user see the ui as soon as possible
        */
+      //this.initItems()
       if (this.renderTo) {
         this.render(this.renderTo, this.operation)
       }
@@ -216,15 +218,14 @@
       var me = this, items = me.items
       if (!items || !(items instanceof ItemCollection)) {
         me.items = new ItemCollection()
+        if (items) {
+          if (!_.isArray(items)) {
+            items = [items]
+          }
+          me.add(items)
+        }
       }
       // me.items = []
-      if (items) {
-        if (!_.isArray(items)) {
-          items = [items]
-        }
-
-        me.add(items)
-      }
     },
 
     /**
