@@ -18,8 +18,8 @@
 	return Base.extend({
 		tpl:'<div class="modal-dialog"><div class="modal-content"><%if(header){%><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title"><%=title%></h4></div><%}%><div class="modal-body"><%=content%></div><%=footer%></div></div>',
 		className:'modal fade',
-		content:null,
-		header:true,
+		content: null,
+		header: true,
 		fullscreen:false,
 		closeAction:'destroy',
 		events:{
