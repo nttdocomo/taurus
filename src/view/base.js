@@ -419,7 +419,28 @@
     },
     beforeRender: function () {
       var me = this
+      me.setScale(me.scale)
       me.setUI(me.ui)
+    },
+
+    /**
+     * Method to change the scale of the button. See {@link #scale} for allowed configurations.
+     * @param {String} scale The scale to change to.
+     */
+    setScale: function (scale) {
+      if(!scale){
+        return
+      }
+      var me = this
+      var ui = me.ui.replace('-' + me.scale, '')
+
+      // check if it is an allowed scale
+      /*if (!Ext.Array.contains(me.allowedScales, scale)) {
+        throw('#setScale: scale must be an allowed scale (' + me.allowedScales.join(', ') + ')')
+      }*/
+
+      me.scale = scale
+      me.$el.addClass(me.baseCls + '-' + scale)
     },
     render: function (renderTo, operation) {
       var me = this

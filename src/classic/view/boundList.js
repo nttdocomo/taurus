@@ -133,7 +133,7 @@
     },
     alignTo: function (element, position, offsets) {
       var me = this
-      this.$el.css('z-index', '1051')
+      //this.$el.css('z-index', '1051')
       if (this.lazyload) {
         me.$el.find('img.lazy').lazyload({
           container: me.$el

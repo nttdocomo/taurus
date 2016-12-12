@@ -16,11 +16,12 @@
 	}
 }(this, function(Base){
 	return Base.extend({
-		tpl:'<div class="modal-dialog"><div class="modal-content"><%if(header){%><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title"><%=title%></h4></div><%}%><div class="modal-body"><%=content%></div><%=footer%></div></div>',
+		tpl:'<div class="modal-dialog"><div class="modal-content"><%if(header){%><div class="modal-header"><h4 class="modal-title"><%=title%></h4></div><%}%><div class="modal-body"><%=content%></div><%=footer%><%if(closable){%><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><%}%></div></div>',
 		className:'modal fade',
 		content: null,
 		header: true,
 		fullscreen:false,
+		closable:true,
 		closeAction:'destroy',
 		events:{
 			'click [data-dismiss="modal"]' : 'close'
@@ -31,7 +32,8 @@
 				'header':this.header,
 				'title':this.title,
 				'content':this.content,
-				'footer':''
+				'footer':'',
+				'closable':this.closable
 			});
 		},
 		getTargetEl:function(){
