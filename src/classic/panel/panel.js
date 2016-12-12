@@ -18,7 +18,8 @@
 	return Base.extend({
 		autoHeight:false,
 		header:false,
-        frame: false,
+		hideHeaders:false,
+    frame: false,
 		referTo:$(window),
 		baseCls: 'panel',
 		tpl:'<%if(header){%><div class="panel-heading clearfix"><h4 class="panel-title"><%=title%></h4></div><%}%><div class="panel-body"><%=content%></div>',

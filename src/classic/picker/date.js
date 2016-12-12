@@ -152,7 +152,7 @@
 		},
 		fill : function() {
 			var d = new Date(this.viewDate), year = d.getFullYear(), month = d.getMonth(), currentDate = this.date.valueOf();
-			this.$el.find('.datepicker-days th:eq(1)').text(this.dates.months[month] + ' ' + year);
+			this.$el.find('.datepicker-days th:eq(1)').text(this.dates.months[month] + ' ' + year);//将当前年月显示在picker头
 			var prevMonth = new Date(year, month - 1, 28, 0, 0, 0, 0), day = this.getDaysInMonth(prevMonth.getFullYear(), prevMonth.getMonth());
 			prevMonth.setDate(day);
 			prevMonth.setDate(day - (prevMonth.getDay() - this.weekStart + 7) % 7);
