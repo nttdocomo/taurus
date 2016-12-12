@@ -4,17 +4,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./picker', '../../view/boundList', '../../../selection/dataViewModel', 'underscore', 'backbone', '../../../lang/event', 'jquery.scrollIntoView'], factory)
+      define(['./picker', '../../view/boundList', '../../../selection/dataViewModel', '../../util/storeHolder', 'underscore', 'backbone', '../../../lang/event', 'jquery.scrollIntoView'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./picker'), require('../../view/boundList'), require('../../../selection/dataViewModel'), require('underscore'), require('backbone'), require('../../../lang/event'), require('jquery.scrollIntoView'))
+        return factory(require('./picker'), require('../../view/boundList'), require('../../../selection/dataViewModel'), require('../../../util/storeHolder'), require('underscore'), require('backbone'), require('../../../lang/event'), require('jquery.scrollIntoView'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./picker'), require('../../view/boundList'), require('../../../selection/dataViewModel'), require('underscore'), require('backbone'), require('../../../lang/event'), require('jquery.scrollIntoView'))
+    module.exports = factory(require('./picker'), require('../../view/boundList'), require('../../../selection/dataViewModel'), require('../../../util/storeHolder'), require('underscore'), require('backbone'), require('../../../lang/event'), require('jquery.scrollIntoView'))
   }
-}(this, function (Picker, BoundList, DataViewModel, _, Backbone) {
+}(this, function (Picker, BoundList, DataViewModel, StoreHolder, _, Backbone) {
   return Picker.extend({
     allQuery: '',
     /**
@@ -31,6 +31,12 @@
     initialize: function () {
       Picker.prototype.initialize.apply(this, arguments)
     // this.collection.on('reset',_.bind(this.expand,this))
+    },
+    initComponent: function() {
+      var me = this
+      var store = me.collection
+      me.bindStore(store, true, true)
+      me._super.apply(me, arguments)
     },
     initField: function () {
       // this.displayTpl = this.getDisplayTpl()
@@ -57,9 +63,6 @@
           me.doTypeAhead()
         }
       }
-    },
-    getPickerWidth: function () {
-      return this.triggerWrap.width()
     },
     alignPicker: function () {
       this.picker.setWidth(this.getPickerWidth())
@@ -89,6 +92,19 @@
       // Then ensure that vertically, the dropdown will fit into the space either above or below the inputEl.
       me.doAlign(position)
     // Picker.prototype.alignPicker.apply(this,arguments)
+    },
+    createPicker: function () {
+      var me = this,picker = me.picker = new BoundList($.extend({
+          displayField: me.displayField,
+          selectionModel: me.pickerSelectionModel,
+          collection: me.collection.clone()
+        }, me.listConfig))
+      picker.on({
+        'itemclick': me.onItemClick,
+        'refresh': _.bind(me.onListRefresh, me)
+      }, me)
+      // this.doAutoSelect()
+      return picker
     },
     delegateEvents: function (events) {
       var me = this,events = $.extend(events || {}, {
@@ -221,20 +237,35 @@
       }
       return params
     },
+    getPickerWidth: function () {
+      return this.triggerWrap.width()
+    },
+
+    getStoreListeners: function(store) {
+
+      // Don't bother with listeners on the dummy store that is provided for an unconfigured ComboBox
+      // prior to a real store arriving from a ViewModel. Nothing is ever going to be fired.
+      if (!store.length === 0) {
+        var me = this
+        var result = {
+          datachanged: me.onDataChanged,
+          load: me.onLoad,
+          exception: me.onException,
+          update: me.onStoreUpdate,
+          remove: me.checkValueOnChange
+        };
+
+        // If we are doing remote filtering, then mutating the store's filters should not
+        // result in a re-evaluation of whether the current value is still present in the store.
+        /*if (!store.getRemoteFilter()) {
+          result.filterchange = me.checkValueOnChange;
+        }*/
+
+        return result;
+      }
+    },
     getValue: function () {
       return this.value
-    },
-    createPicker: function () {
-      var me = this,picker = me.picker = new BoundList($.extend({
-          displayField: me.displayField,
-          collection: me.collection.clone()
-        }, me.listConfig))
-      picker.on({
-        'itemclick': me.onItemClick,
-        'refresh': _.bind(me.onListRefresh, me)
-      }, me)
-      // this.doAutoSelect()
-      return picker
     },
     getDisplayTpl: function () {
       if (this.displayTpl) {
@@ -259,7 +290,7 @@
     onBindStore: function (store, initial) {
       var me = this
       // This becomes our collection of selected records for the Field.
-      me.valueCollection = new Backbone.Collection()
+      var valueCollection = me.valueCollection = new Backbone.Collection()
       valueCollection.on({
         beginupdate: me.onValueCollectionBeginUpdate,
         endupdate: me.onValueCollectionEndUpdate
@@ -491,5 +522,5 @@
       Picker.prototype.enable.apply(this, arguments)
       this.$el.find('.form-trigger').attr('disabled', false)
     }
-  })
+  }).mixins(StoreHolder)
 }))

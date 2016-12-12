@@ -28,6 +28,14 @@
     config: {
       selected: []
     },
+
+    // lastSelected
+
+    /**
+     * @property {Boolean} isSelectionModel
+     * `true` in this class to identify an object as an instantiated {@link Ext.selection.Model selection model}, or subclass thereof.
+     */
+    isSelectionModel: true,
     init: function () {
       var me = this
 
@@ -222,6 +230,12 @@
       record = _.isNumber(record) ? this.store.get(record) : record
       return this.selected ? this.selected.contains(record) : false
     },
+
+    onBindStore: function(store, oldStore, initial) {
+      if (!initial) {
+        this.updateSelectedInstances(this.selected);
+      }
+    },
     onNavigate: function (e) {
       if (!e.record || this.vetoSelection(e.keyEvent)) {
         return;
@@ -277,6 +291,9 @@
       } else {
         me.callParent([record, e, isSelected])
       }
+    },
+    updateSelectedInstances: function (selected) {
+      
     },
     vetoSelection: function(e){
       if (e.stopSelection) {

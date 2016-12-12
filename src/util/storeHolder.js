@@ -26,12 +26,15 @@
         bindStore:function(store, initial, propertyName){
             var me = this
             propertyName = propertyName || 'store'
-            if (store) {
-                me[propertyName] = store
-                me.bindStoreListeners(store);
-                //me.onBindStore(store, oldStore);
-            } else {
-                me[propertyName] = null;
+            var oldStore = initial ? null : me[propertyName]
+            if(store !== oldStore){
+                if (store) {
+                    me[propertyName] = store
+                    me.bindStoreListeners(store);
+                    me.onBindStore(store, oldStore);
+                } else {
+                    me[propertyName] = null;
+                }
             }
             return me
         },

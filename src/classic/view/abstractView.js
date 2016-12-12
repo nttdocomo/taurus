@@ -153,6 +153,26 @@
         endupdate: me.onEndUpdate
       }
     },
+
+    onBindStore: function(store, oldStore) {
+      var me = this;
+
+      // A BufferedStore has to know to reload the most recent visible zone if its View is preserveScrollOnReload
+      /*if (me.store.isBufferedStore) {
+        me.store.preserveScrollOnReload = me.preserveScrollOnReload;
+      }
+      if (oldStore && oldStore.isBufferedStore) {
+        delete oldStore.preserveScrollOnReload;
+      }
+
+      me.setMaskBind(store);
+
+      // When unbinding the data store, the dataSource will be nulled out if it's the same as the data store.
+      // Restore it here.
+      if (!me.dataSource) {
+        me.dataSource = store;
+      }*/
+    },
     onSync: function () {
       this.refresh()
     },
@@ -202,8 +222,13 @@
       return this.selectionModel
     },
     applySelectionModel: function (selModel, oldSelModel) {
-      var SelModel = selModel.type
-      return new SelModel
+      if (selModel && selModel.isSelectionModel) {
+
+      } else {
+        var SelModel = selModel.type
+        selModel = new SelModel
+      }
+      return selModel
     }
   }).mixins(StoreHolder)
 }))
