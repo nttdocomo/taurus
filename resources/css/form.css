@@ -194,3 +194,7 @@ input.trigger-noedit, input.trigger-noedit:focus {
 .form-empty-field-default{
 	color:gray;
 }
+.tagfield-input-field {
+	border:0;
+	width: 100%;
+}

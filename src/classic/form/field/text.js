@@ -76,9 +76,9 @@
     initComponent: function () {
       var me = this,
         emptyCls = me.emptyCls
+      me.emptyUICls = emptyCls + ' ' + emptyCls + '-' + me.ui
       me._super.apply(me, arguments)
       me.fieldFocusCls = me.baseCls + '-focus'
-      me.emptyUICls = emptyCls + ' ' + emptyCls + '-' + me.ui
     },
     getErrors: function (value) {
       var errors = Base.prototype.getErrors.apply(this, arguments), regex = this.regex, validator = this.validator
@@ -142,6 +142,8 @@
         placeholder: placeholder,
         maxLength: maxLength,
         value: value,
+        emptyCls: me.emptyCls,
+        emptyText: me.emptyText,
         fieldCls: me.fieldCls + ((isEmpty && (placeholder || value)) ? ' ' + me.emptyUICls : '') + (me.allowBlank ? '' : ' ' + me.requiredCls)
       })
     },
