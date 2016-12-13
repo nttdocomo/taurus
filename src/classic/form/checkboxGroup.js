@@ -4,21 +4,22 @@
 (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./field/base','underscore','./field/checkbox'], factory);
+			define(['./fieldContainer','underscore','./field/checkbox'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./field/base'),require('underscore'),require('./field/checkbox'));
+				return factory(require('./fieldContainer'),require('underscore'),require('./field/checkbox'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./field/base'),require('underscore'),require('./field/checkbox'));
+		module.exports = factory(require('./fieldContainer'),require('underscore'),require('./field/checkbox'));
 	}
 }(this, function(Base,_,Checkbox) {
 	return Base.extend({
 		events : {
 			'change input' : 'checkChange'
 		},
+		//isFormField:false,
 		defaultType:Checkbox,
 		blankText : "You must select at least one item in this group",
 		//fieldSubTpl : '<%_.each(fields,function(field){%><%if(vertical){%><div><%}%><%if(field.boxLabel){%><label id="<%=field.cmpId%>-boxLabelEl" class="checkbox-inline"><%}%><input id="<%=field.id%>" type="<%=field.type%>" /><%if(field.boxLabel){%><%=field.boxLabel%></label><%}%><%if(vertical){%></div><%}%><%})%>',
@@ -258,7 +259,7 @@
 			return box.val();
 		},*/
 		getSubmitData:function(){
-			var values = {}, boxes = this.getBoxes(':checkbox'), b, bLen = boxes.length, box, name, inputValue, bucket;
+			/*var values = {}, boxes = this.getBoxes(':checkbox'), b, bLen = boxes.length, box, name, inputValue, bucket;
 			_.each(boxes,function(box,i) {
 				name = box.getName();
 				value = box.getValue();
@@ -273,8 +274,8 @@
         } else {
             values[name] = inputValue;
         }
-			});
-			return values;
+			});*/
+			return null;
 		}
 	});
 }));
