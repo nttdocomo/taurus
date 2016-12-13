@@ -120,7 +120,7 @@
 			});
 			_.each(lastSelected,function(item){
 				itemNode = picker.getNode(item);
-				if (itemNode) {
+				if (itemNode.length) {
 					picker.highlightItem(itemNode);
 					itemNode.scrollIntoView(false);
 				}
