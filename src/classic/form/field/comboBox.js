@@ -459,14 +459,6 @@
 	    },
 		valueToRaw : function(value) {
 			return Picker.prototype.valueToRaw.apply(this, [this.getDisplayValue()]);
-		},
-		disable:function(){
-			Picker.prototype.disable.apply(this,arguments);
-			this.$el.find('.form-trigger').attr('disabled',true);
-		},
-		enable:function(){
-			Picker.prototype.enable.apply(this,arguments);
-			this.$el.find('.form-trigger').attr('disabled',false);
-   		}
+		}
 	});
 }));
