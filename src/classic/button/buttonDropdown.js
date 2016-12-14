@@ -49,11 +49,13 @@ define(function(require){
             }
 		},
 		setMenu:function(){
-			this.menu = new Menu({
+			var menu = new Menu({
 				items:this.menu.items,
 				width:this.$el.width(),
 				renderTo:$(document.body)
 			})
+			menu.setOwnerCmp(me)
+			this.menu = menu
 		},
 		alignMenu:function(){
 			var me = this, menu = me.menu,position = {

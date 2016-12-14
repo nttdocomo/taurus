@@ -218,6 +218,17 @@
 	            }
 	            // Activating will focus, focusing will scroll the item into view.
 	        }
-	    }
+	    },        
+    setOwnerCmp: function(comp, instanced) {
+        var me = this;
+
+        me.parentMenu = comp.isMenuItem ? comp : null;
+        me.ownerCmp = comp;
+        /*me.registerWithOwnerCt();
+
+        delete me.hierarchicallyHidden;
+        me.onInheritedAdd(comp, instanced);
+        me.containerOnAdded(comp, instanced);*/
+    }
 	}));
 }));
