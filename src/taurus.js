@@ -249,11 +249,15 @@
 	taurus.aug = function() {
 		return taurus.augmentObject.apply({}, arguments)
 	};
-	taurus.augmentString = function(L, J) {
+	taurus.augmentString = function(L, J, force) {
 		var K = window;
 		var I = L.split(".");
 		for (var H = 0, G = I.length; H < G; ++H) {
-			K = K[I[H]] = K[I[H]] || (( typeof I[H + 1] !== "undefined") ? {} : J)
+			if(force){
+				K = K[I[H]] = J
+			} else {
+				K = K[I[H]] = K[I[H]] || (( typeof I[H + 1] !== "undefined") ? {} : J)
+			}
 		}
 		return K
 	};

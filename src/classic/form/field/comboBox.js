@@ -27,6 +27,7 @@
 		queryMode : 'remote',
 		queryParam : 'query',
 		triggerAction: 'all',
+		allQuery:'',
 		triggerTpl : '<div class="input-group-btn"><button class="btn form-trigger btn-default" type="button"<%if(disabled){%> disabled="<%=disabled%>"<%}%>><span class="caret"></span></button></div>',
 		initialize : function() {
 			Picker.prototype.initialize.apply(this, arguments);
