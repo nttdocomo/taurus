@@ -237,7 +237,22 @@
     },
     refresh: function(){
       var me = this
+      var store = me.store
+      var toBeSelected = []
+      var oldSelections = me.selected
+      var len = oldSelections.length
+      for (i = 0; i < len; i++) {
+        selection = oldSelections.at(i);
+        rec = store.get(selection.cid);
+        if (rec) {
+          toBeSelected.push(rec);
+        }
+      }
       me.clearSelections()
+      if (toBeSelected.length) {
+        // perform the selection again
+        me.doSelect(toBeSelected, false, false);
+      }
     },
 
     /**
