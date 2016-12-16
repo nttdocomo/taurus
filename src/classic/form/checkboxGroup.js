@@ -4,17 +4,17 @@
 (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./fieldContainer','underscore','./field/checkbox'], factory);
+			define(['./fieldContainer','./field/field','underscore','./field/checkbox'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./fieldContainer'),require('underscore'),require('./field/checkbox'));
+				return factory(require('./fieldContainer'),require('./field/field'),require('underscore'),require('./field/checkbox'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./fieldContainer'),require('underscore'),require('./field/checkbox'));
+		module.exports = factory(require('./fieldContainer'),require('./field/field'),require('underscore'),require('./field/checkbox'));
 	}
-}(this, function(Base,_,Checkbox) {
+}(this, function(Base,Field,_,Checkbox) {
 	return Base.extend({
 		events : {
 			'change input' : 'checkChange'
@@ -277,5 +277,5 @@
 			});*/
 			return null;
 		}
-	});
+	}).mixins(Field);
 }));
