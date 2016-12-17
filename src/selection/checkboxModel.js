@@ -39,6 +39,7 @@
      */
     checkSelector: '.' + taurus.baseCSSPrefix + 'grid-row-checker',
     checkerOnCls: taurus.baseCSSPrefix + 'grid-hd-checker-on',
+    checkerMixCls: taurus.baseCSSPrefix + 'grid-hd-checker-mix',
     init: function () {
       var me = this
       this._super.apply(me, arguments)
@@ -201,7 +202,7 @@
       }
 
       if (views && views.length) {
-          me.toggleUiHeader(hdSelectStatus);
+          me.toggleUiHeader(storeCount, selectedCount);
       }
     },
 
@@ -219,18 +220,23 @@
      * @param {Boolean} isChecked
      * @private
      */
-    toggleUiHeader: function(isChecked) {
+    toggleUiHeader: function(storeCount, selectedCount) {
       var view     = this.views[0],
           headerCt = view.headerCt,
           checkHd  = headerCt.$el.find('> .column-header-checkbox')//child('gridcolumn[isCheckerHd]'),
-          cls = this.checkerOnCls;
-
-      if (checkHd) {
-          if (isChecked) {
-              checkHd.addClass(cls);
-          } else {
-              checkHd.removeClass(cls);
-          }
+          cls = this.checkerOnCls
+          mixCls = this.checkerMixCls
+      if (checkHd && storeCount > 0) {
+        if(storeCount === selectedCount){
+          checkHd.addClass(cls);
+        } else {
+          checkHd.removeClass(cls)
+        }
+        if(storeCount > selectedCount && selectedCount > 0){
+          checkHd.addClass(mixCls);
+        } else {
+          checkHd.removeClass(mixCls)
+        }
       }
     }
   })

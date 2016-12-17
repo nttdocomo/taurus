@@ -246,9 +246,9 @@ define(function (require) {
     }, {
       text: '操作',
       'class': WidgetColumn,
-      dataIndex: 'change',
       widget: [{
         'class': Button,
+        dataIndex: 'change',
         scale: 'xs',
         text: '按钮',
         ui:'link',

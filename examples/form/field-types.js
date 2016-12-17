@@ -16,6 +16,7 @@ define(function(require) {
 	FieldContainer = require("../../src/classic/form/fieldContainer"),
 	Splitter = require("../../src/classic/resizer/splitter"),
 	File = require("../../src/classic/form/field/file"),
+	Display = require("../../src/classic/form/field/display"),
 	Backbone = require("../../src/backbone"),
 	collection = new Backbone.Collection([{
 		name : "001",
@@ -95,6 +96,13 @@ define(function(require) {
 			'class':Number,
       fieldLabel: 'Age',
       name: 'age',
+      minValue: 0,
+      maxValue: 100
+    }, {
+			'class':Display,
+      fieldLabel: 'Age',
+      name: 'age',
+      value:'this is a display field',
       minValue: 0,
       maxValue: 100
     }, {

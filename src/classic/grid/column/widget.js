@@ -89,8 +89,8 @@
     },
     updateWidget: function(widgets, cell, record, isFixedSize){
       var me = this
-      var dataIndex = me.dataIndex
       _.each(widgets, function(widget){
+        var dataIndex = widget.dataIndex
         widget.$widgetRecord = record
         widget.$widgetColumn = me
         // Call the appropriate setter with this column's data field

@@ -20,62 +20,63 @@
     /**
 	     * @private
 	     */
-    clearValueOnEmpty: true,
-    delimiter: ', ',
-    isExpanded: false,
-    queryDelay: 1000,
-    queryMode: 'remote',
-    queryParam: 'query',
-    triggerAction: 'all',
-    triggerTpl: '<div class="input-group-btn"><button class="btn form-trigger btn-default" type="button"<%if(disabled){%> disabled="<%=disabled%>"<%}%>><span class="caret"></span></button></div>',
-    initialize: function () {
-      Picker.prototype.initialize.apply(this, arguments)
-    // this.collection.on('reset',_.bind(this.expand,this))
-    },
-    initField: function () {
-      // this.displayTpl = this.getDisplayTpl()
-      if (this.beforeInitField) {
-        this.beforeInitField.apply(this, arguments)
-      }
-      if (this.collection) {
-        if (!(this.collection instanceof Backbone.Collection)) {
-          this.collection = new this.collection
-        }
-        if (this.value && !_.isObject(this.value) && !this.collection.length) {
-          this.collection.fetch({
-            success: _.bind(Picker.prototype.initField, this)
-          })
-        } else {
-          Picker.prototype.initField.apply(this, arguments)
-        }
-      }
-    },
-    afterQuery: function () {
-      var me = this
-      if (me.collection.length) {
-        if (me.typeAhead) {
-          me.doTypeAhead()
-        }
-      }
-    },
-    getPickerWidth: function () {
-      return this.triggerWrap.width()
-    },
-    alignPicker: function () {
-      this.picker.setWidth(this.getPickerWidth())
-      var me = this, picker = me.getPicker(), position, heightAbove = taurus.getPositionAbove(this.$el), heightBelow = taurus.getPositionBelow(this.$el), height = picker.getHeight()
-      space = heightBelow
-      position = {
-        'my': 'left top',
-        'at': 'left bottom'
-      }
-      if (height > space - 5 && heightBelow < heightAbove) {
-        space = heightAbove
-        position = {
-          'my': 'left bottom',
-          'at': 'left top'
-        }
-      }
+	    clearValueOnEmpty: true,
+		delimiter : ', ',
+		isExpanded : false,
+		queryDelay:1000,
+		queryMode : 'remote',
+		queryParam : 'query',
+		triggerAction: 'all',
+		allQuery:'',
+		triggerTpl : '<div class="input-group-btn"><button class="btn form-trigger btn-default" type="button"<%if(disabled){%> disabled="<%=disabled%>"<%}%>><span class="caret"></span></button></div>',
+		initialize : function() {
+			Picker.prototype.initialize.apply(this, arguments);
+			//this.collection.on('reset',_.bind(this.expand,this));
+		},
+		initField : function() {
+			//this.displayTpl = this.getDisplayTpl();
+			if (this.beforeInitField) {
+				this.beforeInitField.apply(this, arguments);
+			}
+			if (this.collection) {
+				if (!(this.collection instanceof Backbone.Collection)) {
+					this.collection = new this.collection;
+				}
+				if (this.value && !_.isObject(this.value) && !this.collection.length) {
+					this.collection.fetch({
+						success : _.bind(Picker.prototype.initField, this)
+					});
+				} else {
+					Picker.prototype.initField.apply(this, arguments);
+				}
+			}
+		},
+		afterQuery : function() {
+			var me = this;
+			if (me.collection.length) {
+				if (me.typeAhead) {
+					me.doTypeAhead();
+				}
+			}
+		},
+		getPickerWidth:function(){
+			return this.triggerWrap.width()
+		},
+		alignPicker : function() {
+			this.picker.setWidth(this.getPickerWidth());
+			var me = this, picker = me.getPicker(), position, heightAbove = taurus.getPositionAbove(this.$el), heightBelow = taurus.getPositionBelow(this.$el), height = picker.getHeight();
+			space = heightBelow;
+			position = {
+				"my" : "left top",
+				"at" : "left bottom"
+			};
+			if (height > space - 5 && heightBelow < heightAbove) {
+				space = heightAbove;
+				position = {
+					"my" : "left bottom",
+					"at" : "left top"
+				};
+			}
 
       // Allow the picker to height itself naturally.
       /*if (picker.height) {
@@ -103,38 +104,38 @@
       Picker.prototype.delegateEvents.call(me, events)
     },
 
-    doTypeAhead: function () {
-      if (this.lastKey != Ext.EventObject.BACKSPACE && this.lastKey != Ext.EventObject.DELETE) {
-        this.onTypeAhead()
-      }
-    },
-    doAutoSelect: function () {
-      var me = this, picker = me.picker, lastSelected, itemNode, value = this.getValue()
-      if (value) {
-        value = $.makeArray(value)
-      } else {
-        value = []
-      }
-      lastSelected = this.collection.filter(function (model) {
-        return _.indexOf(value, model.get(me.valueField)) > -1
-      })
-      _.each(lastSelected, function (item) {
-        itemNode = picker.getNode(item)
-        if (itemNode) {
-          picker.highlightItem(itemNode)
-          itemNode.scrollIntoView(false)
-        }
-      })
-      if (picker && me.autoSelect && me.collection.length > 0) {
-        // Highlight the last selected item and scroll it into view
-        lastSelected = picker.getSelectionModel().lastSelected
-        itemNode = picker.getNode(lastSelected || 0)
-        if (itemNode) {
-          picker.highlightItem(itemNode)
-          itemNode.scrollIntoView(false)
-        }
-      }
-    },
+		doTypeAhead : function() {
+			if (this.lastKey != Ext.EventObject.BACKSPACE && this.lastKey != Ext.EventObject.DELETE) {
+				this.onTypeAhead();
+			}
+		},
+		doAutoSelect : function() {
+			var me = this, picker = me.picker, lastSelected, itemNode, value = this.getValue();
+			if (value) {
+				value = $.makeArray(value);
+			} else {
+				value = [];
+			}
+			lastSelected = this.collection.filter(function(model) {
+				return _.indexOf(value,model.get(me.valueField)) > -1;
+			});
+			_.each(lastSelected,function(item){
+				itemNode = picker.getNode(item);
+				if (itemNode.length) {
+					picker.highlightItem(itemNode);
+					itemNode.scrollIntoView(false);
+				}
+			});
+			if (picker && me.autoSelect && me.collection.length > 0) {
+				// Highlight the last selected item and scroll it into view
+				lastSelected = picker.getSelectionModel().lastSelected;
+				itemNode = picker.getNode(lastSelected || 0);
+				if (itemNode) {
+					picker.highlightItem(itemNode);
+					itemNode.scrollIntoView(false);
+				}
+			}
+		},
 
     doLocalQuery: function (queryString) {
       var me = this, rawValue = queryString, collection
@@ -468,28 +469,106 @@
       return data
     },
 
-    getSubmitValue: function () {
-      var value = this.getValue()
-      // If the value is null/undefined, we still return an empty string. If we
-      // don't, the field will never get posted to the server since nulls are ignored.
-      if (_.isNumber(value)) {
-        return value
-      }
-      if (_.isEmpty(value)) {
-        value = ''
-      }
-      return value
-    },
-    valueToRaw: function (value) {
-      return Picker.prototype.valueToRaw.apply(this, [this.getDisplayValue()])
-    },
-    disable: function () {
-      Picker.prototype.disable.apply(this, arguments)
-      this.$el.find('.form-trigger').attr('disabled', true)
-    },
-    enable: function () {
-      Picker.prototype.enable.apply(this, arguments)
-      this.$el.find('.form-trigger').attr('disabled', false)
-    }
-  })
-}))
+				if (selStart !== 0 && selStart !== len) {
+					me.setRawValue(newValue);
+					me.selectText(selStart, newValue.length);
+				}
+			}
+		},
+		setValue : function(value) {
+			var me = this;
+			if (value != null) {
+	            return me.doSetValue(value);
+	        }
+	        // Clearing is a special, simpler case.
+	        else {
+	            return me.doSetValue(null);
+	        }
+		},
+		doSetValue:function(value){
+			var me = this, displayField = me.displayField, valueField = me.valueField || displayField, processedValue = [], displayTplData = [], model, record, displayValue,
+			displayIsValue = me.displayField === me.valueField,
+			displayTplData = me.displayTplData || (me.displayTplData = []);
+			displayTplData.length = 0;
+			if (_.isUndefined(value)) {
+				return Picker.prototype.setValue.apply(me, value);
+			}
+			if (_.isString(value) && value == '') {
+				return Picker.prototype.setValue.apply(me, [value]);
+			}
+			value = $.makeArray(value);
+			for ( i = 0, len = value.length; i < len; i++) {
+				val = value[i];
+				if ((_.isString(val) || _.isNumber(val) || _.isObject(val)) && me.collection.length) {
+					if (_.isString(val) || _.isNumber(val)) {
+						record = me.collection.find(function(model) {
+							return model.get(valueField) == val;
+						});
+					}
+					if (_.isObject(val)) {
+						record = me.collection.find(function(model) {
+							var value;
+							if ( val instanceof Backbone.Model) {
+								value = val.get(valueField);
+							} else {
+								value = val[valueField];
+							}
+							return model.get(valueField) == value;
+						});
+					}
+				} else {
+					record = val;
+				}
+				if (record) {
+					if ( record instanceof Backbone.Model) {
+						record = record.toJSON();
+					}
+					displayTplData.push(record);
+					processedValue.push(record[valueField]);
+					me.updateValue();
+				} else {
+
+				}
+			}
+			me.displayTplData = displayTplData;
+			me.value = processedValue.length ? me.multiSelect ? processedValue : processedValue[0] || '' : value ? value : '';
+			me.applyEmptyText();
+			return Picker.prototype.setValue.apply(this, [this.value]);
+		},
+		updateValue:function(){
+			var me = this,
+            inputEl = me.inputEl;
+			if (inputEl && me.emptyText && !_.isEmpty(me.value)) {
+	            inputEl.removeClass(me.emptyCls);
+	        }
+		},
+		clearValue : function() {
+			this.setValue(null);
+		},
+		getSubTplData : function() {
+			var me = this,
+			displayValue = me.getDisplayValue(),
+			data = me._super.apply(this, arguments);
+			if(displayValue){
+				data.value = displayValue;
+			}
+			return data;
+		},
+
+	    getSubmitValue: function() {
+	        var value = this.getValue();
+	        // If the value is null/undefined, we still return an empty string. If we
+	        // don't, the field will never get posted to the server since nulls are ignored.
+	        if(_.isNumber(value)){
+	        	return value
+	        }
+	        if (_.isEmpty(value)) {
+	            value = '';
+	        }
+	        return value;
+	    },
+		valueToRaw : function(value) {
+			return Picker.prototype.valueToRaw.apply(this, [this.getDisplayValue()]);
+		}
+	});
+}));
