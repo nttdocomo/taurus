@@ -24,27 +24,63 @@
   }
 }(this, function (Class, Backbone, _) {
   return Class.extend({
-    bindComponent: function(view) {
+    bindComponent: function (view) {
       if (this.view !== view) {
-        this.view = view;
-        this.bindView(view);
+        this.view = view
+        this.bindView(view)
       }
     },
 
-    bindView: function(view) {
+    bindView: function (view) {
       var me = this
       var dataSource = view.collection
       var listeners
 
-
-      /*me.initKeyNav(view);
+      /*me.initKeyNav(view)
       if (!dataSource.isEmptyStore) {
-        me.setStore(dataSource);
+        me.setStore(dataSource)
       }*/
-      listeners = me.getViewListeners();
-      //listeners.destroyable = true;
-      me.viewListeners = me.viewListeners || [];
-      me.viewListeners.push(view.on(listeners));
+      listeners = me.getViewListeners()
+      // listeners.destroyable = true
+      me.viewListeners = me.viewListeners || []
+      me.viewListeners.push(view.on(listeners, me))
+    },
+
+    fireNavigateEvent: function (keyEvent) {
+      var me = this
+
+      me.trigger('navigate', {
+        navigationModel: me,
+        keyEvent: keyEvent,
+        previousRecordIndex: me.previousRecordIndex,
+        previousRecord: me.previousRecord,
+        previousItem: me.previousItem,
+        recordIndex: me.recordIndex,
+        record: me.record,
+        item: me.item
+      })
+    },
+
+    getViewListeners: function () {
+      var me = this
+
+      return {
+        containermousedown: me.onContainerMouseDown,
+        itemmousedown: me.onItemMouseDown,
+
+        // We focus on click if the mousedown handler did not focus because it was a translated "touchstart" event.
+        itemclick: me.onItemClick,
+        itemcontextmenu: me.onItemMouseDown
+      }
+    },
+
+    onItemClick: function (view, record, item, index, clickEvent) {
+      // If the mousedown that initiated the click has navigated us to the correct spot, just fire the event
+      if (this.record === record) {
+        this.fireNavigateEvent(clickEvent)
+      } else {
+        this.setPosition(index, clickEvent)
+      }
     }
   }).extend(Backbone.Events)
 }))

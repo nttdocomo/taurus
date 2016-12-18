@@ -25,6 +25,15 @@
 }(this, function (Base, StoreHolder, DataViewModel, NavigationModel, Backbone, _) {
   return Base.extend({
     config: {
+      // @cmd-auto-dependency { aliasPrefix: 'view.navigation.' }
+      /**
+       * @private
+       * The {@link Ext.view.NavigationModel} [default] alias to use.
+       * @since 5.0.1
+       */
+      navigationModel: {
+        type: 'default'
+      },
       selectionModel: {
         type: DataViewModel
       }
@@ -200,7 +209,7 @@
                 me.collectNodes(targetEl.dom)
                 me.updateIndexes(0)
             }*/
-      
+
       // Some subclasses do not need to do this. TableView does not need to do this - it renders selected class using its tenmplate.
       if (me.refreshSelmodelOnRefresh !== false) {
           selModel.refresh();

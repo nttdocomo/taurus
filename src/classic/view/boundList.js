@@ -4,17 +4,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./view', './boundListItem', 'underscore', 'backbone', 'taurus', 'jquery.lazyload'], factory)
+      define(['./view', './boundListItem', './boundListKeyNav', 'underscore', 'backbone', 'taurus', 'jquery.lazyload'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./view'), require('./boundListItem'), require('underscore'), require('backbone'), require('taurus'), require('jquery.lazyload'))
+        return factory(require('./view'), require('./boundListItem'), require('./boundListKeyNav'), require('underscore'), require('backbone'), require('taurus'), require('jquery.lazyload'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./view'), require('./boundListItem'), require('underscore'), require('backbone'), require('taurus'), require('jquery.lazyload'))
+    module.exports = factory(require('./view'), require('./boundListItem'), require('./boundListKeyNav'), require('underscore'), require('backbone'), require('taurus'), require('jquery.lazyload'))
   }
-}(this, function (Base, BoundListItem, _, Backbone, taurus) {
+}(this, function (Base, BoundListItem, BoundListKeyNav, _, Backbone, taurus) {
   return Base.extend({
     // tpl:'<%=content%>',
     id: 'listEl',
@@ -27,6 +27,7 @@
     childEls: ['listEl'],
     renderTo: $(document.body),
     itemSelector: 'li',
+    navigationModel: BoundListKeyNav,
     initialize: function () {
       var me = this
       me.$el.css('top', 0)
