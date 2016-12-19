@@ -29,24 +29,24 @@ define(function(require){
 		},
 		onTriggerClick:function(){
 			var me = this;
-	        if (me.menu) {
-	            me.showMenu(true);
-	        }
+      if (me.menu) {
+          me.showMenu(true);
+      }
 		},
 		showMenu:function(fromEvent){
-	        var me = this,
-	        menu = me.menu,
-	        onDocumentClick = function(){
-	        	menu.hide();
-	        	taurus.$doc.off('mousedown',onDocumentClick);
-	        }
+      var me = this,
+      menu = me.menu,
+      onDocumentClick = function(){
+      	menu.hide();
+      	taurus.$doc.off('mousedown',onDocumentClick);
+      }
 			if (menu.isVisible()) {
-                menu.hide();
-            } else {
-            	menu.show();
-            	taurus.$doc.on('mousedown',onDocumentClick);
+        menu.hide();
+      } else {
+      	menu.show();
+      	taurus.$doc.on('mousedown',onDocumentClick);
 				this.alignMenu();
-            }
+      }
 		},
 		setMenu:function(){
 			var menu = new Menu({

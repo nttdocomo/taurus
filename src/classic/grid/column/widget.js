@@ -91,6 +91,7 @@
       var me = this
       _.each(widgets, function(widget){
         var dataIndex = widget.dataIndex
+        var hasAttach = !!widget.onWidgetAttach
         widget.$widgetRecord = record
         widget.$widgetColumn = me
         // Call the appropriate setter with this column's data field
@@ -116,6 +117,11 @@
           //$(cell).empty()
           widget.render(cell)
         }
+        // back to the document body. Otherwise widget's layout may fail
+        // because there are no dimensions to measure when the callback is fired!
+        if (hasAttach) {
+          widget.onWidgetAttach.call(me, widget, record)
+        }
       })
     },
 
@@ -130,8 +136,9 @@
         var recordId = record.cid
         var cell = rows.get(itemIndex).cells[me.getVisibleIndex()].firstChild
         console.log(cell)
-        var widgets = me.liveWidgets[recordId] = oldWidgetMap[recordId] || me.getFreeWidget()
+        var widgets = me.liveWidgets[recordId] = /*oldWidgetMap[recordId] || */me.getFreeWidget()//TODO make the widget can reuse
         me.updateWidget(widgets, cell, record, isFixedSize)
+        // We have to run the callback *after* reattaching the Widget
       })
     },
 

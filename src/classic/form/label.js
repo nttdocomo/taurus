@@ -25,7 +25,8 @@
     showLabel: true,
     labelSeparator: ':',
     childEls: {
-      'inputEl': '.form-control'
+      'inputEl': '.form-control',
+      'labelEl': '.control-label'
     },
     getLabelStyle: function () {
       var labelPad = this.labelPad, labelStyle = ''

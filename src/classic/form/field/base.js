@@ -240,7 +240,7 @@
       return controlsStyle
     },
     isValid: function () {
-      return this.validateValue(this.processRawValue(this.getRawValue()))
+      return this.disabled || this.validateValue(this.processRawValue(this.getRawValue()))
     },
     validateValue: function (value) {
       var me = this,
