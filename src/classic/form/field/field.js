@@ -73,6 +73,12 @@
 	        }
 	        this.checkChange();
 	    },
+    onChange: function (newVal, oldVal) {
+      if (this.validateOnChange) {
+        this.validate()
+      }
+    // this.checkDirty()
+    },
         /**
          * Sets a data value into the field and runs the change detection and validation.
          * @param {Object} value The value to set

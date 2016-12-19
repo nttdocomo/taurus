@@ -271,12 +271,6 @@
         this.renderActiveError()
       }
     },
-    onChange: function (newVal, oldVal) {
-      if (this.validateOnChange) {
-        this.validate()
-      }
-    // this.checkDirty()
-    },
     getErrors: function (value) {
       return []
     },
