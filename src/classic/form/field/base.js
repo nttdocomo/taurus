@@ -107,8 +107,9 @@
       return this.inputType === 'file'
     },
     onFocusLeave: function () {
-      // this.completeEdit()
+      this.completeEdit()
     },
+    completeEdit: taurus.emptyFn,
     /**
      * Sets a data value into the field and runs the change detection and validation. To set the value directly
      * without these inspections see {@link #setRawValue}.
