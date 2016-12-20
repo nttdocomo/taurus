@@ -49,6 +49,7 @@
 			this.setStartDate();
 			this.setEndDate();
 			this.weekStart = this.weekStart || 0;
+			this.weekEnd = this.weekEnd || 6;
 			this.fillHtml();
 			this.update();
 			this.showMode();
