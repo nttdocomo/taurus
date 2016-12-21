@@ -250,8 +250,8 @@
 		return taurus.augmentObject.apply({}, arguments)
 	};
 	taurus.augmentString = function(L, J, force) {
-		var K = window;
-		var I = L.split(".");
+		var K = window
+		var I = L.split(".")
 		for (var H = 0, G = I.length; H < G; ++H) {
 			if(force){
 				K = K[I[H]] = ( typeof I[H + 1] !== "undefined") ? {} : J
