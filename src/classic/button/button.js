@@ -75,7 +75,6 @@
       'btnIconEl': '[id$="btnIconEl"]'
     },
     constructor: function (options) {
-      console.log(options)
       if (options.href) {
         this.tagName = 'a'
       }
