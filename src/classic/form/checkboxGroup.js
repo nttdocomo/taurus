@@ -19,7 +19,7 @@
 		events : {
 			'change input' : 'checkChange'
 		},
-		//isFormField:false,
+		isFormField:false,
 		defaultType:Checkbox,
 		blankText : "You must select at least one item in this group",
 		//fieldSubTpl : '<%_.each(fields,function(field){%><%if(vertical){%><div><%}%><%if(field.boxLabel){%><label id="<%=field.cmpId%>-boxLabelEl" class="checkbox-inline"><%}%><input id="<%=field.id%>" type="<%=field.type%>" /><%if(field.boxLabel){%><%=field.boxLabel%></label><%}%><%if(vertical){%></div><%}%><%})%>',
