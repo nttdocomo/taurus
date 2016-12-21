@@ -479,8 +479,18 @@
         uiCls = me.uiCls,
         activeUI = me.activeUI,
         classes
+      if (ui === activeUI) {
+        // The ui hasn't changed
+        return;
+      }
+
+      // activeUI will only be set if setUI has been called before. If it hasn't there's no need to remove anything
+      if (activeUI) {
+        me.removeUIFromElement();
+      }
       // Set the UI
       me.ui = ui
+      me.activeUI = ui
       me.addUIToElement()
       classes = me.addClsWithUI(uiCls, true)
     },
@@ -492,6 +502,13 @@
         clsArray = clsArray.concat(me.addUIClsToElement(cls))
       }
       return clsArray
+    },
+    removeUIFromElement: function(){
+      var me = this,
+        baseClsUI = me.baseCls + '-' + me.ui,
+        childEls, childElName, el, suffix
+
+      me.removeClass(baseClsUI)
     },
 
     /**
