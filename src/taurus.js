@@ -254,7 +254,7 @@
 		var I = L.split(".");
 		for (var H = 0, G = I.length; H < G; ++H) {
 			if(force){
-				K = K[I[H]] = J
+				K = K[I[H]] = ( typeof I[H + 1] !== "undefined") ? {} : J
 			} else {
 				K = K[I[H]] = K[I[H]] || (( typeof I[H + 1] !== "undefined") ? {} : J)
 			}
