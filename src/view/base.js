@@ -851,9 +851,9 @@
       }) || this.items[comp]
 
       // Only allow finding by index on the main items container
-      if (!c && typeof comp != 'number') {
+      /*if (!c && typeof comp != 'number') {
         c = this.floatingItems.get(comp)
-      }
+      }*/
 
       return c
     },

@@ -64,7 +64,7 @@
          * @param {Boolean} initial True if we're setting the tab during setup
          */
         setActiveItem : function(card, initial) {
-            var me = this, owner = me.owner, oldCard = me.activeItem,newCard = me.parseActiveItem(card);// Is this a valid, different card?
+            var me = this, owner = me.owner, oldCard = me.getActiveItem(),newCard = me.parseActiveItem(card);// Is this a valid, different card?
             if (newCard && oldCard !== newCard) {
                 if (oldCard) {
                     oldCard.hide()

@@ -181,7 +181,9 @@
 					item.setBorder(false);
 				}
 			}*/
-			me.setActiveTab(0);
+			if (me.isRendered) {
+         me.setActiveTab(me.activeTab);
+      }
 		},
         getActiveItem:function(){
             return this.layout.getActiveItem();

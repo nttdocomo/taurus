@@ -300,7 +300,7 @@
 			me.$el.parent().css({
 				'padding-top':me.$el.outerHeight()
 			})
-			me.ownerCt.updateLayout()
+			me.ownerCt && me.ownerCt.updateLayout()
 		}
 	});
 }));
