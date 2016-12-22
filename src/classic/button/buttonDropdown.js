@@ -1,9 +1,20 @@
 /**
  * @author nttdocomo
  */
-define(function(require){
-	var Button = require('./button'),
-	Menu = require("../menu/menu");
+;(function (root, factory) {
+  if (typeof define === 'function') {
+    if (define.amd) {
+      define(['./button', '../menu/menu'], factory)
+    }
+    if (define.cmd) {
+      define(function (require, exports, module) {
+        return factory(require('./button'), require('../menu/menu'))
+      })
+    }
+  } else if (typeof module === 'object' && module.exports) {
+    module.exports = factory(require('./button'), require('../menu/menu'))
+  }
+}(this, function(Button, Menu){
 	return Button.extend({
 		tpl:'<%=text%> <span class="caret"></span>',
 		className:'btn dropdown-toggle',
@@ -84,4 +95,4 @@ define(function(require){
 			menu.alignTo(this.$el, position);
 		}
 	})
-})
+}))
