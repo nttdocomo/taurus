@@ -32,9 +32,19 @@
       })
       this._super.call(this, childEls)
     },
-    updateValue: function () {
-      var me = this
-      me.applyMultiselectItemMarkup()
+
+    /**
+     * Initiate auto-sizing for height based on {@link #grow}, if applicable.
+     */
+    autoSize: function() {
+      var me = this;
+
+      if (me.grow && me.rendered) {
+        me.autoSizing = true;
+        //me.updateLayout();
+      }
+
+      return me;
     },
     applyEmptyText: function () {
       var me = this
@@ -98,7 +108,7 @@
         me.multiSelectItemTpl = this.getTpl('multiSelectItemTpl')
       }*/
       return me.multiSelectItemTpl(_.extend({
-        valueCollection: me.valueCollection.getRange()
+        valueCollection: me.valueCollection.toJSON()
       }, {
         isSelected: _.bind(function (rec) {
           return me.selectionModel.isSelected(rec)
@@ -121,6 +131,10 @@
       data.emptyCls = isEmpty ? me.emptyCls : emptyInputCls
       data.inputElCls = isEmpty ? emptyInputCls : ''
       return data
+    },
+    updateValue: function () {
+      var me = this
+      me.applyMultiselectItemMarkup()
     }
   })
 }))
