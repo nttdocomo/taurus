@@ -423,6 +423,11 @@
 			}
 			me.displayTplData = displayTplData;
 			me.value = processedValue.length ? me.multiSelect ? processedValue : processedValue[0] || '' : value ? value : '';
+			if(_.isArray(me.value)){
+				if(!me.multiSelect){
+					me.value = me.value[0]
+				}
+			}
 			me.applyEmptyText();
 			return Picker.prototype.setValue.apply(this, [this.value]);
 		},

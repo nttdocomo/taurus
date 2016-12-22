@@ -61,10 +61,9 @@
 	    	_.each(this.items,function(item){
 	    		if(item[query[1]]){
 	    			items.push(item)
-	    		} else {
-		    		if(item.query){
-		    			items = items.concat(item.query(queryString))
-		    		}
+	    		}
+	    		if(item.query){
+	    			items = items.concat(item.query(queryString))
 	    		}
 	    	})
 	    	return items;
