@@ -27,8 +27,8 @@
     emptyInputCls: taurus.baseCSSPrefix + 'tagfield-emptyinput',
     applyChildEls: function (childEls) {
       childEls = _.extend(childEls || {}, {
-        'itemList': '>[id$="itemList"]',
-        'inputElCt': '>[id$="inputElCt"]'
+        'itemList': '[id$="itemList"]',
+        'inputElCt': '[id$="inputElCt"]'
       })
       this._super.call(this, childEls)
     },
@@ -87,22 +87,19 @@
         if (me.tipTpl) {
           me.tipTpl = me.getTpl('tipTpl')
         }
-
-        me.multiSelectItemTpl = _.template([
-          '<tpl for=".">',
-          '<li data-selectionIndex="{[xindex - 1]}" data-recordId="{internalId}" class="' + me.tagItemCls + childElCls,
-          '<tpl if="this.isSelected(values)">',
+        var tpl = [
+          '<%_.each(valueCollection, function(item, i){%>',
+          '<li data-selectionIndex="<%=i%>" data-recordId="<%=item.cid%>" class="' + me.tagItemCls + childElCls,
+          '<%if(isSelected(item)){%>',
           ' ' + me.tagSelectedCls,
-          '</tpl>',
-          '{%',
-          'values = values.data;',
-          '%}',
-          me.tipTpl ? '" data-qtip="{[this.getTip(values)]}">' : '">',
-          '<div class="' + me.tagItemTextCls + '">{[this.getItemLabel(values)]}</div>',
+          '<%}%>',
+          //me.tipTpl ? '" data-qtip="{[this.getTip(values)]}">' : '">',
+          '<div class="' + me.tagItemTextCls + '"><%getItemLabel(values)%></div>',
           '<div class="' + me.tagItemCloseCls + childElCls + '"></div>' ,
           '</li>' ,
-          '</tpl>'
-        ].join(''))
+          '<%})%>'
+        ].join('')
+        me.multiSelectItemTpl = _.template(tpl)
       }
       /*if (!me.multiSelectItemTpl.isTemplate) {
         me.multiSelectItemTpl = this.getTpl('multiSelectItemTpl')
@@ -131,6 +128,11 @@
       data.emptyCls = isEmpty ? me.emptyCls : emptyInputCls
       data.inputElCls = isEmpty ? emptyInputCls : ''
       return data
+    },
+    onValueCollectionEndUpdate: function(){
+      var me = this
+      var pickedRecords = me.valueCollection.models
+      var valueStore = me.valueStore
     },
     updateValue: function () {
       var me = this

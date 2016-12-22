@@ -270,6 +270,19 @@
     },
 
     /**
+     * Selects a record instance by record instance or index.
+     * @param {Ext.data.Model[]/Number} records An array of records or an index
+     * @param {Boolean} [keepExisting=false] True to retain existing selections
+     * @param {Boolean} [suppressEvent=false] True to not fire a select event
+     */
+    select: function(records, keepExisting, suppressEvent) {
+      // Automatically selecting eg store.first() or store.last() will pass undefined, so that must just return;
+      if (!_.isUndefined(records) && !(_.isArray(records) && !records.length)) {
+          this.doSelect(records, keepExisting, suppressEvent);
+      }
+    },
+
+    /**
      * Sets the current selectionMode.
      * @param {String} selMode 'SINGLE', 'MULTI' or 'SIMPLE'.
      */

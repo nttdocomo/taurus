@@ -450,6 +450,13 @@
         }
       }
     },
+    onValueCollectionBeginUpdate: taurus.emptyFn,
+    onValueCollectionEndUpdate: function(){
+      var me = this
+      var selectedRecords = me.valueCollection.models
+      me.lastSelection = selectedRecords;
+      me.updateValue();
+    },
     setValue: function (value) {
       var me = this
       if (value != null) {
@@ -461,9 +468,17 @@
       }
     },
     doSetValue: function (value) {
-      var me = this, displayField = me.displayField, valueField = me.valueField || displayField, processedValue = [], displayTplData = [], model, record, displayValue,
-        displayIsValue = me.displayField === me.valueField,
-        displayTplData = me.displayTplData || (me.displayTplData = [])
+      var me = this
+      var displayField = me.displayField
+      var valueField = me.valueField || displayField
+      var processedValue = []
+      var matchedRecords = []
+      var displayTplData = []
+      var selModel = me.pickerSelectionModel
+      var model, record, displayValue
+      var displayIsValue = me.displayField === me.valueField
+      var displayTplData = me.displayTplData || (me.displayTplData = [])
+      var lastSelection = me.lastSelection
       displayTplData.length = 0
       if (_.isUndefined(value)) {
         return Picker.prototype.setValue.apply(me, value)
@@ -495,6 +510,7 @@
           record = val
         }
         if (record) {
+        	matchedRecords.push(record);
           if (record instanceof Backbone.Model) {
             record = record.toJSON()
           }
@@ -504,83 +520,35 @@
         } else {
         }
       }
-      me.displayTplData = displayTplData
-      me.value = processedValue.length ? me.multiSelect ? processedValue : processedValue[0] || '' : value ? value : ''
-      me.applyEmptyText()
-      return Picker.prototype.setValue.apply(this, [this.value])
-    },
-    updateValue: function () {
-      var me = this,
-        inputEl = me.inputEl
-      if (inputEl && me.emptyText && !_.isEmpty(me.value)) {
-        inputEl.removeClass(me.emptyCls)
-      }
-    },
-    clearValue: function () {
-      this.setValue(null)
-    },
-    getSubTplData: function () {
-      var me = this,
-        displayValue = me.getDisplayValue(),
-        data = me._super.apply(this, arguments)
-      if (displayValue) {
-        data.value = displayValue
-      }
-      return data
-    },
-    setValue: function (value) {
-      var me = this
-      if (value != null) {
-        return me.doSetValue(value)
-      }
-      // Clearing is a special, simpler case.
-      else {
-        return me.doSetValue(null)
-      }
-    },
-    doSetValue: function (value) {
-      var me = this, displayField = me.displayField, valueField = me.valueField || displayField, processedValue = [], displayTplData = [], model, record, displayValue,
-        displayIsValue = me.displayField === me.valueField,
-        displayTplData = me.displayTplData || (me.displayTplData = [])
-      displayTplData.length = 0
-      if (_.isUndefined(value)) {
-        return Picker.prototype.setValue.apply(me, value)
-      }
-      if (_.isString(value) && value == '') {
-        return Picker.prototype.setValue.apply(me, [value])
-      }
-      value = $.makeArray(value)
-      for (i = 0, len = value.length; i < len; i++) {
-        val = value[i]
-        if ((_.isString(val) || _.isNumber(val) || _.isObject(val)) && me.collection.length) {
-          if (_.isString(val) || _.isNumber(val)) {
-            record = me.collection.find(function (model) {
-              return model.get(valueField) == val
-            })
-          }
-          if (_.isObject(val)) {
-            record = me.collection.find(function (model) {
-              var value
-              if (val instanceof Backbone.Model) {
-                value = val.get(valueField)
-              } else {
-                value = val[valueField]
-              }
-              return model.get(valueField) == value
-            })
+      // If the same set of records are selected, this setValue has been a no-op
+      if (lastSelection) {
+        len = lastSelection.length;
+        if (len === matchedRecords.length) {
+          for (i = 0; !valueChanged && i < len; i++) {
+            if (_.indexOf(me.lastSelection, matchedRecords[i]) === -1) {
+              valueChanged = true;
+            }
           }
         } else {
-          record = val
+          valueChanged = true;
         }
-        if (record) {
-          if (record instanceof Backbone.Model) {
-            record = record.toJSON()
+      } else {
+        valueChanged = matchedRecords.length;
+      }
+
+      if (valueChanged) {
+          // beginUpdate which means we only want to notify this.onValueCollectionEndUpdate after it's all changed.
+          //me.suspendEvent('select');
+          me.valueCollection.trigger('beginupdate');
+          if (matchedRecords.length) {
+              selModel.select(matchedRecords, false);
+          } else {
+              selModel.deselectAll();
           }
-          displayTplData.push(record)
-          processedValue.push(record[valueField])
-          me.updateValue()
-        } else {
-        }
+          me.valueCollection.trigger('endupdate');
+          //me.resumeEvent('select');
+      } else {
+          me.updateValue();
       }
       me.displayTplData = displayTplData
       me.value = processedValue.length ? me.multiSelect ? processedValue : processedValue[0] || '' : value ? value : ''

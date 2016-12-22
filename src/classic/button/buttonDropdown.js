@@ -95,4 +95,4 @@
 			menu.alignTo(this.$el, position);
 		}
 	})
-})
+}))
