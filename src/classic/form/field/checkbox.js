@@ -85,6 +85,16 @@
 		getValue : function() {
 			return this.checked;
 		},
+
+    /**
+     * Returns the checked state of the checkbox.
+     * @return {Boolean} True if checked, else false
+     */
+    getRawValue: function() {
+      var inputEl = this.inputEl && this.inputEl.get(0);
+      
+      return inputEl ? inputEl.checked : this.checked;
+    },
 		getSubTplData : function() {
 			return $.extend(Base.prototype.getSubTplData.apply(this, arguments), {
 				boxLabel : this.boxLabel || false,
