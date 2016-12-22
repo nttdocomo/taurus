@@ -99,7 +99,7 @@
         },
 		setHeaderStyle:function(){
 			var me = this,headEl = me.headEl,headElHeight;
-			if(headEl){
+			if(headEl.length){
 				headElHeight = me.headEl.outerHeight();
 				me.$el.css('padding-top',headElHeight+'px');
 				me.headEl.css('margin-top','-' + headElHeight+'px')
