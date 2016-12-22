@@ -25,7 +25,7 @@
 	$.each(['BorderRadius', 'MozBorderRadius', 'WebkitBorderRadius', 'OBorderRadius', 'KhtmlBorderRadius'], function() {
 		if (document.body.style[this] !== undefined)
 			$.support.borderRadius = true;
-		return (!$.support.borderRadius);
+		return (!$.support.borderRadius)
 	});
 	var doc = document, win = window;
 	var subfixs = ['s', 'm', 'h', '天', '年'];
