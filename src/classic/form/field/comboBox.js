@@ -550,17 +550,28 @@
       } else {
           me.updateValue();
       }
-      me.displayTplData = displayTplData
-      me.value = processedValue.length ? me.multiSelect ? processedValue : processedValue[0] || '' : value ? value : ''
-      me.applyEmptyText()
-      return Picker.prototype.setValue.apply(this, [this.value])
     },
     updateValue: function () {
-      var me = this,
-        inputEl = me.inputEl
+      var me = this
+      var selectedRecords = me.valueCollection
+      var len = selectedRecords.length
+      var inputEl = me.inputEl
+      displayTplData = me.displayTplData || (me.displayTplData = [])
+      for (i = 0; i < len; i++) {
+        record = selectedRecords[i];
+        displayTplData.push(me.getRecordDisplayData(record));
+
+        // There might be the bogus "value not found" record if forceSelect was set. Do not include this in the value.
+        if (record !== me.valueNotFoundRecord) {
+          valueArray.push(record.get(me.valueField));
+        }
+      }
+      me.value = processedValue.length ? me.multiSelect ? processedValue : processedValue[0] || '' : value ? value : ''
       if (inputEl && me.emptyText && !_.isEmpty(me.value)) {
         inputEl.removeClass(me.emptyCls)
       }
+      Picker.prototype.setValue.apply(this, [this.value])
+      me.applyEmptyText();
     },
     clearValue: function () {
       this.setValue(null)

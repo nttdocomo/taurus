@@ -24,6 +24,7 @@
         </li>\
       </ul>\
     </div>',
+    emptyText:'',
     emptyInputCls: taurus.baseCSSPrefix + 'tagfield-emptyinput',
     applyChildEls: function (childEls) {
       childEls = _.extend(childEls || {}, {
@@ -133,6 +134,7 @@
       var me = this
       var pickedRecords = me.valueCollection.models
       var valueStore = me.valueStore
+      me._super()
     },
     updateValue: function () {
       var me = this

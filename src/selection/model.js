@@ -36,7 +36,7 @@
      * `true` in this class to identify an object as an instantiated {@link Ext.selection.Model selection model}, or subclass thereof.
      */
     isSelectionModel: true,
-    init: function () {
+    init: function (config) {
       var me = this
 
       me.modes = {
@@ -73,6 +73,51 @@
             selected.reset();
         }
         this.lastSelected = null;
+    },
+
+    doSingleSelect: function(record, suppressEvent) {
+      var me = this
+      var changed = false
+      var selected = me.selected
+      var commit;
+
+      if (me.locked) {
+        return;
+      }
+      // already selected.
+      // should we also check beforeselect?
+      if (me.isSelected(record)) {
+        return;
+      }
+
+      commit = function() {
+        // Deselect previous selection.
+        if (selected.length) {
+          me.suspendChanges();
+          var result = me.deselectDuringSelect([record], suppressEvent);
+          if (me.destroyed) {
+            return;
+          }
+          me.resumeChanges();
+          if (result[0]) {
+            // Means deselection failed, so abort
+            return false;
+          }
+        }
+
+        me.lastSelected = record;
+        if (!selected.length) {
+          me.selectionStart = record;
+        }
+        selected.add(record);
+        changed = true;
+      };
+
+      me.onSelectChange(record, true, suppressEvent, commit);
+
+      if (changed && !me.destroyed) {
+        //me.maybeFireSelectionChange(!suppressEvent);
+      }
     },
     doMultiSelect: function (records, keepExisting, suppressEvent) {
       var me = this
@@ -184,6 +229,22 @@
     },
     getSelected: function(){
       return this.selected
+    },
+
+    /**
+     * @abstract
+     */
+    onSelectChange: function(record, isSelected, suppressEvent, commitFn) {
+      var me = this
+      var eventName = isSelected ? 'select' : 'deselect'
+
+      if ((suppressEvent || me.trigger('before' + eventName, me, record)) !== false && commitFn() !== false) {
+
+        // Could be destroyed in the handler
+        if (!suppressEvent && !me.destroyed) {
+            me.trigger(eventName, me, record);
+        }
+      }   
     },
 
     /**
