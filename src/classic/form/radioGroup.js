@@ -59,7 +59,7 @@
 			var values = {}, box = this.getBoxes(':checked');
 			return box.val();
 		},*/
-		getSubmitData:function(){
+		/*getSubmitData:function(){
 			var values = {}, boxes = this.getBoxes(':radio'), b, bLen = boxes.length, box, name, inputValue, bucket;
 			_.each(boxes,function(box,i) {
 				name = box.getName();
@@ -77,8 +77,8 @@
                 } else {
                     values[name] = inputValue;
                 }*/
-			});
+			/*});
 			return values;
-		}
+		}*/
 	});
 }));
