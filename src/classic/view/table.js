@@ -67,6 +67,9 @@
       if (config.grid.isTree) {
         config.baseCls = taurus.baseCSSPrefix + 'tree-view'
       }
+      if (config.grid.isTree) {
+        config.baseCls = taurus.baseCSSPrefix + 'tree-view'
+      }
       Base.prototype.initialize.apply(this, arguments)
     },
     initComponent: function () {
@@ -541,9 +544,10 @@
      * Create a config object for this view's selection model based upon the passed grid's configurations.
      */
     applySelectionModel: function(selModel, oldSelModel) {
-      var me = this,
-          grid = me.grid,
-          defaultType = selModel.type;
+      var me = this
+      var selModel = _.extend({}, selModel)
+      var grid = me.grid
+      var defaultType = selModel.type
 
       // If this is the initial configuration, pull overriding configs in from the owning TablePanel.
       if (!oldSelModel) {

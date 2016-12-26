@@ -1,7 +1,7 @@
 /**
  * @author nttdocomo
  */
- (function (root, factory) {
+(function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
 			define(['./dialog', '../button/button', '../../i18n'], factory);
