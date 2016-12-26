@@ -112,13 +112,13 @@
         filter = me.queryFilter
 
       StoreHolder.prototype.bindStore.call(me, store, initial)
-      /*store = me.getStore()
-      if (store && filter && !preventFilter) {
-        store.getFilters().add(filter)
-      }
-      if (!initial && store && !store.isEmptyStore) {
-        me.setValueOnData()
-      }*/
+    /*store = me.getStore()
+    if (store && filter && !preventFilter) {
+      store.getFilters().add(filter)
+    }
+    if (!initial && store && !store.isEmptyStore) {
+      me.setValueOnData()
+    }*/
     },
     getPickerWidth: function () {
       return this.triggerWrap.width()
@@ -451,11 +451,11 @@
       }
     },
     onValueCollectionBeginUpdate: taurus.emptyFn,
-    onValueCollectionEndUpdate: function(){
+    onValueCollectionEndUpdate: function () {
       var me = this
       var selectedRecords = me.valueCollection.models
-      me.lastSelection = selectedRecords;
-      me.updateValue();
+      me.lastSelection = selectedRecords
+      me.updateValue()
     },
     setValue: function (value) {
       var me = this
@@ -487,7 +487,7 @@
         return Picker.prototype.setValue.apply(me, [value])
       }
       value = $.makeArray(value)
-      for (i = 0, len = value.length; i < len; i++) {
+      for (var i = 0, len = value.length; i < len; i++) {
         val = value[i]
         if ((_.isString(val) || _.isNumber(val) || _.isObject(val)) && me.collection.length) {
           if (_.isString(val) || _.isNumber(val)) {
@@ -510,7 +510,7 @@
           record = val
         }
         if (record) {
-        	matchedRecords.push(record);
+          matchedRecords.push(record)
           if (record instanceof Backbone.Model) {
             record = record.toJSON()
           }
@@ -522,56 +522,58 @@
       }
       // If the same set of records are selected, this setValue has been a no-op
       if (lastSelection) {
-        len = lastSelection.length;
+        len = lastSelection.length
         if (len === matchedRecords.length) {
-          for (i = 0; !valueChanged && i < len; i++) {
+          for (var i = 0; !valueChanged && i < len; i++) {
             if (_.indexOf(me.lastSelection, matchedRecords[i]) === -1) {
-              valueChanged = true;
+              valueChanged = true
             }
           }
         } else {
-          valueChanged = true;
+          valueChanged = true
         }
       } else {
-        valueChanged = matchedRecords.length;
+        valueChanged = matchedRecords.length
       }
 
       if (valueChanged) {
-          // beginUpdate which means we only want to notify this.onValueCollectionEndUpdate after it's all changed.
-          //me.suspendEvent('select');
-          me.valueCollection.trigger('beginupdate');
-          if (matchedRecords.length) {
-              selModel.select(matchedRecords, false);
-          } else {
-              selModel.deselectAll();
-          }
-          me.valueCollection.trigger('endupdate');
-          //me.resumeEvent('select');
+        // beginUpdate which means we only want to notify this.onValueCollectionEndUpdate after it's all changed.
+        // me.suspendEvent('select')
+        me.valueCollection.trigger('beginupdate')
+        if (matchedRecords.length) {
+          selModel.select(matchedRecords, false)
+        } else {
+          selModel.deselectAll()
+        }
+        me.valueCollection.trigger('endupdate')
+      // me.resumeEvent('select')
       } else {
-          me.updateValue();
+        me.updateValue()
       }
     },
     updateValue: function () {
       var me = this
       var selectedRecords = me.valueCollection
+      var valueArray = []
       var len = selectedRecords.length
       var inputEl = me.inputEl
       displayTplData = me.displayTplData || (me.displayTplData = [])
       for (i = 0; i < len; i++) {
-        record = selectedRecords[i];
-        displayTplData.push(me.getRecordDisplayData(record));
+        record = selectedRecords[i]
+        displayTplData.push(me.getRecordDisplayData(record))
 
         // There might be the bogus "value not found" record if forceSelect was set. Do not include this in the value.
         if (record !== me.valueNotFoundRecord) {
-          valueArray.push(record.get(me.valueField));
+          valueArray.push(record.get(me.valueField))
         }
       }
-      me.value = processedValue.length ? me.multiSelect ? processedValue : processedValue[0] || '' : value ? value : ''
+      me.value = me.multiSelect ? valueArray : valueArray[0]
+      // me.value = processedValue.length ? me.multiSelect ? processedValue : processedValue[0] || '' : value ? value : ''
       if (inputEl && me.emptyText && !_.isEmpty(me.value)) {
         inputEl.removeClass(me.emptyCls)
       }
-      Picker.prototype.setValue.apply(this, [this.value])
-      me.applyEmptyText();
+      //me.setRawValue(me.getDisplayValue())
+      me.applyEmptyText()
     },
     clearValue: function () {
       this.setValue(null)
