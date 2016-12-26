@@ -38,16 +38,7 @@
 	        me.constrain = me.constrain || me.constrainPosition;
 		},
 		getCaretDirection:function(){
-			switch (this.anchor) {
-		        case 'top':
-		            return 'bottom';
-		        case 'left':
-		            return 'right';
-		        case 'right':
-		            return 'left';
-		        default:
-		            return 'top';
-	        }
+			return this.anchor
 		},
 
 	    /**

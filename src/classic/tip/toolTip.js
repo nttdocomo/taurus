@@ -109,14 +109,14 @@
 		            };
 		        case 'left':
 		            return {
-		            	"my" : "left center",
-						"at" : "right center",
+		            	"my" : "right center",
+						"at" : "left center",
 						"collision" : "none none"
 		            };
 		        case 'right':
 		            return {
-		            	"my" : "right center",
-						"at" : "left center",
+		            	"my" : "left center",
+						"at" : "right center",
 		            };
 		        default:
 		            return {
