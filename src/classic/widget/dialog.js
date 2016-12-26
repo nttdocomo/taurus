@@ -95,6 +95,7 @@
 		applyChildEls:function(childEls){
 			childEls = $.extend(childEls || {},{
 				'modal':'.modal',
+				'content':'.modal-content',
 				'headerEl':'.modal-header',
 				'header':'.modal-title',
                 'dialog':'.modal-dialog',
