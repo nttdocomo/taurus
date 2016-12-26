@@ -64,6 +64,7 @@
       var me = this
       var footer = me.footer
       _.each(this.buttons, function(button){
+      	button.handler = _.bind(button.handler, me)
         var btn = new Button(button)
         btn.render(footer)
       })
