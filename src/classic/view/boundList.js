@@ -32,7 +32,7 @@
       me.$el.css('top', 0)
       Base.prototype.initialize.apply(me, arguments)
       me.collection.on('sync', _.bind(me.refresh, me))
-      me.collection.on('reset', _.bind(me.refresh, me))
+      //me.collection.on('reset', _.bind(me.refresh, me))
     },
     indexOf: function (node) {
       return this.$el.find('.boundlist-item').index(node)
@@ -124,8 +124,10 @@
         // Process empty text unless the store is being cleared.
         if (me.emptyText) {
           me.emptyEl = $('<li>').text(me.emptyText).appendTo(me.getTargetEl())
+          me.$el.addClass('boundlist-empty')
         }
       } else {
+        me.$el.removeClass('boundlist-empty')
         me.renderHtml()
       }
       this.$el.css('height', 'auto')
