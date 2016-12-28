@@ -120,8 +120,9 @@
 		            };
 		        default:
 		            return {
-		            	"my" : "center bottom",
+		            	"my" : "center bottom-10",
 						"at" : "center top",
+						"collision" : "none none"
 		            };
 	        }
 	    },
