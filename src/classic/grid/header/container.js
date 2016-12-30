@@ -298,7 +298,7 @@
 				'margin-top':-1*me.$el.outerHeight()
 			})
 			me.$el.parent().css({
-				'padding-top':me.$el.height()
+				'padding-top':me.$el.outerHeight()
 			})
 			me.ownerCt && me.ownerCt.updateLayout()
 		}
