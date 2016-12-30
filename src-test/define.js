@@ -34,6 +34,8 @@
         }
       })
       assert.equal(NewClass.prototype.prop, 1, 'new class prototype has attribute prop')
+      var instance = new NewClass()
+      assert.strictEqual(typeof(instance.getConfigName), 'function', 'this instance has a getConfigName method')
     })
   }
   return {run: run}
