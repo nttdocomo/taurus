@@ -28,6 +28,11 @@ define(function(require) {
 					--likelihood;
 				}
 			}
+			item.menuAlign = {
+				"my" : "left top",
+				"at" : "left bottom",
+				"collision" : "none none"
+			}
 			items.push(item)
 		};
 		return items;
