@@ -4,18 +4,18 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../container/container', '../view/activeErrors'], factory)
+      define(['../../define', '../container/container', '../view/activeErrors'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../container/container'), require('../view/activeErrors'))
+        return factory(require('../../define'), require('../container/container'), require('../view/activeErrors'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../container/container'), require('../view/activeErrors'))
+    module.exports = factory(require('../../define'), require('../container/container'), require('../view/activeErrors'))
   }
-}(this, function (Base, ActiveErrors) {
-  return Base.extend({
+}(this, function (define, Base, ActiveErrors) {
+  return define(Base, {
     tpl: '<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%if(typeof beforeLabelTextTpl !== "undefined"){%><%=beforeLabelTextTpl%><%}%><%=fieldLabel%><%if(labelSeparator){%><%=labelSeparator%><%}%></label><%}%><div style="<%=controlsStyle%>" id="<%=id%>-bodyEl"><%=field%></div><%if(fieldLabel){%><%}%><%if(renderError){%><div class="help-block" id="<%=id%>-errorEl" style="<%=controlsStyle%>"></div><%}%>',
     className: 'form-group',
     labelWidth: 100,
@@ -24,9 +24,11 @@
     msgTarget: 'qtip',
     showLabel: true,
     labelSeparator: ':',
-    childEls: {
-      'inputEl': '.form-control',
-      'labelEl': '.control-label'
+    config: {
+      childEls: {
+        'inputEl': '.form-control',
+        'labelEl': '.control-label'
+      }
     },
     getLabelStyle: function () {
       var labelPad = this.labelPad, labelStyle = ''

@@ -4,18 +4,18 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./base', 'taurus', 'underscore', 'modernizr'], factory)
+      define(['../../../define', './base', 'taurus', 'underscore', 'modernizr'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./base'), require('taurus'), require('underscore'), require('modernizr'))
+        return factory(require('../../../define'), require('./base'), require('taurus'), require('underscore'), require('modernizr'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./base'), require('taurus'), require('underscore'), require('modernizr'))
+    module.exports = factory(require('../../../define'), require('./base'), require('taurus'), require('underscore'), require('modernizr'))
   }
-}(this, function (Base, taurus, _, Modernizr) {
-  return Base.extend({
+}(this, function (define, Base, taurus, _, Modernizr) {
+  return define(Base, {
     allowBlank: true,
     blankText: 'This field is required',
     emptyCls: taurus.baseCSSPrefix + 'form-empty-field',

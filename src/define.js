@@ -2,25 +2,32 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['underscore', 'taurus', '../underscore/deepClone', '../polyfill/object/create'], factory)
+      define(['underscore', 'taurus', './polyfill/object/create'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('underscore'), require('taurus'), require('../underscore/deepClone'), require('../polyfill/object/create'))
+        return factory(require('underscore'), require('taurus'), require('./polyfill/object/create'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('underscore'), require('taurus'), require('../underscore/deepClone'), require('../polyfill/object/create'))
+    module.exports = factory(require('underscore'), require('taurus'), require('./polyfill/object/create'))
   }
-}(this, function (_, Tau, createNS) {
+}(this, function (_, Tau, create) {
   var define = function (Class, prop, classProps) {
     var child
-    define.process(Class, prop)
+    var prototype = Class.prototype
+    var ConfigClass
     console.log(prop)
     if (Class.extend) {
-      child = Class.extend(prop, classProps)
+      child = Class.extend()
     }
     console.log(child.prototype.prop)
+    ConfigClass = prototype.configClass
+    child.prototype.config = child.prototype.defaultConfig = new ConfigClass()
+    child.prototype.initConfigList = prototype.initConfigList ? prototype.initConfigList.slice() : []
+    child.prototype.initConfigMap = create(prototype.initConfigMap)
+    define.process(child, prop)
+    var child = child.extend(prop, classProps)
     return child
   }
 
@@ -146,7 +153,7 @@
     }
   })
   define.registerPreprocessor('config', function (Class, data) {
-    var config = _.pick(data, 'config')
+    var config = data.config
     var prototype = Class.prototype
     var defaultConfig = prototype.config || {}
     var value, nameMap, setName, getName, initGetName, internalName
@@ -175,6 +182,7 @@
         }
       }
     }
+    Class.addConfig(config, true)
   })
   return define
 }))

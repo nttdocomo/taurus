@@ -1,20 +1,21 @@
 /**
  * @author nttdocomo
  */
+/*global define*/
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../state/stateful', '../util/focusable', '../util/itemCollection', 'underscore', 'taurus', 'backbone', '../class/configurator', 'backbone-super', '../lang/number', '../mixins', '../jquery.ui.position'], factory)
+      define(['../state/stateful', '../util/focusable', '../util/itemCollection', 'underscore', 'taurus', 'backbone', '../class/configurator', '../mixin/addConfig', '../mixin/initConfig', 'backbone-super', '../lang/number', '../mixins', '../jquery.ui.position'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../state/stateful'), require('../util/focusable'), require('../util/itemCollection'), require('underscore'), require('taurus'), require('backbone'), require('../class/configurator'), require('backbone-super'), require('../lang/number'), require('../mixins'), require('../jquery.ui.position'))
+        return factory(require('../state/stateful'), require('../util/focusable'), require('../util/itemCollection'), require('underscore'), require('taurus'), require('backbone'), require('../class/configurator'), require('../mixin/addConfig'), require('../mixin/initConfig'), require('backbone-super'), require('../lang/number'), require('../mixins'), require('../jquery.ui.position'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../state/stateful'), require('../util/focusable'), require('../util/itemCollection'), require('underscore'), require('taurus'), require('backbone'), require('../class/configurator'), require('backbone-super'), require('../lang/number'), require('../mixins'), require('../jquery.ui.position'))
+    module.exports = factory(require('../state/stateful'), require('../util/focusable'), require('../util/itemCollection'), require('underscore'), require('taurus'), require('backbone'), require('../class/configurator'), require('../mixin/addConfig'), require('../mixin/initConfig'), require('backbone-super'), require('../lang/number'), require('../mixins'), require('../jquery.ui.position'))
   }
-}(this, /*taurus.klass(['../state/stateful','../util/focusable','../util/itemCollection','underscore','taurus','backbone','backbone-super','../lang/number','../mixins','../jquery.ui.position'],*/function (Stateful, Focusable, ItemCollection, _, taurus, Backbone, Configurator) {
+}(this, function (Stateful, Focusable, ItemCollection, _, taurus, Backbone, Configurator, addConfig, initConfig) {
   return Backbone.View.extend({
     isRendered: false,
     doc: taurus.$doc,
@@ -24,15 +25,6 @@
     constructor: function (config) {
       Backbone.View.call(this, config)
       this.initConfig(config)
-    },
-    initConfig: function (instanceConfig) {
-      var me = this
-      var cfg = me.getConfigurator()
-      me.initConfig = taurus.emptyFn
-      // ignore subsequent calls to initConfig
-      me.initialConfig = instanceConfig || {}
-      cfg.configure(me, instanceConfig)
-      return me
     },
     getConfigurator: function () {
       // the Ext.Configurator ctor will set $config so micro-opt out fn call:
@@ -160,10 +152,12 @@
     getXType: function () {
       return this.xtype
     },
-    initialize: function (options) {
+    initialize: function (config) {
       var me = this
-      this.initialConfig = options
-      _.extend(this, options)
+      this.initialConfig = config
+      this.initConfig(this.initialConfig)
+      this.initialized = true
+      _.extend(this, config)
       this.initComponent()
       if (me.style) {
         me.initialStyle = me.style
@@ -864,12 +858,12 @@
     INVALID_ID_CHARS_Re: /[\.,\s]/g,
     updateLayout: function () {},
     decorate: function (decorator) {
-      var Decorator = function () {},
-        overrides = decorator,
-        list = this.decoratorList,
-        i, newobj
+      var Decorator = function () {}
+      var overrides = decorator
+      var list = this.decoratorList
+      var i, newobj
 
-      if (list.indexOf(decorator) == -1) {
+      if (list.indexOf(decorator) === -1) {
         this.decoratorList.push(decorator)
         Decorator.prototype = this
         newobj = new Decorator()
@@ -882,5 +876,5 @@
         return newobj
       }
     }
-  }).mixins(Stateful).mixins(Focusable)
+  }).mixins(Stateful).mixins(Focusable).extend(initConfig, addConfig)
 }))

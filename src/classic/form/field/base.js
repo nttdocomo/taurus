@@ -4,18 +4,18 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../label', './field', 'underscore', 'backbone', 'modernizr', '../../../i18n', 'taurus'], factory)
+      define(['../../../define', '../label', './field', 'underscore', 'backbone', 'modernizr', '../../../i18n', 'taurus'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../label'), require('./field'), require('underscore'), require('backbone'), require('modernizr'), require('../../../i18n'), require('taurus'))
+        return factory(require('../../../define'), require('../label'), require('./field'), require('underscore'), require('backbone'), require('modernizr'), require('../../../i18n'), require('taurus'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../label'), require('./field'), require('underscore'), require('backbone'), require('modernizr'), require('../../../i18n'), require('taurus'))
+    module.exports = factory(require(require('../../../define'), '../label'), require('./field'), require('underscore'), require('backbone'), require('modernizr'), require('../../../i18n'), require('taurus'))
   }
-}(this, function (Label, Field, _, Backbone, Modernizr, i18n, taurus) {
-  return Label.extend({
+}(this, function (define, Label, Field, _, Backbone, Modernizr, i18n, taurus) {
+  return define(Label, {
     inputType: 'text',
     readOnly: false,
     editable: true,

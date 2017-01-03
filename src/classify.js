@@ -21,10 +21,12 @@
       var i = 0
       var ln = objectProperties.length
       var property
+      var Klass
 
       for (; i < ln; i++) {
         property = objectProperties[i]
-        this[property] = new propertyClassesMap[property]
+        Klass = propertyClassesMap[property]
+        this[property] = new Klass()
       }
 
       ln = arrayProperties.length

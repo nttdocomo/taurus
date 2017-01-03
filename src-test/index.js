@@ -20,10 +20,10 @@ seajs.use([
   './tip/toolTip'
 ], function (define, combos, radio, text, toolTip) {
   define.run()
-  combos.run()
-  radio.run()
+  /*combos.run()
+  radio.run()*/
   text.run()
-  toolTip.run()
+  //toolTip.run()
 // start QUnit.
 // QUnit.load()
 // QUnit.start()
