@@ -9,7 +9,7 @@ define(function(require) {
 	Menu = require("../../src/classic/menu/menu.js"),
 	$body = $(document.body),
 	likelihood = 30;
-	function randomMenu(){
+	function randomMenu(menuAlign){
 		var len = chance.natural({min: 1, max: 10});
 		var items = [];
 		for (var i = len; i >= 0; i--) {
@@ -28,10 +28,8 @@ define(function(require) {
 					--likelihood;
 				}
 			}
-			item.menuAlign = {
-				"my" : "left top",
-				"at" : "left bottom",
-				"collision" : "none none"
+			if(menuAlign){
+				item.menuAlign = menuAlign
 			}
 			items.push(item)
 		};
@@ -46,7 +44,11 @@ define(function(require) {
 	new Navbar({
 		renderTo : $('.navbar-collapse'),
 		showMenuEvent:'click',
-		items: randomMenu()
+		items: randomMenu({
+			"my" : "left top",
+			"at" : "left bottom",
+			"collision" : "none none"
+		})
 	});
 	var menu = new Menu({
 		renderTo : $body,

@@ -11,10 +11,10 @@
 		<title>Narrow Jumbotron Template for Bootstrap</title>
 
 		<!-- Bootstrap core CSS -->
-		<link href="resources/css/bootstrap.css" rel="stylesheet">
+		<link href="/resources/css/bootstrap.css" rel="stylesheet">
 
 		<!-- Custom styles for this template -->
-		<link href="examples/css/dashboard.css" rel="stylesheet">
+		<link href="css/dashboard.css" rel="stylesheet">
 
 		<!-- Just for debugging purposes. Don't actually copy this line! -->
 		<!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -39,15 +39,6 @@
           <a class="navbar-brand" href="#">Taurus</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Help</a></li>
-          </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
         </div>
       </div>
     </nav>
@@ -131,10 +122,10 @@
 		<!-- Bootstrap core JavaScript
 		================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script type="text/javascript" src="./src/LAB.min.js"></script>
+		<script type="text/javascript" src="/src/LAB.min.js"></script>
 		<script type="text/javascript">
-			$LAB.script('./src/sea-debug.js').wait().script('./config.js').wait(function(){
-					seajs.use("./index.js");
+			$LAB.script('/src/sea-debug.js').wait().script('./config.js').wait(function(){
+					seajs.use("./js/index.js");
 				});
 		</script>
 	</body>
