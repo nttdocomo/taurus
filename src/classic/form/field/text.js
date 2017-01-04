@@ -74,11 +74,11 @@
       }
     },
     initComponent: function () {
-      var me = this,
-        emptyCls = me.emptyCls
+      var me = this
+      var emptyCls = me.emptyCls
+      me.emptyUICls = emptyCls + ' ' + emptyCls + '-' + me.ui
       me._super.apply(me, arguments)
       me.fieldFocusCls = me.baseCls + '-focus'
-      me.emptyUICls = emptyCls + ' ' + emptyCls + '-' + me.ui
     },
     getErrors: function (value) {
       var errors = Base.prototype.getErrors.apply(this, arguments), regex = this.regex, validator = this.validator
