@@ -49,6 +49,11 @@ define(function(require) {
 		hideHeaders:true,
 		title: 'Destination',
 		collection:collection,
-		renderTo:$('#main')
+		renderTo:$('#main'),
+		listeners: {
+      itemclick: function(s,r) {
+        alert(r.data.text);
+      }
+    }
 	})
 })

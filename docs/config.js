@@ -4,15 +4,20 @@
  /* global location*/
 seajs.config({
   alias: {
-    'button': 'taurus/button/button'/*,
-    'fine-uploader': '../../src/fine-uploader',*/
-  // 'backbone-pageable':'../../src/backbone-pageable'/*,
-  // 'underscore':'../../src/backbone-pageable'
+    'backbone': 'taurus/backbone',
+    'underscore': 'taurus/underscore',
+    'backbone.paginator':'taurus/backbone.paginator',
+    'backbone-pageable':'taurus/backbone-pageable',
+    'taurus':'taurus/taurus',
+    'backbone-super':'taurus/backbone-super',
+    'class':'taurus/class',
+    'jquery':'taurus/jquery',
+    'i18n/zh-cn':'taurus/i18n/zh-cn'
   },
   paths: {
-    'taurus': './'
+    'taurus': '/src'
   },
-  base: '/src',
+  base: '/docs/js',
   charset: 'utf-8',
   vars: {
     'locale': (navigator.language || navigator.browserLanguage).toLowerCase()

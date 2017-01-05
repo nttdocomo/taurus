@@ -347,11 +347,13 @@
           result = !((me['onCell' + map[type]](cell, cellIndex, record, row, rowIndex, e) === false) || (me.trigger('cell' + type, me, cell, cellIndex, record, row, rowIndex, e) === false))
         }
         eventPosition.column = column
+        if (result !== false) {
+          result = me.trigger('row' + type, me, record, row, rowIndex, e)
+        }
+        return false//result
+      } else {
+        return false
       }
-      if (result !== false) {
-        result = me.trigger('row' + type, me, record, row, rowIndex, e)
-      }
-      return false
     },
 
     processSpecialEvent: function (e) {

@@ -144,7 +144,7 @@
         replace: me.onReplace,
         reset: me.onReset,
         sync: debounceOnAdd,
-        /*add: me.onAdd,*/
+        add: me.onAdd,
         // remove: _.debounce(me.onRemove, 200),//backbone-pageable will trigger remove event on add models.
         change: debounceOnAdd,
         update: debounceOnAdd,
@@ -152,6 +152,9 @@
         beginupdate: me.onBeginUpdate,
         endupdate: me.onEndUpdate
       }
+    },
+    onAdd: function () {
+      console.log('onAdd')
     },
     onSync: function () {
       this.refresh()

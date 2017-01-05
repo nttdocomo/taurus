@@ -1,5 +1,5 @@
 define(function(require){
-	var Base = require('./components/base')
+	var Base = require('../../base')
 	return Base.extend({
 		title:'Text'
 	})
