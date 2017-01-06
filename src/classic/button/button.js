@@ -50,7 +50,7 @@
     iconBeforeText: false,
     _hasIconCls: taurus.baseCSSPrefix + 'btn-icon',
 
-    tpl: '<%if(split){%><button><%}%><%if(iconBeforeText){%><%=icon%><%}%><%=text%><%if(menu){%> <span class="caret"></span><%}%><%if(split)%><%%>',
+    tpl: '<%if(split){%><button><%}%><%if(iconBeforeText){%><%=icon%><%}%><%=text%><%if(menu){%> <span class="caret"></span><%}%>',
     iconTpl: '<i id="<%=id%>-btnIconEl" class="<%=_hasIconCls%> <%=iconCls%>" style="<%if(iconUrl){%>background-image:url(<%=iconUrl%>);<%}%>"></i>',
     pressedCls: 'active',
     tagName: 'button',
