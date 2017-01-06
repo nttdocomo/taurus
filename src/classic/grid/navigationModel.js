@@ -71,6 +71,7 @@
           columnIndex: clickEvent.position.colIdx,
           column: clickEvent.position.column
       }*/);
+      return {}
     }
   })
 }))
