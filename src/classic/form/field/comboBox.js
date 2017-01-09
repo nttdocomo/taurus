@@ -18,9 +18,9 @@
 	return Picker.extend({
 		allQuery: '',
 		/**
-	     * @private
-	     */
-	    clearValueOnEmpty: true,
+     * @private
+     */
+    clearValueOnEmpty: true,
 		delimiter : ', ',
 		isExpanded : false,
 		queryDelay:1000,

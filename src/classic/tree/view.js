@@ -156,7 +156,7 @@
               e.nodeToggled = true;
             }
           }
-          return e.nodeToggled
+          return e.nodeToggled !== true
         },
     		renderRow:function(record, recordIndex, rowIndex){
     			var me = this,

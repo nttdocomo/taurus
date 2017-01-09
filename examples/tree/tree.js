@@ -2,14 +2,14 @@
  * @author nttdocomo
  */
 define(function(require) {
-	var backbone = require("backbone"),
-	chance = require('chance'),
-	_ = require('underscore'),
-	Tree = require("../../src/classic/tree/panel"),
-	TreeCollection = require("../../src/classic/collection/tree"),
-	TreeModel = require("../../src/classic/model/tree"),
-	$body = $(document.body),
-	likelihood = 30;
+	var backbone = require("backbone")
+	var chance = require('chance')
+	var _ = require('underscore')
+	var Tree = require("../../src/classic/tree/panel")
+	var TreeCollection = require("../../src/classic/collection/tree")
+	var TreeModel = require("../../src/classic/model/tree")
+	var $body = $(document.body)
+	var likelihood = 30
 	function randomMenu(){
 		var len = chance.natural({min: 1, max: 10});
 		var items = [];
@@ -29,21 +29,41 @@ define(function(require) {
 		return items;
 	}
 	var collection = new TreeCollection({
-        root: {
-            expanded: true,
-            children: [
-                { text: 'detention', leaf: true },
-                { text: 'homework', expanded: false, children: [
-                    { text: 'book report', leaf: true },
-                    { text: 'algebra', expanded: false,children: [
-		                    { text: 'book report', leaf: true },
-		                    { text: 'algebra', expanded: false}
-		                ]}
-                ] },
-                { text: 'buy lottery tickets', leaf: true }
-            ]
-        }
-    })
+    root: {
+      expanded: true,
+      children: [{
+      	text: 'detention',
+      	leaf: true
+      }, {
+      	text: 'homework',
+      	expanded: false,
+      	children: [{
+      		text: 'book report',
+      		leaf: true
+      	}, {
+      		text: 'algebra',
+      		expanded: false,
+      		children: [{
+      			text: 'book report',
+      			leaf: true
+      		}, {
+      			text: 'algebra',
+      			expanded: false,
+	      		children: [{
+	      			text: 'book report',
+	      			leaf: true
+	      		}, {
+	      			text: 'algebra',
+	      			expanded: false
+	      		}]
+      		}]
+      	}]
+      }, {
+      	text: 'buy lottery tickets',
+      	leaf: true
+      }]
+    }
+  })
 	console.log(collection)
 	new Tree({
 		hideHeaders:true,

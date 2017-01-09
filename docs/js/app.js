@@ -59,7 +59,7 @@ define(function(require){
 		renderTo:$('.sidebar'),
 		listeners: {
       itemclick: function(s,r) {
-        alert(r.data.text);
+        Backbone.history.navigate(r.get('href'), true);
       }
     }
 	})

@@ -348,9 +348,9 @@
         }
         eventPosition.column = column
         if (result !== false) {
-          result = me.trigger('row' + type, me, record, row, rowIndex, e)
+          /*result = */me.trigger('row' + type, me, record, row, rowIndex, e)
         }
-        return false//result
+        return result
       } else {
         return false
       }

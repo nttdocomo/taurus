@@ -195,10 +195,11 @@
           }
         },
         indexOfNextVisibleNode:function(records){
-            var result = _.clone(records.models);
+            var me = this
+            var result = _.clone(records.models)
             records.each(function(record){
                 if(record.has('children') && record.get('expanded')){
-                    Array.prototype.push.apply(result,record.get('children').models)
+                    Array.prototype.push.apply(result, me.indexOfNextVisibleNode(record.get('children')))
                 }
             })
             return result;
