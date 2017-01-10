@@ -1,6 +1,3 @@
-/**
- * @author nttdocomo
- */
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
@@ -15,16 +12,32 @@
     module.exports = factory(require('./base'), require('taurus'), require('underscore'), require('modernizr'))
   }
 }(this, function (Base, taurus, _, Modernizr) {
+  /**
+   * A basic text field
+   *
+   * @constructor Text
+   * @param {Object} config
+   */
   return Base.extend({
     allowBlank: true,
     blankText: 'This field is required',
     emptyCls: taurus.baseCSSPrefix + 'form-empty-field',
+
+    /**
+     * The default text to place into an empty field
+     * @property {string} emptyText
+     * @memberof Text#
+     */
+    emptyText : '',
     minLengthText: 'The minimum length for this field is <%=len%>',
     maxLengthText: 'The maximum length for this field is <%=len%>',
-    /**
-     * @private
-     */
     valueContainsPlaceholder: false,
+    /**
+     * Sets the default text to place into an empty field
+     * @method applyEmptyText
+     * @memberof Text#
+     * @param {String} bar
+     */
     applyEmptyText: function () {
       var me = this,
         emptyText = me.emptyText,
