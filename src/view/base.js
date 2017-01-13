@@ -15,6 +15,12 @@
     module.exports = factory(require('../state/stateful'), require('../util/focusable'), require('../mixin/observable'), require('../util/itemCollection'), require('underscore'), require('taurus'), require('backbone'), require('../class/configurator'), require('backbone-super'), require('../lang/number'), require('../mixins'), require('../jquery.ui.position'))
   }
 }(this, function (Stateful, Focusable, observable, ItemCollection, _, taurus, Backbone, Configurator) {
+  /**
+   * A basic class
+   *
+   * @constructor Base
+   * @param {Object} config
+   */
   return Backbone.View.extend({
     isRendered: false,
     doc: taurus.$doc,
@@ -125,10 +131,10 @@
       this.$el.addClass(cls.join(' '))
       return this
     },
-
     /**
      * Retrieves the `id` of this component. Will auto-generate an `id` if one has not already been set.
-     * @return {String}
+     * @method
+     * @memberof Base#
      */
     getId: function () {
       var me = this,
@@ -230,6 +236,8 @@
 
     /**
      * Method to determine whether this Component is currently disabled.
+     * @method
+     * @memberof Base#
      * @return {Boolean} the disabled state of this Component.
      */
     isDisabled: function () {
@@ -238,12 +246,14 @@
 
     /**
      * Returns `true` if this component is visible.
+     * @method
      *
      * @param {Boolean} [deep=false] Pass `true` to interrogate the visibility status of all parent Containers to
      * determine whether this Component is truly visible to the user.
      *
      * Generally, to determine whether a Component is hidden, the no argument form is needed. For example when creating
      * dynamically laid out UIs in a hidden Container before showing them.
+     * @memberof Base#
      *
      * @return {Boolean} `true` if this component is visible, `false` otherwise.
      *
@@ -312,9 +322,10 @@
     /**
      * Sets the page XY position of the component. To set the left and top instead, use {@link #setPosition}.
      * This method fires the {@link #event-move} event.
-     * @param {Number/Number[]} x The new x position or an array of `[x,y]`.
-     * @param {Number} [y] The new y position.
-     * @param {Boolean/Object} [animate] True to animate the Component into its new position. You may also pass an
+     * @param {number|number[]} x The new x position or an array of `[x,y]`.
+     * @param {number} [y] The new y position.
+     * @param {boolean|Object} [animate] True to animate the Component into its new position. You may also pass an
+     * @memberof Text#
      * animation configuration.
      * @return {Ext.Component} this
      */
@@ -329,14 +340,15 @@
     },
 
     /**
-     * @member Ext.Component
      * Sets the left and top of the component. To set the page XY position instead, use {@link Ext.Component#setPagePosition setPagePosition}. This
      * method fires the {@link #event-move} event.
-     * @param {Number/Number[]/Object} x The new left, an array of `[x,y]`, or animation config object containing `x` and `y` properties.
-     * @param {Number} [y] The new top.
-     * @param {Boolean/Object} [animate] If `true`, the Component is _animated_ into its new position. You may also pass an
+     * @method setPosition
+     * @param {number|number[]|Object} x The new left, an array of `[x,y]`, or animation config object containing `x` and `y` properties.
+     * @param {number} [y] The new top.
+     * @param {Boolean|Object} [animate] If `true`, the Component is _animated_ into its new position. You may also pass an
+     * @memberof Text#
      * animation configuration.
-     * @return {Ext.Component} this
+     * @return {Base} this
      */
     setPosition: function (x, y, animate) {
       var me = this

@@ -29,14 +29,23 @@
      * @memberof Text#
      */
     emptyText : '',
+    /**
+     * Error text to display if the **{@link #minLength minimum length}** validation fails.
+     * @property {string} minLengthText
+     * @memberof Text#
+     */
     minLengthText: 'The minimum length for this field is <%=len%>',
+    /**
+     * Error text to display if the **{@link #maxLength maximum length}** validation fails
+     * @property {string} maxLengthText
+     * @memberof Text#
+     */
     maxLengthText: 'The maximum length for this field is <%=len%>',
     valueContainsPlaceholder: false,
     /**
      * Sets the default text to place into an empty field
-     * @method applyEmptyText
+     * @method
      * @memberof Text#
-     * @param {String} bar
      */
     applyEmptyText: function () {
       var me = this,
@@ -93,6 +102,15 @@
       me._super.apply(me, arguments)
       me.fieldFocusCls = me.baseCls + '-focus'
     },
+    /**
+    * Validates a value according to the field's validation rules and returns an array of errors
+     * for any failing validations.
+     *
+     * @method
+     * @memberof Text#
+     * @param {Object} value The value to validate. The processed raw value will be used if nothing is passed.
+     * @return {String[]} Array of any validation errors
+     */
     getErrors: function (value) {
       var errors = Base.prototype.getErrors.apply(this, arguments), regex = this.regex, validator = this.validator
       if (value.length < 1 || value === this.emptyText) {

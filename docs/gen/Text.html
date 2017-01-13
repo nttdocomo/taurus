@@ -33,7 +33,14 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="Text.html">Text</a></li>
+					<li><a href="Base.html">Base</a></li><li><a href="Text.html">Text</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#addUIClsToElement">addUIClsToElement</a></li><li><a href="global.html#getItemId">getItemId</a></li><li><a href="global.html#getXType">getXType</a></li><li><a href="global.html#onDisable">onDisable</a></li><li><a href="global.html#setScale">setScale</a></li><li><a href="global.html#showBy">showBy</a></li>
 				</ul>
 			</li>
 			
@@ -337,6 +344,232 @@
     
 </dd>
 
+        
+            
+<hr>
+<dt class="name" id="maxLengthText">
+    <h4 id="maxLengthText"><span class="type-signature"></span>maxLengthText<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Error text to display if the <strong>maximum length</strong> validation fails</p>
+    </div>
+    
+
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>maxLengthText</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="minLengthText">
+    <h4 id="minLengthText"><span class="type-signature"></span>minLengthText<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>Error text to display if the <strong>minimum length</strong> validation fails.</p>
+    </div>
+    
+
+    
+
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>minLengthText</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
         </dl>
     
 
@@ -347,7 +580,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="applyEmptyText"><span class="type-signature"></span>applyEmptyText(bar)</h4>
+    <h4 class="name" id="applyEmptyText"><span class="type-signature"></span>applyEmptyText()</h4>
     
     
 </dt>
@@ -355,7 +588,86 @@
 
     
     <div class="description">
-        <p>My diary.</p>
+        <p>Sets the default text to place into an empty field</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="getErrors"><span class="type-signature"></span>getErrors(value)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Validates a value according to the field's validation rules and returns an array of errors
+for any failing validations.</p>
     </div>
     
 
@@ -390,13 +702,13 @@
 
         <tr>
             
-                <td class="name"><code>bar</code></td>
+                <td class="name"><code>value</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Object</span>
 
 
 
@@ -407,7 +719,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>The value to validate. The processed raw value will be used if nothing is passed.</p></td>
         </tr>
 
     
@@ -467,6 +779,30 @@
     
 
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Array of any validation errors</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;String></span>
+
+
+
+    </dd>
+</dl>
+
+
+        
 
     
 </dd>
@@ -521,7 +857,7 @@
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on January 10th 2017, 2:51:46 pm
+		on January 13th 2017, 4:08:15 pm
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
