@@ -572,9 +572,11 @@
       }
     },
     applyChildEls: function (childEls) {
-      var childEls = $.extend({}, this.childEls, childEls)
+      var me = this
+      var childEls = me.getChildEls()
+      //$.extend({}, this.childEls, childEls)
       for (var k in childEls) {
-        this[k] = this.$el.find(childEls[k])
+        me[k] = me.$el.find(childEls[k])
       }
     },
     getHeight: function () {

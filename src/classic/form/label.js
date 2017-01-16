@@ -129,14 +129,14 @@
     },
     getActiveError: function () {
       return this.activeError || ''
-    },
+    }/*,
     applyChildEls: function (childEls) {
       var childEls = $.extend(childEls || {}, {
         'bodyEl': '>[id$="bodyEl"]',
         'errorEl': '>[id$="errorEl"]'
       })
       Base.prototype.applyChildEls.call(this, childEls)
-    },
+    }*/,
 
     /**
      * Returns the label for the field. Defaults to simply returning the {@link #fieldLabel} config. Can be overridden

@@ -35,17 +35,31 @@
         },
         beforeInitConfig: function () {}
       }, initConfig), addConfig)
-      var NewClass = define(Base, {
+      var ParentClass = define(Base, {
         prop: 1,
         config: {
-          configName: 'aa'
+          parentName: 'aa',
+          childEls:{
+            'bodyEl':'.bodyEl'
+          }
         }
       })
-      assert.equal(NewClass.prototype.prop, 1, 'new class prototype has attribute prop')
-      var instance = new NewClass()
-      assert.strictEqual(typeof instance.getConfigName, 'function', 'this instance has a getConfigName method')
-      assert.strictEqual(typeof instance.setConfigName, 'function', 'this instance has a setConfigName method')
-      assert.strictEqual(instance.getConfigName(), 'aa', 'the get method return the correct value')
+      var ChildClass = define(ParentClass, {
+        prop: 2,
+        config: {
+          childName: 'bbb',
+          childEls:{
+            'inputEl':'.inputEl'
+          }
+        }
+      })
+      assert.equal(ParentClass.prototype.prop, 1, 'new class prototype has attribute prop')
+      var parentClass = new ParentClass()
+      assert.strictEqual(typeof parentClass.getParentName, 'function', 'this instance has a getConfigName method')
+      assert.strictEqual(typeof parentClass.setParentName, 'function', 'this instance has a setConfigName method')
+      assert.strictEqual(parentClass.getParentName(), 'aa', 'the get method return the correct value')
+      var childClass = new ChildClass()
+      console.log(childClass.getChildEls())
     })
   }
   return {run: run}

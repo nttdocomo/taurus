@@ -5,15 +5,15 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['underscore', '../polyfill/object/merge'], factory)
+      define(['underscore', '../polyfill/object/merge', '../polyfill/object/classify'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('underscore'), require('../polyfill/object/merge'))
+        return factory(require('underscore'), require('../polyfill/object/merge'), require('../polyfill/object/classify'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('underscore'), require('../polyfill/object/merge'))
+    module.exports = factory(require('underscore'), require('../polyfill/object/merge'), require('../polyfill/object/classify'))
   }
 }(this, function (_, merge) {
   return {

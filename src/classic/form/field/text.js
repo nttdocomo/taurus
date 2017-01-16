@@ -201,15 +201,16 @@
       me._super.call(me, events)
     },
     setValue: function (value) {
-      var me = this,
-        inputEl = me.inputEl
+      var me = this
+      /*var inputEl = me.inputEl
 
       if (inputEl && me.emptyText && !_.isEmpty(value)) {
         inputEl.removeClass(me.emptyUICls)
         me.valueContainsPlaceholder = false
-      }
+      }*/
 
       me._super.apply(this, arguments)
+      //me.refreshEmptyText();
 
       me.applyEmptyText()
       return me

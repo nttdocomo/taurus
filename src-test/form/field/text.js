@@ -26,7 +26,8 @@
 }(this, function(Backbone,_,Text) {
     var run = function() {
 		QUnit.test("Text", function( assert ) {
-			var $el = $('<div></div>'),text = new Text({
+			var $el = $('<div></div>')
+            var text = new Text({
 				renderTo:$el,
 				name:'aa'
 			})
