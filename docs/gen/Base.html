@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#addUIClsToElement">addUIClsToElement</a></li><li><a href="global.html#getItemId">getItemId</a></li><li><a href="global.html#getXType">getXType</a></li><li><a href="global.html#onDisable">onDisable</a></li><li><a href="global.html#setScale">setScale</a></li><li><a href="global.html#showBy">showBy</a></li>
+					<li><a href="global.html#addUIClsToElement">addUIClsToElement</a></li><li><a href="global.html#beforeReset">beforeReset</a></li><li><a href="global.html#getInputId">getInputId</a></li><li><a href="global.html#getItemId">getItemId</a></li><li><a href="global.html#getSubTplData">getSubTplData</a></li><li><a href="global.html#getSubTplMarkup">getSubTplMarkup</a></li><li><a href="global.html#getXType">getXType</a></li><li><a href="global.html#onDisable">onDisable</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#setScale">setScale</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#showBy">showBy</a></li><li><a href="global.html#submitValue">submitValue</a></li><li><a href="global.html#valueToRaw">valueToRaw</a></li>
 				</ul>
 			</li>
 			
@@ -608,6 +608,543 @@ dynamically laid out UIs in a hidden Container before showing them.</p></td>
 
 
 
+	<h1 class="page-title">Class: Base</h1>
+<section>
+
+<header>
+    
+        <h2>
+        Base
+        </h2>
+        
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+<hr>
+<dt>
+    <h4 class="name" id="Base"><span class="type-signature"></span>new Base(config)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Base class for form fields that provides default event handling, rendering, and other common functionality
+needed by all form field types.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id="getId"><span class="type-signature"></span>getId()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Retrieves the <code>id</code> of this component. Will auto-generate an <code>id</code> if one has not already been set.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="isDisabled"><span class="type-signature"></span>isDisabled()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Method to determine whether this Component is currently disabled.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>the disabled state of this Component.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="isVisible"><span class="type-signature"></span>isVisible( [deep])</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Returns <code>true</code> if this component is visible.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>deep</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last"><p>Pass <code>true</code> to interrogate the visibility status of all parent Containers to
+determine whether this Component is truly visible to the user.</p>
+<p>Generally, to determine whether a Component is hidden, the no argument form is needed. For example when creating
+dynamically laid out UIs in a hidden Container before showing them.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+	<dt class="tag-since method-doc-label method-doc-details-label">Since:</dt>
+	<dd class="tag-since">
+		<ul class="dummy">
+			<li>1.1.0</li>
+		</ul>
+	</dd>
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p><code>true</code> if this component is visible, <code>false</code> otherwise.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
 		</div>
 	</div>
 
@@ -645,7 +1182,7 @@ dynamically laid out UIs in a hidden Container before showing them.</p></td>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on January 13th 2017, 4:08:15 pm
+		on January 16th 2017, 4:59:59 pm
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

@@ -15,6 +15,13 @@
     module.exports = factory(require('../label'), require('./field'), require('underscore'), require('backbone'), require('modernizr'), require('../../../i18n'), require('taurus'))
   }
 }(this, function (Label, Field, _, Backbone, Modernizr, i18n, taurus) {
+  /**
+   * Base class for form fields that provides default event handling, rendering, and other common functionality
+   * needed by all form field types.
+   *
+   * @constructor Base
+   * @param {Object} config
+   */
   return Label.extend({
     inputType: 'text',
     readOnly: false,
@@ -113,8 +120,8 @@
     /**
      * Sets a data value into the field and runs the change detection and validation. To set the value directly
      * without these inspections see {@link #setRawValue}.
+     * @method
      * @param {Object} value The value to set
-     * @return {Ext.form.field.Field} this
      */
     setValue: function (value) {
       var me = this
