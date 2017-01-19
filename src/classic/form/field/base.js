@@ -38,6 +38,7 @@
     validateOnChange: true,
     initComponent: function () {
       this.getInputId()
+      this.initLabelable()
       Label.prototype.initComponent.apply(this, arguments)
     },
     disable: function () {

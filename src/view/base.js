@@ -591,6 +591,17 @@
     getOuterWidth: function () {
       return this.$el.outerWidth()
     },
+
+    /**
+     * Gets a named template instance for this class. See {@link Ext.XTemplate#getTpl}.
+     * @param {String} name The name of the property that holds the template.
+     * @return {Ext.XTemplate} The template, `null` if not found.
+     *
+     * @since 6.2.0
+     */
+    lookupTpl: function(name) {
+      return _.template(this[name]);
+    },
     setSize: function (width, height) {
       var me = this
 

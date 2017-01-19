@@ -59,7 +59,9 @@
       assert.strictEqual(typeof parentClass.setParentName, 'function', 'this instance has a setConfigName method')
       assert.strictEqual(parentClass.getParentName(), 'aa', 'the get method return the correct value')
       var childClass = new ChildClass()
-      console.log(childClass.getChildEls())
+      var childEls = childClass.getChildEls()
+      assert.strictEqual('inputEl' in childEls && ! childEls.hasOwnProperty('inputEl'), true, '判断inputEl是原型属性而不是对象自身属性')
+      assert.strictEqual('bodyEl' in childEls, true, '判断inputEl包含bodyEl属性')
     })
   }
   return {run: run}

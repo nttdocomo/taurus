@@ -24,6 +24,27 @@
     msgTarget: 'qtip',
     showLabel: true,
     labelSeparator: ':',
+    /**
+     * @cfg {String/String[]/Ext.XTemplate} activeErrorsTpl
+     * The template used to format the Array of error messages passed to {@link #setActiveErrors} into a single HTML
+     * string. if the {@link #msgTarget} is title, it defaults to a list separated by new lines. Otherwise, it
+     * renders each message as an item in an unordered list.
+     */
+    activeErrorsTpl: undefined,
+
+    htmlActiveErrorsTpl: [
+      '<%if(errors && errors.length){%>',
+        '<ul class="<%=listCls%>">',
+          '<%_.each(errors, function(error){%><li><%=error%></li><%})%>',
+        '</ul>',
+      '<%}%>'
+    ].join(''),
+
+    plaintextActiveErrorsTpl: [
+      '<%if(errors && errors.length){%>',
+        '<%_.each(errors, function(error, i){%><%if(i > 0){%>\n<%}%><%=error%><%})%>',
+      '<%}%>'
+    ].join(''),
     config: {
       childEls: {
         'inputEl': '.form-control',
@@ -68,6 +89,16 @@
       }, data)
       return Base.prototype.getTplData.call(me, data)
     },
+    initLabelable: function(){
+      var me = this
+      if (!me.activeErrorsTpl) {
+        if (me.msgTarget === 'title') {
+          me.activeErrorsTpl = me.plaintextActiveErrorsTpl;
+        } else {
+          me.activeErrorsTpl = me.htmlActiveErrorsTpl;
+        }
+      }
+    },
     unsetActiveError: function () {
       var me = this
       if (me.hasActiveError()) {
@@ -80,10 +111,17 @@
       this.setActiveErrors(msg)
     },
     setActiveErrors: function (errors) {
+      var me = this
+      var tpl
       errors = $.makeArray(errors)
-      this.activeError = errors[0]
+      tpl = me.lookupTpl('activeErrorsTpl');
+      activeError = me.activeError = tpl({
+          fieldLabel: me.fieldLabel,
+          errors: errors,
+          listCls: taurus.baseCSSPrefix + 'list-plain'
+      });
       this.activeErrors = errors
-      this.activeError = (new ActiveErrors({})).renderHtml(errors.length ? [errors[0]] : [])
+      //this.activeError = (new ActiveErrors({})).renderHtml(errors.length ? [errors[0]] : [])
       this.renderActiveError()
     },
 
@@ -96,23 +134,26 @@
       return !!this.getActiveError()
     },
     renderActiveError: function () {
-      var activeError = this.getActiveError(),
-        sideError = this.msgTarget === 'side',
-        underError = this.msgTarget === 'under',
-        renderError = sideError || underError
+      var me = this
+      var activeError = me.getActiveError()
+      var sideError = me.msgTarget === 'side'
+      var underError = me.msgTarget === 'under'
+      var renderError = sideError || underError
       /*if(this.$el.hasClass('has-error')){
       	this.bodyEl.find('.help-block').remove()
       }*/
-      if (activeError !== this.lastActiveError) {
-        this.trigger('errorchange', activeError)
-        this.lastActiveError = activeError
+      if (activeError !== me.lastActiveError) {
+        me.trigger('errorchange', activeError)
+        me.lastActiveError = activeError
       }
       if (activeError && renderError) {
-        this.$el.addClass('has-error')
+        me.$el.addClass('has-error')
       } else {
-        this.$el.removeClass('has-error')
+        me.$el.removeClass('has-error')
       }
-      this.errorEl.html(activeError)
+      if (me.errorEl) {
+        me.errorEl.html(activeError)
+      }
     },
     hasActiveError: function () {
       return !!this.getActiveError()
