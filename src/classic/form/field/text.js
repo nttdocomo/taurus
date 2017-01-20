@@ -19,28 +19,59 @@
    * @param {Object} config
    */
   return Base.extend({
+    /**
+     * @property {Boolean} [allowBlank=true]
+     * Specify false to validate that the value's length must be > 0. If `true`, then a blank value is **always** taken to be valid regardless of any {@link #vtype}
+     * validation that may be applied.
+     *
+     * If {@link #vtype} validation must still be applied to blank values, configure {@link #validateBlank} as `true`;
+     * @memberof Text#
+     */
     allowBlank: true,
     blankText: 'This field is required',
     emptyCls: taurus.baseCSSPrefix + 'form-empty-field',
 
     /**
-     * The default text to place into an empty field
      * @property {string} emptyText
+     * The default text to place into an empty field
      * @memberof Text#
      */
     emptyText : '',
     /**
-     * Error text to display if the **{@link #minLength minimum length}** validation fails.
      * @property {string} minLengthText
+     * Error text to display if the **{@link #minLength minimum length}** validation fails.
      * @memberof Text#
      */
     minLengthText: 'The minimum length for this field is <%=len%>',
     /**
-     * Error text to display if the **{@link #maxLength maximum length}** validation fails
      * @property {string} maxLengthText
+     * Error text to display if the **{@link #maxLength maximum length}** validation fails
      * @memberof Text#
      */
     maxLengthText: 'The maximum length for this field is <%=len%>',
+
+    /**
+     * @name  enforceMaxLength
+     * @property {Boolean} enforceMaxLength
+     * True to set the maxLength property on the underlying input field. Defaults to false
+     * @memberof Text#
+     */
+
+    /**
+     * @name  regex
+     * @property {RegExp} regex
+     * A JavaScript RegExp object to be tested against the field value during validation.
+     * If the test fails, the field will be marked invalid using
+     * either **{@link Text#regexText}** or **{@link Text#invalidText}**.
+     * @memberof Text#
+     */
+
+    /**
+     * @property {String} regexText
+     * The error text to display if **{@link Text#regex}** is used and the test fails during validation
+     * @memberof Text#
+     */
+    regexText : '',
     valueContainsPlaceholder: false,
     /**
      * Sets the default text to place into an empty field

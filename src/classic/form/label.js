@@ -15,15 +15,56 @@
     module.exports = factory(require('../container/container'), require('../view/activeErrors'))
   }
 }(this, function (Base, ActiveErrors) {
+  /**
+   * A basic labeled form field
+   *
+   * @constructor Label
+   * @param {Object} config
+   */
   return Base.extend({
     tpl: '<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%if(typeof beforeLabelTextTpl !== "undefined"){%><%=beforeLabelTextTpl%><%}%><%=fieldLabel%><%if(labelSeparator){%><%=labelSeparator%><%}%></label><%}%><div style="<%=controlsStyle%>" id="<%=id%>-bodyEl"><%=field%></div><%if(fieldLabel){%><%}%><%if(renderError){%><div class="help-block" id="<%=id%>-errorEl" style="<%=controlsStyle%>"></div><%}%>',
     className: 'form-group',
+    /**
+     * @property {number} labelWidth
+     * The width of the {@link Label#fieldLabel} in pixels. Only applicable if {@link Label#labelAlign}
+     * is set to "left" or "right".
+     * @memberof Label#
+     */
     labelWidth: 100,
+    /**
+     * @property {string} labelAlign
+     *
+     * Controls the position and alignment of the {@link Label#fieldLabel}. Valid values are:
+     *   - `left` (the default) - The label is positioned to the left of the field, with its text aligned to the left. Its width is determined by the {@link Label#labelWidth} config.
+     *   - `top` - The label is positioned above the field.
+     *   - `right` - The label is positioned to the left of the field, with its text aligned to the right. Its width is determined by the {@link Label#labelWidth} config.
+     * @memberof Label#
+     */
     labelAlign: 'left',
     labelPad: 5,
+    /**
+     * The location where the error message text should display. Must be one of the following values:
+     * @property {string} msgTarget
+     * - `title` Display the message in a default browser title attribute popup.
+     * - `under` Add a block div beneath the field containing the error message.
+     * - `side` Add an error icon to the right of the field, displaying the message in a popup on hover.
+     * @memberof Label#
+     */
     msgTarget: 'qtip',
     showLabel: true,
+    /**
+     * @property {String} labelSeparator
+     * Character(s) to be inserted at the end of the {@link Label#fieldLabel label text}. Set to empty string to hide the separator completely.
+     * @memberof Label#
+     */
     labelSeparator: ':',
+    /**
+     * The label for the field. It gets appended with the {@link Label#labelSeparator}, and its position and sizing is
+     * @property {string} fieldLabel
+     * determined by the {@link Label#labelAlign} and {@link Label#labelWidth} configs.
+     * @memberof Label#
+     */
+    fieldLabel: undefined,
     childEls: {
       'inputEl': '.form-control',
       'labelEl': '.control-label'

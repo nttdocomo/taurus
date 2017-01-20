@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Class: Text</title>
+	<title>Documentation Class: Label</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,13 +79,13 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: Text</h1>
+	<h1 class="page-title">Class: Label</h1>
 <section>
 
 <header>
     
         <h2>
-        Text
+        Label
         </h2>
         
     
@@ -98,7 +98,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="Text"><span class="type-signature"></span>new Text(config)</h4>
+    <h4 class="name" id="Label"><span class="type-signature"></span>new Label(config)</h4>
     
     
 </dt>
@@ -106,7 +106,7 @@
 
     
     <div class="description">
-        <p>A basic text field</p>
+        <p>A basic labeled form field</p>
     </div>
     
 
@@ -241,141 +241,16 @@
         <dl>
             
 <hr>
-<dt class="name" id="allowBlank">
-    <h4 id="allowBlank"><span class="type-signature"></span>allowBlank<span class="type-signature"></span></h4>
+<dt class="name" id="fieldLabel">
+    <h4 id="fieldLabel"><span class="type-signature"></span>fieldLabel<span class="type-signature"></span></h4>
 
     
 </dt>
 <dd>
     
-
-    
-
-    
-<dl class="details">
-    
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    <dl>
-
-<table class="props table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>allowBlank</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Specify false to validate that the value's length must be &gt; 0. If <code>true</code>, then a blank value is <strong>always</strong> taken to be valid regardless of any #vtype
-validation that may be applied.</p>
-<p>If #vtype validation must still be applied to blank values, configure #validateBlank as <code>true</code>;</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-</dl>
-
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt class="name" id="emptyText">
-    <h4 id="emptyText"><span class="type-signature"></span>emptyText<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
+    <div class="description">
+        <p>The label for the field. It gets appended with the <a href="Label.html#labelSeparator">Label#labelSeparator</a>, and its position and sizing is</p>
+    </div>
     
 
     
@@ -410,7 +285,7 @@ validation that may be applied.</p>
 
         <tr>
             
-                <td class="name"><code>emptyText</code></td>
+                <td class="name"><code>fieldLabel</code></td>
             
 
             <td class="type">
@@ -427,7 +302,7 @@ validation that may be applied.</p>
 
             
 
-            <td class="description last"><p>The default text to place into an empty field</p></td>
+            <td class="description last"><p>determined by the <a href="Label.html#labelAlign">Label#labelAlign</a> and <a href="Label.html#labelWidth">Label#labelWidth</a> configs.</p></td>
         </tr>
 
     
@@ -479,8 +354,8 @@ validation that may be applied.</p>
         
             
 <hr>
-<dt class="name" id="enforceMaxLength">
-    <h4 id="enforceMaxLength"><span class="type-signature"></span>enforceMaxLength<span class="type-signature"></span></h4>
+<dt class="name" id="labelAlign">
+    <h4 id="labelAlign"><span class="type-signature"></span>labelAlign<span class="type-signature"></span></h4>
 
     
 </dt>
@@ -519,116 +394,7 @@ validation that may be applied.</p>
 
         <tr>
             
-                <td class="name"><code>enforceMaxLength</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>True to set the maxLength property on the underlying input field. Defaults to false</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-</dl>
-
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt class="name" id="maxLengthText">
-    <h4 id="maxLengthText"><span class="type-signature"></span>maxLengthText<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
-    
-
-    
-
-    
-<dl class="details">
-    
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    <dl>
-
-<table class="props table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>maxLengthText</code></td>
+                <td class="name"><code>labelAlign</code></td>
             
 
             <td class="type">
@@ -645,7 +411,12 @@ validation that may be applied.</p>
 
             
 
-            <td class="description last"><p>Error text to display if the <strong>maximum length</strong> validation fails</p></td>
+            <td class="description last"><p>Controls the position and alignment of the <a href="Label.html#fieldLabel">Label#fieldLabel</a>. Valid values are:</p>
+<ul>
+<li><code>left</code> (the default) - The label is positioned to the left of the field, with its text aligned to the left. Its width is determined by the <a href="Label.html#labelWidth">Label#labelWidth</a> config.</li>
+<li><code>top</code> - The label is positioned above the field.</li>
+<li><code>right</code> - The label is positioned to the left of the field, with its text aligned to the right. Its width is determined by the <a href="Label.html#labelWidth">Label#labelWidth</a> config.</li>
+</ul></td>
         </tr>
 
     
@@ -697,8 +468,8 @@ validation that may be applied.</p>
         
             
 <hr>
-<dt class="name" id="minLengthText">
-    <h4 id="minLengthText"><span class="type-signature"></span>minLengthText<span class="type-signature"></span></h4>
+<dt class="name" id="labelSeparator">
+    <h4 id="labelSeparator"><span class="type-signature"></span>labelSeparator<span class="type-signature"></span></h4>
 
     
 </dt>
@@ -737,227 +508,7 @@ validation that may be applied.</p>
 
         <tr>
             
-                <td class="name"><code>minLengthText</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Error text to display if the <strong>minimum length</strong> validation fails.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-</dl>
-
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt class="name" id="regex">
-    <h4 id="regex"><span class="type-signature"></span>regex<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
-    
-
-    
-
-    
-<dl class="details">
-    
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    <dl>
-
-<table class="props table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>regex</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">RegExp</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>A JavaScript RegExp object to be tested against the field value during validation.
-If the test fails, the field will be marked invalid using
-either <strong><a href="Text.html#regexText">Text#regexText</a></strong> or <strong>Text#invalidText</strong>.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-</dl>
-
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt class="name" id="regexText">
-    <h4 id="regexText"><span class="type-signature"></span>regexText<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
-    
-
-    
-
-    
-<dl class="details">
-    
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    <dl>
-
-<table class="props table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>regexText</code></td>
+                <td class="name"><code>labelSeparator</code></td>
             
 
             <td class="type">
@@ -974,7 +525,7 @@ either <strong><a href="Text.html#regexText">Text#regexText</a></strong> or <str
 
             
 
-            <td class="description last"><p>The error text to display if <strong><a href="Text.html#regex">Text#regex</a></strong> is used and the test fails during validation</p></td>
+            <td class="description last"><p>Character(s) to be inserted at the end of the <a href="Label.html#fieldLabel">label text</a>. Set to empty string to hide the separator completely.</p></td>
         </tr>
 
     
@@ -1023,117 +574,28 @@ either <strong><a href="Text.html#regexText">Text#regexText</a></strong> or <str
     
 </dd>
 
-        </dl>
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
+        
             
 <hr>
-<dt>
-    <h4 class="name" id="applyEmptyText"><span class="type-signature"></span>applyEmptyText()</h4>
-    
+<dt class="name" id="labelWidth">
+    <h4 id="labelWidth"><span class="type-signature"></span>labelWidth<span class="type-signature"></span></h4>
+
     
 </dt>
 <dd>
-
-    
-    <div class="description">
-        <p>Sets the default text to place into an empty field</p>
-    </div>
     
 
-    
-
-    
-
-    
     
 
     
 <dl class="details">
     
 
-	
+    <h5 class="subsection-title">Properties:</h5>
 
-	
+    <dl>
 
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getErrors"><span class="type-signature"></span>getErrors(value)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Validates a value according to the field's validation rules and returns an array of errors
-for any failing validations.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
+<table class="props table table-striped">
     <thead>
     <tr>
         
@@ -1155,13 +617,13 @@ for any failing validations.</p>
 
         <tr>
             
-                <td class="name"><code>value</code></td>
+                <td class="name"><code>labelWidth</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">number</span>
 
 
 
@@ -1172,12 +634,70 @@ for any failing validations.</p>
 
             
 
-            <td class="description last"><p>The value to validate. The processed raw value will be used if nothing is passed.</p></td>
+            <td class="description last"><p>The width of the <a href="Label.html#fieldLabel">Label#fieldLabel</a> in pixels. Only applicable if <a href="Label.html#labelAlign">Label#labelAlign</a>
+is set to &quot;left&quot; or &quot;right&quot;.</p></td>
         </tr>
 
     
     </tbody>
 </table>
+</dl>
+
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="msgTarget">
+    <h4 id="msgTarget"><span class="type-signature"></span>msgTarget<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        <p>The location where the error message text should display. Must be one of the following values:</p>
+    </div>
+    
 
     
 
@@ -1185,82 +705,105 @@ for any failing validations.</p>
 <dl class="details">
     
 
-	
+    <h5 class="subsection-title">Properties:</h5>
 
-	
+    <dl>
 
-	
+<table class="props table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
 
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
     
 
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
+        <tr>
             
-<div class="param-desc">
-    <p>Array of any validation errors</p>
-</div>
+                <td class="name"><code>msgTarget</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
 
 
 
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array.&lt;String></span>
+            
+            </td>
 
+            
 
+            
 
-    </dd>
+            <td class="description last"><ul>
+<li><code>title</code> Display the message in a default browser title attribute popup.</li>
+<li><code>under</code> Add a block div beneath the field containing the error message.</li>
+<li><code>side</code> Add an error icon to the right of the field, displaying the message in a popup on hover.</li>
+</ul></td>
+        </tr>
+
+    
+    </tbody>
+</table>
 </dl>
 
+    
 
-        
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
 
     
 </dd>
 
         </dl>
+    
+
     
 
     

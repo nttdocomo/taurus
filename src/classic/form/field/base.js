@@ -16,22 +16,35 @@
   }
 }(this, function (Label, Field, _, Backbone, Modernizr, i18n, taurus) {
   /**
+   * A namespace.
+   * @namespace form
+   */
+  /**
+   * A namespace.
+   * @namespace field
+   * @memberof form
+   */
+  /**
    * Base class for form fields that provides default event handling, rendering, and other common functionality
    * needed by all form field types.
    *
    * @constructor Base
    * @param {Object} config
+   * @memberof field
    */
   return Label.extend({
     inputType: 'text',
     readOnly: false,
     editable: true,
-    /**
-	     * @cfg {Boolean} submitValue
-	     * Setting this to false will prevent the field from being {@link Ext.form.Basic#submit submitted} even when it is
-	     * not disabled.
-	     */
     submitValue: true,
+    /**
+     * @name name
+     * @property {string} name
+     * The name of the field. This is used as the parameter name when including the field value
+     * in a {@link Ext.form.Basic#submit form submit()}. If no name is configured, it falls back to the {@link Base#inputId}.
+     * To prevent the field from being included in the form submit, set {@link Base#submitValue} to false.
+     * @memberof field.Base#
+     */
     fieldCls: taurus.baseCSSPrefix + 'form-field',
     baseCls: 'form-field',
     invalidText: i18n.__('The value in this field is invalid'),

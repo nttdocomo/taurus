@@ -11,7 +11,7 @@
 	<![endif]-->
 	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
 
-	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+	<link type="text/css" rel="stylesheet" href="styles/site.simplex.css">
 
 </head>
 
@@ -31,23 +31,16 @@
 		<ul class="nav navbar-nav">
 			
 			<li class="dropdown">
-				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="form.html">form</a></li><li><a href="form.field.html">form.field</a></li>
-				</ul>
-			</li>
-			
-			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="Base.html">Base</a></li><li><a href="field.Base.html">field.Base</a></li><li><a href="Label.html">Label</a></li><li><a href="Text.html">Text</a></li>
+					<li><a href="Base.html">Base</a></li><li><a href="Label.html">Label</a></li><li><a href="Text.html">Text</a></li>
 				</ul>
 			</li>
 			
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#addUIClsToElement">addUIClsToElement</a></li><li><a href="global.html#beforeReset">beforeReset</a></li><li><a href="global.html#getActiveErrors">getActiveErrors</a></li><li><a href="global.html#getFieldLabel">getFieldLabel</a></li><li><a href="global.html#getInputId">getInputId</a></li><li><a href="global.html#getItemId">getItemId</a></li><li><a href="global.html#getSubTplData">getSubTplData</a></li><li><a href="global.html#getSubTplMarkup">getSubTplMarkup</a></li><li><a href="global.html#getXType">getXType</a></li><li><a href="global.html#hasActiveError">hasActiveError</a></li><li><a href="global.html#onDisable">onDisable</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#setScale">setScale</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#showBy">showBy</a></li><li><a href="global.html#trimLabelSeparator">trimLabelSeparator</a></li><li><a href="global.html#valueToRaw">valueToRaw</a></li>
+					<li><a href="global.html#addUIClsToElement">addUIClsToElement</a></li><li><a href="global.html#beforeReset">beforeReset</a></li><li><a href="global.html#getActiveErrors">getActiveErrors</a></li><li><a href="global.html#getFieldLabel">getFieldLabel</a></li><li><a href="global.html#getInputId">getInputId</a></li><li><a href="global.html#getItemId">getItemId</a></li><li><a href="global.html#getSubTplData">getSubTplData</a></li><li><a href="global.html#getSubTplMarkup">getSubTplMarkup</a></li><li><a href="global.html#getXType">getXType</a></li><li><a href="global.html#hasActiveError">hasActiveError</a></li><li><a href="global.html#onDisable">onDisable</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#setScale">setScale</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#showBy">showBy</a></li><li><a href="global.html#submitValue">submitValue</a></li><li><a href="global.html#trimLabelSeparator">trimLabelSeparator</a></li><li><a href="global.html#valueToRaw">valueToRaw</a></li>
 				</ul>
 			</li>
 			
@@ -241,135 +234,6 @@
         <dl>
             
 <hr>
-<dt class="name" id="allowBlank">
-    <h4 id="allowBlank"><span class="type-signature"></span>allowBlank<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
-    
-
-    
-
-    
-<dl class="details">
-    
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    <dl>
-
-<table class="props table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>allowBlank</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    true
-                
-                </td>
-            
-
-            <td class="description last"><p>Specify false to validate that the value's length must be &gt; 0. If <code>true</code>, then a blank value is <strong>always</strong> taken to be valid regardless of any #vtype
-validation that may be applied.</p>
-<p>If #vtype validation must still be applied to blank values, configure #validateBlank as <code>true</code>;</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-</dl>
-
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
 <dt class="name" id="emptyText">
     <h4 id="emptyText"><span class="type-signature"></span>emptyText<span class="type-signature"></span></h4>
 
@@ -377,6 +241,10 @@ validation that may be applied.</p>
 </dt>
 <dd>
     
+    <div class="description">
+        <p>The default text to place into an empty field</p>
+    </div>
+    
 
     
 
@@ -391,8 +259,6 @@ validation that may be applied.</p>
 <table class="props table table-striped">
     <thead>
     <tr>
-        
-        <th>Name</th>
         
 
         <th>Type</th>
@@ -409,8 +275,6 @@ validation that may be applied.</p>
     
 
         <tr>
-            
-                <td class="name"><code>emptyText</code></td>
             
 
             <td class="type">
@@ -427,116 +291,7 @@ validation that may be applied.</p>
 
             
 
-            <td class="description last"><p>The default text to place into an empty field</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-</dl>
-
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt class="name" id="enforceMaxLength">
-    <h4 id="enforceMaxLength"><span class="type-signature"></span>enforceMaxLength<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
-    
-
-    
-
-    
-<dl class="details">
-    
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    <dl>
-
-<table class="props table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>enforceMaxLength</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>True to set the maxLength property on the underlying input field. Defaults to false</p></td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -595,6 +350,10 @@ validation that may be applied.</p>
 </dt>
 <dd>
     
+    <div class="description">
+        <p>Error text to display if the <strong>maximum length</strong> validation fails</p>
+    </div>
+    
 
     
 
@@ -645,7 +404,7 @@ validation that may be applied.</p>
 
             
 
-            <td class="description last"><p>Error text to display if the <strong>maximum length</strong> validation fails</p></td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -704,6 +463,10 @@ validation that may be applied.</p>
 </dt>
 <dd>
     
+    <div class="description">
+        <p>Error text to display if the <strong>minimum length</strong> validation fails.</p>
+    </div>
+    
 
     
 
@@ -754,227 +517,7 @@ validation that may be applied.</p>
 
             
 
-            <td class="description last"><p>Error text to display if the <strong>minimum length</strong> validation fails.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-</dl>
-
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt class="name" id="regex">
-    <h4 id="regex"><span class="type-signature"></span>regex<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
-    
-
-    
-
-    
-<dl class="details">
-    
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    <dl>
-
-<table class="props table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>regex</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">RegExp</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>A JavaScript RegExp object to be tested against the field value during validation.
-If the test fails, the field will be marked invalid using
-either <strong><a href="Text.html#regexText">Text#regexText</a></strong> or <strong>Text#invalidText</strong>.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-</dl>
-
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt class="name" id="regexText">
-    <h4 id="regexText"><span class="type-signature"></span>regexText<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
-    
-
-    
-
-    
-<dl class="details">
-    
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    <dl>
-
-<table class="props table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>regexText</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The error text to display if <strong><a href="Text.html#regex">Text#regex</a></strong> is used and the test fails during validation</p></td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -1310,7 +853,7 @@ for any failing validations.</p>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on January 20th 2017, 3:49:45 pm
+		on 2017-01-20T12:32:02+08:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
@@ -1356,7 +899,7 @@ $( function () {
 	} );
 
 	Sunlight.highlightAll( {
-		lineNumbers : true,
+		lineNumbers : false,
 		showMenu : true,
 		enableDoclinks : true
 	} );
