@@ -142,7 +142,7 @@
 			assert.equal(comboBox.getPicker().$el.is(':hidden'), false, "当点击下拉按钮时，显示下拉框" );
 			picker = comboBox.getPicker();
 			listEvent = $.Event('click',{
-				target : picker.$el.find('a').eq(0).get(0)
+				target : picker.$el.find('a').get(0)
 			});
 			comboBox.getPicker().$el.trigger(listEvent);
 			assert.equal(comboBox.value, '0', "当点击下拉框第一个选项时" );
@@ -150,12 +150,12 @@
 			comboBox.$el.trigger(event);
 			assert.equal(comboBox.getPicker().$el.is(':hidden'), false, "当点击下拉按钮时，显示下拉框" );
 			listEvent = $.Event('click',{
-				target : picker.$el.find('a').eq(1).get(0)
+				target : picker.$el.find('a').get(1)
 			});
 			comboBox.getPicker().$el.trigger(listEvent);
 			assert.equal(comboBox.value, '1', "当点击下拉框第二个选项时" );
 			listEvent = $.Event('click',{
-				target : picker.$el.find('a').eq(2).get(0)
+				target : picker.$el.find('a').get(2)
 			});
 			comboBox.getPicker().$el.trigger(listEvent);
 			assert.equal(comboBox.value, '2', "当点击下拉框第三个选项时" );

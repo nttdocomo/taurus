@@ -565,13 +565,13 @@
       return $(this.renderHtml())
     },
     afterRender: function () {
-      this.applyChildEls()
+      this.applyChildEl()
       if (this.contentEl) {
         var contentEl = $('#' + this.contentEl)
         this.getContentTarget().append(contentEl)
       }
     },
-    applyChildEls: function (childEls) {
+    applyChildEl: function (childEls) {
       var me = this
       var childEls = me.getChildEls()
       //$.extend({}, this.childEls, childEls)

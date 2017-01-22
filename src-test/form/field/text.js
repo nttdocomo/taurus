@@ -42,8 +42,6 @@
       assert.strictEqual(text.isValid(), false, "test的值不是有效的值" );
       assert.strictEqual(text.activeErrors.length, 1, "text应该有一个错误" );
       assert.strictEqual(text.activeErrors[0], 'regexText', "并且这个错误的值等于regexText" );
-      var childEls = text.getChildEls()
-      assert.strictEqual('inputEl' in childEls && ! childEls.hasOwnProperty('inputEl'), true, '判断inputEl是原型属性而不是对象自身属性')
     });
   };
   return {run: run}

@@ -25,6 +25,12 @@
      * @private
      */
     valueContainsPlaceholder: false,
+    config:{
+      childEls:{
+        'triggerWrap': '.form-trigger',
+        'triggerEl': '.form-trigger'
+      }
+    },
     applyEmptyText: function () {
       var me = this,
         emptyText = me.emptyText,

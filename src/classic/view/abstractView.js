@@ -4,13 +4,13 @@
       // Now we're wrapping the factory and assigning the return
       // value to the root (window) and returning it as well to
       // the AMD loader.
-      define(['../../view/base', '../../util/storeHolder', '../../selection/dataViewModel', '../grid/navigationModel', 'backbone', 'underscore'], function (Base, StoreHolder, DataViewModel, NavigationModel, Backbone, _) {
+      define(['../../define', '../../view/base', '../../util/storeHolder', '../../selection/dataViewModel', '../grid/navigationModel', 'backbone', 'underscore'], function (Base, StoreHolder, DataViewModel, NavigationModel, Backbone, _) {
         return (root.Class = factory(Base, StoreHolder, DataViewModel, NavigationModel, Backbone, _))
       })
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return (root.Class = factory(require('../../view/base'), require('../../util/storeHolder'), require('../../selection/dataViewModel'), require('../grid/navigationModel'), require('backbone'), require('underscore')))
+        return (root.Class = factory(require('../../define'), require('../../view/base'), require('../../util/storeHolder'), require('../../selection/dataViewModel'), require('../grid/navigationModel'), require('backbone'), require('underscore')))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
@@ -18,12 +18,12 @@
     // run into a scenario where plain modules depend on CommonJS
     // *and* I happen to be loading in a CJS browser environment
     // but I'm including it for the sake of being thorough
-    module.exports = (root.Class = factory(require('../../view/base'), require('../../util/storeHolder'), require('../../selection/dataViewModel'), require('../grid/navigationModel'), require('backbone'), require('underscore')))
+    module.exports = (root.Class = factory(require('../../define'), require('../../view/base'), require('../../util/storeHolder'), require('../../selection/dataViewModel'), require('../grid/navigationModel'), require('backbone'), require('underscore')))
   } else {
     root.Class = factory()
   }
-}(this, function (Base, StoreHolder, DataViewModel, NavigationModel, Backbone, _) {
-  return Base.extend({
+}(this, function (define, Base, StoreHolder, DataViewModel, NavigationModel, Backbone, _) {
+  return define(Base, {
     config: {
       selectionModel: {
         type: DataViewModel

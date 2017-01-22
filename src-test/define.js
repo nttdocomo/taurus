@@ -47,10 +47,10 @@
       var ChildClass = define(ParentClass, {
         prop: 2,
         config: {
-          childName: 'bbb'/*,
+          childName: 'bbb',
           childEls:{
             'inputEl':'.inputEl'
-          }*/
+          }
         }
       })
       assert.equal(ParentClass.prototype.prop, 1, 'new class prototype has attribute prop')
@@ -60,7 +60,7 @@
       assert.strictEqual(parentClass.getParentName(), 'aa', 'the get method return the correct value')
       var childClass = new ChildClass()
       var childEls = childClass.getChildEls()
-      // assert.strictEqual('inputEl' in childEls && ! childEls.hasOwnProperty('inputEl'), true, '判断inputEl是原型属性而不是对象自身属性')
+      assert.strictEqual('inputEl' in childEls && ! childEls.hasOwnProperty('inputEl'), true, '判断inputEl是原型属性而不是对象自身属性')
       assert.strictEqual('bodyEl' in childEls, true, '判断inputEl包含bodyEl属性')
     })
   }
