@@ -4,18 +4,18 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./text','underscore'], factory);
+			define(['../../../define', './text','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./text'),require('underscore'));
+				return factory(require('../../../define'), require('./text'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./text'),require('underscore'));
+		module.exports = factory(require('../../../define'), require('./text'),require('underscore'));
 	}
-}(this, function(Text,_){
-	return Text.extend({
+}(this, function(define, Text,_){
+	return define(Text, {
 		editable:true,
 		/**
 		 * @cfg {Boolean} buttonOnly
@@ -23,12 +23,12 @@
 		 * inherited Text members will still be available.
 		 */
 		buttonOnly : false,
-		applyChildEls:function(childEls){
+		/*applyChildEls:function(childEls){
 			childEls = $.extend(childEls || {},{
 				'triggerEl':'.form-trigger'
 			});
 			Text.prototype.applyChildEls.call(this,childEls);
-		},
+		},*/
 		delegateEvents : function(events) {
 			var events = $.extend(events || {}, this.events, {
 				'click .form-trigger' : 'onTriggerClick'

@@ -4,23 +4,23 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./picker','../../view/boundList','underscore','backbone','../../../lang/event','jquery.scrollIntoView'], factory);
+			define(['../../../define', './picker','../../view/boundList','underscore','backbone','../../../lang/event','jquery.scrollIntoView'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./picker'),require('../../view/boundList'),require('underscore'),require('backbone'),require('../../../lang/event'),require('jquery.scrollIntoView'));
+				return factory(require('../../../define'),require('./picker'),require('../../view/boundList'),require('underscore'),require('backbone'),require('../../../lang/event'),require('jquery.scrollIntoView'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./picker'),require('../../view/boundList'),require('underscore'),require('backbone'),require('../../../lang/event'),require('jquery.scrollIntoView'));
+		module.exports = factory(require('../../../define'),require('./picker'),require('../../view/boundList'),require('underscore'),require('backbone'),require('../../../lang/event'),require('jquery.scrollIntoView'));
 	}
-}(this, function(Picker,BoundList,_,Backbone) {
-	return Picker.extend({
+}(this, function(define, Picker,BoundList,_,Backbone) {
+	return define(Picker, {
 		allQuery: '',
 		/**
-	     * @private
-	     */
-	    clearValueOnEmpty: true,
+     * @private
+     */
+    clearValueOnEmpty: true,
 		delimiter : ', ',
 		isExpanded : false,
 		queryDelay:1000,

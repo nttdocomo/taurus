@@ -4,18 +4,18 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./trigger'], factory);
+			define(['../../../define', './trigger'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./trigger'));
+				return factory(require('../../../define'), require('./trigger'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./trigger'));
+		module.exports = factory(require('../../../define'), require('./trigger'));
 	}
-}(this, function(Trigger){
-	return Trigger.extend({
+}(this, function(define, Trigger){
+	return define(Trigger, {
 		alignPicker:function(){
 			var me = this, picker = me.getPicker(),position,
 			heightAbove = taurus.getPositionAbove(this.$el),
@@ -45,13 +45,13 @@
 			}
 			me.doAlign(position);
 		},
-		applyChildEls:function(childEls){
+		/*applyChildEls:function(childEls){
 			childEls = $.extend({
 				'triggerWrap':'> div',
 				'triggerEl' : '.btn'
 			}, childEls);
 			Trigger.prototype.applyChildEls.call(this,childEls);
-		},
+		},*/
 		collapse:function(){
 			if (this.isExpanded) {
 				this.picker.hide();
