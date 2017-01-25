@@ -135,7 +135,6 @@
         var itemIndex = i
         var recordId = record.cid
         var cell = rows.get(itemIndex).cells[me.getVisibleIndex()].firstChild
-        console.log(cell)
         var widgets = me.liveWidgets[recordId] = /*oldWidgetMap[recordId] || */me.getFreeWidget()//TODO make the widget can reuse
         me.updateWidget(widgets, cell, record, isFixedSize)
         // We have to run the callback *after* reattaching the Widget
