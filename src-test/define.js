@@ -54,9 +54,12 @@
         }
       })
       assert.equal(ParentClass.prototype.prop, 1, 'new class prototype has attribute prop')
-      var parentClass = new ParentClass()
+      var parentClass = new ParentClass({
+        instantceProp:1
+      })
       assert.strictEqual(typeof parentClass.getParentName, 'function', 'this instance has a getConfigName method')
       assert.strictEqual(typeof parentClass.setParentName, 'function', 'this instance has a setConfigName method')
+      assert.strictEqual(parentClass.instantceProp, 1, 'this instance has a setConfigName method')
       assert.strictEqual(parentClass.getParentName(), 'aa', 'the get method return the correct value')
       var childClass = new ChildClass()
       var childEls = childClass.getChildEls()

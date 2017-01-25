@@ -34,6 +34,9 @@
   _.extend(define, {
     preprocessors: {},
     configNameCache: {},
+    onBeforeCreated:function(Class, data, hooks){
+      Class.addMembers(data);
+    },
     process: function (Class, data) {
       var me = this
       var args = arguments
@@ -42,6 +45,7 @@
         var process = preprocessor.fn
         process.apply(me, args)
       })
+      me.onBeforeCreated.apply(me, arguments);
     },
 
     /**

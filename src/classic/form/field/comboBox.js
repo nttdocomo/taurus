@@ -123,7 +123,7 @@
 				itemNode = picker.getNode(item);
 				if (itemNode.length) {
 					picker.highlightItem(itemNode);
-					itemNode.scrollIntoView(false);
+					itemNode.scrollintoview(false);
 				}
 			});
 			if (picker && me.autoSelect && me.collection.length > 0) {
@@ -132,7 +132,7 @@
 				itemNode = picker.getNode(lastSelected || 0);
 				if (itemNode) {
 					picker.highlightItem(itemNode);
-					itemNode.scrollIntoView(false);
+					itemNode.scrollintoview(false);
 				}
 			}
 		},

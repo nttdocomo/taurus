@@ -4,26 +4,26 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./base','../checkboxManager','underscore'], factory);
+			define(['../../../define', './base','../checkboxManager','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./base'),require('../checkboxManager'),require('underscore'));
+				return factory(require('../../../define'),require('./base'),require('../checkboxManager'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./base'),require('../checkboxManager'),require('underscore'));
+		module.exports = factory(require('../../../define'),require('./base'),require('../checkboxManager'),require('underscore'));
 	}
-}(this, function(Base,CheckboxManager,_) {
-	return Base.extend({
+}(this, function(define, Base,CheckboxManager,_) {
+	return define(Base, {
 		fieldSubTpl : '<div class="<%=type%>"><%if(boxLabel){%><label id="<%=cmpId%>-boxLabelEl" for="<%=id%>" class="<%=boxLabelCls%>"><%}%><input id="<%=id%>" type="<%=type%>"<%if(checked){%> checked="<%=checked%>"<%}%> name="<%=name%>" value="<%=value%>"/><%if(boxLabel){%><%=boxLabel%></label><%}%></div>',
 		inputType : 'checkbox',
 		checked : false,
 		/**
-	     * @cfg {String} [boxLabelCls='x-form-cb-label']
-	     * The CSS class to be applied to the {@link #boxLabel} element
-	     */
-	    boxLabelCls: taurus.baseCSSPrefix + 'form-cb-label',
+     * @cfg {String} [boxLabelCls='x-form-cb-label']
+     * The CSS class to be applied to the {@link #boxLabel} element
+     */
+    boxLabelCls: taurus.baseCSSPrefix + 'form-cb-label',
 		checkedCls : taurus.baseCSSPrefix + 'form-cb-checked',
 		onRe : /^on$/i,
 
@@ -33,8 +33,10 @@
 		 * value when submitting as part of a form.
 		 */
 		inputValue : 'on',
-		childEls: {
-			'inputEl' : ':checkbox'
+		config:{
+			childEls: {
+				'inputEl' : ':checkbox'
+			}
 		},
 
 		initComponent: function() {

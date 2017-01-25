@@ -4,18 +4,18 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../view/base','../spinner/wave'], factory);
+			define(['../../define', '../../view/base'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../../view/base'),require('../spinner/wave'));
+				return factory(require('../../define'), require('../../view/base'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../view/base'),require('../spinner/wave'));
+		module.exports = factory(require('../../define'), require('../../view/base'));
 	}
-}(this, function(Base,Spinner){
-	return Base.extend({
+}(this, function(define, Base){
+	return define(Base, {
 		autoHeight:false,
 		header:false,
 		hideHeaders:false,
@@ -28,15 +28,14 @@
 			'click .refresh' : 'refresh',
 			'click .tool-collapse-top, .tool-expand-bottom' : 'toggleCollapse'
 		},
-		applyChildEls:function(childEls){
-			childEls = $.extend({
+    config:{
+    	childEls: {
 				'headEl' : '.panel-heading',
 				'bodyEl' : '.panel-body',
 				'header':'.panel-title',
 				'frameBody' : '.panel-body'
-			}, childEls);
-			this._super.call(this,childEls);
-		},
+	    }
+	  },
 		initialize:function(){
             var me = this;
 			me._super.apply(me,arguments);
@@ -57,9 +56,7 @@
 			return {
 				header:me.header,
 				title:me.collapsible ? me.title + '<span class="tool-collapse-top"></span>' : me.title,
-				content:me.loading ? (new Spinner({
-					renderTo:me.$el
-				})).renderHtml() : me.content,
+				content: me.content,
 				tool:me.refreshable ? '<a href="" class="pull-right halflings refresh" data-name="refresh" data-type="" data-prefix="halflings" data-utf="E031"></a>':''
 			};
 		},

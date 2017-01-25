@@ -5,25 +5,25 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../state/stateful', '../util/focusable', '../util/itemCollection', 'underscore', 'taurus', 'backbone', '../class/configurator', '../mixin/addConfig', '../mixin/initConfig', 'backbone-super', '../lang/number', '../mixins', '../jquery.ui.position'], factory)
+      define(['../define', '../state/stateful', '../util/focusable', '../util/itemCollection', 'jquery', 'underscore', 'taurus', './baseClass', '../lang/number', '../jquery.ui.position'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../state/stateful'), require('../util/focusable'), require('../util/itemCollection'), require('underscore'), require('taurus'), require('backbone'), require('../class/configurator'), require('../mixin/addConfig'), require('../mixin/initConfig'), require('backbone-super'), require('../lang/number'), require('../mixins'), require('../jquery.ui.position'))
+        return factory(require('../define'), require('../state/stateful'), require('../util/focusable'), require('../util/itemCollection'), require('jquery'), require('underscore'), require('taurus'), require('./baseClass'), require('../lang/number'), require('../jquery.ui.position'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../state/stateful'), require('../util/focusable'), require('../util/itemCollection'), require('underscore'), require('taurus'), require('backbone'), require('../class/configurator'), require('../mixin/addConfig'), require('../mixin/initConfig'), require('backbone-super'), require('../lang/number'), require('../mixins'), require('../jquery.ui.position'))
+    module.exports = factory(require('../define'), require('../state/stateful'), require('../util/focusable'), require('../util/itemCollection'), require('jquery'), require('underscore'), require('taurus'), require('./baseClass'), require('../lang/number'), require('../jquery.ui.position'))
   }
-}(this, function (Stateful, Focusable, ItemCollection, _, taurus, Backbone, Configurator, addConfig, initConfig) {
-  return Backbone.View.extend({
+}(this, function (define, Stateful, Focusable, ItemCollection, $, _, taurus, BaseClass) {
+  return define(BaseClass, {
     isRendered: false,
     doc: taurus.$doc,
     baseCls: taurus.baseCSSPrefix + 'component',
     ui: 'default',
     items: undefined,
     constructor: function (config) {
-      Backbone.View.call(this, config)
+      BaseClass.call(this, config)
       this.initConfig(config)
     },
     getConfigurator: function () {
@@ -40,7 +40,7 @@
           me.id = attrs.id = _.result(me, 'cid')
         if (me.className)
           attrs['class'] = _.result(me, 'className')
-        var $el = Backbone.$('<' + _.result(me, 'tagName') + '>').attr(attrs)
+        var $el = $('<' + _.result(me, 'tagName') + '>').attr(attrs)
         me.setElement($el, false)
       } else {
         me.setElement(_.result(me, 'el'), false)
@@ -257,7 +257,7 @@
     },
     delegateEvents: function (events) {
       var events = $.extend(events || {}, this.events /*, this.listeners*/)
-      Backbone.View.prototype.delegateEvents.call(this, events)
+      this._super.call(this, events)
     },
     getTpl: function (data) {
       return this.tpl
@@ -889,5 +889,5 @@
         return newobj
       }
     }
-  }).mixins(Stateful).mixins(Focusable).extend(initConfig, addConfig)
+  }).mixins(Stateful).mixins(Focusable)
 }))

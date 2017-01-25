@@ -63,9 +63,11 @@
 		renderButttons:function(){
       var me = this
       var footer = me.footer
-      _.each(this.buttons, function(button){
+      me.buttons = _.map(me.buttons, function(button){
+      	button.handler = _.bind(button.handler, me)
         var btn = new Button(button)
         btn.render(footer)
+        return btn
       })
 			/*return _.template('<%_.each(buttons,function(button){%><<%if(button.href){%>a href="<%=button.href%>"<%}else{%>button<%}%> class="btn<%if(button){%> <%=button.className%><%}%>"<%if(button.disabled){%> disabled="disabled"<%}%>><%=button.text%></<%if(button.href){%>a<%}else{%>button<%}%>><%})%>')({
 				buttons:this.buttons

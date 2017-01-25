@@ -4,23 +4,26 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../../view/base','../column/column','../columnManager'], factory);
+			define(['../../../define', '../../../view/base','../column/column','../columnManager'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../../../view/base'),require('../column/column'),require('../columnManager'));
+				return factory(require('../../../define'),require('../../../view/base'),require('../column/column'),require('../columnManager'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../../view/base'),require('../column/column'),require('../columnManager'));
+		module.exports = factory(require('../../../define'),require('../../../view/base'),require('../column/column'),require('../columnManager'));
 	}
-}(this, function(Base,Column,ColumnManager,subscribeModule) {
-	return Base.extend({
+}(this, function(define, Base,Column,ColumnManager,subscribeModule) {
+	return define(Base, {
 		className : 'grid-header-ct',
 		defaultType : Column,
 		events:{
 			'click .column-header':'onHeaderCtEvent'
 		},
+    config:{
+      childEls: {}
+    },
 		initComponent : function() {
 			var me = this;
 	        me.headerCounter = 0;
@@ -298,7 +301,7 @@
 				'margin-top':-1*me.$el.outerHeight()
 			})
 			me.$el.parent().css({
-				'padding-top':me.$el.height()
+				'padding-top':me.$el.outerHeight()
 			})
 			me.ownerCt && me.ownerCt.updateLayout()
 		}

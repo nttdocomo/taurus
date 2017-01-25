@@ -4,18 +4,18 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./view', '../grid/cellContext', '../../selection/rowModel', 'backbone', 'underscore', 'taurus'], factory)
+      define(['../../define', './view', '../grid/cellContext', '../../selection/rowModel', 'backbone', 'underscore', 'taurus'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./view'), require('../grid/cellContext'), require('../../selection/rowModel'), require('backbone'), require('underscore'), require('taurus'))
+        return factory(require('../../define'), require('./view'), require('../grid/cellContext'), require('../../selection/rowModel'), require('backbone'), require('underscore'), require('taurus'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./view'), require('../grid/cellContext'), require('../../selection/rowModel'), require('backbone'), require('underscore'), require('taurus'))
+    module.exports = factory(require('../../define'), require('./view'), require('../grid/cellContext'), require('../../selection/rowModel'), require('backbone'), require('underscore'), require('taurus'))
   }
-}(this, function (Base, CellContext, RowModel, Backbone, _, taurus) {
-  return Base.extend({
+}(this, function (define, Base, CellContext, RowModel, Backbone, _, taurus) {
+  return define(Base, {
     header: true,
     tpl: '<div class="grid-item-container"><table><%=rows%></table></div>',
     rowTpl: ['<tr class="<%=itemClasses.join(" ")%>" data-item-id="<%=record.cid%>" id="<%=id%>">',
@@ -29,16 +29,6 @@
     className: 'grid-view',
     itemCls: 'grid-item',
     cellSelector: 'td.' + taurus.baseCSSPrefix + 'grid-cell',
-    childEls: {
-      'all':'table tr',
-      'gridBody': '.grid-body',
-      'gridTable': '.grid-table',
-      'gridHeader': '.grid-header',
-      'gridTableCell': '.grid-table tr:eq(0) td',
-      'gridTableHeader': '.grid-table tr:eq(0) th',
-      'gridTableHeaderCell': '.grid-header tr th',
-      'gridResizeMarker': '.grid-resize-marker'
-    },
     // Private properties used during the row and cell render process.
     // They are allocated here on the prototype, and cleared/re-used to avoid GC churn during repeated rendering.
     rowValues: {
@@ -48,6 +38,16 @@
     config: {
       selectionModel: {
         type: RowModel
+      },
+      childEls: {
+        'all':'table tr',
+        'gridBody': '.grid-body',
+        'gridTable': '.grid-table',
+        'gridHeader': '.grid-header',
+        'gridTableCell': '.grid-table tr:eq(0) td',
+        'gridTableHeader': '.grid-table tr:eq(0) th',
+        'gridTableHeaderCell': '.grid-header tr th',
+        'gridResizeMarker': '.grid-resize-marker'
       }
     },
     selectionModel: {

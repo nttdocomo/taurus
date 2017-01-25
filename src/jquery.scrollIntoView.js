@@ -1,153 +1,221 @@
 /*!
- * $.fn.scrollIntoView - similar to the default browser scrollIntoView
- * The default browser behavior always places the element at the top or bottom of its container. 
- * This override is smart enough to not scroll if the element is already visible.
+ * jQuery scrollintoview() plugin and :scrollable selector filter
  *
- * Copyright 2011 Arwid Bancewicz
- * Licensed under the MIT license
+ * Version 1.8 (14 Jul 2011)
+ * Requires jQuery 1.4 or newer
+ *
+ * Copyright (c) 2011 Robert Koritnik
+ * Licensed under the terms of the MIT license
  * http://www.opensource.org/licenses/mit-license.php
- * 
- * @date 9 May 2011
- * @author Arwid Bancewicz http://arwid.ca
- * @version 0.2
  */
- (function(factory) {
-    if (typeof define === 'function') {
-        if(define.amd){
-            define(['jquery'],function($){
-                factory($);
-            })
-        }
-        if(define.cmd){
-            define(function(require, exports, module){
-              var $ = require('jquery');
-              factory($);
-            })
-        }
 
-      // Finally, as a browser global.
+;(function (root, factory) {
+  if (typeof define === 'function') {
+    if (define.amd) {
+      define(['jquery'], factory)
     }
-}(function($) {
-    $.fn.scrollIntoView = function(duration, easing, complete) {
-        // The arguments are optional.
-        // The first argment can be false for no animation or a duration.
-        // The first argment could also be a map of options.
-        // Refer to http://api.jquery.com/animate/.
-        var opts = $.extend({},
-        $.fn.scrollIntoView.defaults);
+    if (define.cmd) {
+      define(function (require, exports, module) {
+        return factory(require('jquery'))
+      })
+    }
+  } else if (typeof module === 'object' && module.exports) {
+    module.exports = factory(require('jquery'))
+  }
+}(this, function ($) {
+  var converter = {
+    vertical: { x: false, y: true },
+    horizontal: { x: true, y: false },
+    both: { x: true, y: true },
+    x: { x: true, y: false },
+    y: { x: false, y: true }
+  };
 
-        // Get options
-        if ($.type(duration) == "object") {
-            $.extend(opts, duration);
-        } else if ($.type(duration) == "number") {
-            $.extend(opts, { duration: duration, easing: easing, complete: complete });
-        } else if (duration == false) {
-            opts.smooth = false;
-        }
-
-        // get enclosing offsets
-        var elY = Infinity, elH = 0;
-        if (this.size()==1)((elY=this.get(0).offsetTop)==null||(elH=elY+this.get(0).offsetHeight));
-        else this.each(function(i,el){(el.offsetTop<elY?elY=el.offsetTop:el.offsetTop+el.offsetHeight>elH?elH=el.offsetTop+el.offsetHeight:null)});
-        elH -= elY;
-
-        // start from the common ancester
-        var pEl = this.commonAncestor().get(0);
-
-        var wH = $(window).height();
-        
-        // go up parents until we find one that scrolls
-        while (pEl) {
-            var pY = pEl.scrollTop, pH = pEl.clientHeight;
-            if (pH > wH) pH = wH;
-            
-            // case: if body's elements are all absolutely/fixed positioned, use window height
-            if (pH == 0 && pEl.tagName == "BODY") pH = wH;
-            
-            if (
-            // it wiggles?
-            (pEl.scrollTop != ((pEl.scrollTop += 1) == null || pEl.scrollTop) && (pEl.scrollTop -= 1) != null) ||
-            (pEl.scrollTop != ((pEl.scrollTop -= 1) == null || pEl.scrollTop) && (pEl.scrollTop += 1) != null)) {
-                if (elY <= pY) scrollTo(pEl, elY); // scroll up
-                else if ((elY + elH) > (pY + pH)) scrollTo(pEl, elY + elH - pH); // scroll down
-                else scrollTo(pEl, undefined) // no scroll
-                return;
-            }
-
-            // try next parent
-            pEl = pEl.parentNode;
-        }
-
-        function scrollTo(el, scrollTo) {
-            if (scrollTo === undefined) {
-                if ($.isFunction(opts.complete)) opts.complete.call(el);
-            } else if (opts.smooth) {
-                $(el).stop().animate({ scrollTop: scrollTo }, opts);
-            } else {
-                el.scrollTop = scrollTo;
-                if ($.isFunction(opts.complete)) opts.complete.call(el);
-            }
-        }
-        return this;
+    var settings = {
+        duration: "fast",
+        direction: "both"
     };
 
-    $.fn.scrollIntoView.defaults = {
-        smooth: true,
-        duration: null,
-        easing: $.easing && $.easing.easeOutExpo ? 'easeOutExpo': null,
-        // Note: easeOutExpo requires jquery.effects.core.js
-        //       otherwise jQuery will default to use 'swing'
-        complete: $.noop(),
-        step: null,
-        specialEasing: null
+    var rootrx = /^(?:html)$/i;
+
+    // gets border dimensions
+    var borders = function (domElement, styles) {
+        styles = styles || (document.defaultView && document.defaultView.getComputedStyle ? document.defaultView.getComputedStyle(domElement, null) : domElement.currentStyle);
+        var px = document.defaultView && document.defaultView.getComputedStyle ? true : false;
+        var b = {
+            top: (parseFloat(px ? styles.borderTopWidth : $.css(domElement, "borderTopWidth")) || 0),
+            left: (parseFloat(px ? styles.borderLeftWidth : $.css(domElement, "borderLeftWidth")) || 0),
+            bottom: (parseFloat(px ? styles.borderBottomWidth : $.css(domElement, "borderBottomWidth")) || 0),
+            right: (parseFloat(px ? styles.borderRightWidth : $.css(domElement, "borderRightWidth")) || 0)
+        };
+        return {
+            top: b.top,
+            left: b.left,
+            bottom: b.bottom,
+            right: b.right,
+            vertical: b.top + b.bottom,
+            horizontal: b.left + b.right
+        };
     };
 
-    /*
-     Returns whether the elements are in view
-    */
-    $.fn.isOutOfView = function(completely) {
-        // completely? whether element is out of view completely
-        var outOfView = true;
-        this.each(function() {
-            var pEl = this.parentNode, pY = pEl.scrollTop, pH = pEl.clientHeight, elY = this.offsetTop, elH = this.offsetHeight;
-            if (completely ? (elY) > (pY + pH) : (elY + elH) > (pY + pH)) {}
-            else if (completely ? (elY + elH) < pY: elY < pY) {}
-            else outOfView = false;
-        });
-        return outOfView;
+    var dimensions = function ($element) {
+        var win = $(window);
+        var isRoot = rootrx.test($element[0].nodeName);
+        return {
+            border: isRoot ? { top: 0, left: 0, bottom: 0, right: 0} : borders($element[0]),
+            scroll: {
+                top: (isRoot ? win : $element).scrollTop(),
+                left: (isRoot ? win : $element).scrollLeft()
+            },
+            scrollbar: {
+                right: isRoot ? 0 : $element.innerWidth() - $element[0].clientWidth,
+                bottom: isRoot ? 0 : $element.innerHeight() - $element[0].clientHeight
+            },
+            rect: (function () {
+                var r = $element[0].getBoundingClientRect();
+                return {
+                    top: isRoot ? 0 : r.top,
+                    left: isRoot ? 0 : r.left,
+                    bottom: isRoot ? $element[0].clientHeight : r.bottom,
+                    right: isRoot ? $element[0].clientWidth : r.right
+                };
+            })()
+        };
     };
 
-    /*
-     Returns the common ancestor of the elements.
-     It was taken from http://stackoverflow.com/questions/3217147/jquery-first-parent-containing-all-children
-     It has received minimal testing.
-    */
-    $.fn.commonAncestor = function() {
-        var parents = [];
-        var minlen = Infinity;
+    $.fn.extend({
+        scrollintoview: function (options) {
+            /// <summary>Scrolls the first element in the set into view by scrolling its closest scrollable parent.</summary>
+            /// <param name="options" type="Object">Additional options that can configure scrolling:
+            ///        duration (default: "fast") - jQuery animation speed (can be a duration string or number of milliseconds)
+            ///        direction (default: "both") - select possible scrollings ("vertical" or "y", "horizontal" or "x", "both")
+            ///        complete (default: none) - a function to call when scrolling completes (called in context of the DOM element being scrolled)
+            /// </param>
+            /// <return type="jQuery">Returns the same jQuery set that this function was run on.</return>
 
-        $(this).each(function() {
-            var curparents = $(this).parents();
-            parents.push(curparents);
-            minlen = Math.min(minlen, curparents.length);
-        });
+            options = $.extend({}, settings, options);
+            options.direction = converter[typeof (options.direction) === "string" && options.direction.toLowerCase()] || converter.both;
 
-        for (var i in parents) {
-            parents[i] = parents[i].slice(parents[i].length - minlen);
-        }
+            var dirStr = "";
+            if (options.direction.x === true) dirStr = "horizontal";
+            if (options.direction.y === true) dirStr = dirStr ? "both" : "vertical";
 
-        // Iterate until equality is found
-        for (var i = 0; i < parents[0].length; i++) {
-            var equal = true;
-            for (var j in parents) {
-                if (parents[j][i] != parents[0][i]) {
-                    equal = false;
-                    break;
+            var el = this.eq(0);
+            var scroller = el.closest(":scrollable(" + dirStr + ")");
+
+            // check if there's anything to scroll in the first place
+            if (scroller.length > 0)
+            {
+                scroller = scroller.eq(0);
+
+                var dim = {
+                    e: dimensions(el),
+                    s: dimensions(scroller)
+                };
+
+                var rel = {
+                    top: dim.e.rect.top - (dim.s.rect.top + dim.s.border.top),
+                    bottom: dim.s.rect.bottom - dim.s.border.bottom - dim.s.scrollbar.bottom - dim.e.rect.bottom,
+                    left: dim.e.rect.left - (dim.s.rect.left + dim.s.border.left),
+                    right: dim.s.rect.right - dim.s.border.right - dim.s.scrollbar.right - dim.e.rect.right
+                };
+
+                var animOptions = {};
+
+                // vertical scroll
+                if (options.direction.y === true)
+                {
+                    if (rel.top < 0)
+                    {
+                        animOptions.scrollTop = dim.s.scroll.top + rel.top;
+                    }
+                    else if (rel.top > 0 && rel.bottom < 0)
+                    {
+                        animOptions.scrollTop = dim.s.scroll.top + Math.min(rel.top, -rel.bottom);
+                    }
+                }
+
+                // horizontal scroll
+                if (options.direction.x === true)
+                {
+                    if (rel.left < 0)
+                    {
+                        animOptions.scrollLeft = dim.s.scroll.left + rel.left;
+                    }
+                    else if (rel.left > 0 && rel.right < 0)
+                    {
+                        animOptions.scrollLeft = dim.s.scroll.left + Math.min(rel.left, -rel.right);
+                    }
+                }
+
+                // scroll if needed
+                if (!$.isEmptyObject(animOptions))
+                {
+                    if (rootrx.test(scroller[0].nodeName))
+                    {
+                        scroller = $("html,body");
+                    }
+                    scroller
+                        .animate(animOptions, options.duration)
+                        .eq(0) // we want function to be called just once (ref. "html,body")
+                        .queue(function (next) {
+                            $.isFunction(options.complete) && options.complete.call(scroller[0]);
+                            next();
+                        });
+                }
+                else
+                {
+                    // when there's nothing to scroll, just call the "complete" function
+                    $.isFunction(options.complete) && options.complete.call(scroller[0]);
                 }
             }
-            if (equal) return $(parents[0][i]);
-        }
-        return $([]);
-    }
 
+            // return set back
+            return this;
+        }
+    });
+
+    var scrollValue = {
+        auto: true,
+        scroll: true,
+        visible: false,
+        hidden: false
+    };
+
+    $.extend($.expr[":"], {
+        scrollable: function (element, index, meta, stack) {
+            var direction = converter[typeof (meta[3]) === "string" && meta[3].toLowerCase()] || converter.both;
+            var styles = (document.defaultView && document.defaultView.getComputedStyle ? document.defaultView.getComputedStyle(element, null) : element.currentStyle);
+            var overflow = {
+                x: scrollValue[styles.overflowX.toLowerCase()] || false,
+                y: scrollValue[styles.overflowY.toLowerCase()] || false,
+                isRoot: rootrx.test(element.nodeName)
+            };
+
+            // check if completely unscrollable (exclude HTML element because it's special)
+            if (!overflow.x && !overflow.y && !overflow.isRoot)
+            {
+                return false;
+            }
+
+            var size = {
+                height: {
+                    scroll: element.scrollHeight,
+                    client: element.clientHeight
+                },
+                width: {
+                    scroll: element.scrollWidth,
+                    client: element.clientWidth
+                },
+                // check overflow.x/y because iPad (and possibly other tablets) don't dislay scrollbars
+                scrollableX: function () {
+                    return (overflow.x || overflow.isRoot) && this.width.scroll > this.width.client;
+                },
+                scrollableY: function () {
+                    return (overflow.y || overflow.isRoot) && this.height.scroll > this.height.client;
+                }
+            };
+            return direction.y && size.scrollableY() || direction.x && size.scrollableX();
+        }
+    });
 }));

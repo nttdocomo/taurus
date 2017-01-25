@@ -56,6 +56,27 @@
       prototype.configClass = Object.classify(defaultConfig)/* _.omit(_.deepClone(defaultConfig), function (value, key, object) {
         return _.isUndefined(value)
       })*/
+    },
+    addMembers: function(members, isStatic){
+      var me = this
+      var target = isStatic ? me : me.prototype
+      var defaultConfig = !isStatic && target.defaultConfig
+      var configs
+      for (name in members) {
+        if (members.hasOwnProperty(name)) {
+          member = members[name];
+          if (defaultConfig && (name in defaultConfig) && !target.config.hasOwnProperty(name)) {
+            // This is a config property so it must be added to the configs
+            // collection not just smashed on the prototype...
+            (configs || (configs = {}))[name] = member;
+          }
+        }
+      }
+
+      if (configs) {
+          // Add any configs found in the normal members arena:
+          me.addConfig(configs);
+      }
     }
   }
 }))

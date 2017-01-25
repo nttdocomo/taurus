@@ -4,18 +4,18 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../../../view/base', '../plugin/headerResizer'], factory)
+      define(['../../../define', '../../../view/base', '../plugin/headerResizer'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../../../view/base'), require('../plugin/headerResizer'))
+        return factory(require('../../../define'), require('../../../view/base'), require('../plugin/headerResizer'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../../../view/base'), require('../plugin/headerResizer'))
+    module.exports = factory(require('../../../define'), require('../../../view/base'), require('../plugin/headerResizer'))
   }
-}(this, function (Base, HeaderResizer) {
-  return Base.extend({
+}(this, function (define, Base, HeaderResizer) {
+  return define(Base, {
     className: 'column-header',
     possibleSortStates: ['ASC', 'DESC'],
     ascSortCls: 'column-header-sort-ASC',
@@ -26,6 +26,9 @@
       column: 'renderer',
       edit: 'editRenderer',
       summary: 'summaryRenderer'
+    },
+    config:{
+      childEls: {}
     },
     tpl: '<div id="<%=id%>-titleEl" class="column-header-inner"><span id="<%=id%>-textEl" class="column-header-text" title="<%=text%>"><%=text%></span><%if(sortable){%> <span class="caret"></span><%}%></div>',
     initialize: function () {

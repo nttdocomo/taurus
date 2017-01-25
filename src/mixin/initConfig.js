@@ -31,20 +31,25 @@
       var ConfigClass = me.configClass
       var config = new ConfigClass()
       var defaultConfig = me.defaultConfig
-      var nameMap
-      var getName
+      var nameMap, getName
       me.initConfig = function () {}
-      if (instanceConfig) {
-        _.extend(config, instanceConfig)
-      }
       me.config = config
       if (instanceConfig) {
         initConfigList = initConfigList.slice()
         for (var name in instanceConfig) {
-          if (name in defaultConfig && !initConfigMap[name]) {
-            initConfigList.push(name)
+          value = instanceConfig[name];
+          cfg = config[name];
+          if(!cfg){
+            me[name] = value;
+          } else {
+            if (name in defaultConfig && !initConfigMap[name]) {
+              initConfigList.push(name)
+            }
           }
         }
+      }
+      if (instanceConfig) {
+        _.extend(config, instanceConfig)
       }
       // Point all getters to the initGetters
       for (var i = 0, ln = initConfigList.length; i < ln; i++) {

@@ -4,18 +4,18 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../../view/base', '../menu/menu', '../menu/manager', './manager', 'taurus', 'underscore'], factory)
+      define(['../../define', '../../view/base', '../menu/menu', '../menu/manager', './manager', 'taurus', 'underscore'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('taurus'), require('underscore'))
+        return factory(require('../../define'), require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('taurus'), require('underscore'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('taurus'), require('underscore'))
+    module.exports = factory(require('../../define'), require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('taurus'), require('underscore'))
   }
-}(this, function (Base, Menu, MenuManager, ButtonManager, taurus, _) {
-  return Base.extend({
+}(this, function (define, Base, Menu, MenuManager, ButtonManager, taurus, _) {
+  return define(Base, {
     /*
 	     * @property {Boolean}
 	     * `true` in this class to identify an object as an instantiated Button, or subclass thereof.
@@ -50,7 +50,7 @@
     iconBeforeText: false,
     _hasIconCls: taurus.baseCSSPrefix + 'btn-icon',
 
-    tpl: '<%if(split){%><button><%}%><%if(iconBeforeText){%><%=icon%><%}%><%=text%><%if(menu){%> <span class="caret"></span><%}%><%if(split)%><%%>',
+    tpl: '<%if(split){%><button><%}%><%if(iconBeforeText){%><%=icon%><%}%><%=text%><%if(menu){%> <span class="caret"></span><%}%>',
     iconTpl: '<i id="<%=id%>-btnIconEl" class="<%=_hasIconCls%> <%=iconCls%>" style="<%if(iconUrl){%>background-image:url(<%=iconUrl%>);<%}%>"></i>',
     pressedCls: 'active',
     tagName: 'button',
@@ -71,8 +71,10 @@
       'mousedown': 'onMouseDown'
     },
     defaultBindProperty: 'text',
-    childEls: {
-      'btnIconEl': '[id$="btnIconEl"]'
+    config:{
+      childEls: {
+        'btnIconEl': '[id$="btnIconEl"]'
+      }
     },
     constructor: function (options) {
       if (options.href) {
