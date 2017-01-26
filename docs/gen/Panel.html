@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Class: Base</title>
+	<title>Documentation Class: Panel</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,13 +79,13 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: Base</h1>
+	<h1 class="page-title">Class: Panel</h1>
 <section>
 
 <header>
     
         <h2>
-        Base
+        Panel
         </h2>
         
     
@@ -98,7 +98,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="Base"><span class="type-signature"></span>new Base(config)</h4>
+    <h4 class="name" id="Panel"><span class="type-signature"></span>new Panel(config)</h4>
     
     
 </dt>
@@ -242,8 +242,8 @@ needed by all form field types.</p>
         <dl>
             
 <hr>
-<dt class="name" id="inputId">
-    <h4 id="inputId"><span class="type-signature"></span>inputId<span class="type-signature"></span></h4>
+<dt class="name" id="title">
+    <h4 id="title"><span class="type-signature"></span>title<span class="type-signature"></span></h4>
 
     
 </dt>
@@ -282,13 +282,13 @@ needed by all form field types.</p>
 
         <tr>
             
-                <td class="name"><code>inputId</code></td>
+                <td class="name"><code>title</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">string/Object</span>
 
 
 
@@ -299,119 +299,8 @@ needed by all form field types.</p>
 
             
 
-            <td class="description last"><p>The id that will be given to the generated input DOM element. Defaults to an automatically generated id. If you
-configure this manually, you must make sure it is unique in the document.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-</dl>
-
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt class="name" id="name">
-    <h4 id="name"><span class="type-signature"></span>name<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
-    
-
-    
-
-    
-<dl class="details">
-    
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    <dl>
-
-<table class="props table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The name of the field. This is used as the parameter name when including the field value
-in a form submit(). If no name is configured, it falls back to the Base#inputId.
-To prevent the field from being included in the form submit, set Base#submitValue to false.</p></td>
+            <td class="description last"><p>When a <code>title</code> is specified, the panel.Header will 
+automatically be created and displayed unless Panel#header is set to <code>false</code>.</p></td>
         </tr>
 
     
@@ -463,454 +352,6 @@ To prevent the field from being included in the form submit, set Base#submitValu
         </dl>
     
 
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
-            
-<hr>
-<dt>
-    <h4 class="name" id="beforeReset"><span class="type-signature"></span>beforeReset()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Template method before a field is reset.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getInputId"><span class="type-signature"></span>getInputId()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Returns the input id for this field. If none was specified via the #inputId config, then an id will be
-automatically generated.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="setValue"><span class="type-signature"></span>setValue(value)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Sets a data value into the field and runs the change detection and validation. To set the value directly
-without these inspections see #setRawValue.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The value to set</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="valueToRaw"><span class="type-signature"></span>valueToRaw(value)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Converts a mixed-type value to a raw representation suitable for displaying in the field. This allows controlling
-how value objects passed to #setValue are shown to the user, including localization. For instance, for a
-Ext.form.field.Date, this would control how a Date object passed to #setValue would be converted
-to a String for display in the field.</p>
-<p>See #rawToValue for the opposite conversion.</p>
-<p>The base implementation simply does a standard toString conversion, and converts empty values
-to an empty string.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The mixed-type value to convert to the raw representation.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>The converted raw value.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        </dl>
     
 
     

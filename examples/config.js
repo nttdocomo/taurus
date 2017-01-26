@@ -12,7 +12,7 @@ seajs.config({
   paths: {
     'taurus': './'
   },
-  base: '../../src',
+  base: '//dev.taurus.com/src',
   charset: 'utf-8',
   vars: {
     'locale': (navigator.language || navigator.browserLanguage).toLowerCase()

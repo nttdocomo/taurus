@@ -48,6 +48,14 @@
     fieldCls: taurus.baseCSSPrefix + 'form-field',
     baseCls: 'form-field',
     invalidText: i18n.__('The value in this field is invalid'),
+
+    /**
+     * @name inputId
+     * @property {String} inputId
+     * The id that will be given to the generated input DOM element. Defaults to an automatically generated id. If you
+     * configure this manually, you must make sure it is unique in the document.
+     * @memberof field.Base#
+     */
     checkChangeBuffer: 50,
     fieldSubTpl: '<input id="<%=id%>" type="<%=type%>" class="form-control <%=fieldCls%>"<%if(typeof(placeholder) !== "undefined"){%> placeholder="<%=placeholder%>"<%}%><%if(typeof(value) !== "undefined"){%> value="<%=value%>"<%}%><%if(typeof(checked) !== "undefined"){%> checked="<%=checked%>"<%}%><%if(readOnly){%> readonly="readonly"<%}%> name="<%=name%>"<%if(typeof(maxLength) !== "undefined"){%> maxlength="<%=maxLength%>"<%}%><%if(disabled){%> disabled="<%=disabled%>"<%}%> autocomplete="off" />',
     checkChangeEvents: !Modernizr.hasEvent('dragdrop', document.createElement('input')) && (!document.documentMode || document.documentMode < 9) ? ['change', 'propertychange', 'keyup'] : ['change', 'input', 'textInput', 'keyup', 'dragdrop'],
@@ -135,6 +143,7 @@
      * without these inspections see {@link #setRawValue}.
      * @method
      * @param {Object} value The value to set
+     * @memberof field.Base#
      */
     setValue: function (value) {
       var me = this
@@ -154,9 +163,11 @@
       // delete here so we reset back to the original state
       delete me.wasValid
     },
+    
     /**
      * Template method before a field is reset.
-     * @protected
+     * @method
+     * @memberof field.Base#
      */
     beforeReset: taurus.emptyFn,
     setRawValue: function (value) {
@@ -174,9 +185,10 @@
      *
      * The base implementation simply does a standard toString conversion, and converts {@link Ext#isEmpty empty values}
      * to an empty string.
-     *
+     * @method
      * @param {Object} value The mixed-type value to convert to the raw representation.
      * @return {Object} The converted raw value.
+     * @memberof field.Base#
      */
     valueToRaw: function (value) {
       return '' + taurus.valueFrom(value, '')
@@ -192,6 +204,8 @@
     /**
      * Returns the input id for this field. If none was specified via the {@link #inputId} config, then an id will be
      * automatically generated.
+     * @method
+     * @memberof field.Base#
      */
     getInputId: function () {
       return this.inputId || (this.inputId = this.cid + '-inputEl')

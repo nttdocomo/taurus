@@ -1,6 +1,12 @@
 {
-  "plugins": ["plugins/markdown"],
+  "plugins": ["plugins/markdown","node_modules/jsdoc-i18n-plugin"],
   "markdown": {
     "tags": ["property"]
+  },
+  "i18n": {
+    "locale": "<en_US|zh_CN>", 
+    "directory": "i18n",
+    "srcDir": "tree",
+    "extension": ".js"
   }
 }

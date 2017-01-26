@@ -69,23 +69,43 @@
     removeClass: function (cls) {
       this.$el.removeClass(cls)
     },
-    disable: function () {
+
+    /**
+     * Disabled the component
+     * @method
+     * @param {boolean} [silent=false] Passing `true` will suppress the `disable` event from being fired.
+     * @memberof Base#
+     */
+    disable: function (silent) {
       var me = this
       if (!me.disabled) {
+        me.$el.attr('disabled', true)
         if (me.rendered) {
           me.onDisable()
         } else {
           me.disableOnRender = true
         }
+        me.disabled = true
+        if (silent !== true) {
+          me.fireEvent('disable', me);
+        }
       }
-      me.$el.attr('disabled', true)
-      me.disabled = true
     },
-    enable: function () {
+
+    /**
+     * Enable the component
+     * @method
+     * @param {boolean} [silent=false] Passing `true` will suppress the `enable` event from being fired.
+     * @memberof Base#
+     */
+    enable: function (silent) {
       var me = this
-      me.$el.attr('disabled', false)
       if (me.disabled) {
+        me.$el.attr('disabled', false)
         me.disabled = false
+        if (silent !== true) {
+          me.trigger('enable', me);
+        }
       }
     },
     getRefOwner: function () {
@@ -535,11 +555,12 @@
       me.addClass(baseClsUI)
     },
     /**
-	     * Method which adds a specified UI + `uiCls` to the components element. Can be overridden
-	     * to add the UI to more than just the component's element.
-	     * @param {String} uiCls The UI class to add to the element.
-	     * @protected
-	     */
+     * Method which adds a specified UI + `uiCls` to the components element. Can be overridden
+     * to add the UI to more than just the component's element.
+     * @method addUIClsToElement
+     * @param {String} uiCls The UI class to add to the element.
+     * @memberof Base#
+     */
     addUIClsToElement: function (uiCls) {
       var me = this,
         baseClsUI = me.baseCls + '-' + me.ui + '-' + uiCls,

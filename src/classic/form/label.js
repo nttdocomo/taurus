@@ -160,8 +160,10 @@
     /**
      * Gets an Array of any active error messages currently applied to the field. This does not trigger validation on
      * its own, it merely returns any messages that the component may already hold.
+     * @method
      * @return {String[]} The active error messages on the component; if there are no errors, an empty Array is
      * returned.
+     * @memberof Label#
      */
     getActiveErrors: function () {
       return this.activeErrors || []
@@ -180,8 +182,9 @@
     /**
      * Returns the label for the field. Defaults to simply returning the {@link #fieldLabel} config. Can be overridden
      * to provide a custom generated label.
-     * @template
+     * @method
      * @return {String} The configured field label, or empty string if not defined
+     * @memberof Label#
      */
     getFieldLabel: function () {
       return this.trimLabelSeparator()
@@ -189,7 +192,9 @@
 
     /**
      * Returns the trimmed label by slicing off the label separator character. Can be overridden.
+     * @method
      * @return {String} The trimmed field label, or empty string if not defined
+     * @memberof Label#
      */
     trimLabelSeparator: function () {
       var me = this,
