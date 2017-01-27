@@ -869,7 +869,9 @@
     /**
      * Returns the value of {@link #itemId} assigned to this component, or when that
      * is not set, returns the value of {@link #id}.
+     * @method
      * @return {String}
+     * @memberof Base#
      */
     getItemId: function () {
       return this.cid

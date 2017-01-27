@@ -129,7 +129,9 @@
     /**
      * Tells whether the field currently has an active error message. This does not trigger validation on its own, it
      * merely looks for any message that the component may already hold.
+     * @method
      * @return {Boolean}
+     * @memberof Label#
      */
     hasActiveError: function () {
       return !!this.getActiveError()
@@ -152,9 +154,6 @@
         this.$el.removeClass('has-error')
       }
       this.errorEl.html(activeError)
-    },
-    hasActiveError: function () {
-      return !!this.getActiveError()
     },
 
     /**
