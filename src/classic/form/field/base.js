@@ -23,6 +23,7 @@
    * A namespace.
    * @namespace field
    * @memberof form
+   * @toc form.field
    */
   /**
    * Base class for form fields that provides default event handling, rendering, and other common functionality
@@ -31,6 +32,7 @@
    * @constructor Base
    * @param {Object} config
    * @memberof field
+   * @toc form.field.Base
    */
   return Label.extend({
     inputType: 'text',

@@ -17,15 +17,32 @@
    *
    * @constructor Text
    * @param {Object} config
+   * @example
+   * new FormPanel({
+   *   title:'Contact Info'
+   *   width: 300,
+   *   renderTo: $(document.body),
+   *   items: [{
+   *     'class': Text,
+   *     name: 'name',
+   *     fieldLabel: 'Name',
+   *     allowBlank: false
+   *   }, {
+   *     'class': Text,
+   *     name: 'email',
+   *     fieldLabel: 'Email Address'
+   *   }]
+   * })
    */
   return Base.extend({
     /**
-     * @property {Boolean} [allowBlank=true]
      * Specify false to validate that the value's length must be > 0. If `true`, then a blank value is **always** taken to be valid regardless of any {@link #vtype}
      * validation that may be applied.
      *
      * If {@link #vtype} validation must still be applied to blank values, configure {@link #validateBlank} as `true`;
-     * @memberof Text#
+     * @name Text#allowBlank
+     * @type Boolean
+     * @default false
      */
     allowBlank: true,
     blankText: 'This field is required',
