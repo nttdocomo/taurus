@@ -33,52 +33,46 @@
 		 * value when submitting as part of a form.
 		 */
 		inputValue : 'on',
-		config:{
-			childEls: {
-				'inputEl' : ':checkbox'
-			}
+		childEls: {
+			'inputEl' : ':checkbox'
 		},
 
 		initComponent: function() {
-	        var me = this,
-	            value = me.value;
+      var me = this
+      var value = me.value
 
-	        if (value !== undefined) {
-	            me.checked = me.isChecked(value, me.inputValue);
-	        }
+      if (value !== undefined) {
+      	me.checked = me.isChecked(value, me.inputValue);
+      }
 
-	        Base.prototype.initComponent.apply(this,arguments);
-	        me.getManager().add(me);
-	    },
-		applyChildEls : function(childEls) {
-			var childEls = $.extend(this.childEls, childEls);
-			childEls['boxLabelEl'] = '#' + this.cid + '-boxLabelEl';
-			Base.prototype.applyChildEls.call(this,childEls);
-		},
+      me._super.apply(this,arguments);
+      me.getManager().add(me);
+    },
 
 		delegateEvents:function(events){
-			var events = events || {};
+			var me = this
+			var events = events || {}
 			events['change input:'+this.inputType] = 'onBoxClick';
-			Base.prototype.delegateEvents.call(this,events);
+			me._super.call(me,events);
 		},
 
-	    getFormId: function(){
-	        var me = this,
-	            form;
+    getFormId: function(){
+      var me = this
+      var form;
 
-	        if (!me.formId) {
-	            form = me.up('form');
-	            if (form) {
-	                me.formId = form.id;
-	            }
-	        }
-	        return me.formId;
-	    },
+      if (!me.formId) {
+        form = me.up('form');
+        if (form) {
+          me.formId = form.id;
+        }
+      }
+      return me.formId;
+    },
 
-	    // inherit docs
-	    getManager: function() {
-	        return CheckboxManager;
-	    },
+    // inherit docs
+    getManager: function() {
+    	return CheckboxManager;
+    },
 
 		/**
 		 * Returns the checked state of the checkbox.

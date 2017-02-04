@@ -119,7 +119,8 @@
 			me.collection.on('sync',function(){
 				me.html();
 			},me);*/
-            me.collection.on('sync',me.updateLayout,me)
+			me.relayEvents(me.view, ['itemclick'])
+			me.collection.on('sync',me.updateLayout,me)
 		},
 		afterRender:function(){
 			Panel.prototype.afterRender.apply(this,arguments);

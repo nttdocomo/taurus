@@ -14,7 +14,14 @@
 	} else if(typeof module === "object" && module.exports) {
 		module.exports = factory(require('../../define'), require('../../view/base'));
 	}
-}(this, function(define, Base){
+}(this, function(define, Base) {
+  /**
+   * Base class for form fields that provides default event handling, rendering, and other common functionality
+   * needed by all form field types.
+   *
+   * @constructor Panel
+   * @param {Object} config
+   */
 	return define(Base, {
 		autoHeight:false,
 		header:false,
@@ -22,6 +29,13 @@
     frame: false,
 		referTo:$(window),
 		baseCls: 'panel',
+		/**
+		 * @name title
+		 * @property {string/Object} title
+     * When a `title` is specified, the {@link panel.Header} will 
+     * automatically be created and displayed unless {@link Panel#header} is set to `false`.
+     * @memberof Panel#
+     */
 		tpl:'<%if(header){%><div class="panel-heading clearfix"><h4 class="panel-title"><%=title%></h4></div><%}%><div class="panel-body"><%=content%></div>',
 		className:'panel panel-default',
 		events:{

@@ -1,6 +1,3 @@
-/**
- * @author nttdocomo
- */
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
@@ -15,26 +12,76 @@
     module.exports = factory(require('../../../define'), require('./base'), require('taurus'), require('underscore'), require('modernizr'))
   }
 }(this, function (define, Base, taurus, _, Modernizr) {
+  /**
+   * A basic text field
+   *
+   * @constructor Text
+   * @param {Object} config
+   */
   return define(Base, {
+    /**
+     * @property {Boolean} [allowBlank=true]
+     * Specify false to validate that the value's length must be > 0. If `true`, then a blank value is **always** taken to be valid regardless of any {@link #vtype}
+     * validation that may be applied.
+     *
+     * If {@link #vtype} validation must still be applied to blank values, configure {@link #validateBlank} as `true`;
+     * @memberof Text#
+     */
     allowBlank: true,
     blankText: 'This field is required',
     emptyCls: taurus.baseCSSPrefix + 'form-empty-field',
-    minLengthText: 'The minimum length for this field is <%=len%>',
-    maxLengthText: 'The maximum length for this field is <%=len%>',
+
     /**
-     * @private
+     * @property {string} emptyText
+     * The default text to place into an empty field
+     * @memberof Text#
      */
+    emptyText : '',
+    /**
+     * @property {string} minLengthText
+     * Error text to display if the **{@link #minLength minimum length}** validation fails.
+     * @memberof Text#
+     */
+    minLengthText: 'The minimum length for this field is <%=len%>',
+    /**
+     * @property {string} maxLengthText
+     * Error text to display if the **{@link #maxLength maximum length}** validation fails
+     * @memberof Text#
+     */
+    maxLengthText: 'The maximum length for this field is <%=len%>',
+
+    /**
+     * @name  enforceMaxLength
+     * @property {Boolean} enforceMaxLength
+     * True to set the maxLength property on the underlying input field. Defaults to false
+     * @memberof Text#
+     */
+
+    /**
+     * @name  regex
+     * @property {RegExp} regex
+     * A JavaScript RegExp object to be tested against the field value during validation.
+     * If the test fails, the field will be marked invalid using
+     * either **{@link Text#regexText}** or **{@link Text#invalidText}**.
+     * @memberof Text#
+     */
+
+    /**
+     * @property {String} regexText
+     * The error text to display if **{@link Text#regex}** is used and the test fails during validation
+     * @memberof Text#
+     */
+    regexText : '',
     valueContainsPlaceholder: false,
-    /*config:{
-      childEls:{
-        'triggerWrap': '.form-trigger',
-        'triggerEl': '.form-trigger'
-      }
-    },*/
     childEls:{
       'triggerWrap': '.form-trigger',
       'triggerEl': '.form-trigger'
     },
+    /**
+     * Sets the default text to place into an empty field
+     * @method
+     * @memberof Text#
+     */
     applyEmptyText: function () {
       var me = this,
         emptyText = me.emptyText,
@@ -90,6 +137,15 @@
       me._super.apply(me, arguments)
       me.fieldFocusCls = me.baseCls + '-focus'
     },
+    /**
+    * Validates a value according to the field's validation rules and returns an array of errors
+     * for any failing validations.
+     *
+     * @method
+     * @memberof Text#
+     * @param {Object} value The value to validate. The processed raw value will be used if nothing is passed.
+     * @return {String[]} Array of any validation errors
+     */
     getErrors: function (value) {
       var errors = Base.prototype.getErrors.apply(this, arguments), regex = this.regex, validator = this.validator
       if (value.length < 1 || value === this.emptyText) {

@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<!-- /container -->
+
+		<!-- Bootstrap core JavaScript
+		================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script type="text/javascript" src="../../src/LAB.min.js"></script>
+		<script type="text/javascript">
+			$LAB.script('../../src/sea-debug.js').wait().script('../config.js').wait(function(){
+				seajs.use(['backbone', 'backbone-super'], function(Backbone){
+					var Klass = Backbone.View.extend({
+						a:'aaaaaaa'
+					}).extend({
+						b:'bbbbbbb'
+					})
+					console.log(Klass.prototype)
+				});
+			});
+		</script>
+	</body>
+</html>

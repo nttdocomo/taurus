@@ -45,9 +45,10 @@ define(function(require) {
 		items:[{
 			'class':Text,
 			msgTarget:'under',
+			allowBlank:false,
 			name : 'first_name',
 			emptyText:'First Name',
-			fieldLabel : 'First Name:'
+			fieldLabel : 'First Name'
 		}]
 	})
 	form.add(0, {
@@ -61,6 +62,7 @@ define(function(require) {
 		renderTo : $body,
 		title:'Simple Form',
 		width:350,
+		header:true,
 		collapsible: true,
 		items:[{
 			'class':Text,

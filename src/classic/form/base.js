@@ -4,18 +4,18 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../container/container','underscore'], factory);
+			define(['../../define', '../container/container','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../container/container'),require('underscore'));
+				return factory(require('../../define'),require('../container/container'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../container/container'),require('underscore'));
+		module.exports = factory(require('../../define'),require('../container/container'),require('underscore'));
 	}
-}(this, function(Base,_) {
-	return Base.extend({
+}(this, function(define, Base,_) {
+	return define(Base, {
 		tagName : 'form',
 		initialize:function(){
 			Base.prototype.initialize.apply(this,arguments);
@@ -30,28 +30,28 @@
 				//obj[item.getName()] = item.getSubmitData();
 				var data = item.getSubmitData();
 				if (_.isObject(data)) {
-                    for (name in data) {
-                        if (data.hasOwnProperty(name)) {
-                            val = data[name];
+          for (name in data) {
+            if (data.hasOwnProperty(name)) {
+              val = data[name];
 
-                            if (values.hasOwnProperty(name)) {
-                                bucket = values[name];
+              if (values.hasOwnProperty(name)) {
+                bucket = values[name];
 
-                                if (!isArray(bucket)) {
-                                    bucket = values[name] = [bucket];
-                                }
-
-                                if (isArray(val)) {
-                                    values[name] = values[name] = bucket.concat(val);
-                                } else {
-                                    bucket.push(val);
-                                }
-                            } else {
-                                values[name] = val;
-                            }
-                        }
-                    }
+                if (!isArray(bucket)) {
+                	bucket = values[name] = [bucket];
                 }
+
+                if (isArray(val)) {
+                	values[name] = values[name] = bucket.concat(val);
+                } else {
+                	bucket.push(val);
+                }
+              } else {
+                values[name] = val;
+              }
+            }
+          }
+        }
 			});
 			return values;
 		},

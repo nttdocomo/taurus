@@ -4,18 +4,18 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./trigger','../../../lang/number','../../../lang/string'], factory);
+			define(['../../../define', './trigger','../../../lang/number','../../../lang/string'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./trigger'),require('../../../lang/number'),require('../../../lang/string'));
+				return factory(require('../../../define'), require('./trigger'),require('../../../lang/number'),require('../../../lang/string'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./trigger'),require('../../../lang/number'),require('../../../lang/string'));
+		module.exports = factory(require('../../../define'), require('./trigger'),require('../../../lang/number'),require('../../../lang/string'));
 	}
-}(this, function(Trigger) {
-	return Trigger.extend({
+}(this, function(define, Trigger) {
+	return define(Trigger, {
 		baseChars : '0123456789',
 		allowDecimals : true,
 		decimalSeparator : '.',

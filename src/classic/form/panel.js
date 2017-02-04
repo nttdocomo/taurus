@@ -4,22 +4,19 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../panel/panel','./base','underscore'], factory);
+			define(['../../define', '../panel/panel','./base','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../panel/panel'),require('./base'),require('underscore'));
+				return factory(require('../../define'),require('../panel/panel'),require('./base'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../panel/panel'),require('./base'),require('underscore'));
+		module.exports = factory(require('../../define'),require('../panel/panel'),require('./base'),require('underscore'));
 	}
-}(this, function(Panel,BaseForm,_){
-	return Panel.extend({
+}(this, function(define, Panel,BaseForm,_){
+	return define(Panel, {
 		disabled:false,
-		childEls:{
-			'body':'.panel-body'
-		},
 		/*tpl:'<div class="panel-heading"><%=tool%><h4 class="panel-title"><%=title%></h4></div><div class="panel-body"><%=content%></div><div class="panel-footer"></div>',*/
 		initialize:function(){
 			Panel.prototype.initialize.apply(this,arguments);
@@ -38,7 +35,7 @@
 			delete this.initialConfig.width;
 			return new BaseForm({
 				owner:this,
-				renderTo:this.body,
+				renderTo:this.bodyEl,
 				items:items,
 				//renderTo:this.$el.find('.panel-body'),
 				operation:'prepend'

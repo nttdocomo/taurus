@@ -5,23 +5,35 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../define', '../state/stateful', '../util/focusable', '../util/itemCollection', 'jquery', 'underscore', 'taurus', './baseClass', '../lang/number', '../jquery.ui.position'], factory)
+      define(['../define', '../state/stateful', '../util/focusable', '../mixin/observable', '../util/itemCollection', 'jquery', 'underscore', 'backbone', 'taurus', './baseClass', '../lang/number', '../jquery.ui.position'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../define'), require('../state/stateful'), require('../util/focusable'), require('../util/itemCollection'), require('jquery'), require('underscore'), require('taurus'), require('./baseClass'), require('../lang/number'), require('../jquery.ui.position'))
+        return factory(require('../define'), require('../state/stateful'), require('../util/focusable'), require('../mixin/observable'), require('../util/itemCollection'), require('jquery'), require('underscore'), require('backbone'), require('taurus'), require('./baseClass'), require('../lang/number'), require('../jquery.ui.position'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../define'), require('../state/stateful'), require('../util/focusable'), require('../util/itemCollection'), require('jquery'), require('underscore'), require('taurus'), require('./baseClass'), require('../lang/number'), require('../jquery.ui.position'))
+    module.exports = factory(require('../define'), require('../state/stateful'), require('../util/focusable'), require('../util/itemCollection'), require('jquery'), require('underscore'), require('backbone'), require('taurus'), require('./baseClass'), require('../lang/number'), require('../jquery.ui.position'))
   }
-}(this, function (define, Stateful, Focusable, ItemCollection, $, _, taurus, BaseClass) {
+}(this, function (define, Stateful, Focusable, observable, ItemCollection, $, _, Backbone, taurus, BaseClass) {
+  /**
+   * A basic class
+   *
+   * @constructor Base
+   * @param {Object} config
+   */
   return define(BaseClass, {
     isRendered: false,
     doc: taurus.$doc,
     baseCls: taurus.baseCSSPrefix + 'component',
     ui: 'default',
     items: undefined,
+    config:{
+      childEls: {
+        'inputEl': '.form-control',
+        'labelEl': '.control-label'
+      }
+    },
     constructor: function (config) {
       BaseClass.call(this, config)
       this.initConfig(config)
@@ -55,23 +67,43 @@
     removeClass: function (cls) {
       this.$el.removeClass(cls)
     },
-    disable: function () {
+
+    /**
+     * Disabled the component
+     * @method
+     * @param {boolean} [silent=false] # Passing `true` will suppress the `disable` event from being fired.
+     * @memberof Base#
+     */
+    disable: function (silent) {
       var me = this
       if (!me.disabled) {
+        me.$el.attr('disabled', true)
         if (me.rendered) {
           me.onDisable()
         } else {
           me.disableOnRender = true
         }
+        me.disabled = true
+        if (silent !== true) {
+          me.fireEvent('disable', me);
+        }
       }
-      me.$el.attr('disabled', true)
-      me.disabled = true
     },
-    enable: function () {
+
+    /**
+     * Enable the component
+     * @method
+     * @param {boolean} [silent=false] Passing `true` will suppress the `enable` event from being fired.
+     * @memberof Base#
+     */
+    enable: function (silent) {
       var me = this
-      me.$el.attr('disabled', false)
       if (me.disabled) {
+        me.$el.attr('disabled', false)
         me.disabled = false
+        if (silent !== true) {
+          me.trigger('enable', me);
+        }
       }
     },
     getRefOwner: function () {
@@ -117,10 +149,10 @@
       this.$el.addClass(cls.join(' '))
       return this
     },
-
     /**
      * Retrieves the `id` of this component. Will auto-generate an `id` if one has not already been set.
-     * @return {String}
+     * @method
+     * @memberof Base#
      */
     getId: function () {
       var me = this,
@@ -224,6 +256,8 @@
 
     /**
      * Method to determine whether this Component is currently disabled.
+     * @method
+     * @memberof Base#
      * @return {Boolean} the disabled state of this Component.
      */
     isDisabled: function () {
@@ -232,12 +266,14 @@
 
     /**
      * Returns `true` if this component is visible.
+     * @method
      *
      * @param {Boolean} [deep=false] Pass `true` to interrogate the visibility status of all parent Containers to
      * determine whether this Component is truly visible to the user.
      *
      * Generally, to determine whether a Component is hidden, the no argument form is needed. For example when creating
      * dynamically laid out UIs in a hidden Container before showing them.
+     * @memberof Base#
      *
      * @return {Boolean} `true` if this component is visible, `false` otherwise.
      *
@@ -306,9 +342,10 @@
     /**
      * Sets the page XY position of the component. To set the left and top instead, use {@link #setPosition}.
      * This method fires the {@link #event-move} event.
-     * @param {Number/Number[]} x The new x position or an array of `[x,y]`.
-     * @param {Number} [y] The new y position.
-     * @param {Boolean/Object} [animate] True to animate the Component into its new position. You may also pass an
+     * @param {number|number[]} x The new x position or an array of `[x,y]`.
+     * @param {number} [y] The new y position.
+     * @param {boolean|Object} [animate] True to animate the Component into its new position. You may also pass an
+     * @memberof Text#
      * animation configuration.
      * @return {Ext.Component} this
      */
@@ -323,19 +360,32 @@
     },
 
     /**
-     * @member Ext.Component
      * Sets the left and top of the component. To set the page XY position instead, use {@link Ext.Component#setPagePosition setPagePosition}. This
      * method fires the {@link #event-move} event.
-     * @param {Number/Number[]/Object} x The new left, an array of `[x,y]`, or animation config object containing `x` and `y` properties.
-     * @param {Number} [y] The new top.
-     * @param {Boolean/Object} [animate] If `true`, the Component is _animated_ into its new position. You may also pass an
+     * @method setPosition
+     * @param {number|number[]|Object} x The new left, an array of `[x,y]`, or animation config object containing `x` and `y` properties.
+     * @param {number} [y] The new top.
+     * @param {Boolean|Object} [animate] If `true`, the Component is _animated_ into its new position. You may also pass an
+     * @memberof Text#
      * animation configuration.
-     * @return {Ext.Component} this
+     * @return {Base} this
      */
     setPosition: function (x, y, animate) {
       var me = this
       me.setLocalXY(x, y)
       return me
+    },
+
+    /**
+     * Convenience function to hide or show this component by Boolean.
+     * @method
+     * @param {Boolean} visible `true` to show, `false` to hide.
+     * @return {Base} this
+     * @memberof Text#
+     * @since 1.1.0
+     */
+    setVisible: function(visible) {
+      return this[visible ? 'show': 'hide']();
     },
     show: function () {
       var me = this
@@ -517,11 +567,12 @@
       me.addClass(baseClsUI)
     },
     /**
-	     * Method which adds a specified UI + `uiCls` to the components element. Can be overridden
-	     * to add the UI to more than just the component's element.
-	     * @param {String} uiCls The UI class to add to the element.
-	     * @protected
-	     */
+     * Method which adds a specified UI + `uiCls` to the components element. Can be overridden
+     * to add the UI to more than just the component's element.
+     * @method addUIClsToElement
+     * @param {String} uiCls The UI class to add to the element.
+     * @memberof Base#
+     */
     addUIClsToElement: function (uiCls) {
       var me = this,
         baseClsUI = me.baseCls + '-' + me.ui + '-' + uiCls,
@@ -843,7 +894,9 @@
     /**
      * Returns the value of {@link #itemId} assigned to this component, or when that
      * is not set, returns the value of {@link #id}.
+     * @method
      * @return {String}
+     * @memberof Base#
      */
     getItemId: function () {
       return this.cid
@@ -889,5 +942,5 @@
         return newobj
       }
     }
-  }).mixins(Stateful).mixins(Focusable)
+  }).mixins(Stateful).mixins(Focusable).extend(observable)
 }))

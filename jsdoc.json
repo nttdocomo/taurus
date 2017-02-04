@@ -1,0 +1,15 @@
+{
+  "plugins": ["plugins/markdown","C:\\Users\\admin\\Desktop\\workspace\\taurus\\node_modules\\jsdoc-i18n-plugin"],
+  "markdown": {
+    "tags": ["param"]
+  },
+  "i18n": {
+    "locale": "zh_CN", 
+    "directory": "i18n",
+    "srcDir": "aaaa",
+    "extension": ".js"
+  },
+  "opts": {
+    "destination": "./docs/gen/"
+  }
+}

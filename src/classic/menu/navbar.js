@@ -19,8 +19,8 @@
 		isNav:true,
 		className:'nav navbar-nav',
 		initialize:function(){
-	        Menu.prototype.initialize.apply(this,arguments);
-	        $(document).on('mousedown',_.bind(this.deactivateActiveItem,this))
+      Menu.prototype.initialize.apply(this,arguments);
+      $(document).on('mousedown',_.bind(this.deactivateActiveItem,this))
 		}
 	});
 }));

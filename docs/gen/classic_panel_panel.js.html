@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classic/panel/panel.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classic/panel/panel.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @author nttdocomo
+ */
+ (function (root, factory) {
+	if(typeof define === "function") {
+		if(define.amd){
+			define(['../../define', '../../view/base'], factory);
+		}
+		if(define.cmd){
+			define(function(require, exports, module){
+				return factory(require('../../define'), require('../../view/base'));
+			})
+		}
+	} else if(typeof module === "object" &amp;&amp; module.exports) {
+		module.exports = factory(require('../../define'), require('../../view/base'));
+	}
+}(this, function(define, Base) {
+  /**
+   * Base class for form fields that provides default event handling, rendering, and other common functionality
+   * needed by all form field types.
+   *
+   * @constructor Panel
+   * @param {Object} config
+   */
+	return define(Base, {
+		autoHeight:false,
+		header:false,
+		hideHeaders:false,
+    frame: false,
+		referTo:$(window),
+		baseCls: 'panel',
+		/**
+		 * @name title
+		 * @property {string/Object} title
+     * When a `title` is specified, the {@link panel.Header} will 
+     * automatically be created and displayed unless {@link Panel#header} is set to `false`.
+     * @memberof Panel#
+     */
+		tpl:'&lt;%if(header){%>&lt;div class="panel-heading clearfix">&lt;h4 class="panel-title">&lt;%=title%>&lt;/h4>&lt;/div>&lt;%}%>&lt;div class="panel-body">&lt;%=content%>&lt;/div>',
+		className:'panel panel-default',
+		events:{
+			'click .refresh' : 'refresh',
+			'click .tool-collapse-top, .tool-expand-bottom' : 'toggleCollapse'
+		},
+    config:{
+    	childEls: {
+				'headEl' : '.panel-heading',
+				'bodyEl' : '.panel-body',
+				'header':'.panel-title',
+				'frameBody' : '.panel-body'
+	    }
+	  },
+		initialize:function(){
+            var me = this;
+			me._super.apply(me,arguments);
+            if (me.frame) {
+                me.setUI(me.ui + '-framed');
+            }
+			if(me.header){
+				me.$el.addClass('has-header');
+			}
+		},
+		afterRender:function(){
+			var me = this,headEl = me.headEl,headElHeight;
+    		me._super.apply(this,arguments);
+			me.setHeaderStyle();
+		},
+		getTplData : function() {
+            var me = this;
+			return {
+				header:me.header,
+				title:me.collapsible ? me.title + '&lt;span class="tool-collapse-top">&lt;/span>' : me.title,
+				content: me.content,
+				tool:me.refreshable ? '&lt;a href="" class="pull-right halflings refresh" data-name="refresh" data-type="" data-prefix="halflings" data-utf="E031">&lt;/a>':''
+			};
+		},
+
+	    /**
+	     * Shortcut for performing an {@link #method-expand} or {@link #method-collapse} based on the current state of the panel.
+	     * @return {Ext.panel.Panel} this
+	     */
+	    toggleCollapse: function(e) {
+            var me = this;
+	        me.collapsed ? me.expand() : me.collapse();
+	    	$(e.target).toggleClass('tool-collapse-top').toggleClass('tool-expand-bottom');
+	    	me.$el.toggleClass('collapsed');
+	    	return false;
+	    },
+	    expand:function(){
+	    	this.collapsed = false;
+	    	this.setHeight(this.height)
+	    },
+	    collapse:function(){
+	    	this.collapsed = true;
+	    	this.setHeight('')
+	    },
+		refresh:function(){
+			this.onRefresh &amp;&amp; this.onRefresh();
+			return false;
+		},
+		getItemContainer : function() {
+			return this._super.apply(this,arguments).find('.panel-body');
+		},
+		/**
+         * This is used to determine where to insert the 'html', 'contentEl' and 'items' in this component.
+         * @private
+         */
+        getTargetEl: function() {
+            return this.frameBody || this.$el.find('>.panel-body');
+        },
+		setHeaderStyle:function(){
+			var me = this,headEl = me.headEl,headElHeight;
+			if(headEl.length){
+				headElHeight = me.headEl.outerHeight();
+				me.$el.css('padding-top',headElHeight+'px');
+				me.headEl.css('margin-top','-' + headElHeight+'px')
+			}
+			if (me.hideHeaders) {
+                me.bodyEl.css('padding-top',0)
+            }
+		},
+		setTitle:function(title){
+	        var me = this,
+	            oldTitle = me.title,
+	            header = me.header
+
+	        if (title !== oldTitle) {
+	            me.title = title;
+
+	            header.text(title);
+
+	            me.trigger('titlechange', me, title, oldTitle);
+	            me.setHeaderStyle();
+	        }
+		},
+
+        /**
+         * @inheritdoc
+         */
+        setUI: function(ui) {
+            var me = this;
+
+            me._super.apply(me,arguments);
+
+            if (me.header &amp;&amp; me.header.rendered) {
+                me.header.setUI(ui);
+            }
+        }
+	});
+}));
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Base.html">Base</a></li><li><a href="field.Base.html">Base</a></li><li><a href="Label.html">Label</a></li><li><a href="Panel.html">Panel</a></li><li><a href="Text.html">Text</a></li></ul><h3>Namespaces</h3><ul><li><a href="form.html">form</a></li><li><a href="form.field.html">field</a></li></ul><h3>Global</h3><ul><li><a href="global.html#activeErrorsTpl">activeErrorsTpl</a></li><li><a href="global.html#getSubTplData">getSubTplData</a></li><li><a href="global.html#getSubTplMarkup">getSubTplMarkup</a></li><li><a href="global.html#getXType">getXType</a></li><li><a href="global.html#invalidCls">invalidCls</a></li><li><a href="global.html#lookupTpl">lookupTpl</a></li><li><a href="global.html#onDisable">onDisable</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#setScale">setScale</a></li><li><a href="global.html#setUI">setUI</a></li><li><a href="global.html#showBy">showBy</a></li><li><a href="global.html#toggleCollapse">toggleCollapse</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri Feb 03 2017 17:25:35 GMT+0800 (中国标准时间)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

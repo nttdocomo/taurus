@@ -15,18 +15,60 @@
     module.exports = factory(require('../../define'), require('../container/container'), require('../view/activeErrors'))
   }
 }(this, function (define, Base, ActiveErrors) {
+  /**
+   * A basic labeled form field
+   *
+   * @constructor Label
+   * @param {Object} config
+   */
   return define(Base, {
     tpl: '<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%if(typeof beforeLabelTextTpl !== "undefined"){%><%=beforeLabelTextTpl%><%}%><%=fieldLabel%><%if(labelSeparator){%><%=labelSeparator%><%}%></label><%}%><div style="<%=controlsStyle%>" id="<%=id%>-bodyEl"><%=field%></div><%if(fieldLabel){%><%}%><%if(renderError){%><div class="help-block" id="<%=id%>-errorEl" style="<%=controlsStyle%>"></div><%}%>',
     className: 'form-group',
+    /**
+     * @property {number} labelWidth
+     * The width of the {@link Label#fieldLabel} in pixels. Only applicable if {@link Label#labelAlign}
+     * is set to "left" or "right".
+     * @memberof Label#
+     */
     labelWidth: 100,
+    /**
+     * @property {string} labelAlign
+     *
+     * Controls the position and alignment of the {@link Label#fieldLabel}. Valid values are:
+     *   - `left` (the default) - The label is positioned to the left of the field, with its text aligned to the left. Its width is determined by the {@link Label#labelWidth} config.
+     *   - `top` - The label is positioned above the field.
+     *   - `right` - The label is positioned to the left of the field, with its text aligned to the right. Its width is determined by the {@link Label#labelWidth} config.
+     * @memberof Label#
+     */
     labelAlign: 'left',
     labelPad: 5,
+    /**
+     * The location where the error message text should display. Must be one of the following values:
+     * @property {string} msgTarget
+     * - `title` Display the message in a default browser title attribute popup.
+     * - `under` Add a block div beneath the field containing the error message.
+     * - `side` Add an error icon to the right of the field, displaying the message in a popup on hover.
+     * @memberof Label#
+     */
     msgTarget: 'qtip',
     showLabel: true,
+
+    /**
+     * @property {Boolean} autoFitErrors
+     * Whether to adjust the component's body width to make room for 'side'
+     * {@link #msgTarget error messages}.
+     * @memberof Label#
+     */
+    autoFitErrors: true,
+    /**
+     * @property {String} labelSeparator
+     * Character(s) to be inserted at the end of the {@link Label#fieldLabel label text}. Set to empty string to hide the separator completely.
+     * @memberof Label#
+     */
     labelSeparator: ':',
     /**
      * @cfg {String/String[]/Ext.XTemplate} activeErrorsTpl
-     * The template used to format the Array of error messages passed to {@link #setActiveErrors} into a single HTML
+     * The template used to format the Array       of error messages passed to {@link #setActiveErrors} into a single HTML
      * string. if the {@link #msgTarget} is title, it defaults to a list separated by new lines. Otherwise, it
      * renders each message as an item in an unordered list.
      */
@@ -45,10 +87,26 @@
         '<%_.each(errors, function(error, i){%><%if(i > 0){%>\n<%}%><%=error%><%})%>',
       '<%}%>'
     ].join(''),
-    config: {
+    /**
+     * The label for the field. It gets appended with the {@link Label#labelSeparator}, and its position and sizing is
+     * @property {string} fieldLabel
+     * determined by the {@link Label#labelAlign} and {@link Label#labelWidth} configs.
+     * @memberof Label#
+     */
+    fieldLabel: undefined,
+    topLabelSideErrorCls: taurus.baseCSSPrefix + 'form-item-label-top-side-error',
+
+    /**
+     * @property {String} invalidCls
+     * The CSS class to use when marking the component invalid.
+     */
+    invalidCls : taurus.baseCSSPrefix + 'has-error',
+    config:{
       childEls: {
         'inputEl': '.form-control',
-        'labelEl': '.control-label'
+        'labelEl': '.control-label',
+        'errorEl': '[id$="errorEl"]',
+        'errorWrapEl': '[id$="errorEl"]'
       }
     },
     getLabelStyle: function () {
@@ -112,15 +170,26 @@
     },
     setActiveErrors: function (errors) {
       var me = this
+      var errorWrapEl = me.errorWrapEl
+      var msgTarget = me.msgTarget
       var tpl
+      var isSide = msgTarget === 'side',
       errors = $.makeArray(errors)
       tpl = me.lookupTpl('activeErrorsTpl');
       activeError = me.activeError = tpl({
-          fieldLabel: me.fieldLabel,
-          errors: errors,
-          listCls: taurus.baseCSSPrefix + 'list-plain'
+        fieldLabel: me.fieldLabel,
+        errors: errors,
+        listCls: taurus.baseCSSPrefix + 'list-plain'
       });
-      this.activeErrors = errors
+      me.activeErrors = errors
+
+
+      if (errorWrapEl) {
+        errorWrapEl[errors.length > 0 ? 'show' : 'hide'];
+        if (isSide && me.autoFitErrors) {
+          me.labelEl.addCls(me.topLabelSideErrorCls);
+        }
+      }
       //this.activeError = (new ActiveErrors({})).renderHtml(errors.length ? [errors[0]] : [])
       //this.renderActiveError()
     },
@@ -128,7 +197,9 @@
     /**
      * Tells whether the field currently has an active error message. This does not trigger validation on its own, it
      * merely looks for any message that the component may already hold.
+     * @method
      * @return {Boolean}
+     * @memberof Label#
      */
     hasActiveError: function () {
       return !!this.getActiveError()
@@ -147,23 +218,22 @@
         me.lastActiveError = activeError
       }
       if (activeError && renderError) {
-        me.$el.addClass('has-error')
+        me.$el.addClass(me.invalidCls)
       } else {
-        me.$el.removeClass('has-error')
+        me.$el.removeClass(me.invalidCls)
       }
       if (me.errorEl) {
         me.errorEl.html(activeError)
       }
     },
-    hasActiveError: function () {
-      return !!this.getActiveError()
-    },
 
     /**
      * Gets an Array of any active error messages currently applied to the field. This does not trigger validation on
      * its own, it merely returns any messages that the component may already hold.
+     * @method
      * @return {String[]} The active error messages on the component; if there are no errors, an empty Array is
      * returned.
+     * @memberof Label#
      */
     getActiveErrors: function () {
       return this.activeErrors || []
@@ -182,8 +252,9 @@
     /**
      * Returns the label for the field. Defaults to simply returning the {@link #fieldLabel} config. Can be overridden
      * to provide a custom generated label.
-     * @template
+     * @method
      * @return {String} The configured field label, or empty string if not defined
+     * @memberof Label#
      */
     getFieldLabel: function () {
       return this.trimLabelSeparator()
@@ -191,7 +262,9 @@
 
     /**
      * Returns the trimmed label by slicing off the label separator character. Can be overridden.
+     * @method
      * @return {String} The trimmed field label, or empty string if not defined
+     * @memberof Label#
      */
     trimLabelSeparator: function () {
       var me = this,

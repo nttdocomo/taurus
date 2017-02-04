@@ -35,30 +35,7 @@
       keypress: 'KeyPress',
       focus: 'Focus'
     },
-    onItemClick: function (record, node, index, e) {
-      // var node = $(e.target).parents(this.itemSelector)
-      var record = this.collection.at(this.$el.children().index(node))
-      /*if(e.ctrlKey){
-      	if(this.selection.contains(record)){
-      		node.removeClass(this.selectedItemCls)
-      		this.selection.remove(record)
-      	} else {
-      		node.addClass(this.selectedItemCls)
-      		this.selection.add(record)
-      	}
-      } else {
-      	if(this.selection.length){
-      		this.getNodeByRecord(this.selection.at(0)).removeClass(this.selectedItemCls)
-      	}
-      	if(!this.selection.contains(record)){
-      		node.addClass(this.selectedItemCls)
-      		this.selection.set([record])
-      	}
-      }
-      //console.log(this.selection)*/
-      this.trigger('itemclick', e, record)
-      return false
-    },
+    onItemClick: taurus.emptyFn,
     delegateEvents: function (events) {
       events = events || {}
       events['click'] = 'handleEvent'
@@ -116,7 +93,7 @@
         if (me['onItem' + map[newType]](record, item, index, e) === false) {
           return false
         }
-      // me.trigger('item' + newType, me, record, item, index, e)
+        me.trigger('item' + newType, me, record, item, index, e)
       }
     }
   /*,

@@ -6,3 +6,31 @@
 	border-top: 4px solid transparent;
 	border-bottom: 4px solid transparent;
 }
+.dropdown-menu > li > span {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+}
+.nav > li > span {
+  position: relative;
+  display: block;
+  padding: 10px 15px;
+}
+.navbar-nav > li > span {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  line-height: 20px;
+}
+@media (min-width: 768px){
+	.navbar-nav > li > span {
+	  padding-top: 15px;
+	  padding-bottom: 15px;
+	}
+}
+.navbar-inverse .navbar-nav > li > span {
+   color: #9d9d9d;
+}

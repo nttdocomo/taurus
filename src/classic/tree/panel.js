@@ -3,24 +3,24 @@
         // Now we're wrapping the factory and assigning the return
         // value to the root (window) and returning it as well to
         // the AMD loader.
-        define(['../panel/table','./view','./column','../panel/mixins','../model/tree','underscore','backbone'],function(Table){
+        define(['../panel/table','./navigationModel', './view','./column','../panel/mixins','../model/tree','underscore','backbone'],function(Table){
           return (root.Class = factory(Table));
         });
     }
     if(define.cmd){
         define(function(require, exports, module){
-            return (root.Class = factory(require('../panel/table'),require('./view'),require('./column'),require('../panel/mixins'),require('../model/tree'),require('underscore'),require('backbone')));
+            return (root.Class = factory(require('../panel/table'),require('./navigationModel'),require('./view'),require('./column'),require('../panel/mixins'),require('../model/tree'),require('underscore'),require('backbone')));
         })
     } else if(typeof module === "object" && module.exports) {
         // I've not encountered a need for this yet, since I haven't
         // run into a scenario where plain modules depend on CommonJS
         // *and* I happen to be loading in a CJS browser environment
         // but I'm including it for the sake of being thorough
-        module.exports = (root.Class = factory(require('../panel/table'),require('./view'),require('./column'),require('../panel/mixins'),require('../model/tree'),require('underscore'),require('backbone')));
+        module.exports = (root.Class = factory(require('../panel/table'),require('./navigationModel'),require('./view'),require('./column'),require('../panel/mixins'),require('../model/tree'),require('underscore'),require('backbone')));
     } else {
         root.Class = factory();
     }
-}(this, function(Table,View,Column,mixins,Model,_,Backbone) {
+}(this, function(Table,NavigationModel,View,Column,mixins,Model,_,Backbone) {
     return Table.extend({
         treeCls: 'tree-panel',
         useArrows: false,
@@ -80,7 +80,7 @@
                 singleExpand: me.singleExpand,
                 node: model.root,
                 hideHeaders: me.hideHeaders,
-                navigationModel: 'tree'
+                navigationModel: NavigationModel
             }, me.viewConfig);
 
             // If the user specifies the headers collection manually then don't inject
