@@ -16,11 +16,10 @@
 	}
 }(this, function(Base,Spinner){
   /**
-   * Base class for form fields that provides default event handling, rendering, and other common functionality
-   * needed by all form field types.
+   * Panel is a container that has specific functionality and structural components that make it the perfect building
+ 	 * block for application-oriented user interfaces.
    *
    * @constructor Panel
-   * @param {Object} config
    */
 	return Base.extend({
 		autoHeight:false,
@@ -30,11 +29,10 @@
 		referTo:$(window),
 		baseCls: 'panel',
 		/**
-		 * @name title
-		 * @property {string/Object} title
      * When a `title` is specified, the {@link panel.Header} will 
      * automatically be created and displayed unless {@link Panel#header} is set to `false`.
-     * @memberof Panel#
+		 * @name Panel#title
+     * @type {string/Object}
      */
 		tpl:'<%if(header){%><div class="panel-heading clearfix"><h4 class="panel-title"><%=title%></h4></div><%}%><div class="panel-body"><%=content%></div>',
 		className:'panel panel-default',

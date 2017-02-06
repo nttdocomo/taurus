@@ -16,10 +16,10 @@
   }
 }(this, function (Base, ActiveErrors) {
   /**
-   * A basic labeled form field
+   * Produces a standalone `<label />` element which can be inserted into a form and be associated with a field
+   * in that form using the {@link #forId} property.
    *
    * @constructor Label
-   * @param {Object} config
    */
   return Base.extend({
     tpl: '<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%if(typeof beforeLabelTextTpl !== "undefined"){%><%=beforeLabelTextTpl%><%}%><%=fieldLabel%><%if(labelSeparator){%><%=labelSeparator%><%}%></label><%}%><div style="<%=controlsStyle%>" id="<%=id%>-bodyEl"><%=field%></div><%if(fieldLabel){%><%}%><%if(renderError){%><div class="help-block" id="<%=id%>-errorEl" style="<%=controlsStyle%>"></div><%}%>',

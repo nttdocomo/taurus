@@ -1,5 +1,4 @@
 {
-    "<p>A basic labeled form field</p>": "<p>基础的有标记的表单字段</p>",
     "<p>The width of the {@link Label#fieldLabel} in pixels. Only applicable if {@link Label#labelAlign}\nis set to &quot;left&quot; or &quot;right&quot;.</p>": "<p>以像素为单位的{@link Label#fieldLabel}的宽。只有在{@link Label#labelAlign}被设置为&quot;left&quot;或者&quot;right&quot;时。</p>",
     "<p>Controls the position and alignment of the {@link Label#fieldLabel}. Valid values are:</p>\n<ul>\n<li><code>left</code> (the default) - The label is positioned to the left of the field, with its text aligned to the left. Its width is determined by the {@link Label#labelWidth} config.</li>\n<li><code>top</code> - The label is positioned above the field.</li>\n<li><code>right</code> - The label is positioned to the left of the field, with its text aligned to the right. Its width is determined by the {@link Label#labelWidth} config.</li>\n</ul>": "<p>控制{@link Label#fieldLabel}的位置和对齐。可用的值有：</p><ul><li><code>left</code> (默认值) - 标签被放置在字段的左边，并且文字左对齐。它的宽由{@link Label#labelWidth}配置决定。</li><li><code>top</code> - 标签被放置在字段的上面。</li><li><code>right</code> - 标签被放置在字段的右边，并且文字右对齐。它的宽由{@link Label#labelWidth}配置决定。</li></ul>",
     "<p>The location where the error message text should display. Must be one of the following values:</p>": "<p>错误信息文字显示的位置。必须是一下其中之一的值：</p>",
@@ -13,5 +12,6 @@
     "<p>The configured field label, or empty string if not defined</p>": "<p>配置的标签，如果未定义，则为空字符串。</p>",
     "<p>Returns the trimmed label by slicing off the label separator character. Can be overridden.</p>": "<p>返回去掉了标签分隔符后被修正过的标签。可以重写。</p>",
     "<p>The trimmed field label, or empty string if not defined</p>": "<p>修整后的字段标签，如果未定义，则为空字符串。</p>",
-    "<p>The label for the field. It gets appended with the {@link Label#labelSeparator}, and its position and sizing is\ndetermined by the {@link Label#labelAlign} and {@link Label#labelWidth} configs.</p>": "<p>字段的标记。和{@link Label#labelSeparator}，以及其位置和尺寸一起被添加。</p>"
+    "<p>The label for the field. It gets appended with the {@link Label#labelSeparator}, and its position and sizing is\ndetermined by the {@link Label#labelAlign} and {@link Label#labelWidth} configs.</p>": "<p>字段的标记。和{@link Label#labelSeparator}，以及其位置和尺寸一起被添加。</p>",
+    "<p>Produces a standalone <code>&lt;label /&gt;</code> element which can be inserted into a form and be associated with a field\nin that form using the {@link #forId} property.</p>": "<p>生成一个可以插入表单并和表单里的一个字段通过{@link #forId}关联起来的单独的<code>&lt;label /&gt;</code>元素。</p>"
 }
