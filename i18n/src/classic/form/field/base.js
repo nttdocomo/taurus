@@ -1,0 +1,17 @@
+{
+    "<p>A namespace.</p>": "<p>A namespace.</p>",
+    "<p>The name of the field. This is used as the parameter name when including the field value\nin a {@link Ext.form.Basic#submit form submit()}. If no name is configured, it falls back to the {@link Base#inputId}.\nTo prevent the field from being included in the form submit, set {@link Base#submitValue} to false.</p>": "<p>域的name。当{@link Ext.form.Basic#submit form submit()}时包含该域的值时它将被用作参数名。如果没有设置name，该值会回滚变成{@link Base#inputId}。如果不希望表单提交时包含域，将{@link Base#submitValue}设置为false。</p>",
+    "<p>Base class for form fields that provides default event handling, rendering, and other common functionality\nneeded by all form field types.</p>": "<p>为表单域提供默认事件处理，渲染，和其他表单域类型必须的通用功能的基础类。</p>",
+    "<p>The id that will be given to the generated input DOM element. Defaults to an automatically generated id. If you\nconfigure this manually, you must make sure it is unique in the document.</p>": "<p>赋给生成的inputDOM元素的id。默认是自动生成id。如果你手动设置了，你必须保证在dobument里是唯一的。</p>",
+    "<p>Sets a data value into the field and runs the change detection and validation. To set the value directly\nwithout these inspections see {@link #setRawValue}.</p>": "<p>为域设置一个值并运行变化检测和校验。要绕开检查直接设置值，请查阅、{@link #setRawValue}。</p>",
+    "<p>The value to set</p>": "<p>要设置的值</p>",
+    "<p>Resets the current field value to the originally loaded value and clears any validation messages. See {@link\nExt.form.Basic}.{@link Ext.form.Basic#trackResetOnLoad trackResetOnLoad}</p>": "<p>Resets the current field value to the originally loaded value and clears any validation messages. See {@link\nExt.form.Basic}.{@link Ext.form.Basic#trackResetOnLoad trackResetOnLoad}</p>",
+    "<p>Template method before a field is reset.</p>": "<p>模板方法当一个域被重置前。</p>",
+    "<p>Converts a mixed-type value to a raw representation suitable for displaying in the field. This allows controlling\nhow value objects passed to {@link #setValue} are shown to the user, including localization. For instance, for a\n{@link Ext.form.field.Date}, this would control how a Date object passed to {@link #setValue} would be converted\nto a String for display in the field.</p>\n<p>See {@link #rawToValue} for the opposite conversion.</p>\n<p>The base implementation simply does a standard toString conversion, and converts {@link Ext#isEmpty empty values}\nto an empty string.</p>": "<p>将混合型的值转化为适合在域里展示的原始的表现。它允许控制传给{@link #setValue}的值如何展示给用户，包括本地化。例如，对于一个{@link Ext.form.field.Date}，它将控制传给{@link #setValue}日期对象如何转换为一个String并显示在域里。</p><p>关于反向转换查看{@link #rawToValue}。</p><p>基本的做法是简单进行一次标准的toString转换，并将{@link Ext#isEmpty empty values}转化为一个空字符串。</p>",
+    "<p>The mixed-type value to convert to the raw representation.</p>": "<p>要转换成原生展示的混合型值。</p>",
+    "<p>The converted raw value.</p>": "<p>转换后的原生值。</p>",
+    "<p>Returns the input id for this field. If none was specified via the {@link #inputId} config, then an id will be\nautomatically generated.</p>": "<p>返回该域的input id。如果没有通过{@link #inputId}设置指定，就会自动生成一个id。</p>",
+    "<p>Gets the markup to be inserted into the outer template's bodyEl. For fields this is the actual input element.</p>": "<p>Gets the markup to be inserted into the outer template's bodyEl. For fields this is the actual input element.</p>",
+    "<p>Creates and returns the data object to be used when rendering the {@link #fieldSubTpl}.</p>": "<p>Creates and returns the data object to be used when rendering the {@link #fieldSubTpl}.</p>",
+    "<p>The template data</p>": "<p>The template data</p>"
+}
