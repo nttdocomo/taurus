@@ -1,29 +1,35 @@
 /**
  * @author nttdocomo
  */
- (function (root, factory) {
-	if(typeof define === "function") {
-		if(define.amd){
-			define(['../../view/base','../spinner/wave'], factory);
-		}
-		if(define.cmd){
-			define(function(require, exports, module){
-				return factory(require('../../view/base'),require('../spinner/wave'));
-			})
-		}
-	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../view/base'),require('../spinner/wave'));
-	}
-}(this, function(Base,Spinner){
+/* global define */
+;(function (root, factory) {
+  if (typeof define === 'function') {
+    if (define.amd) {
+      define(['../../view/base', '../spinner/wave'], factory)
+    }
+    if (define.cmd) {
+      define(function (require, exports, module) {
+        return factory(require('../../view/base'), require('../spinner/wave'))
+      })
+    }
+  } else if (typeof module === 'object' && module.exports) {
+    module.exports = factory(require('../../view/base'), require('../spinner/wave'))
+  }
+}(this, function (Base, Spinner) {
   /**
    * Panel is a container that has specific functionality and structural components that make it the perfect building
  	 * block for application-oriented user interfaces.
    *
    * @constructor Panel
    */
-	return Base.extend({
-		autoHeight:false,
-		header:false,
+  return Base.extend({
+    autoHeight: false,
+		/**
+     * Pass as `false` to prevent a Header from being created and shown.
+		 * @name Panel#header
+     * @type {bool/object}
+     */
+    header: false,
 		hideHeaders:false,
     frame: false,
 		referTo:$(window),
