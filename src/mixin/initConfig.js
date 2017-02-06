@@ -5,17 +5,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../define', '../taurus'], factory)
+      define(['../define', '../taurus', '../backbone-super'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../define'), require('../taurus'))
+        return factory(require('../define'), require('../taurus'), require('../backbone-super'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../define'), require('../taurus'))
+    module.exports = factory(require('../define'), require('../taurus'), require('../backbone-super'))
   }
-}(this, function (define, Tau) {
+}(this, function (define, Tau, inherits) {
   return {
     configClass: Tau.emptyFn,
     initConfigMap: {},
@@ -24,7 +24,7 @@
     beforeInitConfig: function () {},
     initConfig: function (instanceConfig) {
       var me = this
-      var configNameCache = define.configNameCache
+      var configNameCache = inherits.configNameCache
       // var prototype = me.constructor.prototype
       var initConfigList = me.initConfigList
       var initConfigMap = this.initConfigMap

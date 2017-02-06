@@ -35,7 +35,7 @@
         },
         beforeInitConfig: function () {}
       }, initConfig), addConfig)
-      var ParentClass = define(Base, {
+      var ParentClass = Base.extend({
         prop: 1,
         config: {
           parentName: 'aa',
@@ -44,7 +44,7 @@
           }
         }
       })
-      var ChildClass = define(ParentClass, {
+      var ChildClass = ParentClass.extend({
         prop: 2,
         config: {
           childName: 'bbb',
