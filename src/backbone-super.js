@@ -6,7 +6,7 @@
   // Set up Backbone appropriately for the environment. Start with AMD.
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['underscore', 'backbone'], function (_, Backbone) {
+      define(['underscore', 'backbone', './polyfill/object/create'], function (_, Backbone) {
         // Export global even in AMD case in case this script is loaded with
         // others that may still expect a global Backbone.
         return factory(_, Backbone)
@@ -14,22 +14,20 @@
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('underscore'), require('backbone'))
+        return factory(require('underscore'), require('backbone'), require('./polyfill/object/create'))
       })
     }
 
   // Next for Node.js or CommonJS.
   } else if (typeof exports !== 'undefined' && typeof require === 'function') {
-    var _ = require('underscore')
-    var Backbone = require('backbone')
-    factory(_, Backbone)
+    factory(require('underscore'), require('backbone'), require('./polyfill/object/create'))
 
   // Finally, as a browser global.
   } else {
     factory(root._, root.Backbone)
   }
 
-}(this, function factory (_, Backbone) {
+}(this, function factory (_, Backbone, create) {
   Backbone.Model.extend = Backbone.Collection.extend = Backbone.Router.extend = Backbone.View.extend = function (protoProps, classProps) {
     var child = inherits(this, protoProps, classProps)
     child.extend = this.extend
@@ -97,6 +95,9 @@
       child.prototype.config = child.prototype.defaultConfig = new ConfigClass()
     }
     child.prototype.initConfigList = parentProto.initConfigList ? parentProto.initConfigList.slice() : []
+    if(parentProto.initConfigMap){
+      child.prototype.initConfigMap = create(parentProto.initConfigMap)
+    }
 
     // Add prototype properties (instance properties) to the subclass,
     // if supplied.
