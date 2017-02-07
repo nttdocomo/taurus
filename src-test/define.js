@@ -46,11 +46,12 @@
       })
       var ChildClass = ParentClass.extend({
         prop: 2,
+        childEls:{
+          'inputEl':'.inputEl',
+          'bodyEl':'#bodyEl'
+        },
         config: {
-          childName: 'bbb',
-          childEls:{
-            'inputEl':'.inputEl'
-          }
+          childName: 'bbb'
         }
       })
       assert.equal(ParentClass.prototype.prop, 1, 'new class prototype has attribute prop')
@@ -65,6 +66,7 @@
       var childEls = childClass.getChildEls()
       assert.strictEqual('inputEl' in childEls && ! childEls.hasOwnProperty('inputEl'), true, '判断inputEl是原型属性而不是对象自身属性')
       assert.strictEqual('bodyEl' in childEls, true, '判断inputEl包含bodyEl属性')
+      assert.strictEqual(childEls.bodyEl, '#bodyEl', '判断childClass里的bodyEl取的值是不是自己配置的')
     })
   }
   return {run: run}

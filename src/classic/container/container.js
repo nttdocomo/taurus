@@ -14,7 +14,7 @@
 		module.exports = factory(require('../../define'), require('../../view/base'));
 	}
 }(this, function(define, Base) {
-	return define(Base, {
+	return Base.extend({
 		//layout:'auto',
 		initialize:function(){
 			var me = this;

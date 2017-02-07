@@ -15,7 +15,7 @@
 		module.exports = factory(require('../../../define'),require('./picker'),require('../../view/boundList'),require('underscore'),require('backbone'),require('../../../lang/event'),require('jquery.scrollIntoView'));
 	}
 }(this, function(define, Picker,BoundList,_,Backbone) {
-	return define(Picker, {
+	return Picker.extend({
 		allQuery: '',
 		/**
      * @private

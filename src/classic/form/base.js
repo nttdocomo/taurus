@@ -1,7 +1,7 @@
 /**
  * @author nttdocomo
  */
- (function (root, factory) {
+;(function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
 			define(['../../define', '../container/container','underscore'], factory);
@@ -15,7 +15,7 @@
 		module.exports = factory(require('../../define'),require('../container/container'),require('underscore'));
 	}
 }(this, function(define, Base,_) {
-	return define(Base, {
+	return Base.extend({
 		tagName : 'form',
 		initialize:function(){
 			Base.prototype.initialize.apply(this,arguments);

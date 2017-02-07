@@ -15,7 +15,7 @@
 		module.exports = factory(require('../../../define'), require('./base'),require('taurus'));
 	}
 }(this, function(define, Base, taurus) {
-	return define(Base, {
+	return Base.extend({
 		allowBlank : true,
 		fieldSubTpl:'<p class="form-control-static"><%=value%></p>',
 		childEls:{

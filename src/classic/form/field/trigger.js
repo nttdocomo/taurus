@@ -15,7 +15,7 @@
 		module.exports = factory(require('../../../define'), require('./text'),require('underscore'));
 	}
 }(this, function(define, Text,_){
-	return define(Text, {
+	return Text.extend({
 		editable:true,
 		/**
 		 * @cfg {Boolean} buttonOnly

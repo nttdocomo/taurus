@@ -15,7 +15,7 @@
     module.exports = factory(require('../../define'), require('./abstractView'), require('backbone'), require('../../lang/event'))
   }
 }(this, function (define, Base, Backbone) {
-  return define(Base, {
+  return Base.extend({
     className: 'row-fluid',
     selectedItemCls: 'item-selected',
     keyEventRe: /^key/,

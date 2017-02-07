@@ -15,7 +15,7 @@
 		module.exports = factory(require('../../../define'), require('./trigger'));
 	}
 }(this, function(define, Trigger){
-	return define(Trigger, {
+	return Trigger.extend({
 		alignPicker:function(){
 			var me = this, picker = me.getPicker(),position,
 			heightAbove = taurus.getPositionAbove(this.$el),

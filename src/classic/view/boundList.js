@@ -15,9 +15,9 @@
     module.exports = factory(require('../../define'), require('./view'), require('underscore'), require('backbone'), require('taurus'), require('jquery.lazyload'))
   }
 }(this, function (define, Base, _, Backbone, taurus) {
-  return define(Base, {
+  return Base.extend({
     // tpl:'<%=content%>',
-    config:{
+    config: {
       childEls: [
         'listWrap', 'listEl'
       ]

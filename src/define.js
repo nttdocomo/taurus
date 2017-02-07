@@ -23,7 +23,6 @@
     }
     console.log(child.prototype.prop)
     ConfigClass = prototype.configClass
-    child.prototype.config = child.prototype.defaultConfig = new ConfigClass()
     child.prototype.initConfigList = prototype.initConfigList ? prototype.initConfigList.slice() : []
     child.prototype.initConfigMap = create(prototype.initConfigMap)
     define.process(child, prop)

@@ -22,7 +22,7 @@
    * @constructor Base
    * @param {Object} config
    */
-  return define(BaseClass, {
+  return BaseClass.extend(_.extend({
     isRendered: false,
     doc: taurus.$doc,
     baseCls: taurus.baseCSSPrefix + 'component',
@@ -920,7 +920,7 @@
     up: function (selector, limit) {
       return this.$el.parentsUntil(selector).parent().data('component')
     }
-  }, {
+  },observable), {
     INVALID_ID_CHARS_Re: /[\.,\s]/g,
     updateLayout: function () {},
     decorate: function (decorator) {
@@ -942,5 +942,5 @@
         return newobj
       }
     }
-  }).mixins(Stateful).mixins(Focusable).extend(observable)
+  }).mixins(Stateful).mixins(Focusable)
 }))

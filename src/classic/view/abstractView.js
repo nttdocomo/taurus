@@ -23,7 +23,7 @@
     root.Class = factory()
   }
 }(this, function (define, Base, StoreHolder, DataViewModel, NavigationModel, Backbone, _) {
-  return define(Base, {
+  return Base.extend({
     config: {
       selectionModel: {
         type: DataViewModel

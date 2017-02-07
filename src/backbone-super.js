@@ -92,6 +92,10 @@
     // `parent`'s constructor function.
     ctor.prototype = parentProto
     child.prototype = new ctor()
+    var ConfigClass = parentProto.configClass
+    if(ConfigClass){
+      child.prototype.config = child.prototype.defaultConfig = new ConfigClass()
+    }
     child.prototype.initConfigList = parentProto.initConfigList ? parentProto.initConfigList.slice() : []
 
     // Add prototype properties (instance properties) to the subclass,
@@ -124,6 +128,13 @@
   _.extend(inherits, {
     preprocessors: {},
     configNameCache: {},
+    /**
+     * @private
+     * @static
+     */
+    onBeforeCreated: function(Class, data, hooks) {
+      Class.addMembers(data)
+    },
     process: function (Class, data) {
       var me = this
       var args = arguments
@@ -132,7 +143,7 @@
         var process = preprocessor.fn
         process.apply(me, args)
       })
-      // me.onBeforeCreated.apply(me, arguments)
+      me.onBeforeCreated.apply(me, arguments)
     },
 
     /**
