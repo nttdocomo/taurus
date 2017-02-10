@@ -22,10 +22,10 @@
       var ln = objectProperties.length
       var property
 
-      /*for (; i < ln; i++) {
+      for (; i < ln; i++) {
         property = objectProperties[i]
         this[property] = new propertyClassesMap[property]
-      }*/
+      }
 
       ln = arrayProperties.length
 

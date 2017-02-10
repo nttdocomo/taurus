@@ -6,7 +6,7 @@
   // Set up Backbone appropriately for the environment. Start with AMD.
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['underscore', 'backbone', './polyfill/object/create'], function (_, Backbone) {
+      define(['underscore', 'backbone', './polyfill/object/classify'], function (_, Backbone) {
         // Export global even in AMD case in case this script is loaded with
         // others that may still expect a global Backbone.
         return factory(_, Backbone)
@@ -14,20 +14,20 @@
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('underscore'), require('backbone'), require('./polyfill/object/create'))
+        return factory(require('underscore'), require('backbone'), require('./polyfill/object/classify'))
       })
     }
 
   // Next for Node.js or CommonJS.
   } else if (typeof exports !== 'undefined' && typeof require === 'function') {
-    factory(require('underscore'), require('backbone'), require('./polyfill/object/create'))
+    factory(require('underscore'), require('backbone'), require('./polyfill/object/classify'))
 
   // Finally, as a browser global.
   } else {
     factory(root._, root.Backbone)
   }
 
-}(this, function factory (_, Backbone, create) {
+}(this, function factory (_, Backbone, classify) {
   Backbone.Model.extend = Backbone.Collection.extend = Backbone.Router.extend = Backbone.View.extend = function (protoProps, classProps) {
     var child = inherits(this, protoProps, classProps)
     child.extend = this.extend
@@ -90,13 +90,14 @@
     // `parent`'s constructor function.
     ctor.prototype = parentProto
     child.prototype = new ctor()
-    var ConfigClass = parentProto.configClass
-    if(ConfigClass){
-      child.prototype.config = child.prototype.defaultConfig = new ConfigClass()
+    if(parentProto.config){
+      child.prototype.config = child.prototype.defaultConfig = Object.classify(parentProto.config)
+    } else {
+      child.prototype.configValues = {}
     }
     child.prototype.initConfigList = parentProto.initConfigList ? parentProto.initConfigList.slice() : []
     if(parentProto.initConfigMap){
-      child.prototype.initConfigMap = create(parentProto.initConfigMap)
+      child.prototype.initConfigMap = Object.chain(parentProto.initConfigMap)
     }
 
     // Add prototype properties (instance properties) to the subclass,
@@ -260,6 +261,7 @@
     var prototype = Class.prototype
     var defaultConfig = prototype.config || {}
     var value, nameMap, setName, getName, initGetName, internalName
+    delete data.config
     for (var name in config) {
       // Once per config item, per class hierarchy
       if (config.hasOwnProperty(name) && !(name in defaultConfig)) {

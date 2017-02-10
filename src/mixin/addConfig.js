@@ -23,15 +23,17 @@
      * @inheritable
      */
     addConfig: function (config, fullMerge) {
-      var prototype = this.prototype
+      var me = this
+      var prototype = me.prototype
       var initConfigList = prototype.initConfigList
       var initConfigMap = prototype.initConfigMap
       var defaultConfig = prototype.defaultConfig
-      var hasInitConfigItem, name, value
+      var values = prototype.configValues
+      var hasInitConfigItem, name, value, cfg
 
       for (name in config) {
+        value = config[name]
         if (config.hasOwnProperty(name) && (fullMerge || !(name in defaultConfig))) {
-          value = config[name]
           hasInitConfigItem = initConfigMap[name]
 
           if (value !== null) {
@@ -45,15 +47,20 @@
           // Ext.Array.remove(initConfigList, name)
           }
         }
+        /*cfg = _.clone(defaultConfig[name])
+        if (cfg) {
+          value = _.extend(cfg, value)
+        }
+        values[name] = value*/
       }
 
       if (fullMerge) {
         merge(defaultConfig, config)
       } else {
-        _.defaults(defaultConfig, config)
+        Object.assign(defaultConfig, config)
       }
 
-      prototype.configClass = Object.classify(defaultConfig)/* _.omit(_.deepClone(defaultConfig), function (value, key, object) {
+      prototype.config = defaultConfig/* _.omit(_.deepClone(defaultConfig), function (value, key, object) {
         return _.isUndefined(value)
       })*/
     },

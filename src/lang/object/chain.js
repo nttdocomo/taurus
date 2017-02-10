@@ -13,6 +13,24 @@
     module.exports = factory()
   }
 }(this, function () {
+  var TemplateClass = function(){};
+  var chain = Object.chain = Object.create || function (prototype, propertiesObject) {
+    if(prototype !== null && prototype !== Object(prototype)) {
+      throw TypeError('Argument must be an object, or null');
+    }
+    TemplateClass.prototype = prototype || {};
+    var result = new TemplateClass();
+    TemplateClass.prototype = null;
+    if (propertiesObject !== undefined) {
+      Object.defineProperties(result, propertiesObject); 
+    } 
+    
+    // to imitate the case of Object.create(null)
+    if(prototype === null) {
+       result.__proto__ = null;
+    }
+    return result;
+  };
   Object.classify = function (object) {
     var objectProperties = []
     var arrayProperties = []

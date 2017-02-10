@@ -1,4 +1,15 @@
 /*global define*/
+var ConfigClass = function(){}
+ConfigClass.prototype = {
+  parentName: 'aa',
+  childEls:{
+    'bodyEl':'.bodyEl'
+  }
+}
+console.log(ConfigClass.prototype)
+var configClass = new ConfigClass
+configClass.childName = 'bbbbb'
+console.log(configClass)
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {

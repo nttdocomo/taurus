@@ -5,17 +5,40 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../define', '../taurus', '../backbone-super'], factory)
+      define(['../define', '../taurus', '../backbone-super', '../backbone-super', '../lang/object/chain'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../define'), require('../taurus'), require('../backbone-super'))
+        return factory(require('../define'), require('../taurus'), require('../backbone-super'), require('../lang/object/chain'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../define'), require('../taurus'), require('../backbone-super'))
+    module.exports = factory(require('../define'), require('../taurus'), require('../backbone-super'), require('../lang/object/chain'))
   }
 }(this, function (define, Tau, inherits) {
+  var fork = function(obj){
+    var ret, key, value;
+
+    if (obj && obj.constructor === Object) {
+      ret = Object.chain(obj);
+
+      for (key in obj) {
+        value = obj[key];
+
+        if (value) {
+          if (value.constructor === Object) {
+            ret[key] = fork(value);
+          }/* else if (value instanceof Array) {
+            ret[key] = Ext.Array.clone(value);
+          }*/
+        }
+      }
+    } else {
+      ret = obj;
+    }
+
+    return ret;
+  }
   return {
     configClass: Tau.emptyFn,
     initConfigMap: {},
@@ -28,8 +51,8 @@
       // var prototype = me.constructor.prototype
       var initConfigList = me.initConfigList
       var initConfigMap = this.initConfigMap
-      var ConfigClass = me.configClass
-      var config = new ConfigClass()
+      var config = me.config
+      var values = fork(config)
       var defaultConfig = me.defaultConfig
       var nameMap, getName
       me.initConfig = function () {}
@@ -64,7 +87,7 @@
         getName = nameMap.get
 
         if (me.hasOwnProperty(getName)) {
-          me[nameMap.set](config[name])
+          me[nameMap.set](values[name])
           delete me[getName]
         }
       }

@@ -47,20 +47,29 @@ console.log(new ConfigClass)
       var ParentClass = Base.extend({
         prop: 1,
         config: {
-          parentName: 'aa',
+          parentName: 'parent',
           childEls:{
             'bodyEl':'.bodyEl'
           }
         }
       })
-      var ChildClass = ParentClass.extend({
+      var FirstChildClass = ParentClass.extend({
         prop: 2,
         childEls:{
           'inputEl':'.inputEl',
           'bodyEl':'#bodyEl'
         },
         config: {
-          childName: 'bbb'
+          childName: 'first'
+        }
+      })
+      var SecondChildClass = ParentClass.extend({
+        prop: 2,
+        childEls:{
+          'inputEl':'.inputEl'
+        },
+        config: {
+          childName: 'second'
         }
       })
       assert.equal(ParentClass.prototype.prop, 1, 'new class prototype has attribute prop')
@@ -70,14 +79,20 @@ console.log(new ConfigClass)
       assert.strictEqual(typeof parentClass.getParentName, 'function', 'this instance has a getConfigName method')
       assert.strictEqual(typeof parentClass.setParentName, 'function', 'this instance has a setConfigName method')
       assert.strictEqual(parentClass.instantceProp, 1, 'this instance has a setConfigName method')
-      assert.strictEqual(parentClass.getParentName(), 'aa', 'the get method return the correct value')
+      assert.strictEqual(parentClass.getParentName(), 'parent', 'the get method return the correct value')
       var childEls = parentClass.getChildEls()
       assert.strictEqual('bodyEl' in childEls && childEls.hasOwnProperty('bodyEl'), true, '判断bodyEl是原型属性而不是对象自身属性')
-      var childClass = new ChildClass()
+      var childClass = new FirstChildClass()
       childEls = childClass.getChildEls()
+      assert.strictEqual(childClass.getChildName(), 'first', 'the get method return the correct value')
       assert.strictEqual('inputEl' in childEls && childEls.hasOwnProperty('inputEl'), true, '判断inputEl是原型属性而不是对象自身属性')
-      assert.strictEqual('bodyEl' in childEls, true, '判断inputEl包含bodyEl属性')
+      assert.strictEqual('bodyEl' in childEls && childEls.hasOwnProperty('bodyEl'), true, '判断inputEl包含bodyEl属性')
       assert.strictEqual(childEls.bodyEl, '#bodyEl', '判断childClass里的bodyEl取的值是不是自己配置的')
+      var childClass = new SecondChildClass()
+      childEls = childClass.getChildEls()
+      assert.strictEqual(childClass.getChildName(), 'second', 'the get method return the correct value')
+      assert.strictEqual('inputEl' in childEls && childEls.hasOwnProperty('inputEl'), true, '判断inputEl是原型属性而不是对象自身属性')
+      assert.strictEqual('bodyEl' in childEls && childEls.hasOwnProperty('bodyEl'), true, '判断inputEl包含bodyEl属性')
     })
   }
   return {run: run}

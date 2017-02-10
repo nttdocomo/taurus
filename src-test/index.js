@@ -13,12 +13,12 @@ seajs.config({
 // QUnit.config.autoload = false
 // QUnit.config.autostart = false
 seajs.use([
-  './define',
-  /*'./form/field/combos',
+  './define'/*,
+  './form/field/combos',
   './form/field/radio',
   './form/field/text',*/
   /*'./tip/toolTip'*/
-], function (define/*, combos, radio*/, text/*, toolTip*/) {
+], function (define/*, combos, radio, text, toolTip*/) {
   define.run()
   /*combos.run()
   radio.run()
