@@ -47,6 +47,7 @@
           // Ext.Array.remove(initConfigList, name)
           }
         }
+        defaultConfig[name] = value
         /*cfg = _.clone(defaultConfig[name])
         if (cfg) {
           value = _.extend(cfg, value)

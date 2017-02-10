@@ -32,27 +32,6 @@
     return result;
   };
   Object.classify = function (object) {
-    var objectProperties = []
-    var arrayProperties = []
-    var propertyClassesMap = {}
-    var objectClass = function () {
-      var i = 0
-      var ln = objectProperties.length
-      var property
-
-      for (; i < ln; i++) {
-        property = objectProperties[i]
-        this[property] = new propertyClassesMap[property]
-      }
-
-      ln = arrayProperties.length
-
-      for (i = 0; i < ln; i++) {
-        property = arrayProperties[i]
-        this[property] = object[property].slice()
-      }
-    }
-    var key, value, constructor
 
     for (key in object) {
       if (object.hasOwnProperty(key)) {
@@ -62,8 +41,7 @@
           constructor = value.constructor
 
           if (constructor === Object) {
-            objectProperties.push(key)
-            propertyClassesMap[key] = Object.classify(value)
+            object[key] = Object.classify(value)
           } else if (constructor === Array) {
             arrayProperties.push(key)
           }
@@ -71,8 +49,8 @@
       }
     }
 
-    objectClass.prototype = object
+    var result = Object.chain(object)
 
-    return objectClass
+    return result
   }
 }))

@@ -6,7 +6,7 @@
   // Set up Backbone appropriately for the environment. Start with AMD.
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['underscore', 'backbone', './polyfill/object/classify'], function (_, Backbone) {
+      define(['underscore', 'backbone', './lang/object/chain'], function (_, Backbone) {
         // Export global even in AMD case in case this script is loaded with
         // others that may still expect a global Backbone.
         return factory(_, Backbone)
@@ -14,13 +14,13 @@
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('underscore'), require('backbone'), require('./polyfill/object/classify'))
+        return factory(require('underscore'), require('backbone'), require('./lang/object/chain'))
       })
     }
 
   // Next for Node.js or CommonJS.
   } else if (typeof exports !== 'undefined' && typeof require === 'function') {
-    factory(require('underscore'), require('backbone'), require('./polyfill/object/classify'))
+    factory(require('underscore'), require('backbone'), require('./lang/object/chain'))
 
   // Finally, as a browser global.
   } else {
