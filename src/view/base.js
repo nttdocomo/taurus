@@ -87,7 +87,7 @@
         }
         me.disabled = true
         if (silent !== true) {
-          me.fireEvent('disable', me);
+          me.trigger('disable', me);
         }
       }
     },
