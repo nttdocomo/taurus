@@ -91,7 +91,7 @@
     ctor.prototype = parentProto
     child.prototype = new ctor()
     if(parentProto.config){
-      child.prototype.config = child.prototype.defaultConfig = Object.classify(parentProto.config)
+      child.prototype.config = child.prototype.defaultConfig = Object.chain(parentProto.config)
     } else {
       child.prototype.configValues = {}
     }
