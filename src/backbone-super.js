@@ -90,14 +90,14 @@
     // `parent`'s constructor function.
     ctor.prototype = parentProto
     child.prototype = new ctor()
-    if(parentProto.config){
-      child.prototype.config = child.prototype.defaultConfig = Object.chain(parentProto.config)
+    if(child.prototype.config){
+      child.prototype.config = child.prototype.defaultConfig = Object.chain(child.prototype.config)
     } else {
       child.prototype.configValues = {}
     }
-    child.prototype.initConfigList = parentProto.initConfigList ? parentProto.initConfigList.slice() : []
-    if(parentProto.initConfigMap){
-      child.prototype.initConfigMap = Object.chain(parentProto.initConfigMap)
+    child.prototype.initConfigList = child.prototype.initConfigList ? child.prototype.initConfigList.slice() : []
+    if(child.prototype.initConfigMap){
+      child.prototype.initConfigMap = Object.chain(child.prototype.initConfigMap)
     }
 
     // Add prototype properties (instance properties) to the subclass,

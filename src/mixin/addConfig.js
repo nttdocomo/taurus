@@ -88,7 +88,7 @@
       for (name in members) {
         if (members.hasOwnProperty(name)) {
           member = members[name];
-          if (defaultConfig && (name in defaultConfig) && !target.config.hasOwnProperty(name)) {
+          if (defaultConfig && name !== 'constructor' && (name in defaultConfig) && !target.config.hasOwnProperty(name)) {
             // This is a config property so it must be added to the configs
             // collection not just smashed on the prototype...
             (configs || (configs = {}))[name] = member;

@@ -28,9 +28,11 @@
         if (value) {
           if (value.constructor === Object) {
             ret[key] = fork(value);
-          }/* else if (value instanceof Array) {
-            ret[key] = Ext.Array.clone(value);
-          }*/
+          } else if (value instanceof Array) {
+            ret[key] = _.clone(value);
+          } else {
+            ret[key] = value;
+          }
         }
       }
     } else {
@@ -71,12 +73,12 @@
           }
         }
       }
-      if (instanceConfig) {
+      /*if (instanceConfig) {
         _.extend(config, instanceConfig)
-      }
+      }*/
       // Point all getters to the initGetters
       for (var i = 0, ln = initConfigList.length; i < ln; i++) {
-        name = initConfigList[i]
+        var name = initConfigList[i]
         nameMap = configNameCache[name]
         me[nameMap.get] = me[nameMap.initGet]
       }
