@@ -29,6 +29,10 @@
 	return Base.extend({
 		fieldSubTpl:'',
 		uiClass:'form-fieldcontainer',
+		childEls:{
+			containerEl:'[id$="bodyEl"]'
+		},
+		//fieldSubTpl: '<div id="<%=id%>-containerEl"></div>',
 		direction:'row',
 		/**
 	     * @cfg {Boolean} combineErrors
@@ -52,7 +56,7 @@
 	    	return items;
 	    },
 		getTargetEl: function() {
-            return this.frameBody || this.bodyEl;
+            return this.containerEl;
         },
 		lookupComponent : function(cmp) {
 			if(this.combineErrors){
