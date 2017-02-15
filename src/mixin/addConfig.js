@@ -16,6 +16,13 @@
     module.exports = factory(require('underscore'), require('../polyfill/object/merge'), require('../polyfill/object/classify'))
   }
 }(this, function (_, merge) {
+  var merge = function(newValue, oldValue){
+    var i
+    for(i in newValue){
+      oldValue[i] = newValue[i]
+    }
+    return oldValue
+  }
   return {
     /**
      * @private
@@ -29,11 +36,12 @@
       var initConfigMap = prototype.initConfigMap
       var defaultConfig = prototype.defaultConfig
       var values = prototype.configValues
-      var hasInitConfigItem, name, value, cfg
+      var hasInitConfigItem, name, value, cfg, isObject, oldValue
 
       for (name in config) {
         value = config[name]
-        if (config.hasOwnProperty(name) && (fullMerge || !(name in defaultConfig))) {
+        isObject = value && value.constructor === Object;
+        if (config.hasOwnProperty(name)){
           hasInitConfigItem = initConfigMap[name]
 
           if (value !== null) {
@@ -46,8 +54,15 @@
             initConfigList = _.without(initConfigList, name)
           // Ext.Array.remove(initConfigList, name)
           }
+          if(name in defaultConfig) {
+            oldValue =  defaultConfig[name]
+            if(isObject){
+              oldValue = Object.chain(oldValue)
+              value = merge(value, oldValue)
+            }
+          }
         }
-        //defaultConfig[name] = value
+        defaultConfig[name] = value
         /*cfg = _.clone(defaultConfig[name])
         if (cfg) {
           value = _.extend(cfg, value)
@@ -55,11 +70,11 @@
         values[name] = value*/
       }
 
-      if (fullMerge) {
+      /*if (fullMerge) {
         merge(defaultConfig, config)
       } else {
         Object.assign(defaultConfig, config)
-      }
+      }*/
 
       prototype.config = defaultConfig/* _.omit(_.deepClone(defaultConfig), function (value, key, object) {
         return _.isUndefined(value)
