@@ -8,7 +8,7 @@
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('backbone'), require('class'))
+        return factory(require('backbone'), require('class'), require('backbone-super'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {

@@ -5,17 +5,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../define', '../taurus', '../lang/object/chain'], factory)
+      define(['../taurus', '../lang/object/chain'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../define'), require('../taurus'), require('../lang/object/chain'))
+        return factory(require('../taurus'), require('../lang/object/chain'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../define'), require('../taurus'), require('../lang/object/chain'))
+    module.exports = factory(require('../taurus'), require('../lang/object/chain'))
   }
-}(this, function (define, Tau, inherits) {
+}(this, function (Tau, inherits) {
   var fork = function(obj){
     var ret, key, value;
 

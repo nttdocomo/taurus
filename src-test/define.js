@@ -28,6 +28,10 @@
   var run = function () {
     QUnit.test('define', function (assert) {
       var ParentClass = Backbone.View.extend({
+        constructor:function(config){
+          Backbone.View.apply(this, arguments)
+          this.initConfig(config)
+        },
         prop: 1,
         config: {
           parentName: 'parent',

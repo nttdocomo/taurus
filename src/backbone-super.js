@@ -14,7 +14,7 @@
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('underscore'), require('backbone'), require('./lang/object/chain'), require('./mixin/addConfig'), require('./mixin/initConfig'))
+        return factory(require('underscore'), require('backbone'), require('taurus'), require('./lang/object/chain'), require('./mixin/addConfig'), require('./mixin/initConfig'))
       })
     }
 
@@ -27,15 +27,94 @@
     factory(root._, root.Backbone)
   }
 
-}(this, function factory (_, Backbone, classify, addConfig, initConfig) {
+}(this, function factory (_, Backbone, Tau, classify, addConfig, initConfig) {
   Backbone.Model.extend = Backbone.Collection.extend = Backbone.Router.extend = Backbone.View.extend = function (protoProps, classProps) {
     var child = inherits(this, protoProps, classProps)
     child.extend = this.extend
     return child
   }
+
+  var fork = function(obj){
+    var ret, key, value;
+
+    if (obj && obj.constructor === Object) {
+      ret = Object.chain(obj);
+
+      for (key in obj) {
+        value = obj[key];
+
+        if (value) {
+          if (value.constructor === Object) {
+            ret[key] = fork(value);
+          } else if (value instanceof Array) {
+            ret[key] = _.clone(value);
+          } else {
+            ret[key] = value;
+          }
+        }
+      }
+    } else {
+      ret = obj;
+    }
+
+    return ret;
+  }
   Backbone.Model.addConfig = Backbone.Collection.addConfig = Backbone.Router.addConfig = Backbone.View.addConfig = addConfig.addConfig
   Backbone.Model.addMembers = Backbone.Collection.addMembers = Backbone.Router.addMembers = Backbone.View.addMembers = addConfig.addMembers
-  Backbone.Model.prototype.initConfig = Backbone.Collection.prototype.initConfig = Backbone.Router.prototype.initConfig = Backbone.View.prototype.initConfig = initConfig
+  _.extend(Backbone.View.prototype, {
+    configClass: Tau.emptyFn,
+    initConfigMap: {},
+    initConfigList: [],
+    defaultConfig: {},
+    beforeInitConfig: function () {},
+    initConfig: function (instanceConfig) {
+      var me = this
+      var configNameCache = inherits.configNameCache
+      // var prototype = me.constructor.prototype
+      var initConfigList = me.initConfigList
+      var initConfigMap = this.initConfigMap
+      var config = me.config
+      var values = fork(config)
+      var defaultConfig = me.defaultConfig
+      var nameMap, getName
+      me.initConfig = function () {}
+      me.config = config
+      if (instanceConfig) {
+        initConfigList = initConfigList.slice()
+        for (var name in instanceConfig) {
+          value = instanceConfig[name];
+          cfg = config[name];
+          if(!cfg){
+            me[name] = value;
+          } else {
+            if (name in defaultConfig && !initConfigMap[name]) {
+              initConfigList.push(name)
+            }
+          }
+        }
+      }
+      /*if (instanceConfig) {
+        _.extend(config, instanceConfig)
+      }*/
+      // Point all getters to the initGetters
+      for (var i = 0, ln = initConfigList.length; i < ln; i++) {
+        var name = initConfigList[i]
+        nameMap = configNameCache[name]
+        me[nameMap.get] = me[nameMap.initGet]
+      }
+      me.beforeInitConfig(config)
+      for (i = 0, ln = initConfigList.length; i < ln; i++) {
+        name = initConfigList[i]
+        nameMap = configNameCache[name]
+        getName = nameMap.get
+
+        if (me.hasOwnProperty(getName)) {
+          me[nameMap.set](values[name])
+          delete me[getName]
+        }
+      }
+    }
+  })
   var unImplementedSuper = function (method) {
     throw 'Super does not implement this method: ' + method
   }

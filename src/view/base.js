@@ -9,7 +9,7 @@
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../state/stateful'), require('../util/focusable'), require('../mixin/observable'), require('../util/itemCollection'), require('jquery'), require('underscore'), require('backbone'), require('taurus'), require('backbone-super'), require('../lang/number'), require('../jquery.ui.position'))
+        return factory(require('../state/stateful'), require('../util/focusable'), require('../mixin/observable'), require('../util/itemCollection'), require('jquery'), require('underscore'), require('backbone'), require('taurus'), require('backbone-super'), require('mixins'), require('../lang/number'), require('../jquery.ui.position'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
@@ -35,7 +35,7 @@
       }
     },
     constructor: function (config) {
-      BaseClass.call(this, config)
+      Backbone.View.call(this, config)
       this.initConfig(config)
     },
     getConfigurator: function () {
@@ -85,7 +85,7 @@
         }
         me.disabled = true
         if (silent !== true) {
-          me.fireEvent('disable', me);
+          me.trigger('disable', me);
         }
       }
     },
