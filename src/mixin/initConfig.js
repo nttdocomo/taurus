@@ -5,15 +5,15 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../define', '../taurus', '../backbone-super', '../backbone-super', '../lang/object/chain'], factory)
+      define(['../define', '../taurus', '../lang/object/chain'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../define'), require('../taurus'), require('../backbone-super'), require('../lang/object/chain'))
+        return factory(require('../define'), require('../taurus'), require('../lang/object/chain'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../define'), require('../taurus'), require('../backbone-super'), require('../lang/object/chain'))
+    module.exports = factory(require('../define'), require('../taurus'), require('../lang/object/chain'))
   }
 }(this, function (define, Tau, inherits) {
   var fork = function(obj){

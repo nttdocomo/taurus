@@ -1,13 +1,4 @@
 /*global define module QUnit*/
-var ConfigClass = function(){}
-ConfigClass.prototype = {
-  parentName: 'aa',
-  childEls:{
-    'bodyEl':'.bodyEl'
-  }
-}
-console.log(ConfigClass.prototype)
-console.log(new ConfigClass)
 'use strict';
 (function (root, factory) {
   if (typeof define === 'function') {
@@ -15,13 +6,13 @@ console.log(new ConfigClass)
       // Now we're wrapping the factory and assigning the return
       // value to the root (window) and returning it as well to
       // the AMD loader.
-      define(['../src/backbone', '../src/underscore', '../src/define', '../src/mixin/addConfig', '../src/mixin/initConfig'], function (Backbone, define) {
+      define(['../src/backbone', '../src/underscore', '../src/backbone-super'], function (Backbone, define) {
         return (root.Class = factory(Backbone, define))
       })
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return (root.Class = factory(require('../src/backbone'), require('../src/underscore'), require('../src/define'), require('../src/mixin/addConfig'), require('../src/mixin/initConfig')))
+        return (root.Class = factory(require('../src/backbone'), require('../src/underscore'), require('../src/backbone-super')))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
@@ -29,22 +20,14 @@ console.log(new ConfigClass)
     // run into a scenario where plain modules depend on CommonJS
     // *and* I happen to be loading in a CJS browser environment
     // but I'm including it for the sake of being thorough
-    module.exports = (root.Class = factory(require('../src/backbone'), require('../src/underscore'), require('../src/define'), require('../src/mixin/addConfig'), require('../src/mixin/initConfig')))
+    module.exports = (root.Class = factory(require('../src/backbone'), require('../src/underscore'), require('../src/backbone-super')))
   } else {
     root.Class = factory()
   }
-}(this, function (Backbone, _, define, addConfig, initConfig) {
+}(this, function (Backbone, _) {
   var run = function () {
     QUnit.test('define', function (assert) {
-      var Base = Backbone.View.extend(_.extend({
-        initialize: function (config) {
-          this.initialConfig = config
-          this.initConfig(this.initialConfig)
-          this.initialized = true
-        },
-        beforeInitConfig: function () {}
-      }, initConfig), addConfig)
-      var ParentClass = Base.extend({
+      var ParentClass = Backbone.View.extend({
         prop: 1,
         config: {
           parentName: 'parent',

@@ -6,7 +6,7 @@
   // Set up Backbone appropriately for the environment. Start with AMD.
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['underscore', 'backbone', './lang/object/chain'], function (_, Backbone) {
+      define(['underscore', 'backbone', './lang/object/chain', './mixin/addConfig', './mixin/initConfig'], function (_, Backbone) {
         // Export global even in AMD case in case this script is loaded with
         // others that may still expect a global Backbone.
         return factory(_, Backbone)
@@ -14,25 +14,28 @@
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('underscore'), require('backbone'), require('./lang/object/chain'))
+        return factory(require('underscore'), require('backbone'), require('./lang/object/chain'), require('./mixin/addConfig'), require('./mixin/initConfig'))
       })
     }
 
   // Next for Node.js or CommonJS.
   } else if (typeof exports !== 'undefined' && typeof require === 'function') {
-    factory(require('underscore'), require('backbone'), require('./lang/object/chain'))
+    factory(require('underscore'), require('backbone'), require('./lang/object/chain'), require('./mixin/addConfig'), require('./mixin/initConfig'))
 
   // Finally, as a browser global.
   } else {
     factory(root._, root.Backbone)
   }
 
-}(this, function factory (_, Backbone, classify) {
+}(this, function factory (_, Backbone, classify, addConfig, initConfig) {
   Backbone.Model.extend = Backbone.Collection.extend = Backbone.Router.extend = Backbone.View.extend = function (protoProps, classProps) {
     var child = inherits(this, protoProps, classProps)
     child.extend = this.extend
     return child
   }
+  Backbone.Model.addConfig = Backbone.Collection.addConfig = Backbone.Router.addConfig = Backbone.View.addConfig = addConfig.addConfig
+  Backbone.Model.addMembers = Backbone.Collection.addMembers = Backbone.Router.addMembers = Backbone.View.addMembers = addConfig.addMembers
+  Backbone.Model.prototype.initConfig = Backbone.Collection.prototype.initConfig = Backbone.Router.prototype.initConfig = Backbone.View.prototype.initConfig = initConfig
   var unImplementedSuper = function (method) {
     throw 'Super does not implement this method: ' + method
   }

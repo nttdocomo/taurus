@@ -1,24 +1,24 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../../../define', './base', 'taurus', 'underscore', 'modernizr'], factory)
+      define(['./base', 'taurus', 'underscore', 'modernizr'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../../../define'), require('./base'), require('taurus'), require('underscore'), require('modernizr'))
+        return factory(require('./base'), require('taurus'), require('underscore'), require('modernizr'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../../../define'), require('./base'), require('taurus'), require('underscore'), require('modernizr'))
+    module.exports = factory(require('./base'), require('taurus'), require('underscore'), require('modernizr'))
   }
-}(this, function (define, Base, taurus, _, Modernizr) {
+}(this, function (Base, taurus, _, Modernizr) {
   /**
    * A basic text field
    *
    * @constructor Text
    * @param {Object} config
    */
-  return define(Base, {
+  return Base.extend({
     /**
      * @property {Boolean} [allowBlank=true]
      * Specify false to validate that the value's length must be > 0. If `true`, then a blank value is **always** taken to be valid regardless of any {@link #vtype}

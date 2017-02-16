@@ -5,24 +5,24 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../define', '../state/stateful', '../util/focusable', '../mixin/observable', '../util/itemCollection', 'jquery', 'underscore', 'backbone', 'taurus', './baseClass', '../lang/number', '../jquery.ui.position'], factory)
+      define(['../state/stateful', '../util/focusable', '../mixin/observable', '../util/itemCollection', 'jquery', 'underscore', 'backbone', 'taurus', 'backbone-super', '../lang/number', '../jquery.ui.position'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../define'), require('../state/stateful'), require('../util/focusable'), require('../mixin/observable'), require('../util/itemCollection'), require('jquery'), require('underscore'), require('backbone'), require('taurus'), require('./baseClass'), require('../lang/number'), require('../jquery.ui.position'))
+        return factory(require('../state/stateful'), require('../util/focusable'), require('../mixin/observable'), require('../util/itemCollection'), require('jquery'), require('underscore'), require('backbone'), require('taurus'), require('backbone-super'), require('../lang/number'), require('../jquery.ui.position'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../define'), require('../state/stateful'), require('../util/focusable'), require('../util/itemCollection'), require('jquery'), require('underscore'), require('backbone'), require('taurus'), require('./baseClass'), require('../lang/number'), require('../jquery.ui.position'))
+    module.exports = factory(require('../state/stateful'), require('../util/focusable'), require('../mixin/observable'), require('../util/itemCollection'), require('jquery'), require('underscore'), require('backbone'), require('taurus'), require('backbone-super'), require('../lang/number'), require('../jquery.ui.position'))
   }
-}(this, function (define, Stateful, Focusable, observable, ItemCollection, $, _, Backbone, taurus, BaseClass) {
+}(this, function (Stateful, Focusable, observable, ItemCollection, $, _, Backbone, taurus) {
   /**
    * A basic class
    *
    * @constructor Base
    * @param {Object} config
    */
-  return BaseClass.extend(_.extend({
+  return Backbone.View.extend(_.extend({
     isRendered: false,
     doc: taurus.$doc,
     baseCls: taurus.baseCSSPrefix + 'component',
