@@ -28,7 +28,7 @@
     ui: 'default',
     items: undefined,
     constructor: function (config) {
-      Backbone.View.call(this, config)
+      Backbone.View.apply(this, arguments)
       this.initConfig(config)
     },
     initConfig: function (instanceConfig) {
