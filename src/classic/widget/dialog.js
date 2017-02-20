@@ -26,6 +26,14 @@
 		events:{
 			'click [data-dismiss="modal"]' : 'close'
 		},
+		childEls:{
+			'modal':'.modal',
+			'content':'.modal-content',
+			'headerEl':'.modal-header',
+			'header':'.modal-title',
+			'dialog':'.modal-dialog',
+			'bodyEl':'.modal-body'
+		},
 		getTplData : function() {
 			var data = Base.prototype.getTplData.apply(this,arguments);
 			return $.extend(data,{

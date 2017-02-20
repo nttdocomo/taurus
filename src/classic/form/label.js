@@ -103,6 +103,7 @@
     invalidCls : taurus.baseCSSPrefix + 'has-error',
     config:{
       childEls: {
+        'bodyEl': '[id$="bodyEl"]',
         'inputEl': '.form-control',
         'labelEl': '.control-label',
         'errorEl': '[id$="errorEl"]',

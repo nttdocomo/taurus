@@ -59,11 +59,10 @@
 				}
 			}
 		},
-		getPickerWidth:function(){
+		/*getPickerWidth:function(){
 			return this.triggerWrap.width()
-		},
+		},*/
 		alignPicker : function() {
-			this.picker.setWidth(this.getPickerWidth());
 			var me = this, picker = me.getPicker(), position, heightAbove = taurus.getPositionAbove(this.$el), heightBelow = taurus.getPositionBelow(this.$el), height = picker.getHeight();
 			space = heightBelow;
 			position = {

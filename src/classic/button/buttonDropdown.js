@@ -31,10 +31,6 @@
 			});
 			Button.prototype.delegateEvents.call(this, events)
 		},
-		applyChildEls:function(childEls){
-			Button.prototype.applyChildEls.call(this,childEls);
-			this.triggerWrap = this.$el;
-		},
 		getAlignEl:function(){
 			return this.$el
 		},

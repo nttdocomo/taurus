@@ -4,22 +4,45 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../../define', './trigger'], factory);
+			define(['./trigger'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../../../define'), require('./trigger'));
+				return factory(require('./trigger'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../../define'), require('./trigger'));
+		module.exports = factory(require('./trigger'));
 	}
-}(this, function(define, Trigger){
+}(this, function(Trigger){
+  /**
+   * A namespace.
+   * @namespace form
+   */
+  /**
+   * A namespace.
+   * @namespace field
+   * @memberof form
+   */
+	/**
+   * An abstract class for fields that have a single trigger which opens a "picker" popup below the field, e.g. a combobox
+   * needed by all form field types.
+   *
+   * @constructor Picker
+   * @param {Object} config
+   * @memberof field
+   */
 	return Trigger.extend({
+		/**
+     * @property {Boolean} matchFieldWidth
+     * Whether the picker dropdown's width should be explicitly set to match the width of the field. Defaults to true.
+     * @memberof field.Trigger#
+     */
+    matchFieldWidth: true,
 		alignPicker:function(){
 			var me = this, picker = me.getPicker(),position,
-			heightAbove = taurus.getPositionAbove(this.$el),
-			heightBelow = taurus.getPositionBelow(this.$el),
+			heightAbove = taurus.getPositionAbove(me.$el),
+			heightBelow = taurus.getPositionBelow(me.$el),
 			space = Math.max(heightAbove, heightBelow);
 
 			// Allow the picker to height itself naturally.
@@ -63,12 +86,15 @@
 		},
 		expand:function(){
 			var me = this,picker;
-			if (!this.isExpanded) {
-				this.expanding = true;
+			if (!me.isExpanded) {
+				me.expanding = true;
 				picker = this.getPicker();
+				if (me.matchFieldWidth) {
+          picker.setWidth(me.bodyEl.width());
+        }
 				picker.show();
-				this.isExpanded = true;
-				this.alignPicker();
+				me.isExpanded = true;
+				me.alignPicker();
 				var onDocumentClick = function(e){
 					if(me.triggerWrap[0] != e.target && !me.triggerWrap.has(e.target).length && !me.picker.$el.has(e.target).length && !me.picker.$el.is(e.target)){
 						me.collapse();
@@ -76,7 +102,7 @@
 					}
 				};
 				taurus.$doc.on('mousedown',onDocumentClick);
-				delete this.expanding;
+				delete me.expanding;
 			}
 		},
 		initialize:function(){

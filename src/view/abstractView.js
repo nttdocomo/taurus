@@ -5,7 +5,7 @@
       // value to the root (window) and returning it as well to
       // the AMD loader.
       define(['./base', '../util/storeHolder', 'underscore'], function (Base, StoreHolder, _) {
-        return (root.Class = factory(Base, StoreHolder))
+        return (root.Class = factory(Base, StoreHolder, _))
       })
     }
     if (define.cmd) {
