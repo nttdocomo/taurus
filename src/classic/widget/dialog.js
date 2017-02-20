@@ -100,7 +100,7 @@
 			}, events);
 			Base.prototype.delegateEvents.call(this, events);
 		},
-		applyChildEls:function(childEls){
+		/*applyChildEls:function(childEls){
 			childEls = $.extend(childEls || {},{
 				'modal':'.modal',
 				'content':'.modal-content',
@@ -110,7 +110,7 @@
 				'bodyEl':'.modal-body'
 			});
 			Base.prototype.applyChildEls.call(this,childEls);
-		},
+		},*/
 		render : function() {
             var me = this;
 			me._super.apply(me, arguments);
