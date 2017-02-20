@@ -6,10 +6,10 @@
   // Set up Backbone appropriately for the environment. Start with AMD.
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['underscore', 'backbone', './lang/object/chain', './mixin/addConfig', './mixin/initConfig'], function (_, Backbone) {
+      define(['underscore', 'backbone', 'taurus', './lang/object/chain', './mixin/addConfig', './mixin/initConfig'], function (_, Backbone, Tau, classify, addConfig, initConfig) {
         // Export global even in AMD case in case this script is loaded with
         // others that may still expect a global Backbone.
-        return factory(_, Backbone)
+        return factory(_, Backbone, Tau, classify, addConfig, initConfig)
       })
     }
     if (define.cmd) {
