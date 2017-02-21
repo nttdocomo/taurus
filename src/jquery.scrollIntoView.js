@@ -8,8 +8,23 @@
  * Licensed under the terms of the MIT license
  * http://www.opensource.org/licenses/mit-license.php
  */
+(function(factory) {
+    if (typeof define === 'function') {
+        if(define.cmd){
+            define(function(require, exports, module){
+              var $ = require('jquery');
+              factory($);
+            })
+        }
+        if(define.amd){
+            define(['jquery'],function($){
+              factory($);
+            })
+        }
 
-(function ($) {
+      // Finally, as a browser global.
+    }
+}(function ($) {
     var converter = {
         vertical: { x: false, y: true },
         horizontal: { x: true, y: false },
@@ -205,4 +220,4 @@
             return direction.y && size.scrollableY() || direction.x && size.scrollableX();
         }
     });
-})(jQuery);
+}));

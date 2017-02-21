@@ -22,6 +22,7 @@
      */
     clearValueOnEmpty: true,
 		delimiter : ', ',
+		forceSelection: false,
 		isExpanded : false,
 		queryDelay:1000,
 		queryMode : 'remote',
@@ -90,6 +91,41 @@
 			// Then ensure that vertically, the dropdown will fit into the space either above or below the inputEl.
 			me.doAlign(position);
 			//Picker.prototype.alignPicker.apply(this,arguments);
+		},
+		assertValue: function() {
+			var me = this
+			var rawValue = me.getRawValue()
+			var lastRecords = me.lastSelectedRecords
+			var rec
+			if (me.forceSelection) {
+				if (me.multiSelect) {} else {
+					rec = me.findRecordByDisplay(rawValue);
+					if (!rec) {
+            if (lastRecords && (!me.allowBlank || me.rawValue)) {
+                rec = lastRecords;
+            } 
+            // if we have a custom displayTpl it's likely that findRecordByDisplay won't
+            // find the value based on RawValue, so we give it another try using the data
+            // stored in displayTplData if there is any.
+            else if (me.displayTplData && me.displayTplData.length) {
+                rec = me.findRecordByValue(me.displayTplData[0][me.valueField]);
+            }
+          } 
+          if (rec) {
+            me.setValue(rec);
+            me.trigger('select', rec);
+          } else if (!preventChange) {
+            if (lastRecords) {
+              delete me.lastSelectedRecords;
+            }
+            // We need to reset any value that could have been set in the dom before or during a store load
+            // for remote combos.  If we don't reset this, then ComboBox#getValue() will think that the value
+            // has changed and will then set `undefined` as the .value for forceSelection combos.  This then
+            // gets changed AGAIN to `null`, which will get set into the model field for editors. This is BAD.
+            me.setRawValue('');
+          }
+				}
+			}
 		},
 		delegateEvents : function(events) {
 			var me = this,events = $.extend(events || {}, {
@@ -214,6 +250,12 @@
 				}
 			}*/
 		},
+		findRecordByDisplay: function(value) {
+			var result = this.collection.find(function(model){
+				return model.get(this.displayValue) === value
+			})
+			return result;
+		},
 		getParams : function(queryString) {
 			var params = {}, param = this.queryParam;
 
@@ -224,6 +266,10 @@
 		},
 		getValue : function() {
 			return this.value;
+		},
+		completeEdit: function() {
+			var me = this
+			me.assertValue();
 		},
 		createPicker : function() {
 			var me = this,picker = me.picker = new BoundList($.extend({
@@ -411,6 +457,7 @@
 					record = val;
 				}
 				if (record) {
+					me.lastSelectedRecords = record
 					if ( record instanceof Backbone.Model) {
 						record = record.toJSON();
 					}
