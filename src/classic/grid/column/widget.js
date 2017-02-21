@@ -126,7 +126,6 @@
     },
 
     onViewRefresh: function (view, records) {
-      console.log(arguments)
       var me = this
       var rows = view.all
       var oldWidgetMap = me.liveWidgets
