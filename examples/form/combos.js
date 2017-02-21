@@ -212,6 +212,7 @@ define(function (require) {
       'slogan': 'Like No Place on Earth'
     }], collection = new Backbone.Collection(states), comboBox = new ComboBox({
       renderTo: $body,
+      forceSelection:true,
       queryMode: 'local',
       name: 'textfield1',
       id: 'textfield1',

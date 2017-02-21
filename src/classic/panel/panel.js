@@ -1,40 +1,44 @@
 /**
  * @author nttdocomo
  */
- (function (root, factory) {
-	if(typeof define === "function") {
-		if(define.amd){
-			define(['../../define', '../../view/base'], factory);
-		}
-		if(define.cmd){
-			define(function(require, exports, module){
-				return factory(require('../../define'), require('../../view/base'));
-			})
-		}
-	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../define'), require('../../view/base'));
-	}
-}(this, function(define, Base) {
+/* global define */
+;(function (root, factory) {
+  if (typeof define === 'function') {
+    if (define.amd) {
+      define(['../../view/base', '../spinner/wave'], factory)
+    }
+    if (define.cmd) {
+      define(function (require, exports, module) {
+        return factory(require('../../view/base'), require('../spinner/wave'))
+      })
+    }
+  } else if (typeof module === 'object' && module.exports) {
+    module.exports = factory(require('../../view/base'), require('../spinner/wave'))
+  }
+}(this, function (Base, Spinner) {
   /**
-   * Base class for form fields that provides default event handling, rendering, and other common functionality
-   * needed by all form field types.
+   * Panel is a container that has specific functionality and structural components that make it the perfect building
+ 	 * block for application-oriented user interfaces.
    *
    * @constructor Panel
-   * @param {Object} config
    */
-	return define(Base, {
-		autoHeight:false,
-		header:false,
+  return Base.extend({
+    autoHeight: false,
+		/**
+     * Pass as `false` to prevent a Header from being created and shown.
+		 * @name Panel#header
+     * @type {bool/object}
+     */
+    header: false,
 		hideHeaders:false,
     frame: false,
 		referTo:$(window),
 		baseCls: 'panel',
 		/**
-		 * @name title
-		 * @property {string/Object} title
      * When a `title` is specified, the {@link panel.Header} will 
      * automatically be created and displayed unless {@link Panel#header} is set to `false`.
-     * @memberof Panel#
+		 * @name Panel#title
+     * @type {string/Object}
      */
 		tpl:'<%if(header){%><div class="panel-heading clearfix"><h4 class="panel-title"><%=title%></h4></div><%}%><div class="panel-body"><%=content%></div>',
 		className:'panel panel-default',

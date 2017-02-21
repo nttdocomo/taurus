@@ -8,28 +8,30 @@
  * Licensed under the terms of the MIT license
  * http://www.opensource.org/licenses/mit-license.php
  */
+(function(factory) {
+    if (typeof define === 'function') {
+        if(define.cmd){
+            define(function(require, exports, module){
+              var $ = require('jquery');
+              factory($);
+            })
+        }
+        if(define.amd){
+            define(['jquery'],function($){
+              factory($);
+            })
+        }
 
-;(function (root, factory) {
-  if (typeof define === 'function') {
-    if (define.amd) {
-      define(['jquery'], factory)
+      // Finally, as a browser global.
     }
-    if (define.cmd) {
-      define(function (require, exports, module) {
-        return factory(require('jquery'))
-      })
-    }
-  } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('jquery'))
-  }
-}(this, function ($) {
-  var converter = {
-    vertical: { x: false, y: true },
-    horizontal: { x: true, y: false },
-    both: { x: true, y: true },
-    x: { x: true, y: false },
-    y: { x: false, y: true }
-  };
+}(function ($) {
+    var converter = {
+        vertical: { x: false, y: true },
+        horizontal: { x: true, y: false },
+        both: { x: true, y: true },
+        x: { x: true, y: false },
+        y: { x: false, y: true }
+    };
 
     var settings = {
         duration: "fast",

@@ -4,41 +4,41 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../../define', '../container/container', '../view/activeErrors'], factory)
+      define(['../container/container', '../view/activeErrors'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../../define'), require('../container/container'), require('../view/activeErrors'))
+        return factory(require('../container/container'), require('../view/activeErrors'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../../define'), require('../container/container'), require('../view/activeErrors'))
+    module.exports = factory(require('../container/container'), require('../view/activeErrors'))
   }
-}(this, function (define, Base, ActiveErrors) {
+}(this, function (Base, ActiveErrors) {
   /**
-   * A basic labeled form field
+   * Produces a standalone `<label />` element which can be inserted into a form and be associated with a field
+   * in that form using the {@link #forId} property.
    *
    * @constructor Label
-   * @param {Object} config
    */
-  return define(Base, {
+  return Base.extend({
     tpl: '<%if(fieldLabel){%><label class="control-label"<%if(inputId){%> for="<%=inputId%>"<%}%><%if(labelStyle){%> style="<%=labelStyle%>"<%}%>><%if(typeof beforeLabelTextTpl !== "undefined"){%><%=beforeLabelTextTpl%><%}%><%=fieldLabel%><%if(labelSeparator){%><%=labelSeparator%><%}%></label><%}%><div style="<%=controlsStyle%>" id="<%=id%>-bodyEl"><%=field%></div><%if(fieldLabel){%><%}%><%if(renderError){%><div class="help-block" id="<%=id%>-errorEl" style="<%=controlsStyle%>"></div><%}%>',
     className: 'form-group',
     /**
-     * @property {number} labelWidth
      * The width of the {@link Label#fieldLabel} in pixels. Only applicable if {@link Label#labelAlign}
      * is set to "left" or "right".
-     * @memberof Label#
+     * @name Label#labelWidth
+     * @type Number
      */
     labelWidth: 100,
     /**
-     * @property {string} labelAlign
-     *
      * Controls the position and alignment of the {@link Label#fieldLabel}. Valid values are:
      *   - `left` (the default) - The label is positioned to the left of the field, with its text aligned to the left. Its width is determined by the {@link Label#labelWidth} config.
      *   - `top` - The label is positioned above the field.
      *   - `right` - The label is positioned to the left of the field, with its text aligned to the right. Its width is determined by the {@link Label#labelWidth} config.
-     * @memberof Label#
+     * @name Label#labelAlign
+     * @type String
+     * @default left
      */
     labelAlign: 'left',
     labelPad: 5,
@@ -89,9 +89,9 @@
     ].join(''),
     /**
      * The label for the field. It gets appended with the {@link Label#labelSeparator}, and its position and sizing is
-     * @property {string} fieldLabel
      * determined by the {@link Label#labelAlign} and {@link Label#labelWidth} configs.
-     * @memberof Label#
+     * @name Label#fieldLabel
+     * @type String
      */
     fieldLabel: undefined,
     topLabelSideErrorCls: taurus.baseCSSPrefix + 'form-item-label-top-side-error',
@@ -192,7 +192,7 @@
         }
       }
       //this.activeError = (new ActiveErrors({})).renderHtml(errors.length ? [errors[0]] : [])
-      //this.renderActiveError()
+      this.renderActiveError()
     },
 
     /**
@@ -232,7 +232,7 @@
      * Gets an Array of any active error messages currently applied to the field. This does not trigger validation on
      * its own, it merely returns any messages that the component may already hold.
      * @method
-     * @return {String[]} The active error messages on the component; if there are no errors, an empty Array is
+     * @return {string[]} The active error messages on the component; if there are no errors, an empty Array is
      * returned.
      * @memberof Label#
      */

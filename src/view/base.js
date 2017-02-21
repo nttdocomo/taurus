@@ -35,7 +35,7 @@
       }
     },
     constructor: function (config) {
-      Backbone.View.call(this, config)
+      Backbone.View.apply(this, arguments)
       this.initConfig(config)
     },
     getConfigurator: function () {
@@ -539,11 +539,15 @@
       classes = me.addClsWithUI(uiCls, true)
     },
     addClsWithUI: function (classes, skip) {
-      var clsArray = [],
-        i = 0
-      for (; i < length; i++) {
-        cls = classes[i]
-        clsArray = clsArray.concat(me.addUIClsToElement(cls))
+      var clsArray = []
+      var length
+      var i = 0
+      if(classes){
+        length = classes.length
+        for (; i < length; i++) {
+          cls = classes[i]
+          clsArray = clsArray.concat(me.addUIClsToElement(cls))
+        }
       }
       return clsArray
     },
