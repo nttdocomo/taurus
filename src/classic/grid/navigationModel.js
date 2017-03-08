@@ -4,9 +4,7 @@
       // Now we're wrapping the factory and assigning the return
       // value to the root (window) and returning it as well to
       // the AMD loader.
-      define(['../view/navigationModel', 'underscore'], function (Base, StoreHolder, _) {
-        return (root.Class = factory(Base, StoreHolder))
-      })
+      define(['../view/navigationModel', 'underscore'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {

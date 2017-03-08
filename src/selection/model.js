@@ -4,9 +4,7 @@
     // value to the root (window) and returning it as well to
     // the AMD loader.
     if (define.amd) {
-      define(['class', '../util/storeHolder', 'backbone', 'underscore'], function (Class, StoreHolder, Backbone, _) {
-        return (root.Class = factory(Class, StoreHolder, Backbone, _))
-      })
+      define(['class', '../util/storeHolder', 'backbone', 'underscore'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {

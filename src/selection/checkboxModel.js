@@ -4,9 +4,7 @@
     // value to the root (window) and returning it as well to
     // the AMD loader.
     if (define.amd) {
-      define(['./rowModel', '../classic/grid/column/column', 'underscore', 'taurus'], function (RowModel, Column, _, taurus) {
-        return (root.Class = factory(RowModel, Column, _, taurus))
-      })
+      define(['./rowModel', '../classic/grid/column/column', 'underscore', 'taurus'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
