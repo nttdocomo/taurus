@@ -51,7 +51,7 @@
       var me = this
       var store = me.collection
 
-      if (me.emptyText  && !store.isLoading()/* && (!me.deferEmptyText || me.refreshCounter > 1 || store.isLoaded())*/) {
+      if (me.emptyText && (!store.isLoading || (typeof store.isLoading === 'function' && !store.isLoading()))/* && (!me.deferEmptyText || me.refreshCounter > 1 || store.isLoaded())*/) {
         me.emptyEl = $(me.emptyText).prependTo(me.getTargetEl())
       }
     },
