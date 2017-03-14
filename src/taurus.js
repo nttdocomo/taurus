@@ -374,7 +374,7 @@
 	};
 	taurus.Class.extend = Backbone.View.extend;
 	//add isLoading and event listener in request and sync to set the isLoading
-	_.each(['Collection','Model'],function(name){
+	/*_.each(['Collection','Model'],function(name){
 		_.extend(Backbone[name].prototype,{
 			isLoading:false,
 			initialize: function(){
@@ -388,7 +388,7 @@
 				},this)
 			},
 		})
-	})
+	})*/
 	taurus.augmentObject('$.support',{
 		borderRadius:false
 	})
