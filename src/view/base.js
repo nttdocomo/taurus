@@ -37,7 +37,7 @@
       me.initConfig = taurus.emptyFn
       // ignore subsequent calls to initConfig
       me.initialConfig = instanceConfig || {}
-      cfg.configure(me, instanceConfig)
+      // cfg.configure(me, instanceConfig)
       return me
     },
     /*getConfigurator: function () {
