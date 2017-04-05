@@ -14,7 +14,7 @@
   } else if (typeof module === 'object' && module.exports) {
     module.exports = factory(require('../state/stateful'), require('../util/focusable'), require('../mixin/observable'), require('../util/itemCollection'), require('underscore'), require('taurus'), require('backbone'), require('backbone-super'), require('../lang/number'), require('../mixins'), require('../jquery.ui.position'))
   }
-}(this, function (Stateful, Focusable, observable, ItemCollection, _, taurus, Backbone, Configurator) {
+}(this, function (Stateful, Focusable, observable, ItemCollection, _, taurus, Backbone) {
   /**
    * A basic class
    *
