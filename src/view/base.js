@@ -33,17 +33,17 @@
     },
     initConfig: function (instanceConfig) {
       var me = this
-      var cfg = me.getConfigurator()
+      //var cfg = me.getConfigurator()
       me.initConfig = taurus.emptyFn
       // ignore subsequent calls to initConfig
       me.initialConfig = instanceConfig || {}
       cfg.configure(me, instanceConfig)
       return me
     },
-    getConfigurator: function () {
+    /*getConfigurator: function () {
       // the Ext.Configurator ctor will set $config so micro-opt out fn call:
       return this.$config || new Configurator(this)
-    },
+    },*/
     _ensureElement: function () {
       var me = this
       if (!me.el) {
