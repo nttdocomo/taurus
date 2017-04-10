@@ -6,7 +6,7 @@
  */
 define(function(require) {
 	require("backbone");
-	Segmented = require("../../src/button/segmented");
+	Segmented = require("../../src/classic/button/segmented");
 	var $body = $(document.body);
 
 	new Segmented({

@@ -1,10 +1,12 @@
 define(function(require){
-	var Base = require('../../view/base'),
-	Manager = require('../manager');
+	var Base = require('../../view/base')
+	var Manager = require('../../manager')
+	var Backbone = require('../../backbone')
+	var Button = require('./button')
 	return Base.extend({
 		xtype: 'segmentedbutton',
 		className:'segmented-button btn-group',
-		defaultType: 'button',
+		defaultType: Button,
 		itemsCount:0,
 		allowToggle:true,
 		allowMultiple:false,

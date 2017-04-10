@@ -25,15 +25,18 @@
 			"at" : "right top",
 			"collision" : "none none"
 		}/*'tl-tr?'*/,
-	    /**
-	     * @cfg {Number} menuExpandDelay
-	     * The delay in milliseconds before this item's sub-menu expands after this item is moused over.
-	     */
-	    menuExpandDelay: 200,
-	    menuHideDelay:200,
-	    clickHideDelay:0,
-	    activeCls:'active',
-		tpl:'<<%if(href){%>a href="<%=href%>"<%}else{%>span<%}%>><%=text%><%if(menu){%> <span class="caret"></span><%}%></<%if(href){%>a<%}else{%>span<%}%>>',
+    /**
+     * @cfg {Number} menuExpandDelay
+     * The delay in milliseconds before this item's sub-menu expands after this item is moused over.
+     */
+    menuExpandDelay: 200,
+    menuHideDelay:200,
+    clickHideDelay:0,
+    activeCls:'active',
+    childEls: {
+    	'itemEl': '[id$="itemEl"]'
+    },
+		tpl:'<<%if(href){%>a href="<%=href%>" id="<%=id%>-itemEl"<%}else{%>span<%}%>><%=text%><%if(menu){%> <span class="caret"></span><%}%></<%if(href){%>a<%}else{%>span<%}%>>',
 		activate: function(skipCheck) {
 	        var me = this;
 
@@ -148,11 +151,13 @@
 			var me = this;
 		},
 		getTplData:function(){
-			return {
+			var me = this
+			var data = me._super()
+			return _.extend(data, {
 				text:this.text,
 				menu:!_.isUndefined(this.menu),
 				href:this.href
-			}
+			})
 		},
 
 	    onClick: function (e) {
@@ -204,13 +209,16 @@
 
 	        if (me.href && !preventDefault) {
 	            me.handlingClick = true;
-	            //me.itemEl.dom.click();
+	            me.itemEl.get(0).click();
 	            delete me.handlingClick;
 	        }
 
 	        /*if (!me.hideOnClick) {
 	            me.focus();
 	        }*/
+	        if(typeof clickResult === 'undefined'){
+	        	clickResult = true
+	        }
 	        return clickResult;
 	    },
 		/**
