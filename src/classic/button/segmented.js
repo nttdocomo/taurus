@@ -1,9 +1,20 @@
-define(function(require){
-	var Base = require('../../view/base')
-	var Manager = require('../../manager')
-	var Backbone = require('../../backbone')
-	var Button = require('./button')
-	var _ = require('../../underscore')
+/**
+ * @author nttdocomo
+ */
+;(function (root, factory) {
+  if (typeof define === 'function') {
+    if (define.amd) {
+      define(['../../view/base', '../../manager', '../../backbone', './button', '../../underscore'], factory)
+    }
+    if (define.cmd) {
+      define(function (require, exports, module) {
+        return factory(require('../../view/base'), require('../../manager'), require('../../backbone'), require('./button'), require('../../underscore'))
+      })
+    }
+  } else if (typeof module === 'object' && module.exports) {
+    module.exports = factory(require('../../view/base'), require('../../manager'), require('../../backbone'), require('./button'), require('../../underscore'))
+  }
+}(this, function (Base, Manager, Backbone, Button, _) {
 	return Base.extend({
 		xtype: 'segmentedbutton',
 		className:'segmented-button btn-group',
@@ -245,4 +256,4 @@ define(function(require){
       return button;
     }
 	})
-})
+}))
