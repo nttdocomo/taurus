@@ -312,7 +312,12 @@
      * @protected
      */
     onDisable: function () {},
-    onShow: function () {},
+    onShow: function () {
+      var me = this
+      if (me.refreshNeeded) {
+        me.doFirstRefresh(me.collection)
+      }
+    },
     setConfig: function(name, value, options) {
       // options can have the following properties:
       // - defaults `true` to only set the config(s) that have not been already set on
@@ -377,12 +382,34 @@
     },
     show: function () {
       var me = this
+      var rendered = me.rendered
       // me.beforeShow()
+      if (!rendered && me.floating) {
+        me.doAutoRender();
+        rendered = me.rendered;
+      }
       me.$el.show()
       me.trigger('show', this)
       me.hidden = false
       me.onShow()
       return me
+    },
+
+    /**
+     * Handles autoRender.
+     * Floating Components may have an ownerCt. If they are asking to be constrained, constrain them within that
+     * ownerCt, and have their z-index managed locally. Floating Components are always rendered to document.body
+     * @private
+     */
+    doAutoRender: function() {
+      var me = this;
+      if (!me.rendered) {
+        if (me.floating) {
+          me.render(me.renderTo || document.body);
+        } else {
+          me.render(_.isBoolean(me.autoRender) ? document.body : me.autoRender);
+        }
+      }
     },
     showAt: function (x, y, animate) {
       var me = this
@@ -499,6 +526,7 @@
       el.appendChild(this.el.cloneNode(true))
       this.isRendered = true
       this.afterRender()
+      this.onRender()
       /*var height = this.height
       if (height) {
       	this.$el.css('height', height)
@@ -506,6 +534,7 @@
       this.initItems()
       return el.innerHTML
     },
+    onRender:taurus.emptyFn,
     setUI: function (ui) {
       var me = this,
         uiCls = me.uiCls,
@@ -835,7 +864,7 @@
       component.onRemoved(isDestroying)
     },
     onRemoved: function (destroying) {
-      if (destroying) {
+      if (!destroying) {
         this.remove()
       }
     },

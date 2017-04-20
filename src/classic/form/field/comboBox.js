@@ -4,17 +4,17 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./picker','../../view/boundList','underscore','backbone','../../../lang/event','jquery.scrollIntoView'], factory);
+			define(['./picker','../../view/boundList','underscore','backbone','../../../util/storeHolder','../../../selection/dataViewModel','../../collection/collection','../../../lang/event','jquery.scrollIntoView'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./picker'),require('../../view/boundList'),require('underscore'),require('backbone'),require('../../../lang/event'),require('jquery.scrollIntoView'));
+				return factory(require('./picker'),require('../../view/boundList'),require('underscore'),require('backbone'),require('../../../util/storeHolder'), require('../../../selection/dataViewModel'), require('../../collection/collection'), require('../../../lang/event'),require('jquery.scrollIntoView'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./picker'),require('../../view/boundList'),require('underscore'),require('backbone'),require('../../../lang/event'),require('jquery.scrollIntoView'));
+		module.exports = factory(require('./picker'),require('../../view/boundList'),require('underscore'),require('backbone'),require('../../../util/storeHolder'), require('../../../selection/dataViewModel'), require('../../collection/collection'),require('../../../lang/event'),require('jquery.scrollIntoView'));
 	}
-}(this, function(Picker,BoundList,_,Backbone) {
+}(this, function(Picker,BoundList,_,Backbone,StoreHolder, DataViewModel, Collection) {
 	return Picker.extend({
 		allQuery: '',
 		/**
@@ -24,6 +24,8 @@
 		delimiter : ', ',
 		forceSelection: false,
 		isExpanded : false,
+		autoSelect: true,
+		autoSelectLast: true,
 		queryDelay:1000,
 		queryMode : 'remote',
 		queryParam : 'query',
@@ -33,6 +35,10 @@
 		initialize : function() {
 			Picker.prototype.initialize.apply(this, arguments);
 			//this.collection.on('reset',_.bind(this.expand,this));
+		},
+		initComponent: function(){
+			this.bindStore(this.collection);
+			this._super();
 		},
 		initField : function() {
 			//this.displayTpl = this.getDisplayTpl();
@@ -96,6 +102,7 @@
 			var me = this
 			var rawValue = me.getRawValue()
 			var lastRecords = me.lastSelectedRecords
+			var preventChange = false
 			var rec
 			if (me.forceSelection) {
 				if (me.multiSelect) {} else {
@@ -146,12 +153,27 @@
 			}
 		},
 		doAutoSelect : function() {
-			var me = this, picker = me.picker, lastSelected, itemNode, value = this.getValue();
+			var me = this
+			var value = me.getValue()
+			var picker = me.picker
+			var collection = me.collection
+			var lastSelected, itemNode, selectionModel
 			if (value) {
 				value = $.makeArray(value);
 			} else {
 				value = [];
 			}
+			if(picker && me.autoSelect && collection.length > 0){
+				if (me.autoSelectLast) {
+					selectionModel = picker.getSelectionModel()
+					lastSelected = selectionModel.lastSelected
+					if (lastSelected && selectionModel.selected.length && collection.indexOf(lastSelected) > -1) {
+            itemNode = lastSelected;
+          }
+				}
+				picker.getNavigationModel().setPosition(itemNode)
+			}
+			/*
 			lastSelected = this.collection.filter(function(model) {
 				return _.indexOf(value,model.get(me.valueField)) > -1;
 			});
@@ -170,7 +192,7 @@
 					picker.highlightItem(itemNode);
 					itemNode.scrollintoview(false);
 				}
-			}
+			}*/
 		},
 
 		doLocalQuery : function(queryString) {
@@ -264,6 +286,30 @@
 			}
 			return params;
 		},
+
+    getStoreListeners: function(store) {
+
+      // Don't bother with listeners on the dummy store that is provided for an unconfigured ComboBox
+      // prior to a real store arriving from a ViewModel. Nothing is ever going to be fired.
+      /*if (!store.isEmptyStore) {
+        var me = this,
+        result = {
+          datachanged: me.onDataChanged,
+          load: me.onLoad,
+          exception: me.onException,
+          update: me.onStoreUpdate,
+          remove: me.checkValueOnChange
+        };
+
+        // If we are doing remote filtering, then mutating the store's filters should not
+        // result in a re-evaluation of whether the current value is still present in the store.
+        if (!store.getRemoteFilter()) {
+          result.filterchange = me.checkValueOnChange;
+        }
+
+        return result;
+      }*/
+    },
 		getValue : function() {
 			return this.value;
 		},
@@ -273,6 +319,8 @@
 		},
 		createPicker : function() {
 			var me = this,picker = me.picker = new BoundList($.extend({
+				selectionModel: me.pickerSelectionModel,
+				floating: true,
 				displayField : me.displayField,
 				collection : me.collection.clone()
 			}, me.listConfig));
@@ -293,7 +341,17 @@
 			return _.template(this.getDisplayTpl())({
 				value : this.displayTplData
 			});
-		},
+		},/**
+     * Gets data for each record to be used for constructing the display value with
+     * the {@link #displayTpl}. This may be overridden to provide access to associated records.
+     * @param {Ext.data.Model} record The record.
+     * @return {Object} The data to be passed for each record to the {@link #displayTpl}.
+     *
+     * @protected
+     */
+    getRecordDisplayData: function(record) {
+      return record.toJSON();
+    },
 		load : function(options) {
 			var success = options.success, me = this;
 			options.success = function() {
@@ -302,6 +360,34 @@
 			};
 			me.collection.fetch(options);
 			me.triggerEl.attr('disabled', 'disabled');
+		},
+		onBindStore: function(){
+			var me = this
+			var store = me.collection
+			me.valueCollection = new Collection();
+			me.valueCollection.on({
+				'beginupdate': me.onValueCollectionBeginUpdate,
+				'endupdate': me.onValueCollectionEndUpdate,
+			}, me)
+			me.pickerSelectionModel = new DataViewModel({
+        mode: me.multiSelect ? 'SIMPLE' : 'SINGLE',
+        // There are situations when a row is selected on mousedown but then the mouse is dragged to another row
+        // and released.  In these situations, the event target for the click event won't be the row where the mouse
+        // was released but the boundview.  The view will then determine that it should fire a container click, and
+        // the DataViewModel will then deselect all prior selections. Setting `deselectOnContainerClick` here will
+        // prevent the model from deselecting.
+        ordered: true,
+        deselectOnContainerClick: false,
+        enableInitialSelection: false,
+        pruneRemoved: false,
+        selected: me.valueCollection,
+        store: store/*,
+        listeners: {
+            scope: me,
+            lastselectedchanged: me.updateBindSelection
+        }*/
+    	});
+    	console.log(me.pickerSelectionModel)
 		},
 		onItemClick : function(e, record) {
 			var me = this, valueField = me.valueField, picker = me.getPicker(), value = me.value, lastSelected;
@@ -336,7 +422,7 @@
 					me.collapse();
 				};
 			} else {
-				me.setValue(selection);
+				me.addValue(selection);
 			}
 			return false;
 			//Picker.prototype.onItemClick.apply(this,arguments);
@@ -412,6 +498,72 @@
 				}
 			}
 		},
+		onValueCollectionBeginUpdate:function(){},
+		onValueCollectionEndUpdate: function() {
+      var me = this
+      var selectedRecords = me.valueCollection.models
+      me.updateBindSelection(me.pickerSelectionModel, selectedRecords);
+      /*var store = me.store
+      var selectedRecord = selectedRecords[0]
+      var selectionCount = selectedRecords.length
+
+      me.updateBindSelection(me.pickerSelectionModel, selectedRecords);
+
+      if (me.isSelectionUpdating()) {
+        return;
+      }
+
+      Ext.suspendLayouts();
+
+      me.lastSelection = selectedRecords;
+      if (selectionCount) {
+        // Track the last selection with a value (non blank) for use in
+        // assertValue
+        me.lastSelectedRecords = selectedRecords;
+      }*/
+
+      me.updateValue();
+
+      // If we have selected a value, and it's not possible to select any more values
+      // or, we are configured to hide the picker each time, then collapse the picker.
+      /*if (selectionCount && ((!me.multiSelect && store.contains(selectedRecord)) || me.collapseOnSelect || !store.getCount())) {
+        me.updatingValue = true;
+        me.collapse();
+        me.updatingValue = false;
+      }
+      Ext.resumeLayouts(true);
+      if (!me.suspendCheckChange) {
+        if (!me.multiSelect) {
+          selectedRecords = selectedRecord;
+        }
+        me.fireEvent('select', me, selectedRecords);
+      }*/
+    },
+
+    updateBindSelection: function(selModel, selection) {
+      var me = this,
+          selected = null;
+
+      if (!me.ignoreNextSelection) {
+        me.ignoreNextSelection = true;
+        if (selection.length) {
+          selected = selModel.getLastSelected();
+          me.hasHadSelection = true;
+        }
+        if (me.hasHadSelection) {
+          me.setSelection(selected);
+        }
+        me.ignoreNextSelection = false;
+      }
+    },
+    setSelection:function(selected){
+    	this.selection = selected
+    },
+		addValue: function(value){
+			if(value !== null){
+				this.doSetValue(value, true)
+			}
+		},
 		setValue : function(value) {
 			var me = this;
 			if (value != null) {
@@ -422,20 +574,72 @@
 	            return me.doSetValue(null);
 	        }
 		},
-		doSetValue:function(value){
-			var me = this, displayField = me.displayField, valueField = me.valueField || displayField, processedValue = [], displayTplData = [], model, record, displayValue,
-			displayIsValue = me.displayField === me.valueField,
-			displayTplData = me.displayTplData || (me.displayTplData = []);
-			displayTplData.length = 0;
+		doSetValue:function(value, add){
+			var me = this
+			var displayField = me.displayField
+			var Model = me.collection.model
+			var valueField = me.valueField || displayField
+			var forceSelection = me.forceSelection
+			var selModel = me.pickerSelectionModel
+			var matchedRecords = []
+      var valueArray = []
+			var processedValue = []
+			var displayTplData = []
+			var displayIsValue = me.displayField === me.valueField
+			var displayTplData = me.displayTplData || (me.displayTplData = [])
+			var lastSelection = me.lastSelection
+			var model, record, displayValue, valueChanged
+			displayTplData.length = 0
 			if (_.isUndefined(value)) {
 				return Picker.prototype.setValue.apply(me, value);
 			}
 			if (_.isString(value) && value == '') {
 				return Picker.prototype.setValue.apply(me, [value]);
 			}
-			value = $.makeArray(value);
+			value = add ? $.makeArray(me.value).concat(value) : $.makeArray(value);
 			for ( i = 0, len = value.length; i < len; i++) {
-				val = value[i];
+				record = value[i];
+				if(!record || !(record instanceof Backbone.Model)){
+					record = me.findRecordByValue(key = record);
+
+	        // The value might be in a new record created from an unknown value (if !me.forceSelection).
+	        // Or it could be a picked record which is filtered out of the main store.
+	        // Or it could be a setValue(record) passed to an empty store with autoLoadOnValue and aded above.
+	        if (!record) {
+	          record = me.valueCollection.find(function(model){
+	          	return model.get(me.valueField) === key
+	          });
+	        }
+				}
+				// record was not found, this could happen because
+        // store is not loaded or they set a value not in the store
+        if (!record) {
+          // If we are allowing insertion of values not represented in the Store, then push the value and
+          // create a new record to push as a display value for use by the displayTpl
+          if (!forceSelection) {
+              
+            // We are allowing added values to create their own records.
+            // Only if the value is not empty.
+            if (!record && value[i]) {
+              dataObj = {};
+              dataObj[me.displayField] = value[i];
+              if (me.valueField && me.displayField !== me.valueField) {
+                  dataObj[me.valueField] = value[i];
+              }
+              record = new Model(dataObj);
+            }
+          }
+          // Else, if valueNotFoundText is defined, display it, otherwise display nothing for this value
+          else if (me.valueNotFoundRecord) {
+            record = me.valueNotFoundRecord;
+          }
+        }
+        // record found, select it.
+        if (record) {
+          matchedRecords.push(record);
+          valueArray.push(record.get(me.valueField));
+        }
+				/*val = value[i]
 				if ((_.isString(val) || _.isNumber(val) || _.isObject(val)) && me.collection.length) {
 					if (_.isString(val) || _.isNumber(val)) {
 						record = me.collection.find(function(model) {
@@ -466,28 +670,100 @@
 					me.updateValue();
 				} else {
 
-				}
+				}*/
 			}
-			me.displayTplData = displayTplData;
-			me.value = processedValue.length ? me.multiSelect ? processedValue : processedValue[0] || '' : value ? value : '';
+			// If the same set of records are selected, this setValue has been a no-op
+      if (lastSelection) {
+        len = lastSelection.length;
+        if (len === matchedRecords.length) {
+          for (i = 0; !valueChanged && i < len; i++) {
+            if (_.indexOf(me.lastSelection, matchedRecords[i]) === -1) {
+              valueChanged = true;
+            }
+          }
+        } else {
+          valueChanged = true;
+        }
+      } else {
+        valueChanged = matchedRecords.length;
+      }
+      if (valueChanged) {
+        // beginUpdate which means we only want to notify this.onValueCollectionEndUpdate after it's all changed.
+        //me.suspendEvent('select');
+        me.valueCollection.beginUpdate();
+        if (matchedRecords.length) {
+          selModel.select(matchedRecords, false);
+        } else {
+          selModel.deselectAll();
+        }
+        me.valueCollection.endUpdate();
+        //me.resumeEvent('select');
+      } else {
+        me.updateValue();
+      }
+			/*me.displayTplData = displayTplData;
+			me.value = processedValue.length ? me.multiSelect ? _.uniq(processedValue) : processedValue[0] || '' : value ? value : '';
 			if(_.isArray(me.value)){
 				if(!me.multiSelect){
 					me.value = me.value[0]
 				}
 			}
-			me.applyEmptyText();
+			me.applyEmptyText();*/
 			return Picker.prototype.setValue.apply(this, [this.value]);
 		},
 		updateValue:function(){
-			var me = this,
-            inputEl = me.inputEl;
-			if (inputEl && me.emptyText && !_.isEmpty(me.value)) {
-	            inputEl.removeClass(me.emptyCls);
-	        }
+			var me = this
+			var valueArray = []
+			var selectedRecords = me.valueCollection.models
+      var inputEl = me.inputEl
+      displayTplData = me.displayTplData || (me.displayTplData = [])
+      var displayValue
+			/*if (inputEl && me.emptyText && !_.isEmpty(me.value)) {
+        inputEl.removeClass(me.emptyCls);
+      }*/
+      displayTplData.length = 0;
+      for (i = 0; i < len; i++) {
+        record = selectedRecords[i];
+        displayTplData.push(me.getRecordDisplayData(record));
+
+        // There might be the bogus "value not found" record if forceSelect was set. Do not include this in the value.
+        if (record !== me.valueNotFoundRecord) {
+          valueArray.push(record.get(me.valueField));
+        }
+      }
+      me.displayTplData = displayTplData;
+      displayValue = me.getDisplayValue();
+      me.setRawValue(displayValue);
+      me.refreshEmptyText();
+      me.checkChange();
+      
+      if (inputEl && me.typeAhead && me.hasFocus) {
+        // if typeahead is configured, deselect any partials
+        me.selectText(displayValue.length);
+      }
 		},
 		clearValue : function() {
 			this.setValue(null);
 		},
+
+    /**
+     * Finds the record by searching values in the {@link #valueField}.
+     * @param {Object} value The value to match the field against.
+     * @return {Ext.data.Model} The matched record or `false`.
+     */
+    findRecordByValue: function(value) {
+    	var me = this
+      var result = this.collection.find(function(model){
+      	return model.get(me.valueField) === value
+      })
+      var ret = false
+
+      // If there are duplicate keys, tested behaviour is to return the *first* match.
+      if (result) {
+          ret = result;
+      }
+      return ret;
+    },
 		getSubTplData : function() {
 			var me = this,
 			displayValue = me.getDisplayValue(),
@@ -513,5 +789,5 @@
 		valueToRaw : function(value) {
 			return Picker.prototype.valueToRaw.apply(this, [this.getDisplayValue()]);
 		}
-	});
+	}).mixins(StoreHolder);
 }));

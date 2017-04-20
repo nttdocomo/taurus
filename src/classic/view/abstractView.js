@@ -4,13 +4,13 @@
       // Now we're wrapping the factory and assigning the return
       // value to the root (window) and returning it as well to
       // the AMD loader.
-      define(['../../view/base', '../../util/storeHolder', '../../selection/dataViewModel', '../grid/navigationModel', 'backbone', 'underscore'], function (Base, StoreHolder, DataViewModel, NavigationModel, Backbone, _) {
+      define(['../../view/base', '../../util/storeHolder', '../../selection/dataViewModel', '../view/navigationModel', 'backbone', 'underscore'], function (Base, StoreHolder, DataViewModel, NavigationModel, Backbone, _) {
         return (root.Class = factory(Base, StoreHolder, DataViewModel, NavigationModel, Backbone, _))
       })
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return (root.Class = factory(require('../../view/base'), require('../../util/storeHolder'), require('../../selection/dataViewModel'), require('../grid/navigationModel'), require('backbone'), require('underscore')))
+        return (root.Class = factory(require('../../view/base'), require('../../util/storeHolder'), require('../../selection/dataViewModel'), require('../view/navigationModel'), require('backbone'), require('underscore')))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
@@ -18,7 +18,7 @@
     // run into a scenario where plain modules depend on CommonJS
     // *and* I happen to be loading in a CJS browser environment
     // but I'm including it for the sake of being thorough
-    module.exports = (root.Class = factory(require('../../view/base'), require('../../util/storeHolder'), require('../../selection/dataViewModel'), require('../grid/navigationModel'), require('backbone'), require('underscore')))
+    module.exports = (root.Class = factory(require('../../view/base'), require('../../util/storeHolder'), require('../../selection/dataViewModel'), require('../view/navigationModel'), require('backbone'), require('underscore')))
   } else {
     root.Class = factory()
   }
@@ -33,6 +33,7 @@
       type: DataViewModel
     },
     navigationModel: NavigationModel,
+    refreshNeeded: true,
     initComponent: function () {
       var me = this
 
@@ -156,6 +157,26 @@
     onAdd: function () {
       console.log('onAdd')
     },
+
+    onBindStore: function(store, oldStore) {
+      /*var me = this;
+
+      // A BufferedStore has to know to reload the most recent visible zone if its View is preserveScrollOnReload
+      if (me.store.isBufferedStore) {
+          me.store.preserveScrollOnReload = me.preserveScrollOnReload;
+      }
+      if (oldStore && oldStore.isBufferedStore) {
+          delete oldStore.preserveScrollOnReload;
+      }
+
+      me.setMaskBind(store);
+
+      // When unbinding the data store, the dataSource will be nulled out if it's the same as the data store.
+      // Restore it here.
+      if (!me.dataSource) {
+          me.dataSource = store;
+      }*/
+    },
     onSync: function () {
       this.refresh()
     },
@@ -172,6 +193,8 @@
       var me = this
       var collection = me.collection
       var selModel = me.selectionModel
+      var targetEl = me.getTargetEl()
+      me.clearViewEl()
       if (!me.rendered) {
         return
       }
@@ -179,16 +202,22 @@
         // Process empty text unless the store is being cleared.
         me.addEmptyText()
       // items.clear()
-      } /* else {
-                me.collectNodes(targetEl.dom)
-                me.updateIndexes(0)
-            }*/
+      } else {
+        me.collectNodes(targetEl)
+        //me.updateIndexes(0)
+      }
       
       // Some subclasses do not need to do this. TableView does not need to do this - it renders selected class using its tenmplate.
       if (me.refreshSelmodelOnRefresh !== false) {
           selModel.refresh();
       }
       me.trigger('refresh', me, collection)
+    },
+    collectNodes: function(targetEl){
+      this.all = targetEl.find(this.getItemSelector())
+    },
+    getItemSelector: function(){
+      return this.itemSelector
     },
     render: function () {
       var me = this
@@ -205,6 +234,9 @@
       return this.selectionModel
     },
     applySelectionModel: function (selModel, oldSelModel) {
+      if(selModel instanceof DataViewModel){
+        return selModel
+      }
       var SelModel = selModel.type
       return new SelModel
     }

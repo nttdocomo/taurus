@@ -24,8 +24,10 @@
     selectedItemCls: 'boundlist-selected',
     listItemCls: '',
     itemCls: 'boundlist-item',
-    childEls: ['listEl'],
-    renderTo: $(document.body),
+    childEls: {
+      'listEl':'[id$="listEl"]'
+    },
+    //renderTo: $(document.body),
     itemSelector: 'li',
     initialize: function () {
       var me = this
@@ -78,6 +80,9 @@
     getNodeByRecord: function (model) {
       return this.$el.find('li').eq(this.collection.indexOf(model))
     },
+    getTargetEl: function() {
+      return this.$el;
+    },
     clearHighlight: function () {
       this.$el.find('li').removeClass(this.overItemCls)
     },
@@ -119,7 +124,8 @@
     },
     refresh: function () {
       var me = this
-      me.clearViewEl()
+      me._super()
+      //me.clearViewEl()
       if (me.collection.length < 1) {
         // Process empty text unless the store is being cleared.
         if (me.emptyText) {
@@ -131,7 +137,7 @@
         me.renderHtml()
       }
       this.$el.css('height', 'auto')
-      me.trigger('refresh')
+      //me.trigger('refresh')
     },
     alignTo: function (element, position, offsets) {
       var me = this
@@ -145,9 +151,6 @@
     },
     setHeight: function (height) {
       return Base.prototype.setHeight.call(this, Math.min(height, this.$el.height()))
-    },
-    show: function () {
-      Base.prototype.show.apply(this, arguments)
     }
   })
 }))
