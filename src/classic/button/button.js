@@ -263,6 +263,15 @@
       return me
     },
 
+    /**
+     * Sets the `pressed` state of this button.
+     * @param {Boolean} [pressed=true] Pass `false` to clear the `pressed` state.
+     * @return {Ext.button.Button} this
+     */
+    setPressed: function (pressed) {
+      return this.toggle(pressed !== false);
+    },
+
     setText: function (text) {
       this.text = text
       this.$el.text(text)

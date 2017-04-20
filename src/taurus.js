@@ -432,5 +432,6 @@
 			return me;
 		}
 	});
+	taurus.emptyFn.$emptyFn = true
 	return window.taurus;
 }))

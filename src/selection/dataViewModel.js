@@ -54,6 +54,32 @@
 
       eventListeners[me.view.triggerCtEvent] = me.onContainerClick;
       return eventListeners;
+    },
+
+    // Allow the DataView to update the ui
+    onSelectChange: function(record, isSelected, suppressEvent, commitFn) {
+      var me = this
+      var view = me.view
+      var eventName = isSelected ? 'select' : 'deselect'
+      var recordIndex = me.store.indexOf(record)
+
+      if ((suppressEvent || me.trigger('before' + eventName, me, record, recordIndex)) !== false &&
+              commitFn() !== false) {
+          
+        // Event handler could have destroyed the view...
+        if (view && !view.destroyed) {
+          if (isSelected) {
+            view.onItemSelect(record);
+          } else {
+            view.onItemDeselect(record);
+          }
+        }
+        
+        // ... and the selection model to go with it
+        if (!suppressEvent && !me.destroyed) {
+          me.trigger(eventName, me, record, recordIndex);
+        }
+      }
     }
   })
 }))

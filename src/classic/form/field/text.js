@@ -121,6 +121,26 @@
       // me.autoSize()
       }
     },
+
+    refreshEmptyText: function() {
+      var me = this
+      var inputEl = me.inputEl
+      var emptyClsElements = me.emptyClsElements
+      var value, isEmpty, i
+
+      if (inputEl) {
+        value = me.getValue();
+        isEmpty = !(inputEl.val() || (_.isArray(value) && value.length));
+        
+        if (me.placeholderLabel) {
+          me.placeholderLabel.setDisplayed(isEmpty);
+        }
+
+        for (i=0; i < emptyClsElements.length; i++) {
+          emptyClsElements[i].toggleClass(me.emptyUICls);
+        }
+      }
+    },
     applyState: function (state) {
       this._super.apply(this, arguments)
       if (state.hasOwnProperty('value')) {
@@ -253,6 +273,11 @@
 
     onKeyPress: function (e) {
       this.trigger('keypress', e)
+    },
+    onRender: function(){
+      var me = this
+      me._super()
+      me.emptyClsElements = [me.inputEl];
     },
     processRawValue: function (value) {
       var me = this, stripRe = me.stripCharsRe, newValue

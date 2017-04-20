@@ -3,6 +3,7 @@ define(function(require){
 	var Manager = require('../../manager')
 	var Backbone = require('../../backbone')
 	var Button = require('./button')
+	var _ = require('../../underscore')
 	return Base.extend({
 		xtype: 'segmentedbutton',
 		className:'segmented-button btn-group',
@@ -11,6 +12,10 @@ define(function(require){
 		allowToggle:true,
 		allowMultiple:false,
 		allowDepress:false,
+		updateItems: function(){
+			this._super.apply(this, arguments)
+			this.applyValue(this.value)
+		},
 		add : function() {
 			var me = this, args = Array.prototype.slice.apply(arguments), index = ( typeof args[0] == 'number') ? args.shift() : -1, layout = me.getLayout(),addingArray, items, i, length, item, pos, ret;
 
@@ -49,9 +54,44 @@ define(function(require){
 			me.items = items;
 			this.updateItems();
 		},
+		applyValue: function (value, oldValue) {
+			console.log('applyValue')
+			var me = this
+			var values = _.isArray(value) ? value : (value == null) ? [] : [value]
+			var ln = values.length
+			me._isApplyingValue = true;
+			for (i = 0; i < ln; i++) {
+        value = values[i];
+        button = me._lookupButtonByValue(value);
+
+        if (button) {
+          buttonValue = button.value;
+
+          if ((buttonValue != null) && buttonValue !== value) {
+            // button has a value, but it was matched by index.
+            // transform the index into the button value
+            values[i] = buttonValue;
+          }
+
+          if (!button.pressed) {
+            button.setPressed(true);
+          }
+        }
+        //<debug>
+        else {
+          // no matched button. fail.
+          Ext.raise("Invalid value '" + value + "' for segmented button: '" + me.id + "'");
+        }
+        //</debug>
+      }
+      me._isApplyingValue = false;
+		},
 		getAllowToggle:function(){
 			var internalName = this.$configPrefixed ? prefixedName : name;
             return this[internalName];
+		},
+		getValue: function(){
+			return this.value
 		},
 		lookupComponent: function(comp,callback) {
 	        if (!(comp instanceof Backbone.View)) {
@@ -67,7 +107,9 @@ define(function(require){
 			var me = this;
 			me.itemsCount++;
 			me.items.splice(pos,1,item);
-			item.on('toggle',me._onItemToggle,me);
+			item.on({
+				'toggle': me._onItemToggle
+			}, me);
 			if (me.allowToggle) {
 	            item.enableToggle = true;
 	            if (!me.allowMultiple) {
@@ -112,50 +154,52 @@ define(function(require){
 			me.items = items;
 			return items;
 		},
+		setValue: function(value){
+			this.value = value
+		},
 
-        /**
-         * Handles the "toggle" event of the child buttons.
-         * @private
-         * @param {Ext.button.Button} button
-         * @param {Boolean} pressed
-         */
-        _onItemToggle: function(button, pressed) {
-            /*if (this._isApplyingValue) {
-                return;
-            }
-            var me = this,
-                Array = Ext.Array,
-                allowMultiple = me.allowMultiple,
-                buttonValue = (button.value != null) ? button.value : me.items.indexOf(button),
-                value = me.getValue(),
-                valueIndex;
+    /**
+     * Handles the "toggle" event of the child buttons.
+     * @private
+     * @param {Ext.button.Button} button
+     * @param {Boolean} pressed
+     */
+    _onItemToggle: function(button, pressed) {
+      if (this._isApplyingValue) {
+          return;
+      }
+      var me = this,
+          allowMultiple = me.allowMultiple,
+          buttonValue = (button.value != null) ? button.value : me.items.indexOf(button),
+          value = me.getValue(),
+          valueIndex;
 
-            if (allowMultiple) {
-                valueIndex = Array.indexOf(value, buttonValue);
-            }
+      if (allowMultiple) {
+          valueIndex = _.indexOf(value, buttonValue);
+      }
 
-            if (pressed) {
-                if (allowMultiple) {
-                    if (valueIndex === -1) {
-                        value.push(buttonValue);
-                    }
-                } else {
-                    value = buttonValue;
-                }
-            } else {
-                if (allowMultiple) {
-                    if (valueIndex > -1) {
-                        value.splice(valueIndex, 1);
-                    }
-                } else if (value === buttonValue) {
-                    value = null;
-                }
-            }
+      if (pressed) {
+        if (allowMultiple) {
+          if (valueIndex === -1) {
+            value.push(buttonValue);
+          }
+        } else {
+          value = buttonValue;
+        }
+      } else {
+        if (allowMultiple) {
+          if (valueIndex > -1) {
+            value.splice(valueIndex, 1);
+          }
+        } else if (value === buttonValue) {
+          value = null;
+        }
+      }
 
-            me.setValue(value);*/
+      me.setValue(value);
 
-            this.trigger('toggle', this, button, pressed);
-        }/*,
+      this.trigger('toggle', this, button, pressed);
+    }/*,
 		lookupComponent : function(cmp) {
 			var Cls;
 			if (_.has(cmp, 'xtype')) {
@@ -169,6 +213,36 @@ define(function(require){
 				}));
 			}
 			return false;
-		}*/
+		}*/,
+
+    /**
+     * Looks up a child button by its value
+     * @private
+     * @param {String/Number} value The button's value or index
+     * @return {Ext.button.Button}
+     */
+    _lookupButtonByValue: function(value) {
+      var items = this.items,
+        ln = items.length,
+        i = 0,
+        button = null,
+        buttonValue, btn;
+
+      for (; i < ln; i++) {
+        btn = items[i];
+        buttonValue = btn.value;
+        if ((buttonValue != null) && buttonValue === value) {
+          button = btn;
+          break;
+        }
+      }
+
+      if (!button && typeof value === 'number') {
+        // no button matched by value, assume value is an index
+        button = items[value];
+      }
+
+      return button;
+    }
 	})
 })

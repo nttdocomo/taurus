@@ -71,13 +71,19 @@
       Label.prototype.initComponent.apply(this, arguments)
     },
     disable: function () {
-      this.inputEl.prop('disabled', true)
-      this.inputEl.addClass('disabled')
+      var inputEl = this.inputEl
+      if(inputEl) {
+        inputEl.prop('disabled', true)
+        inputEl.addClass('disabled')
+      }
       Label.prototype.disable.apply(this, arguments)
     },
     enable: function () {
-      this.inputEl.prop('disabled', false)
-      this.inputEl.removeClass('disabled')
+      var inputEl = this.inputEl
+      if(inputEl) {
+        inputEl.prop('disabled', false)
+        inputEl.removeClass('disabled')
+      }
       Label.prototype.enable.apply(this, arguments)
     },
     getName: function () {

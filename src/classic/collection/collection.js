@@ -14,6 +14,7 @@
 }(this,function(Backbone){
   return Backbone.Collection.extend({
     loading:false,
+    updating: 0,
     initialize:function(){
       var me = this
       me._super.apply(me,arguments)
@@ -28,6 +29,16 @@
     },
     isLoading: function(){
       return !!this.loading
+    },
+    beginUpdate: function(){
+      if (!this.updating++) { // jshint ignore:line
+        this.trigger('beginupdate');
+      }
+    },
+    endUpdate: function(){
+      if (! --this.updating) { // jshint ignore:line
+        this.trigger('endupdate');
+      }
     }
   })
 }))
