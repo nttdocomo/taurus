@@ -26,13 +26,9 @@
         bindStore:function(store, initial, propertyName){
             var me = this
             propertyName = propertyName || 'store'
-            oldStore = null
             if (store) {
                 me[propertyName] = store
                 me.bindStoreListeners(store);
-                if (!me.onBindStore.$emptyFn) {
-                    me.onBindStore(store, oldStore, initial);
-                }
                 //me.onBindStore(store, oldStore);
             } else {
                 me[propertyName] = null;
