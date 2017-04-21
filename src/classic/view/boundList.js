@@ -29,6 +29,7 @@
     },
     //renderTo: $(document.body),
     itemSelector: 'li',
+    refreshSelmodelOnRefresh: true,
     initialize: function () {
       var me = this
       me.$el.css('top', 0)
@@ -56,8 +57,12 @@
       this.selection = new Backbone.Collection
     },
     onItemSelect: function (record) {
-      var node = this.getNode(record)
-      node.addClass(this.selectedItemCls)
+      var me = this
+      var node
+      
+      node = me._super.apply(me, [record])
+      
+      return node;
     },
     onItemDeselect: function (record) {
       if (record) {
@@ -134,7 +139,6 @@
         }
       } else {
         me.$el.removeClass('boundlist-empty')
-        me.renderHtml()
       }
       this.$el.css('height', 'auto')
       //me.trigger('refresh')

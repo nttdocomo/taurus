@@ -505,7 +505,7 @@
       var me = this
       renderTo = renderTo || this.renderTo || $(document.body)
       this.operation = operation || 'append'
-      if (this.isRendered || this.rendered) {
+      if (this.rendered) {
         $(renderTo)[this.operation](this.$el)
         return false
       }
@@ -524,7 +524,6 @@
         this.$el.addClass(this.uiClass)
       }
       el.appendChild(this.el.cloneNode(true))
-      this.isRendered = true
       this.afterRender()
       this.onRender()
       /*var height = this.height

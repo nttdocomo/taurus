@@ -200,7 +200,7 @@
       }
 
       if (me.selectionMode === 'SINGLE') {
-        if (records.isModel) {
+        if (records instanceof Backbone.Model) {
           records = [records]
         }
 

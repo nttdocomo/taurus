@@ -102,7 +102,7 @@
         return me.focusPosition(newRecordIndex);
       }
       if (me.item) {
-        me.item.removeCls(me.focusCls)
+        me.item.removeClass(me.focusCls)
       }
       // Track the last position.
       // Used by SelectionModels as the navigation "from" position.

@@ -209,12 +209,12 @@
 
 			// Expand after adjusting the filter unless there are no matches
 			var picker = me.getPicker()
+			picker.collection.reset(collection);
 			if (collection.length || me.getPicker().emptyText) {
 				me.expand();
 			} else {
 				me.collapse();
 			}
-			picker.collection.reset(collection);
 
 			me.afterQuery();
 		},

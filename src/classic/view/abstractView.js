@@ -45,7 +45,7 @@
       Base.prototype.initComponent.apply(this, arguments)
       me.bindStore(me.collection)
       me.getNavigationModel().bindComponent(this)
-      me.refresh()
+      //me.refresh()
     },
 
     addEmptyText: function () {
@@ -71,7 +71,7 @@
       // If we have already achieved our first layout, refresh immediately.
       // If we bind to the Store before the first layout, then beforeLayout will
       // call doFirstRefresh
-      if (store /* && me.componentLayoutCounter*/) {
+      if (store && me.rendered/* && me.componentLayoutCounter*/) {
         // If not the initial bind, we enforce noDefer.
         me.doFirstRefresh(store, !initial)
       }
@@ -177,6 +177,14 @@
           me.dataSource = store;
       }*/
     },
+    onItemSelect: function(record){
+      var node = this.getNode(record);
+      if (node) {
+        node.addClass(this.selectedItemCls)
+      }
+      
+      return node;
+    },
     onSync: function () {
       this.refresh()
     },
@@ -198,6 +206,8 @@
       if (!me.rendered) {
         return
       }
+
+      me.renderHtml()
       if (collection.length < 1) {
         // Process empty text unless the store is being cleared.
         me.addEmptyText()
@@ -222,7 +232,7 @@
     render: function () {
       var me = this
       me._super.apply(me, arguments)
-      me.doFirstRefresh(me.collection)
+      //me.doFirstRefresh(me.collection)
     },
     applyNavigationModel: function (navigationModel) {
       return this.navigationModel = new navigationModel
