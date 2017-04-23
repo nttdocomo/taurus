@@ -862,6 +862,7 @@
       this.components && _.each(this.components, function (item, i) {
         item.remove()
       })
+      this.trigger('remove')
       return Backbone.View.prototype.remove.apply(this, arguments)
     },
 
