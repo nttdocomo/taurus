@@ -66,6 +66,7 @@
       }
       this.$el.addClass(cls)
     },
+    getElConfig: function() {},
     removeClass: function (cls) {
       this.$el.removeClass(cls)
     },
@@ -483,6 +484,7 @@
         return false
       }
       me.beforeRender()
+      var ret = me.getElConfig()
       /*run html brfore append el because the el must has html*/
       $(renderTo)[this.operation](this.$el)
       this.renderHtml()

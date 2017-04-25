@@ -69,6 +69,7 @@
     initComponent: function () {
       this.getInputId()
       Label.prototype.initComponent.apply(this, arguments)
+      this.initField()
     },
     disable: function () {
       var inputEl = this.inputEl
@@ -91,7 +92,6 @@
     },
     render: function () {
       var me = Label.prototype.render.apply(this, arguments)
-      this.initField()
       return me
     },
     initField: function () {
