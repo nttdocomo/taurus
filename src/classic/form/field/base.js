@@ -4,17 +4,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../../../define', '../label', './field', 'underscore', 'backbone', 'modernizr', '../../../i18n', 'taurus'], factory)
+      define(['../label', './field', 'underscore', 'backbone', 'modernizr', '../../../i18n', 'taurus', '../../../util/format'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../../../define'), require('../label'), require('./field'), require('underscore'), require('backbone'), require('modernizr'), require('../../../i18n'), require('taurus'))
+        return factory(require('../label'), require('./field'), require('underscore'), require('backbone'), require('modernizr'), require('../../../i18n'), require('taurus'), require('../../../util/format'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require(require('../../../define'), '../label'), require('./field'), require('underscore'), require('backbone'), require('modernizr'), require('../../../i18n'), require('taurus'))
+    module.exports = factory(require('../label'), require('./field'), require('underscore'), require('backbone'), require('modernizr'), require('../../../i18n'), require('taurus'), require('../../../util/format'))
   }
-}(this, function (define, Label, Field, _, Backbone, Modernizr, i18n, taurus) {
+}(this, function (Label, Field, _, Backbone, Modernizr, i18n, taurus, format) {
   /**
    * A namespace.
    * @namespace form
@@ -71,15 +71,22 @@
       this.getInputId()
       this.initLabelable()
       Label.prototype.initComponent.apply(this, arguments)
+      this.initField()
     },
     disable: function () {
-      this.inputEl.prop('disabled', true)
-      this.inputEl.addClass('disabled')
+      var inputEl = this.inputEl
+      if(inputEl) {
+        inputEl.prop('disabled', true)
+        inputEl.addClass('disabled')
+      }
       Label.prototype.disable.apply(this, arguments)
     },
     enable: function () {
-      this.inputEl.prop('disabled', false)
-      this.inputEl.removeClass('disabled')
+      var inputEl = this.inputEl
+      if(inputEl) {
+        inputEl.prop('disabled', false)
+        inputEl.removeClass('disabled')
+      }
       Label.prototype.enable.apply(this, arguments)
     },
     getName: function () {
@@ -87,7 +94,6 @@
     },
     render: function () {
       var me = Label.prototype.render.apply(this, arguments)
-      this.initField()
       return me
     },
     initField: function () {
@@ -237,7 +243,7 @@
         name: me.name || inputId,
         disabled: me.disabled,
         readOnly: me.readOnly || !me.editable,
-        value: me.getRawValue(),
+        value: format.htmlEncode(me.getRawValue()),
         type: type,
         fieldCls: me.fieldCls,
         fieldStyle: me.getInputStyle(),

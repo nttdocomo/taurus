@@ -4,20 +4,23 @@
 (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./field/base','underscore','./checkboxGroup','./field/radio'], factory);
+			define(['./field/base','underscore','./checkboxGroup','./field/radio','../../../taurus'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./field/base'),require('underscore'),require('./checkboxGroup'),require('./field/radio'));
+				return factory(require('./field/base'),require('underscore'),require('./checkboxGroup'),require('./field/radio'), require('../../../taurus'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./field/base'),require('underscore'),require('./field/checkbox'),require('./field/radio'));
+		module.exports = factory(require('./field/base'),require('underscore'),require('./field/checkbox'),require('./field/radio'), require('../../../taurus'));
 	}
-}(this, function(Base,_,CheckboxGroup,Radio) {
+}(this, function(Base,_,CheckboxGroup,Radio, taurus) {
 	return CheckboxGroup.extend({
 		blankText : 'You must select one item in this group',
 		defaultType:Radio,
+		simpleValue: false,
+		groupCls : taurus.baseCSSPrefix + 'form-radio-group',
+		isFormField:false,
 		//fieldSubTpl : '<div><%_.each(fields,function(field){%><%if(vertical){%><div><%}%><%if(field.boxLabel){%><label id="<%=field.cmpId%>-boxLabelEl" class="radio-inline"><%}%><input class="form-radio" id="<%=field.id%>" type="<%=field.type%>" name="<%=field.name%>"<%if(field.checked){%> checked="checked"<%}%> value="<%=field.inputValue%>"/><%if(field.boxLabel){%><%=field.boxLabel%></label><%}%><%if(vertical){%></div><%}%><%})%></div>',
 		/*getBoxes : function(query) {
 			return this.$el.find(':radio' + (query || ''));
@@ -55,10 +58,40 @@
 		setValue : function(value) {
 			Base.prototype.setValue.apply(this,arguments);
 		},
-		/*getValue : function() {
-			var values = {}, box = this.getBoxes(':checked');
-			return box.val();
-		},*/
+		getValue : function() {
+			var me = this
+      var items = me.items
+      var ret
+      if (me.simpleValue) {
+	      for (i = items.length; i-- > 0; ) {
+	        item = items[i];
+
+	        if (item.checked) {
+	          ret = item.inputValue;
+	          break;
+	        }
+	      }
+      } else {
+         ret = me._super();
+      }
+      
+      return ret;
+		},
+		setValue: function(value) {
+			var me = this
+			var items = me.items
+			var cmp
+			if (me.simpleValue) {
+        for (i = 0, len = items.length; i < len; ++i) {
+          cmp = items[i];
+
+          if (cmp.inputValue === value) {
+            cmp.setValue(true);
+            break;
+          }	
+        }
+      }
+		}
 		/*getSubmitData:function(){
 			var values = {}, boxes = this.getBoxes(':radio'), b, bLen = boxes.length, box, name, inputValue, bucket;
 			_.each(boxes,function(box,i) {

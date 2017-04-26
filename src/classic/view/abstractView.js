@@ -48,10 +48,10 @@
     },
 
     addEmptyText: function () {
-      var me = this /*,
-                store = me.getStore()*/
+      var me = this
+      var store = me.collection
 
-      if (me.emptyText /* && !store.isLoading() && (!me.deferEmptyText || me.refreshCounter > 1 || store.isLoaded())*/) {
+      if (me.emptyText && (!store.isLoading || (typeof store.isLoading === 'function' && !store.isLoading()))/* && (!me.deferEmptyText || me.refreshCounter > 1 || store.isLoaded())*/) {
         me.emptyEl = $(me.emptyText).prependTo(me.getTargetEl())
       }
     },
@@ -144,7 +144,7 @@
         replace: me.onReplace,
         reset: me.onReset,
         sync: debounceOnAdd,
-        add: me.onAdd,
+        add: debounceOnAdd,
         // remove: _.debounce(me.onRemove, 200),//backbone-pageable will trigger remove event on add models.
         change: debounceOnAdd,
         update: debounceOnAdd,

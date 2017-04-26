@@ -1,5 +1,6 @@
 define(function(require){
-	var Class = require('class');
+	var Class = require('class')
+	var Backbone = require('./backbone')
 	return new (Class.extend({
 		init: function(config) {
 	        _.extend(this, config || {});
@@ -30,9 +31,9 @@ define(function(require){
 	        }*/
 
 	        //return Ext.widget(config.xtype || defaultType, config);
-	        require.async(config.xtype || defaultType,function(className){
-	        	callback(new className(config));
-	        })
+	        // require.async(config.xtype || defaultType,function(className){
+	        	callback(new defaultType(config));
+	        // })
 	    },
 
 	    /**

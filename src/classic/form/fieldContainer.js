@@ -35,26 +35,63 @@
 		//fieldSubTpl: '<div id="<%=id%>-containerEl"></div>',
 		direction:'row',
 		/**
-	     * @cfg {Boolean} combineErrors
-	     * If set to true, the field container will automatically combine and display the validation errors from
-	     * all the fields it contains as a single error on the container, according to the configured
-	     * {@link #msgTarget}. Defaults to false.
-	     */
-	    combineErrors:false,
-	    query:function(queryString){
-	    	var query = queryString.match(/\[(.+?)\]/),
-	    	items = [];
-	    	_.each(this.items,function(item){
-	    		if(item[query[1]]){
-	    			items.push(item)
-	    		} else {
-		    		if(item.query){
-		    			items = items.concat(item.query(queryString))
-		    		}
+     * @cfg {Boolean} combineErrors
+     * If set to true, the field container will automatically combine and display the validation errors from
+     * all the fields it contains as a single error on the container, according to the configured
+     * {@link #msgTarget}. Defaults to false.
+     */
+    combineErrors:false,
+    query:function(queryString){
+    	var query = queryString.match(/\[(.+?)\]/),
+    	items = [];
+    	_.each(this.items,function(item){
+    		if(item[query[1]]){
+    			items.push(item)
+    		} else {
+	    		if(item.query){
+	    			items = items.concat(item.query(queryString))
 	    		}
-	    	})
-	    	return items;
-	    },
+    		}
+    	})
+    	return items;
+    },
+    disable: function(silent, fromParent) {
+      var me = this,
+      wasDisabled = me.disabled,
+      itemsToDisable, len, i;
+
+      me._super.apply(this, [silent, fromParent]);
+
+      if (!fromParent && !me.preventChildDisable && !wasDisabled) {
+        itemsToDisable = me.getChildItemsToDisable();
+        len = itemsToDisable.length;
+
+        for (i = 0; i < len; i++) {
+          itemsToDisable[i].disable(silent, true);
+        }
+      }
+      return me;
+    },
+    enable: function(silent, fromParent) {
+      var me = this,
+      wasDisabled = me.enabled,
+      itemsToDisable, len, i;
+
+      me._super.apply(this, [silent, fromParent]);
+
+      if (!fromParent && !me.preventChildDisable && !wasDisabled) {
+        itemsToDisable = me.getChildItemsToDisable();
+        len = itemsToDisable.length;
+
+        for (i = 0; i < len; i++) {
+          itemsToDisable[i].enable(silent, true);
+        }
+      }
+      return me;
+    },
+    getChildItemsToDisable: function() {
+      return this.query('[isFormField],[isFocusableContainer],button');
+    },
 		getTargetEl: function() {
             return this.containerEl;
         },

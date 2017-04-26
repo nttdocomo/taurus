@@ -166,7 +166,7 @@
 	            item = undefined;
 	        }
 	        me.trigger('click', me, item, e);
-	        return clickResult;
+	        return clickResult || true;
 	    },
 	    onMouseLeave:function(e){
 	        var me = this;

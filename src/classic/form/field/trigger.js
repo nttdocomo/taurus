@@ -62,11 +62,15 @@
 		},
 		disable:function(){
 			this._super.apply(this,arguments)
-			this.triggerEl.attr('disabled',true)
+			if(this.rendered){
+				this.triggerEl.attr('disabled',true)
+			}
 		},
 		enable:function(){
 			this._super.apply(this,arguments)
-			this.triggerEl.attr('disabled',false)
+			if(this.rendered){
+				this.triggerEl.attr('disabled',false)
+			}
    	}
 	});
 }));

@@ -4,9 +4,7 @@
     // value to the root (window) and returning it as well to
     // the AMD loader.
     if (define.amd) {
-      define(['class', '../util/storeHolder', 'backbone', 'underscore'], function (Class, StoreHolder, Backbone, _) {
-        return (root.Class = factory(Class, StoreHolder, Backbone, _))
-      })
+      define(['class', '../util/storeHolder', 'backbone', 'underscore'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
@@ -24,18 +22,18 @@
   }
 }(this, function (Class, StoreHolder, Backbone, _) {
   var Model = Class.extend({
-    selected: [],
+    selected: null,
     config: {
       selected: []
     },
-    init: function () {
+    init: function (cfg) {
       var me = this
-
       me.modes = {
         SINGLE: true,
         SIMPLE: true,
         MULTI: true
       }
+      _.extend(me, cfg)
       me.setSelectionMode(me.mode)
       me.selected = me.applySelected(me.selected)
       if (me.selectionMode !== 'SINGLE') {
@@ -92,6 +90,55 @@
           return
         }
       }
+    },
+
+    /**
+     * Selects a record instance by record instance or index.
+     * @param {Ext.data.Model[]/Number} records An array of records or an index
+     * @param {Boolean} [keepExisting=false] True to retain existing selections
+     * @param {Boolean} [suppressEvent=false] True to not fire a select event
+     */
+    select: function(records, keepExisting, suppressEvent) {
+        // Automatically selecting eg store.first() or store.last() will pass undefined, so that must just return;
+        if (!_.isUndefined(records) && !(_.isArray(records) && !records.length)) {
+            this.doSelect(records, keepExisting, suppressEvent);
+        }
+    },
+    
+    deselectDuringSelect: function(toSelect, suppressEvent) {
+      var me = this
+      var selected = me.selected.models
+      var len = selected.length
+      var changed = 0
+      var failed = false
+      var item, i
+          
+      // Prevent selection change events from firing, will happen during select
+      me.suspendChanges();
+      me.deselectingDuringSelect = true;
+      for (i = 0; i < len; ++i) {
+        item = selected[i];
+        if (!_.contains(toSelect, item)) {
+          if (me.doDeselect(item, suppressEvent)) {
+            ++changed;
+          } else {
+            failed = true;
+          }
+        }
+        if (me.destroyed) {
+          failed = true;
+          changed = 0;
+          break;
+        }
+      }
+      
+      me.deselectingDuringSelect = false;
+      
+      if (!me.destroyed) {
+        me.resumeChanges();
+      }
+      
+      return [failed, changed];
     },
 
     // records can be an index, a record or an array of records
@@ -165,6 +212,51 @@
       }
     },
 
+    doSingleSelect: function(record, suppressEvent) {
+      var me = this
+      var changed = false
+      var selected = me.selected
+      var commit
+
+      if (me.locked) {
+        return;
+      }
+      // already selected.
+      // should we also check beforeselect?
+      if (me.isSelected(record)) {
+        return;
+      }
+
+      commit = function() {
+        // Deselect previous selection.
+        if (selected.length) {
+          //me.suspendChanges();
+          var result = me.deselectDuringSelect([record], suppressEvent);
+          if (me.destroyed) {
+            return;
+          }
+          //me.resumeChanges();
+          if (result[0]) {
+            // Means deselection failed, so abort
+            return false;
+          }
+        }
+
+        me.lastSelected = record;
+        if (!selected.length) {
+          me.selectionStart = record;
+        }
+        selected.add(record);
+        changed = true;
+      };
+
+      me.onSelectChange(record, true, suppressEvent, commit);
+
+      if (changed && !me.destroyed) {
+        me.maybeFireSelectionChange(!suppressEvent);
+      }
+    },
+
     /**
      * Deselects all records in the view.
      * @param {Boolean} [suppressEvent] True to suppress any deselect events
@@ -173,6 +265,9 @@
       var me = this
       var selections = me.store.models
       me.doDeselect(selections, suppressEvent)
+    },
+    getLastSelected: function() {
+      return this.lastSelected;
     },
     getSelected: function(){
       return this.selected
@@ -194,6 +289,14 @@
     /*if (!suppressEvent && !me.destroyed) {
       me.maybeFireSelectionChange(me.getSelection().length !== start)
     }*/
+    },
+
+    /**
+     * Returns an array of the currently selected records.
+     * @return {Ext.data.Model[]} The selected records
+     */
+    getSelection: function() {
+      return this.selected.models;
     },
 
     getStoreListeners: function () {
@@ -221,6 +324,20 @@
     isSelected: function (record) {
       record = _.isNumber(record) ? this.store.get(record) : record
       return this.selected ? this.selected.contains(record) : false
+    },
+
+    // fire selection change as long as true is not passed
+    // into maybeFireSelectionChange
+    maybeFireSelectionChange: function(trigger) {
+      var me = this;
+      if (trigger && !me.suspendChange) {
+        me.trigger('selectionchange', me, me.getSelection());
+      }
+    },
+    onBindStore: function(store, oldStore, initial) {
+      if (!initial) {
+        //this.updateSelectedInstances(this.selected);
+      }
     },
     onNavigate: function (e) {
       if (!e.record || this.vetoSelection(e.keyEvent)) {
@@ -293,6 +410,16 @@
         me.callParent([record, e, isSelected])
       }
     },
+
+    suspendChanges: function() {
+      ++this.suspendChange;
+    },
+
+    resumeChanges: function() {
+      if (this.suspendChange) {
+        --this.suspendChange;
+      }
+    },
     vetoSelection: function(e){
       if (e.stopSelection) {
         return true;
@@ -300,7 +427,7 @@
     },
 
     applySelected: function (selected) {
-      if (!selected.isCollection) {
+      if (!(selected instanceof Backbone.Collection)) {
         selected = new Backbone.Collection(selected)
       }
       return selected

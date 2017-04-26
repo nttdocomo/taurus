@@ -4,17 +4,17 @@
 (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./dialog', '../button/button', '../../i18n'], factory);
+			define(['./dialog', '../button/button', '../../i18n', 'underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./dialog'),require('../button/button'),require('../../i18n'));
+				return factory(require('./dialog'),require('../button/button'),require('../../i18n'), require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./dialog'),require('../button/button'),require('../../i18n'));
+		module.exports = factory(require('./dialog'),require('../button/button'),require('../../i18n'), require('underscore'));
 	}
-}(this, function(Dialog,Button,i18n) {
+}(this, function(Dialog,Button,i18n,_) {
 	return Dialog.extend({
 		disabled:false,
 		buttons:[{
@@ -64,6 +64,12 @@
       var me = this
       var footer = me.footer
       me.buttons = _.map(me.buttons, function(button){
+      	if(!button.handler){
+      		return
+      	}
+      	if(typeof(button.handler) === 'string'){
+      		button.handler = me[button.handler]
+      	}
       	button.handler = _.bind(button.handler, me)
         var btn = new Button(button)
         btn.render(footer)

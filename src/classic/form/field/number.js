@@ -14,8 +14,8 @@
 	} else if(typeof module === "object" && module.exports) {
 		module.exports = factory(require('../../../define'), require('./trigger'),require('../../../lang/number'),require('../../../lang/string'));
 	}
-}(this, function(define, Trigger) {
-	return define(Trigger, {
+}(this, function(Trigger, number, string) {
+	return Trigger.extend({
 		baseChars : '0123456789',
 		allowDecimals : true,
 		decimalSeparator : '.',
@@ -60,7 +60,7 @@
 				if (this.minValue < 0) {
 					allowed += '-';
 				}
-				allowed = taurus.String.escapeRegex(allowed);
+				allowed = string.escapeRegex(allowed);
 				this.maskRe = new RegExp('[' + allowed + ']');
 				if (this.autoStripChars) {
 					this.stripCharsRe = new RegExp('[^' + allowed + ']', 'gi');
@@ -84,7 +84,7 @@
 			} else if (!me.allowDecimals || precision <= 0) {
 				precision = 0;
 			}
-			return parseFloat(taurus.Number.toFixed(parseFloat(value), precision));
+			return parseFloat(number.toFixed(parseFloat(value), precision));
 		},
 
 	    /**
@@ -151,10 +151,10 @@
 			return value;
 		},
 		spinUp : function() {
-			this.setValue(taurus.Number.constrain(this.getValue() + this.step, this.minValue, this.maxValue));
+			this.setValue(number.constrain(this.getValue() + this.step, this.minValue, this.maxValue));
 		},
 		spinDown : function() {
-			this.setValue(taurus.Number.constrain(this.getValue() - this.step, this.minValue, this.maxValue));
+			this.setValue(number.constrain(this.getValue() - this.step, this.minValue, this.maxValue));
 		}
 	});
 }));

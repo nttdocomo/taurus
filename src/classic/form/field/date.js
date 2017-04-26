@@ -98,11 +98,15 @@
     },
 		disable: function () {
 			Picker.prototype.disable.apply(this, arguments)
-			this.triggerEl.attr('disabled', true)
+      if(this.rendered){
+        this.triggerEl.attr('disabled',true)
+      }
 		},
 		enable: function () {
 			Picker.prototype.enable.apply(this, arguments)
-			this.triggerEl.attr('disabled', false)
+      if(this.rendered){
+        this.triggerEl.attr('disabled',false)
+      }
 		}
   })
 }))

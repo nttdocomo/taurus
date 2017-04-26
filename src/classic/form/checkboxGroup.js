@@ -4,17 +4,17 @@
 (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./fieldContainer','./field/field','underscore','./field/checkbox'], factory);
+			define(['./fieldContainer','./field/field','underscore','./field/checkbox','../../../taurus'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./fieldContainer'),require('./field/field'),require('underscore'),require('./field/checkbox'));
+				return factory(require('./fieldContainer'),require('./field/field'),require('underscore'),require('./field/checkbox'), require('../../../taurus'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./fieldContainer'),require('./field/field'),require('underscore'),require('./field/checkbox'));
+		module.exports = factory(require('./fieldContainer'),require('./field/field'),require('underscore'),require('./field/checkbox'), require('../../../taurus'));
 	}
-}(this, function(Base,Field,_,Checkbox) {
+}(this, function(Base,Field,_,Checkbox, taurus) {
 	return Base.extend({
 		events : {
 			'change input' : 'checkChange'
@@ -25,6 +25,7 @@
 		//fieldSubTpl : '<%_.each(fields,function(field){%><%if(vertical){%><div><%}%><%if(field.boxLabel){%><label id="<%=field.cmpId%>-boxLabelEl" class="checkbox-inline"><%}%><input id="<%=field.id%>" type="<%=field.type%>" /><%if(field.boxLabel){%><%=field.boxLabel%></label><%}%><%if(vertical){%></div><%}%><%})%>',
 		fieldSubTpl : '',
 		vertical : false,
+		groupCls : taurus.baseCSSPrefix + 'form-check-group',
 		getSubTplData : function() {
 			var me = this;
 			return {
@@ -276,6 +277,10 @@
         }
 			});*/
 			return null;
-		}
+		},
+		render:function(){
+    	this.$el.addClass(this.groupCls)
+    	this._super.apply(this,arguments)
+    },
 	}).mixins(Field);
 }));

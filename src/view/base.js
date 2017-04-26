@@ -38,10 +38,10 @@
       Backbone.View.apply(this, arguments)
       this.initConfig(config)
     },
-    getConfigurator: function () {
+    /*getConfigurator: function () {
       // the Ext.Configurator ctor will set $config so micro-opt out fn call:
       return this.$config || new Configurator(this)
-    },
+    },*/
     _ensureElement: function () {
       var me = this
       if (!me.el) {
@@ -64,6 +64,7 @@
       }
       this.$el.addClass(cls)
     },
+    getElConfig: function() {},
     removeClass: function (cls) {
       this.$el.removeClass(cls)
     },
@@ -495,6 +496,7 @@
         return false
       }
       me.beforeRender()
+      var ret = me.getElConfig()
       /*run html brfore append el because the el must has html*/
       $(renderTo)[this.operation](this.$el)
       this.renderHtml()
@@ -887,6 +889,7 @@
       this.components && _.each(this.components, function (item, i) {
         item.remove()
       })
+      this.trigger('remove')
       return Backbone.View.prototype.remove.apply(this, arguments)
     },
 

@@ -55,6 +55,20 @@
 			events['change input:'+this.inputType] = 'onBoxClick';
 			me._super.call(me,events);
 		},
+		getElConfig: function() {
+			var me = this;
+
+      // Add the checked class if this begins checked
+      if (me.isChecked(me.rawValue, me.inputValue)) {
+          me.addClass(me.checkedCls);
+      }
+      
+      /*if (!me.fieldLabel) {
+          me.skipLabelForAttribute = true;
+      }*/
+
+      return me._super();
+		},
 
     getFormId: function(){
       var me = this
@@ -161,7 +175,7 @@
 		setRawValue : function(value) {
 			var me = this, inputEl = me.inputEl, checked = me.isChecked(value, me.inputValue);
 			if (me.inputEl) {
-				//this.inputEl.prop('checked', checked);
+				this.inputEl.prop('checked', checked);
 				me[checked ? 'addClass' : 'removeClass'](me.checkedCls);
 			}
 
@@ -189,11 +203,10 @@
 				for ( i = 0; i < len; ++i) {
 					box = boxes[i];
 					box.setValue(Ext.Array.contains(checked, box.inputValue));
-					this.inputEl.attr('checked',Ext.Array.contains(checked, box.inputValue))
+					this.inputEl.attr('checked',_.contains(checked, box.inputValue))
 				}
 			} else {
-				Base.prototype.setValue.apply(this, arguments);
-				this.inputEl.attr('checked',checked)
+				me._super.apply(this, arguments);
 			}
 
 			return me;
