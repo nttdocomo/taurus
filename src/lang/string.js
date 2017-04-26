@@ -16,7 +16,7 @@
     }
 }(this, function(taurus) {
 	var formatRe = /\{(\d+)\}/g,escapeRegexRe = /([-.*+?\^${}()|\[\]\/\\])/g;
-	taurus.augmentObject('taurus.String.prototype', $.extend({}, String.prototype, {
+	var string = $.extend({}, String.prototype, {
 		format : function(format) {
 			var args = aries.Array.toArray(arguments, 1);
 			return format.replace(formatRe, function(m, i) {
@@ -32,11 +32,13 @@
 		escapeRegex : function(string) {
 			return string.replace(escapeRegexRe, "\\$1");
 		}
-	}))
-	taurus.String.escapeRegex = function(string) {
+	})
+	taurus.augmentObject('taurus.String.prototype', string)
+	string.escapeRegex = function(string) {
 		return string.replace(escapeRegexRe, "\\$1");
 	},
-	taurus.String.htmlEncode = function(string) {
-		return document.createElement('a').appendChild(document.createTextNode(string)).parentNode.innerHTML;
+	string.htmlEncode = function(string) {
+		return document.createElement('a').appendChild(document.createTextNode(string)).parentNode.innerHTML.replace(/(")/g,'&quot;');
 	}
+	return string
 }));

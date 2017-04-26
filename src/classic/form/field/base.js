@@ -4,17 +4,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../label', './field', 'underscore', 'backbone', 'modernizr', '../../../i18n', 'taurus'], factory)
+      define(['../label', './field', 'underscore', 'backbone', 'modernizr', '../../../i18n', 'taurus', '../../../util/format'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../label'), require('./field'), require('underscore'), require('backbone'), require('modernizr'), require('../../../i18n'), require('taurus'))
+        return factory(require('../label'), require('./field'), require('underscore'), require('backbone'), require('modernizr'), require('../../../i18n'), require('taurus'), require('../../../util/format'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../label'), require('./field'), require('underscore'), require('backbone'), require('modernizr'), require('../../../i18n'), require('taurus'))
+    module.exports = factory(require('../label'), require('./field'), require('underscore'), require('backbone'), require('modernizr'), require('../../../i18n'), require('taurus'), require('../../../util/format'))
   }
-}(this, function (Label, Field, _, Backbone, Modernizr, i18n, taurus) {
+}(this, function (Label, Field, _, Backbone, Modernizr, i18n, taurus, format) {
   /**
    * A namespace.
    * @namespace form
@@ -241,7 +241,7 @@
         name: me.name || inputId,
         disabled: me.disabled,
         readOnly: me.readOnly || !me.editable,
-        value: me.getRawValue(),
+        value: format.htmlEncode(me.getRawValue()),
         type: type,
         fieldCls: me.fieldCls,
         fieldStyle: me.getInputStyle(),
