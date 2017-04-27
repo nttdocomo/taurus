@@ -12,7 +12,7 @@
     module.exports = factory(require('./class'), require('./backbone'))
   }
 }(this, function(Class, Backbone){
-	return new Class.extend({
+	return new (Class.extend({
 		init: function(config) {
 	        _.extend(this, config || {});
 	        this.all = {};
@@ -55,5 +55,5 @@
 	    get: function(id) {
 	        return this.all[id];
 	    }
-	})
+	}))
 }))
