@@ -56,4 +56,4 @@
 	        return this.all[id];
 	    }
 	}))
-})}
+}))
