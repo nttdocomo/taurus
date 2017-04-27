@@ -35,7 +35,7 @@
    * @toc form.field.Base
    */
 
-  return define(Label, {
+  return Label.extend({
     inputType: 'text',
     readOnly: false,
     editable: true,
