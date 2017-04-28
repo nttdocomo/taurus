@@ -119,7 +119,9 @@
 			Base.prototype.applyChildEls.call(this,childEls);
 		},
 		setHeight : function(height) {
-			this.dialog.height(height);
+			if(this.rendered){
+				this.dialog.height(height);
+			}
 		},
 		setTitle:function(title){
       var me = this,
@@ -135,7 +137,9 @@
       }
 		},
 		setWidth : function(width) {
-			this.dialog.width(this.width);
+			if(this.rendered){
+				this.dialog.width(width);
+			}
 		},
 		update:function(htmlOrData){
 	        var me = this;
