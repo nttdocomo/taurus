@@ -40,20 +40,35 @@
 			return this.$el.find('.modal-body')
 		},
 		show:function(renderTo){
-			if(!this.isRendered){
-				this.render(renderTo || $(document.body));
+			var me = this
+			if(!me.rendered){
+				me.render(renderTo || $(document.body));
 			}
-			this.$el.addClass('in');
+			me.$el.addClass('in');
 			$(document.body).addClass('modal-open');
-			this._super();
-			this.position();
+			me._super();
+			if(!me.headerElHeight){
+				me.headerElHeight = me.headerEl.outerHeight()
+				me.content.css({
+					'padding-top':me.headerElHeight
+				})
+				me.headerEl.css({
+					'margin-top':-1*me.headerElHeight
+				})
+			}
+			me.position();
 		},
 		position:function(){
-            var me = this,$el = me.$el,dialog = me.dialog;
+      var me = this,$el = me.$el,dialog = me.dialog;
 			if(me.fullscreen){
 				$el.addClass('modal-fullscreen')
 			}
 			var height = dialog.height(),width = dialog.width();
+			var modalHeight = this.$el.height()
+			if(height > modalHeight){
+				height = modalHeight
+			}
+			me.setHeight(height)
 			if(!me.fullscreen){
 				dialog.css({
 					'margin-top':(height/2)*-1,
@@ -103,28 +118,24 @@
 			});
 			Base.prototype.applyChildEls.call(this,childEls);
 		},
-		render : function() {
-            var me = this;
-			me._super.apply(me, arguments);
-			me.dialog.height(me.height);
-			me.dialog.width(me.width);
-		},
 		setHeight : function(height) {
+			this.dialog.height(height);
 		},
 		setTitle:function(title){
-	        var me = this,
-	            oldTitle = me.title,
-	            header = me.header
+      var me = this,
+          oldTitle = me.title,
+          header = me.header
 
-	        if (title !== oldTitle) {
-	            me.title = title;
+      if (title !== oldTitle) {
+          me.title = title;
 
-	            header.text(title);
+          header.text(title);
 
-	            me.trigger('titlechange', me, title, oldTitle);
-	        }
+          me.trigger('titlechange', me, title, oldTitle);
+      }
 		},
 		setWidth : function(width) {
+			this.dialog.width(this.width);
 		},
 		update:function(htmlOrData){
 	        var me = this;
