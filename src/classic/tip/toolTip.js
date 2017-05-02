@@ -179,12 +179,17 @@
 	    onTargetEnter: function(e) {
 	        var me = this,
 	            t;
+	        var newTarget
 
+	        newTarget = me.target
+	        if(newTarget){
+	        	me.currentTarget = newTarget
+	        }
 	        me.triggerElement = true;
-            me.triggerEvent = e;
-            me.clearTimer('hide');
-            //me.targetXY = e.getXY();
-            me.delayShow();
+          me.triggerEvent = e;
+          me.clearTimer('hide');
+          //me.targetXY = e.getXY();
+          me.delayShow();
 	    },
 
 	    // @private
@@ -220,18 +225,32 @@
 
 	        if (me.target) {
 	            tg = taurus.get(target);
-	            tg.off({
-	            	mouseenter: _.bind(me.onTargetEnter,me),
-	            	mouseleave: _.bind(me.onTargetOut,me)
-	            })
+	            if(typeof(tg) === 'string'){
+		            taurus.$doc.off({
+		            	mouseenter: _.bind(me.onTargetEnter,me),
+		            	mouseleave: _.bind(me.onTargetOut,me)
+		            }, tg)
+	            } else {
+		            tg.off({
+		            	mouseenter: _.bind(me.onTargetEnter,me),
+		            	mouseleave: _.bind(me.onTargetOut,me)
+		            })
+	            }
 	        }
 
 	        me.target = t;
 	        if (t) {
+	        	if(typeof(tg) === 'string'){
+	            taurus.$doc.on({
+	            	mouseenter: _.bind(me.onTargetEnter,me),
+	            	mouseleave: _.bind(me.onTargetOut,me)
+	            }, t)
+	        	} else {
 	            t.on({
 	            	mouseenter: _.bind(me.onTargetEnter,me),
 	            	mouseleave: _.bind(me.onTargetOut,me)
 	            })
+	        	}
 	        }
 	        if (me.anchor) {
 	            me.anchorTarget = me.target;
@@ -243,11 +262,15 @@
 	     */
 	    show: function (xy) {
 	        var me = this;
+	        if(!me.currentTarget && me.target){
+	        	return me.showBy(me.target, me.getAnchorAlign());
+	        }
 
 	        // Show this Component first, so that sizing can be calculated
 	        // pre-show it off screen so that the el will have dimensions
 	        Tip.prototype.show.apply(this,arguments);
-	        if (this.hidden === false) {
+	        me.$el.css('opacity',1);
+	        /*if (this.hidden === false) {
 	            if (me.anchor) {
 	                me.anchor = me.origAnchor;
 	            }
@@ -259,13 +282,22 @@
 	                me.$el.css('opacity',1);
 	            }
 
-	            /*if (me.anchor) {
+	            if (me.anchor) {
 	                me.syncAnchor();
 	                me.anchorEl.show();
 	            } else {
 	                me.anchorEl.hide();
-	            }*/
-	        }
+	            }
+	        }*/
+	        me.realignToTarget()
+	    },
+	    realignToTarget: function(){
+	    	var me = this
+	    	if (!me.calledFromShowAt) {
+	    		if(me.target){
+	    			me.alignTo(me.target, me.getAnchorAlign());
+	    		}
+	    	}
 	    },
 
 	    /**

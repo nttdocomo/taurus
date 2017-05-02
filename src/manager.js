@@ -1,6 +1,17 @@
-define(function(require){
-	var Class = require('class')
-	var Backbone = require('./backbone')
+;(function (root, factory) {
+  if (typeof define === 'function') {
+    if (define.amd) {
+      define(['./class', './backbone'], factory)
+    }
+    if (define.cmd) {
+      define(function (require, exports, module) {
+        return factory(require('./class'), require('./backbone'))
+      })
+    }
+  } else if (typeof module === 'object' && module.exports) {
+    module.exports = factory(require('./class'), require('./backbone'))
+  }
+}(this, function(Class, Backbone){
 	return new (Class.extend({
 		init: function(config) {
 	        _.extend(this, config || {});
@@ -45,4 +56,4 @@ define(function(require){
 	        return this.all[id];
 	    }
 	}))
-})
+}))
