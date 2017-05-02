@@ -6,7 +6,7 @@
   // Set up Backbone appropriately for the environment. Start with AMD.
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['underscore', 'backbone', 'taurus', './lang/object/chain', './mixin/addConfig', './mixin/initConfig'], function (_, Backbone, Tau, classify, addConfig, initConfig) {
+      define(['./underscore', './backbone', './taurus', './lang/object/chain', './mixin/addConfig', './mixin/initConfig'], function (_, Backbone, Tau, classify, addConfig, initConfig) {
         // Export global even in AMD case in case this script is loaded with
         // others that may still expect a global Backbone.
         return factory(_, Backbone, Tau, classify, addConfig, initConfig)
@@ -14,13 +14,13 @@
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('underscore'), require('backbone'), require('taurus'), require('./lang/object/chain'), require('./mixin/addConfig'), require('./mixin/initConfig'))
+        return factory(require('./underscore'), require('./backbone'), require('./taurus'), require('./lang/object/chain'), require('./mixin/addConfig'), require('./mixin/initConfig'))
       })
     }
 
   // Next for Node.js or CommonJS.
   } else if (typeof exports !== 'undefined' && typeof require === 'function') {
-    factory(require('underscore'), require('backbone'), require('./lang/object/chain'), require('./mixin/addConfig'), require('./mixin/initConfig'))
+    factory(require('./underscore'), require('./backbone'), require('./lang/object/chain'), require('./mixin/addConfig'), require('./mixin/initConfig'))
 
   // Finally, as a browser global.
   } else {
