@@ -220,7 +220,7 @@
 		},
 		doRemoteQuery : function(queryString) {
 			var me = this, collection = me.collection;
-			if(!queryString){
+			if(!queryString && !me.triggerAction === 'all'){
 				return false;
 			}
 			var picker = me.getPicker()
