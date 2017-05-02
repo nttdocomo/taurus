@@ -4,17 +4,17 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../view/base','./tab'], factory);
+			define(['../../view/base','./tab', '../../../jquery'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../../view/base'),require('./tab'));
+				return factory(require('../../view/base'),require('./tab'), require('../../../jquery'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../view/base'),require('./tab'));
+		module.exports = factory(require('../../view/base'),require('./tab'), require('../../../jquery'));
 	}
-}(this, function(Base,Tab) {
+}(this, function(Base,Tab, $) {
 	return Base.extend({
 		defaultType : Tab,
 		tagName : 'ul',

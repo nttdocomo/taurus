@@ -308,10 +308,13 @@
 	        me.lastActive = new Date();
 	        me.clearTimers();
 	        me.calledFromShowAt = true;
+	        me.currentTarget = taurus.get(cmp);
 
 	        // Only call if this is hidden. May have been called from show above.
 	        if (!me.isVisible()) {
-	            Tip.prototype.showBy.apply(this,arguments);
+	          me._super.apply(me,arguments);
+	        } else {
+	          me.alignTo(cmp, pos || me.defaultAlign, off || me.alignOffset);
 	        }
 
 	        // Show may have been vetoed.
