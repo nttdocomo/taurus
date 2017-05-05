@@ -5,15 +5,15 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./column', 'underscore', 'taurus'], factory)
+      define(['./column', 'underscore', '../../../taurus'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./column'), require('underscore'), require('taurus'))
+        return factory(require('./column'), require('underscore'), require('../../../taurus'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./column'), require('underscore'), require('taurus'))
+    module.exports = factory(require('./column'), require('underscore'), require('../../../taurus'))
   }
 }(this, function (Column, _, taurus) {
   return Column.extend({

@@ -86,6 +86,16 @@
 		enabledButtons:function(){
 			this.disabled = false;
 			this.renderButttons();
+		},
+		show: function(){
+			var me = this
+			me._super.apply(me, arguments)
+			if(!me.footerElHeight){
+				me.footerElHeight = me.footer.outerHeight()
+				me.content.css({
+					'padding-bottom':me.footerElHeight
+				})
+			}
 		}
 	});
 }));

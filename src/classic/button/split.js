@@ -4,15 +4,15 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./button', './manager', 'taurus', 'underscore'], factory)
+      define(['./button', './manager'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./button'), require('./manager'), require('taurus'), require('underscore'))
+        return factory(require('./button'), require('./manager'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./button'), require('./manager'), require('taurus'), require('underscore'))
+    module.exports = factory(require('./button'), require('./manager'))
   }
 }(this, function (Button, ButtonManager, taurus, _) {
   return Button.extend({

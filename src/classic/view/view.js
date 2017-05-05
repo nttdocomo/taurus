@@ -4,15 +4,15 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./abstractView', 'backbone', 'taurus', '../../lang/event'], factory)
+      define(['./abstractView', 'backbone', '../../taurus', '../../lang/event'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./abstractView'), require('backbone'), require('taurus'), require('../../lang/event'))
+        return factory(require('./abstractView'), require('backbone'), require('../../taurus'), require('../../lang/event'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./abstractView'), require('backbone'), require('taurus'), require('../../lang/event'))
+    module.exports = factory(require('./abstractView'), require('backbone'), require('../../taurus'), require('../../lang/event'))
   }
 }(this, function (Base, Backbone, taurus) {
   return Base.extend({

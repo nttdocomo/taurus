@@ -4,15 +4,15 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./view', './boundListItem', 'underscore', 'backbone', 'taurus', 'jquery.lazyload'], factory)
+      define(['./view', './boundListItem', 'underscore', 'backbone', '../../taurus', 'jquery.lazyload'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./view'), require('./boundListItem'), require('underscore'), require('backbone'), require('taurus'), require('jquery.lazyload'))
+        return factory(require('./view'), require('./boundListItem'), require('underscore'), require('backbone'), require('../../taurus'), require('jquery.lazyload'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./view'), require('./boundListItem'), require('underscore'), require('backbone'), require('taurus'), require('jquery.lazyload'))
+    module.exports = factory(require('./view'), require('./boundListItem'), require('underscore'), require('backbone'), require('../../taurus'), require('jquery.lazyload'))
   }
 }(this, function (Base, BoundListItem, _, Backbone, taurus) {
   return Base.extend({

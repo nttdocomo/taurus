@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['class','taurus'], factory);
+			define(['../../class','../../taurus'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('class'),require('taurus'));
+				return factory(require('../../class'),require('../../taurus'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('class'),require('taurus'));
+		module.exports = factory(require('../../class'),require('../../taurus'));
 	}
 }(this, function(Class,taurus) {
 	return new (Class.extend({
