@@ -4,15 +4,15 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./button', 'taurus', 'underscore', 'fine-uploader'], factory)
+      define(['./button', '../../taurus', 'underscore', 'fine-uploader'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./button'), require('taurus'), require('underscore'), require('fine-uploader'))
+        return factory(require('./button'), require('../../taurus'), require('underscore'), require('fine-uploader'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./button'), require('taurus'), require('underscore'), require('fine-uploader'))
+    module.exports = factory(require('./button'), require('../../taurus'), require('underscore'), require('fine-uploader'))
   }
 }(this, function (Button, taurus, _, qq) {
   return Button.extend({

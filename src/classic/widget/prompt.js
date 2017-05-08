@@ -64,13 +64,13 @@
       var me = this
       var footer = me.footer
       me.buttons = _.map(me.buttons, function(button){
-      	if(!button.handler){
-      		return
-      	}
       	if(typeof(button.handler) === 'string'){
       		button.handler = me[button.handler]
       	}
-      	button.handler = _.bind(button.handler, me)
+      	if(button.handler){
+      		button.handler = _.bind(button.handler, me)
+      	}
+      	
         var btn = new Button(button)
         btn.render(footer)
         return btn

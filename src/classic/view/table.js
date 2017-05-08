@@ -1,20 +1,21 @@
 /**
  * @author nttdocomo
  */
+/* global define */
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./view', '../grid/cellContext', '../../selection/rowModel', 'backbone', 'underscore', 'taurus'], factory)
+      define(['./view', '../grid/cellContext', '../../selection/rowModel', 'backbone', 'underscore', 'jquery', '../../taurus'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./view'), require('../grid/cellContext'), require('../../selection/rowModel'), require('backbone'), require('underscore'), require('taurus'))
+        return factory(require('./view'), require('../grid/cellContext'), require('../../selection/rowModel'), require('backbone'), require('underscore'), require('jquery'), require('../../taurus'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./view'), require('../grid/cellContext'), require('../../selection/rowModel'), require('backbone'), require('underscore'), require('taurus'))
+    module.exports = factory(require('./view'), require('../grid/cellContext'), require('../../selection/rowModel'), require('backbone'), require('underscore'), require('jquery'), require('../../taurus'))
   }
-}(this, function (Base, CellContext, RowModel, Backbone, _, taurus) {
+}(this, function (Base, CellContext, RowModel, Backbone, _, $, taurus) {
   return Base.extend({
     header: true,
     tpl: '<div class="grid-item-container"><table><%=rows%></table></div>',
@@ -30,7 +31,7 @@
     itemCls: 'grid-item',
     cellSelector: 'td.' + taurus.baseCSSPrefix + 'grid-cell',
     childEls: {
-      'all':'table tr',
+      'all': 'table tr',
       'gridBody': '.grid-body',
       'gridTable': '.grid-table',
       'gridHeader': '.grid-header',
@@ -108,13 +109,13 @@
 
       Base.prototype.initComponent.apply(this, arguments)
       // me.collection.on('sync reset update change',_.debounce(_.bind(me.reset,me),500))
-      /*me.collection.on('reset',_.bind(me.reset,me))
+      /* me.collection.on('reset',_.bind(me.reset,me))
       me.collection.on('update',_.debounce(_.bind(me.reset,me)))
       me.collection.on('change',_.bind(me.reset,me));*/
       $(window).on('resize', function () {
         me.headerCt.setColumnsWidth(me.getCellsWidth())
       })
-    /*var me = this, headerCtCfg = this.columns
+    /* var me = this, headerCtCfg = this.columns
     if(this.header){
     	if (_.isArray(headerCtCfg)) {
 	                headerCtCfg = {
@@ -126,7 +127,7 @@
 	            }))
     }
     me.collection.on('reset',_.bind(this.reset,this));*/
-    /*this.table = new TableBody($.extend({
+    /* this.table = new TableBody($.extend({
     	collection:this.collection,
     	columns:this.columns,
     	rowTemplate:this.rowTemplate,
@@ -139,46 +140,41 @@
       this.headerCt.setColumnsWidth(this.getCellsWidth())
     },
     convertWidthsToFlexes: function () {
-      var me = this,
-        totalWidth = 0,
-        cells = this.$el.find('tr:eq(0) > td')
+      var me = this
+      var totalWidth = 0
+      var cells = this.$el.find('tr:eq(0) > td')
       _.each(cells, function (cell) {
         totalWidth += $(cell).outerWidth()
       })
       return totalWidth !== me.$el.width()
     },
     getCellsWidth: function () {
-      var me = this,
-        cells = this.$el.find('tr:eq(0) > td'),
-        columns = me.columns
-      if (me.forceFit) {
-        if (me.convertWidthsToFlexes(ownerContext)) {
-        }
-      }
+      var me = this
+      var cells = me.$el.find('tr:eq(0) > td')
       return _.map(cells, function (cell) {
         var clientRect = cell.getBoundingClientRect()
         // http://stackoverflow.com/questions/20087491/setting-font-family-to-sans-serif-causes-jquery-to-calculate-incorrect-outerwidt
-        return clientRect.width || (clientRect.right - clientRect.left); // original version $(cell).innerWidth()
+        return clientRect.width || (clientRect.right - clientRect.left) // original version $(cell).innerWidth()
       })
     },
 
-    getNodeByRecord: function(record) {
-        return this.retrieveNode(this.getRowId(record), false);
+    getNodeByRecord: function (record) {
+      return this.retrieveNode(this.getRowId(record), false)
     },
 
-    getRowId: function(record){
-        return this.id + '-record-' + record.cid;
+    getRowId: function (record) {
+      return this.id + '-record-' + record.cid
     },
 
-    indexOf: function(node) {
-      node = this.getNode(node);
+    indexOf: function (node) {
+      node = this.getNode(node)
       if (!node && node !== 0) {
-        return -1;
+        return -1
       }
-      return this.$el.find('tr').index(node);
+      return this.$el.find('tr').index(node)
     },
     initFeatures: function (grid) {
-      /*var me = this,
+      /* var me = this,
           i,
           features,
           feature,
@@ -239,10 +235,11 @@
      * to return the top level row.
      * @return {HTMLElement} The node or null if it wasn't found
      */
-    getRow: function(nodeInfo) {
+    getRow: function (nodeInfo) {
+      var fly
       if (_.isNumber(nodeInfo)) {
-          fly = this.$el.find('tr').eq(nodeInfo);
-          return fly;
+        fly = this.$el.find('tr').eq(nodeInfo)
+        return fly
       }
     },
 
@@ -252,16 +249,16 @@
 
     // after adding a row stripe rows from then on
     onAdd: function (store, options) {
-      var me = this,
-        collection = me.collection,
-        bufferedRenderer = me.bufferedRenderer
+      var me = this
+      // var collection = me.collection
+      // var bufferedRenderer = me.bufferedRenderer
       me.reset()
       me.refresh(store, options)
-      /*if (collection.length) {
+      /* if (collection.length) {
       	me.reset()
       }*/
 
-    /*if (me.rendered && bufferedRenderer) {
+    /* if (me.rendered && bufferedRenderer) {
     	me.refresh(store, index, [], records)
          //bufferedRenderer.onReplace(store, index, [], records)
     } else {
@@ -273,57 +270,50 @@
     onCellMouseDown: taurus.emptyFn,
 
     // GridSelectionModel invokes onRowSelect as selection changes
-    onRowSelect: function(rowIdx) {
-      var me = this,
-          rowNode;
+    onRowSelect: function (rowIdx) {
+      var me = this
+      var rowNode
 
-      //me.addItemCls(rowIdx, me.selectedItemCls);
-      
+      // me.addItemCls(rowIdx, me.selectedItemCls);
       rowNode = me.getRow(rowIdx)
       rowNode.addClass(me.selectedItemCls)
-      
       if (rowNode) {
-        rowNode.attr('aria-selected', true);
+        rowNode.attr('aria-selected', true)
       }
 
-      //<feature legacyBrowser>
-      /*if (Ext.isIE8) {
+      // <feature legacyBrowser>
+      /* if (Ext.isIE8) {
         me.repaintBorder(rowIdx + 1);
       }*/
-      //</feature>
+      // </feature>
     },
 
     // GridSelectionModel invokes onRowDeselect as selection changes
-    onRowDeselect: function(rowIdx) {
-      var me = this,
-          rowNode;
+    onRowDeselect: function (rowIdx) {
+      var me = this
+      var rowNode
 
-      //me.removeItemCls(rowIdx, me.selectedItemCls);
-      
+      // me.removeItemCls(rowIdx, me.selectedItemCls);
       rowNode = me.getRow(rowIdx)
       rowNode.removeClass(me.selectedItemCls)
-      
       if (rowNode) {
-        rowNode.removeAttr('aria-selected');
+        rowNode.removeAttr('aria-selected')
       }
 
-      //<feature legacyBrowser>
-      /*if (Ext.isIE8) {
+      // <feature legacyBrowser>
+      /* if (Ext.isIE8) {
           me.repaintBorder(rowIdx + 1);
       }*/
-      //</feature>
+      // </feature>
     },
     processItemEvent: function (record, item, rowIndex, e) {
-      var me = this,
-        self = me.self,
-        map = me.EventMap,
-        type = e.type,
-        // features = me.features,
-        // len = features.length,
-        i, cellIndex, result, feature, column,
-        eventPosition = e.position = me.eventPosition || (me.eventPosition = new CellContext()),
-        row, cell /*,
-	            navModel = me.getNavigationModel()*/
+      var me = this
+      var map = me.EventMap
+      var type = e.type
+      var eventPosition = e.position = me.eventPosition || (me.eventPosition = new CellContext())
+      // features = me.features,
+      // len = features.length,
+      var cellIndex, result, column, row, cell /*, i, feature, navModel = me.getNavigationModel()*/
       if (me.indexInStore(item) !== -1) {
         row = item
         cell = e.getTarget(me.getCellSelector(), row)
@@ -348,7 +338,7 @@
         }
         eventPosition.column = column
         if (result !== false) {
-          /*result = */me.trigger('row' + type, me, record, row, rowIndex, e)
+          /* result = */me.trigger('row' + type, me, record, row, rowIndex, e)
         }
         return result
       } else {
