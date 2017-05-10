@@ -95,6 +95,9 @@
 				me.content.css({
 					'padding-bottom':me.footerElHeight
 				})
+				me.footer.css({
+					'margin-bottom':-1*me.footerElHeight
+				})
 			}
 		}
 	});

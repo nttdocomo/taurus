@@ -49,13 +49,13 @@
 			me._super();
 			if(!me.headerElHeight){
 				me.headerElHeight = me.headerEl.outerHeight()
-				me.content.css({
-					'padding-top':me.headerElHeight
-				})
-				me.headerEl.css({
-					'margin-top':-1*me.headerElHeight
-				})
 			}
+			me.content.css({
+				'padding-top':me.headerElHeight
+			})
+			me.headerEl.css({
+				'margin-top':-1*me.headerElHeight
+			})
 			me.position();
 		},
 		position:function(){
@@ -68,7 +68,7 @@
 			if(height > modalHeight){
 				height = modalHeight
 			}
-			me.setHeight(height)
+			//me.setHeight(height)
 			if(!me.fullscreen){
 				dialog.css({
 					'margin-top':(height/2)*-1,
