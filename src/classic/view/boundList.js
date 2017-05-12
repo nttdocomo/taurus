@@ -4,17 +4,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../../define', './view', 'underscore', 'backbone', 'taurus', 'jquery.lazyload'], factory)
+      define(['./view', 'underscore', 'backbone', '../../taurus', 'jquery.lazyload'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../../define'), require('./view'), require('underscore'), require('backbone'), require('taurus'), require('jquery.lazyload'))
+        return factory(require('./view'), require('underscore'), require('backbone'), require('../../taurus'), require('jquery.lazyload'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../../define'), require('./view'), require('underscore'), require('backbone'), require('taurus'), require('jquery.lazyload'))
+    module.exports = factory(require('./view'), require('underscore'), require('backbone'), require('../../taurus'), require('jquery.lazyload'))
   }
-}(this, function (define, Base, _, Backbone, taurus) {
+}(this, function (Base, _, Backbone, taurus) {
   return Base.extend({
     // tpl:'<%=content%>',
     config: {

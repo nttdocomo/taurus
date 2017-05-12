@@ -64,13 +64,13 @@
       var me = this
       var footer = me.footer
       me.buttons = _.map(me.buttons, function(button){
-      	if(!button.handler){
-      		return
-      	}
       	if(typeof(button.handler) === 'string'){
       		button.handler = me[button.handler]
       	}
-      	button.handler = _.bind(button.handler, me)
+      	if(button.handler){
+      		button.handler = _.bind(button.handler, me)
+      	}
+      	
         var btn = new Button(button)
         btn.render(footer)
         return btn
@@ -86,6 +86,19 @@
 		enabledButtons:function(){
 			this.disabled = false;
 			this.renderButttons();
+		},
+		show: function(){
+			var me = this
+			me._super.apply(me, arguments)
+			if(!me.footerElHeight){
+				me.footerElHeight = me.footer.outerHeight()
+				me.content.css({
+					'padding-bottom':me.footerElHeight
+				})
+				me.footer.css({
+					'margin-bottom':-1*me.footerElHeight
+				})
+			}
 		}
 	});
 }));

@@ -5,17 +5,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../state/stateful', '../util/focusable', '../mixin/observable', '../util/itemCollection', '../jquery', '../underscore', '../backbone', '../taurus', '../backbone-super', '../mixins', '../lang/number', '../jquery.ui.position'], factory)
+      define(['../state/stateful', '../util/focusable', '../mixin/observable', '../util/itemCollection', '../underscore', '../taurus', '../backbone', '../backbone-super', '../lang/number', '../mixins', '../jquery.ui.position'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../state/stateful'), require('../util/focusable'), require('../mixin/observable'), require('../util/itemCollection'), require('../jquery'), require('../underscore'), require('../backbone'), require('../taurus'), require('../backbone-super'), require('../mixins'), require('../lang/number'), require('../jquery.ui.position'))
+        return factory(require('../state/stateful'), require('../util/focusable'), require('../mixin/observable'), require('../util/itemCollection'), require('../underscore'), require('../taurus'), require('../backbone'), require('../backbone-super'), require('../lang/number'), require('../mixins'), require('../jquery.ui.position'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../state/stateful'), require('../util/focusable'), require('../mixin/observable'), require('../util/itemCollection'), require('../jquery'), require('../underscore'), require('../backbone'), require('../taurus'), require('../backbone-super'), require('../lang/number'), require('../jquery.ui.position'))
+    module.exports = factory(require('../state/stateful'), require('../util/focusable'), require('../mixin/observable'), require('../util/itemCollection'), require('../underscore'), require('../taurus'), require('../backbone'), require('../backbone-super'), require('../lang/number'), require('../mixins'), require('../jquery.ui.position'))
   }
-}(this, function (Stateful, Focusable, observable, ItemCollection, $, _, Backbone, taurus) {
+}(this, function (Stateful, Focusable, observable, ItemCollection, _, taurus, Backbone) {
   /**
    * A basic class
    *
@@ -64,6 +64,7 @@
       }
       this.$el.addClass(cls)
     },
+    //applyChildEls: taurus.emptyFn,
     getElConfig: function() {},
     removeClass: function (cls) {
       this.$el.removeClass(cls)

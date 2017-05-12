@@ -4,17 +4,17 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../../define', './picker','../../view/boundList','underscore','backbone','../../../lang/event','jquery.scrollIntoView'], factory);
+			define(['./picker','../../view/boundList','../../../underscore','../../../backbone','../../../lang/event','jquery.scrollIntoView'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../../../define'),require('./picker'),require('../../view/boundList'),require('underscore'),require('backbone'),require('../../../lang/event'),require('jquery.scrollIntoView'));
+				return factory(require('./picker'),require('../../view/boundList'),require('../../../underscore'),require('../../../backbone'),require('../../../lang/event'),require('jquery.scrollIntoView'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../../define'),require('./picker'),require('../../view/boundList'),require('underscore'),require('backbone'),require('../../../lang/event'),require('jquery.scrollIntoView'));
+		module.exports = factory(require('./picker'),require('../../view/boundList'),require('../../../underscore'),require('../../../backbone'),require('../../../lang/event'),require('jquery.scrollIntoView'));
 	}
-}(this, function(define, Picker,BoundList,_,Backbone) {
+}(this, function(Picker,BoundList,_,Backbone) {
 	return Picker.extend({
 		allQuery: '',
 		/**
@@ -219,7 +219,7 @@
 		},
 		doRemoteQuery : function(queryString) {
 			var me = this, collection = me.collection;
-			if(!queryString){
+			if(!queryString && !me.triggerAction === 'all'){
 				return false;
 			}
 			var picker = me.getPicker()

@@ -37,7 +37,7 @@
 				name:'aabb',
 				value:'2'
 			}]),
-			$el = $('<div></div>'),
+			$el = $('<div></div>').appendTo(document.body),
 			comboBox = new ComboBox({
 				queryDelay:1,
 				renderTo:$el,

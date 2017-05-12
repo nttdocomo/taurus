@@ -4,11 +4,11 @@
       // Now we're wrapping the factory and assigning the return
       // value to the root (window) and returning it as well to
       // the AMD loader.
-      define(['class', 'backbone', 'underscore','taurus'], factory)
+      define(['class', 'backbone', 'underscore','../../taurus'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return (root.Class = factory(require('class'), require('backbone'), require('underscore'), require('taurus')))
+        return (root.Class = factory(require('class'), require('backbone'), require('underscore'), require('../../taurus')))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
@@ -16,7 +16,7 @@
     // run into a scenario where plain modules depend on CommonJS
     // *and* I happen to be loading in a CJS browser environment
     // but I'm including it for the sake of being thorough
-    module.exports = (root.Class = factory(require('class'), require('backbone'), require('underscore'), require('taurus')))
+    module.exports = (root.Class = factory(require('class'), require('backbone'), require('underscore'), require('../../taurus')))
   } else {
     root.Class = factory()
   }

@@ -4,15 +4,15 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./file', 'taurus', 'underscore', 'fine-uploader'], factory)
+      define(['./file', '../../../taurus', '../../../underscore', '../../../fine-uploader'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./file'), require('taurus'), require('underscore'), require('fine-uploader'))
+        return factory(require('./file'), require('../../../taurus'), require('../../../underscore'), require('../../../fine-uploader'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./file'), require('taurus'), require('underscore'), require('fine-uploader'))
+    module.exports = factory(require('./file'), require('../../../taurus'), require('../../../underscore'), require('../../../fine-uploader'))
   }
 }(this, function (File, taurus, _, qq) {
   return File.extend({

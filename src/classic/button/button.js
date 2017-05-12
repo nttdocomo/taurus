@@ -4,18 +4,18 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../../define', '../../view/base', '../menu/menu', '../menu/manager', './manager', 'taurus', 'underscore'], factory)
+      define(['../../view/base', '../menu/menu', '../menu/manager', './manager', '../../taurus', '../../underscore'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../../define'), require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('taurus'), require('underscore'))
+        return factory(require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('../../taurus'), require('../../underscore'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../../define'), require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('taurus'), require('underscore'))
+    module.exports = factory(require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('../../taurus'), require('../../underscore'))
   }
-}(this, function (define, Base, Menu, MenuManager, ButtonManager, taurus, _) {
-  return define(Base, {
+}(this, function (Base, Menu, MenuManager, ButtonManager, taurus, _) {
+  return Base.extend({
     /*
 	     * @property {Boolean}
 	     * `true` in this class to identify an object as an instantiated Button, or subclass thereof.

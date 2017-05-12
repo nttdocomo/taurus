@@ -4,17 +4,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../../define', './abstractView', 'backbone', '../../lang/event'], factory)
+      define(['./abstractView', 'backbone', '../../taurus', '../../lang/event'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../../define'), require('./abstractView'), require('backbone'), require('../../lang/event'))
+        return factory(require('./abstractView'), require('backbone'), require('../../taurus'), require('../../lang/event'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../../define'), require('./abstractView'), require('backbone'), require('../../lang/event'))
+    module.exports = factory(require('./abstractView'), require('backbone'), require('../../taurus'), require('../../lang/event'))
   }
-}(this, function (define, Base, Backbone) {
+}(this, function (Base, Backbone, taurus) {
   return Base.extend({
     className: 'row-fluid',
     selectedItemCls: 'item-selected',

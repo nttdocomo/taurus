@@ -1,21 +1,22 @@
 /**
  * @author nttdocomo
  */
- (function (root, factory) {
-	if(typeof define === "function") {
-		if(define.amd){
-			define(['./tip','../../lang/date','taurus','underscore'], factory);
-		}
-		if(define.cmd){
-			define(function(require, exports, module){
-				return factory(require('./tip'),require('../../lang/date'),require('taurus'),require('underscore'));
-			})
-		}
-	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./tip'),require('../../lang/date'),require('taurus'),require('underscore'));
-	}
-}(this, function(Tip,DateUtil,taurus,_){
-	return Tip.extend({
+/* global define */
+(function (root, factory) {
+  if (typeof define === 'function') {
+    if (define.amd) {
+      define(['./tip','../../lang/date', '../../taurus', 'underscore'], factory)
+    }
+    if (define.cmd) {
+      define(function (require, exports, module) {
+        return factory(require('./tip'), require('../../lang/date'), require('../../taurus'),require('underscore'));
+      })
+    }
+  } else if (typeof module === 'object' && module.exports) {
+    module.exports = factory(require('./tip'), require('../../lang/date'), require('../../taurus'),require('underscore'));
+  }
+}(this, function (Tip, DateUtil, taurus, _) {
+  return Tip.extend({
 
 	    /**
 	     * @cfg {Number} showDelay
@@ -181,7 +182,18 @@
 	            t;
 	        var newTarget
 
-	        newTarget = me.target
+	        if (me.target.length > 1) {
+	        	me.target.each(function () {
+	        		if ($(this).is(e.target)) {
+	        			newTarget = $(this)
+	        			return true
+	        		}
+	        	})
+	        } else {
+	        	if (me.target.is(e.target)) {
+        			newTarget = $(e.target)
+        		}
+	        }
 	        if(newTarget){
 	        	me.currentTarget = newTarget
 	        }
@@ -295,7 +307,7 @@
 	    	var me = this
 	    	if (!me.calledFromShowAt) {
 	    		if(me.target){
-	    			me.alignTo(me.target, me.getAnchorAlign());
+	    			me.alignTo(me.currentTarget, me.getAnchorAlign());
 	    		}
 	    	}
 	    },
@@ -308,10 +320,13 @@
 	        me.lastActive = new Date();
 	        me.clearTimers();
 	        me.calledFromShowAt = true;
+	        me.currentTarget = taurus.get(cmp);
 
 	        // Only call if this is hidden. May have been called from show above.
 	        if (!me.isVisible()) {
-	            Tip.prototype.showBy.apply(this,arguments);
+	          me._super.apply(me,arguments);
+	        } else {
+	          me.alignTo(cmp, pos || me.defaultAlign, off || me.alignOffset);
 	        }
 
 	        // Show may have been vetoed.
