@@ -15,43 +15,43 @@
 		module.exports = factory();
 	}
 }(this, function(){
-	var Field = function(){};
-	Field.prototype = {
-		isFormField : true,
+	var Field = function(superclass) {
+    return superclass.extend({
+      isFormField : true,
 
 	    /**
 	     * Initializes the field's value based on the initial config.
 	     */
 	    initValue: function() {
-	        var me = this;
+        var me = this;
 
-	        // Set the initial value if we have one.
-	        // Prevent validation on initial set.
-	        if ('value' in me) {
-	            me.suspendCheckChange++;
-	            me.setValue(me.value);
-	            me.suspendCheckChange--;
-	        }
+        // Set the initial value if we have one.
+        // Prevent validation on initial set.
+        if ('value' in me) {
+          me.suspendCheckChange++;
+          me.setValue(me.value);
+          me.suspendCheckChange--;
+        }
 
-	        /**
-	         * @property {Object} originalValue
-	         * The original value of the field as configured in the {@link #value} configuration, or as loaded by the last
-	         * form load operation if the form's {@link Ext.form.Basic#trackResetOnLoad trackResetOnLoad} setting is `true`.
-	         */
-	        me.initialValue = me.originalValue = me.lastValue = me.getValue();
+        /**
+         * @property {Object} originalValue
+         * The original value of the field as configured in the {@link #value} configuration, or as loaded by the last
+         * form load operation if the form's {@link Ext.form.Basic#trackResetOnLoad trackResetOnLoad} setting is `true`.
+         */
+        me.initialValue = me.originalValue = me.lastValue = me.getValue();
 	    },
-		checkChange : function() {
-			var me = this, newVal, oldVal;
-			if (!me.suspendCheckChange) {
-				newVal = this.getValue();
-				oldVal = this.lastValue;
-				if (!_.isEqual(newVal, oldVal)) {
-					this.lastValue = newVal;
-					this.trigger('change', newVal, oldVal);
-					this.onChange(newVal, oldVal);
+			checkChange : function() {
+				var me = this, newVal, oldVal;
+				if (!me.suspendCheckChange) {
+					newVal = this.getValue();
+					oldVal = this.lastValue;
+					if (!_.isEqual(newVal, oldVal)) {
+						this.lastValue = newVal;
+						this.trigger('change', newVal, oldVal);
+						this.onChange(newVal, oldVal);
+					}
 				}
-			}
-		},
+			},
 
 	    /**
 	     * A utility for grouping a set of modifications which may trigger value changes into a single transaction, to
@@ -61,35 +61,36 @@
 	     * @param {Function} fn The function to call with change checks suspended.
 	     */
 	    batchChanges: function(fn) {
-	        try {
-	            this.suspendCheckChange++;
-	            fn();
-	        }
-	        catch (pseudo) {  //required with IE when using 'try'
-	            throw pseudo;
-	        }
-	        finally {
-	            this.suspendCheckChange--;
-	        }
-	        this.checkChange();
+        try {
+            this.suspendCheckChange++;
+            fn();
+        }
+        catch (pseudo) {  //required with IE when using 'try'
+            throw pseudo;
+        }
+        finally {
+            this.suspendCheckChange--;
+        }
+        this.checkChange();
 	    },
-    onChange: function (newVal, oldVal) {
-      if (this.validateOnChange) {
-        this.validate()
-      }
-    // this.checkDirty()
-    },
-        /**
-         * Sets a data value into the field and runs the change detection and validation.
-         * @param {Object} value The value to set
-         * @return {Ext.form.field.Field} this
-         */
-		setValue : function(value) {
-            var me = this;
-			me.value = value;
-			me.checkChange();
-			return this;
-		}
-	}
+		  onChange: function (newVal, oldVal) {
+		    if (this.validateOnChange) {
+		      this.validate()
+		    }
+		  // this.checkDirty()
+		  },
+      /**
+       * Sets a data value into the field and runs the change detection and validation.
+       * @param {Object} value The value to set
+       * @return {Ext.form.field.Field} this
+       */
+			setValue : function(value) {
+				var me = this;
+				me.value = value;
+				me.checkChange();
+				return this;
+			}
+    })
+  }
 	return Field;
 }));

@@ -14,11 +14,10 @@
 	} else if(typeof module === "object" && module.exports) {
 		module.exports = factory(require('./backbone'), require('class'));
 	}
-}(this, function(Backbone, Class, inherits){
-	var mixins = function(parent) {
-		return function(_parent){
-      inherits(parent, protoProps, staticProps)
+}(this, function(){
+	var mixin = function(protoProps, classProps) {
+		return function(superclass){
+      return superclass.extend(protoProps, classProps)
     }
   }
-  Class.mixins = Backbone.Model.mixins = Backbone.Collection.mixins = Backbone.View.mixins = mixins
 }))

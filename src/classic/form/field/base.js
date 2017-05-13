@@ -8,13 +8,13 @@
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../label'), require('./field'), require('../../../underscore'), require('../../../backbone'), require('../../../modernizr'), require('../../../i18n'), require('../../../taurus'), require('../../../util/format'))
+        return factory(require('../label'), require('./field'), require('../../../underscore'), require('../../../backbone'), require('../../../modernizr'), require('../../../i18n'), require('../../../taurus'), require('../../../util/format'), require('../../../mix'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
     module.exports = factory(require('../label'), require('./field'), require('../../../underscore'), require('../../../backbone'), require('../../../modernizr'), require('../../../i18n'), require('../../../taurus'), require('../../../util/format'))
   }
-}(this, function (Label, Field, _, Backbone, Modernizr, i18n, taurus, format) {
+}(this, function (Label, Field, _, Backbone, Modernizr, i18n, taurus, format, mix) {
   /**
    * A namespace.
    * @namespace form
@@ -35,7 +35,7 @@
    * @toc form.field.Base
    */
 
-  return Label.extend({
+  return mix(Label).with(Field).extend({
     inputType: 'text',
     readOnly: false,
     editable: true,
@@ -79,7 +79,7 @@
         inputEl.prop('disabled', true)
         inputEl.addClass('disabled')
       }
-      Label.prototype.disable.apply(this, arguments)
+      this._super.apply(this, arguments)
     },
     enable: function () {
       var inputEl = this.inputEl
@@ -87,14 +87,10 @@
         inputEl.prop('disabled', false)
         inputEl.removeClass('disabled')
       }
-      Label.prototype.enable.apply(this, arguments)
+      this._super.apply(this, arguments)
     },
     getName: function () {
       return this.name
-    },
-    render: function () {
-      var me = Label.prototype.render.apply(this, arguments)
-      return me
     },
     initField: function () {
       this.initValue()
@@ -139,7 +135,7 @@
         events[item + ' #' + me.inputId] = taurus.util.throttle(me.checkChange, me.checkChangeBuffer, me)
       })
       events = $.extend({}, this.events, events)
-      Label.prototype.delegateEvents.apply(this, [events])
+      this._super.apply(this, [events])
     },
     isFileUpload: function () {
       return this.inputType === 'file'
@@ -158,7 +154,7 @@
     setValue: function (value) {
       var me = this
       me.setRawValue(me.valueToRaw(value))
-      return Field.prototype.setValue.call(me, value)
+      return this._super.call(me, value)
     },
     /**
      * Resets the current field value to the originally loaded value and clears any validation messages. See {@link
@@ -208,7 +204,7 @@
         inputId: this.cid,
         field: this.getSubTplMarkup()
       }, data)
-      return Label.prototype.getTplData.call(this, data)
+      return this._super.call(this, data)
     },
 
     /**
@@ -278,7 +274,7 @@
       return style
     },
     getControlsStyle: function () {
-      var controlsStyle = Label.prototype.getControlsStyle.apply(this, arguments)
+      var controlsStyle = this._super.apply(this, arguments)
       if (this.width) {
         controlsStyle += 'width:' + this.width + 'px;'
       }
@@ -318,9 +314,6 @@
     getErrors: function (value) {
       return []
     },
-    afterRender: function () {
-      Label.prototype.afterRender.apply(this, arguments)
-    },
     validate: function () {
       var me = this, isValid = me.isValid()
       if (isValid !== me.wasValid) {
@@ -329,5 +322,5 @@
       }
       return isValid
     }
-  }).mixins(Field)
+  })
 }))

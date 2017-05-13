@@ -4,23 +4,27 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./backbone', 'class', './backbone-super'], factory);
+			define(factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('./backbone'), require('class'));
+				return factory();
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./backbone'), require('class'));
+		module.exports = factory();
 	}
-}(this, function(Backbone, Class, inherits){
-  var mix = function mix(parent){
-    return new MixinBuilder(parent)
+}(this, function(){
+  var mix = function (superclass) {
+    return new MixinBuilder(superclass)
   }
-  var MixinBuilder = function(){
-    function MixinBuilder(parent){
-      
-    }
+  var MixinBuilder = function(superclass){
+    this.superclass = superclass
   }
+  MixinBuilder.prototype.with = function(){
+    return Array.prototype.slice.call(arguments).reduce(function (c, mixin) {
+      return mixin(c)
+    }, this.superclass)
+  }
+  return mix
 }))
