@@ -14,7 +14,12 @@
   }
 }(this, function (mixin) {
   var Renderable = mixin({
-    render: function (container, position) {}
+    render: function (container, position) {
+      var me = this
+      var el = me.el
+      var ownerLayout = me.ownerLayout
+      var vetoed, tree, nextSibling
+    }
   })
   return Renderable
 }))

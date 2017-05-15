@@ -13,5 +13,5 @@
     module.exports = factory(require('../class'), require('./util/renderable'))
   }
 }(this, function (Class, Renderable) {
-
+  
 }))
