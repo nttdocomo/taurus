@@ -97,6 +97,7 @@
     cls.$config = me
   }
   Configurator.prototype = {
+    add: function (config, mixinClass) {},
     configure: function (instance, instanceConfig) {
 
     }

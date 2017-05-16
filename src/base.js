@@ -28,9 +28,24 @@
     var child = inherits(this, protoProps, classProps)
     child.extend = this.extend
     child.getConfigurator()
+    child.config()
+    return child
+  }
+  Base.config = function (data) {
+    var child = inherits(this, protoProps, classProps)
+    child.extend = this.extend
+    child.getConfigurator()
     return child
   }
   _.extend(Base, {
+    config: function(data){
+      this.addConfig(data.config)
+      delete data.config;
+    },
+    addConfig: function(config, mixinClass) {
+      var cfg = this.$config || this.getConfigurator();
+      cfg.add(config, mixinClass);
+    },
     getConfigurator: function(){
       return this.$config || new Configurator(this);
     }
