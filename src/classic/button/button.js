@@ -4,17 +4,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../../view/base', '../menu/menu', '../menu/manager', './manager', '../../taurus', '../../underscore'], factory)
+      define(['../../view/base', '../menu/menu', '../menu/manager', './manager', '../../taurus', '../../underscore', '../../svg'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('../../taurus'), require('../../underscore'))
+        return factory(require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('../../taurus'), require('../../underscore'), require('../../svg'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('../../taurus'), require('../../underscore'))
+    module.exports = factory(require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('../../taurus'), require('../../underscore'), require('../../svg'))
   }
-}(this, function (Base, Menu, MenuManager, ButtonManager, taurus, _) {
+}(this, function (Base, Menu, MenuManager, ButtonManager, taurus, _, SVG) {
   return Base.extend({
     /*
 	     * @property {Boolean}
@@ -51,10 +51,11 @@
     _hasIconCls: taurus.baseCSSPrefix + 'btn-icon',
 
     tpl: '<%if(split){%><button><%}%><%if(iconBeforeText){%><%=icon%><%}%><%=text%><%if(menu){%> <span class="caret"></span><%}%>',
-    iconTpl: '<i id="<%=id%>-btnIconEl" class="<%=_hasIconCls%> <%=iconCls%>" style="<%if(iconUrl){%>background-image:url(<%=iconUrl%>);<%}%>"></i>',
+    iconTpl: '<i id="<%=id%>-btnIconEl" class="<%=_hasIconCls%> <%=iconCls%>"></i>',
     pressedCls: 'active',
     tagName: 'button',
     className: 'btn',
+    svg: null,
     //uiClass: 'btn-default',
     /**
      * @cfg {String} [baseCls='x-btn']
@@ -248,6 +249,10 @@
       var me = this,
         btnIconEl = me.btnIconEl,
         oldIcon = me.icon || ''
+      if(typeof icon === 'function'){
+        icon = icon.call(this, btnIconEl)
+        return
+      }
 
       me.icon = icon
       if (icon !== oldIcon) {
@@ -275,6 +280,18 @@
     setText: function (text) {
       this.text = text
       this.$el.text(text)
+    },
+
+    setLoading: function (text) {
+      this.text = text
+      this.$el.text(text)
+      SVG(this.btnIconEl.get(0)).size(14, 14).attr({
+        class:'circle-loader'
+      }).circle().attr({
+        cx: "7",
+        cy: "7",
+        r: "6"
+      })
     },
 
     setUI: function (ui) {

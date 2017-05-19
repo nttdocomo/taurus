@@ -15,6 +15,7 @@
 		<link type="text/css" rel="stylesheet" href="../../resources/css/menu.css"/>
 		<link rel="stylesheet" href="../../resources/css/highlight.default.css">
 		<link type="text/css" rel="stylesheet" href="../../resources/css/docs.css"/>
+		<link type="text/css" rel="stylesheet" href="../../resources/css/button.css"/>
 		<script src="../../src/highlight.min.js"></script>
 		<script>hljs.initHighlightingOnLoad();</script>
 		<!--[if IE]>
@@ -25,6 +26,32 @@
 				padding-left: 14px;
 				padding-top: 14px;
 			}
+			.circle-loader {
+	fill: transparent;
+	stroke: #ffffff;
+	stroke-width: 2;
+	animation: dash 2s ease infinite,rotate 2s linear infinite;
+}
+
+@keyframes dash {
+	0% {
+		stroke-dasharray: 1,35;
+		stroke-dashoffset: 0;
+	}
+	50% {
+		stroke-dasharray: 30,35;
+		stroke-dashoffset: -5;
+	}
+	100% {
+		stroke-dasharray: 30,35;
+		stroke-dashoffset: -33;
+	}
+}
+
+@keyframes rotate {
+	0% {transform: rotate(0deg); }
+	100% {transform: rotate(360deg); }
+}
 		</style>
 	</head>
 	<body>
@@ -96,6 +123,40 @@ new Button({
     items: [{
       text:'Item 1'
     }]
+  }
+})</code>
+					</pre>
+				</figure>
+				<h2>按钮加载中</h2>
+				<div class="bs-example" id="example-4"></div>
+				<figure class="highlight">
+					<pre>
+						<code class="language-javascript">var svg
+var button = new Button({
+  renderTo: $body.find('#example-4'),
+  text: 'Primary',
+  ui:'primary'
+})
+new Button({
+  renderTo: $body.find('#example-4'),
+  text: '开始加载',
+  handler: function(){
+    button.setIcon(function(btnIconEl){
+      svg = SVG(btnIconEl.get(0)).size(14, 14).attr({
+        class:'circle-loader'
+      }).circle().attr({
+        cx: "7",
+        cy: "7",
+        r: "6"
+      })
+    })
+  }
+})
+new Button({
+  renderTo: $body.find('#example-4'),
+  text: '结束加载',
+  handler: function(){
+    console.log(svg.parent().remove())
   }
 })</code>
 					</pre>
