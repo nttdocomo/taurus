@@ -131,9 +131,9 @@ new Button({
 				<div class="bs-example" id="example-4"></div>
 				<figure class="highlight">
 					<pre>
-						<code class="language-javascript">var svg
-var button = new Button({
+						<code class="language-javascript">var button = new Button({
   renderTo: $body.find('#example-4'),
+  iconBeforeText: true,
   text: 'Primary',
   ui:'primary'
 })
@@ -142,13 +142,7 @@ new Button({
   text: '开始加载',
   handler: function(){
     button.setIcon(function(btnIconEl){
-      svg = SVG(btnIconEl.get(0)).size(14, 14).attr({
-        class:'circle-loader'
-      }).circle().attr({
-        cx: "7",
-        cy: "7",
-        r: "6"
-      })
+      button.setIcon((new SVG.Circle).rx(new SVG.Number().divide(2)).move(0, 0).cx(7).cy(7).radius(6))
     })
   }
 })
@@ -156,7 +150,7 @@ new Button({
   renderTo: $body.find('#example-4'),
   text: '结束加载',
   handler: function(){
-    console.log(svg.parent().remove())
+    button.setIcon()
   }
 })</code>
 					</pre>

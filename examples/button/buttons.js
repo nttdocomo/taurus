@@ -75,42 +75,16 @@ define(function (require) {
 			}]
     }
   })
-  /*var i = document.createElement('i')
-  var svg = SVG(i).size(14, 14).attr({
-    class:'circle-loader'
-  })
-  var icon = svg.circle().attr({
-    cx: "7",
-    cy: "7",
-    r: "6"
-  })
-  console.log(svg.has(icon))*/
   var button = new Button({
     renderTo: $body.find('#example-4'),
     iconBeforeText: true,
     text: 'Primary',
     ui:'primary'
   })
-  /*button.btnIconEl.append(svg.node)
-  svg.clear()*/
   new Button({
     renderTo: $body.find('#example-4'),
     text: '开始加载',
     handler: function(){
-      /*button.setIcon(function(btnIconEl){
-        var icon
-        if(!this.svg){
-          this.svg = SVG(btnIconEl.get(0)).size(14, 14).attr({
-            class:'circle-loader'
-          })
-        }
-        icon = this.svg.circle().attr({
-          cx: "7",
-          cy: "7",
-          r: "6"
-        })
-        return icon
-      })*/
       button.setIcon((new SVG.Circle).rx(new SVG.Number().divide(2)).move(0, 0).cx(7).cy(7).radius(6))
     }
   })
