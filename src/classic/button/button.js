@@ -48,10 +48,13 @@
      */
     pressed: false,
     iconBeforeText: false,
+    iconAlign: 'left',
+    _baseIconCls: taurus.baseCSSPrefix + 'btn-icon-el',
+    overCls: taurus.baseCSSPrefix + 'btn-over',
     _hasIconCls: taurus.baseCSSPrefix + 'btn-icon',
 
     tpl: '<%if(split){%><button><%}%><%if(iconBeforeText){%><%=icon%><%}%><%=text%><%if(menu){%> <span class="caret"></span><%}%>',
-    iconTpl: '<i id="<%=id%>-btnIconEl" class="<%=_hasIconCls%> <%=iconCls%>"></i>',
+    iconTpl: '<i id="<%=id%>-btnIconEl" class="<%=_baseIconCls%> <%=iconCls%>"></i>',
     pressedCls: 'active',
     tagName: 'button',
     className: 'btn',
@@ -142,7 +145,7 @@
           id: me.id,
           iconCls: me.iconCls,
           iconUrl: me.iconUrl,
-          _hasIconCls: me._hasIconCls
+          _baseIconCls: me._baseIconCls
         }),
         iconBeforeText: me.iconBeforeText
       }, Base.prototype.getTplData.apply(me, arguments))
@@ -265,12 +268,19 @@
 
       me.icon = icon
       if (icon !== oldIcon) {
-        if(icon instanceof SVG.Shape){
-          svgEl = this.getSvgEl()
-          svgEl.add(icon)
-        }
         if (btnIconEl) {
-          btnIconEl.css('background-image', icon ? 'url(' + icon + ')' : '')
+          if(icon instanceof SVG.Shape){
+            svgEl = this.getSvgEl()
+            svgEl.add(icon)
+          } else {
+            btnIconEl.css('background-image', icon ? 'url(' + icon + ')' : '')
+          }
+          if(!icon){
+            if(oldIcon instanceof SVG.Shape){
+              svgEl = this.getSvgEl()
+              svgEl.clear()
+            }
+          }
           me._syncHasIconCls()
           if (me.didIconStateChange(oldIcon, icon)) {
             me.updateLayout()
@@ -388,17 +398,20 @@
       events[this.clickEvent] = 'onClick'
       Base.prototype.delegateEvents.call(this, events)
     },
+    _hasIcon: function () {
+      return !!(this.icon || this.iconCls || this.glyph)
+    },
 
     _syncHasIconCls: function () {
       var me = this,
-        btnEl = me.btnEl,
+        btnEl = me.$el,
         hasIconCls = me._hasIconCls
 
       if (btnEl) {
-        btnEl[me._hasIcon() ? 'addCls' : 'removeCls']([
+        btnEl[me._hasIcon() ? 'addClass' : 'removeClass']([
           hasIconCls,
           hasIconCls + '-' + me.iconAlign
-        ])
+        ].join(' '))
       }
     }
   })

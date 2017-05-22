@@ -66,6 +66,16 @@
       }
       this.$el.addClass(cls)
     },
+    addOverCls: function() {
+      var me = this;
+      if (!me.disabled) {
+        me.$el.addClass(me.overCls);
+      }
+    },
+
+    removeOverCls: function() {
+      this.$el.removeClass(this.overCls);
+    },
     getElConfig: function() {},
     removeClass: function (cls) {
       this.$el.removeClass(cls)
@@ -610,10 +620,14 @@
       return $(this.renderHtml())
     },
     afterRender: function () {
-      this.applyChildEls()
-      if (this.contentEl) {
-        var contentEl = $('#' + this.contentEl)
-        this.getContentTarget().append(contentEl)
+      var me = this
+      me.applyChildEls()
+      if (me.contentEl) {
+        var contentEl = $('#' + me.contentEl)
+        me.getContentTarget().append(contentEl)
+      }
+      if (me.overCls) {
+        me.$el.hover(_.bind(me.addOverCls, me), _.bind(me.removeOverCls, me));
       }
     },
     applyChildEls: function (childEls) {

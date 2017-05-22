@@ -118,7 +118,7 @@ define(function (require) {
     renderTo: $body.find('#example-4'),
     text: '结束加载',
     handler: function(){
-      console.log(button..clear().hide())
+      button.setIcon()
     }
   })
 
