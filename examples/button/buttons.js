@@ -75,7 +75,7 @@ define(function (require) {
 			}]
     }
   })
-  var i = document.createElement('i')
+  /*var i = document.createElement('i')
   var svg = SVG(i).size(14, 14).attr({
     class:'circle-loader'
   })
@@ -84,16 +84,15 @@ define(function (require) {
     cy: "7",
     r: "6"
   })
-  console.log(svg.has(icon))
+  console.log(svg.has(icon))*/
   var button = new Button({
     renderTo: $body.find('#example-4'),
     iconBeforeText: true,
     text: 'Primary',
     ui:'primary'
   })
-  button.btnIconEl.append(svg.node)
-  svg.clear()
-  svg.add(icon)
+  /*button.btnIconEl.append(svg.node)
+  svg.clear()*/
   new Button({
     renderTo: $body.find('#example-4'),
     text: '开始加载',
@@ -105,21 +104,21 @@ define(function (require) {
             class:'circle-loader'
           })
         }
-        icon = this.svg.clear().show().circle().attr({
+        icon = this.svg.circle().attr({
           cx: "7",
           cy: "7",
           r: "6"
         })
         return icon
       })*/
-      button.setIcon(i)
+      button.setIcon((new SVG.Circle).rx(new SVG.Number().divide(2)).move(0, 0).cx(7).cy(7).radius(6))
     }
   })
   new Button({
     renderTo: $body.find('#example-4'),
     text: '结束加载',
     handler: function(){
-      console.log(button.svg.clear().hide())
+      console.log(button..clear().hide())
     }
   })
 

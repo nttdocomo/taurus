@@ -237,6 +237,14 @@
         this.$el.addClass('btn-' + this.size)
       }
     },
+    getSvgEl: function(){
+      if(!this.svgEl){
+        this.svgEl = new SVG(this.btnIconEl.get(0))
+      }
+      return this.svgEl.size(14, 14).attr({
+        class:'circle-loader'
+      })
+    },
 
     /**
      * Sets the background image (inline style) of the button. This method also changes the value of the {@link #icon}
@@ -246,9 +254,10 @@
      */
     setIcon: function (icon) {
       icon = icon || ''
-      var me = this,
-        btnIconEl = me.btnIconEl,
-        oldIcon = me.icon || ''
+      var me = this
+      var btnIconEl = me.btnIconEl
+      var oldIcon = me.icon || ''
+      var svgEl
       if(typeof icon === 'function'){
         icon = icon.call(this, btnIconEl)
         return
@@ -256,6 +265,10 @@
 
       me.icon = icon
       if (icon !== oldIcon) {
+        if(icon instanceof SVG.Shape){
+          svgEl = this.getSvgEl()
+          svgEl.add(icon)
+        }
         if (btnIconEl) {
           btnIconEl.css('background-image', icon ? 'url(' + icon + ')' : '')
           me._syncHasIconCls()
@@ -280,18 +293,6 @@
     setText: function (text) {
       this.text = text
       this.$el.text(text)
-    },
-
-    setLoading: function (text) {
-      this.text = text
-      this.$el.text(text)
-      SVG(this.btnIconEl.get(0)).size(14, 14).attr({
-        class:'circle-loader'
-      }).circle().attr({
-        cx: "7",
-        cy: "7",
-        r: "6"
-      })
     },
 
     setUI: function (ui) {
