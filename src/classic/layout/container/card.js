@@ -4,17 +4,17 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./container','backbone'], factory);
+			define(['./container','backbone', 'underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-                return factory(require('./container'),require('backbone'));
+                return factory(require('./container'), require('backbone'), require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('./container'),require('backbone'));
+		module.exports = factory(require('./container'), require('backbone'), require('underscore'));
 	}
-}(this, function(Container,Backbone){
+}(this, function(Container,Backbone, _){
 	return Container.extend({
         /**
          * Return the active (visible) component in the layout.
@@ -30,7 +30,7 @@
                 result = me.parseActiveItem(item);
 
             // Sanitize the result in case the active item is no longer there.
-            if (result && me.owner.items.indexOf(result) !== -1) {
+            if (result && _.indexOf(me.owner.items, result) !== -1) {
                 me.activeItem = result;
             }
 

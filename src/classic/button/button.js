@@ -245,7 +245,7 @@
         this.svgEl = new SVG(this.btnIconEl.get(0))
       }
       return this.svgEl.size(14, 14).attr({
-        class:'circle-loader'
+        'class':'circle-loader'
       })
     },
 
