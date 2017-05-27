@@ -52,16 +52,19 @@
 				ret = items[0];
 			}*/
 
-			for ( i = 0; i < length; i++) {
+			/*for (var i = 0; i < length; i++) {
 				item = items[i];
 
 				//pos = (index < 0) ? me.items.length : (index + i);
 
 				
-				item.onAdded(me);
+				items[i].onAdded(me);
 				//me.onAdd(item, pos);
 				//layout && layout.onAdd(item, pos);
-			}
+			}*/
+			_.each(items, function(item){
+				item.onAdded(me);
+			})
 			me.items = items;
 			this.updateItems();
 		},

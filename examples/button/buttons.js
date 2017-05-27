@@ -9,6 +9,7 @@ define(function (require) {
   var Button = require('../../src/classic/button/button')
   var Split = require('../../src/classic/button/split')
   var FileButton = require('../../src/classic/button/fileButton')
+  var SVG = require('../../src/svg')
 	var chance = require('chance')
   var $body = $('#main')
   var likelihood = 30
@@ -72,6 +73,26 @@ define(function (require) {
       items: [{
 				text:'Item 1'
 			}]
+    }
+  })
+  var button = new Button({
+    renderTo: $body.find('#example-4'),
+    iconBeforeText: true,
+    text: 'Primary',
+    ui:'primary'
+  })
+  new Button({
+    renderTo: $body.find('#example-4'),
+    text: '开始加载',
+    handler: function(){
+      button.setIcon((new SVG.Circle).rx(new SVG.Number().divide(2)).move(0, 0).cx(7).cy(7).radius(6))
+    }
+  })
+  new Button({
+    renderTo: $body.find('#example-4'),
+    text: '结束加载',
+    handler: function(){
+      button.setIcon()
     }
   })
 

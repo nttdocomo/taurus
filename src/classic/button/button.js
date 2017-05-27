@@ -4,17 +4,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../../view/base', '../menu/menu', '../menu/manager', './manager', '../../taurus', '../../underscore'], factory)
+      define(['../../view/base', '../menu/menu', '../menu/manager', './manager', '../../taurus', '../../underscore', '../../svg'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('../../taurus'), require('../../underscore'))
+        return factory(require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('../../taurus'), require('../../underscore'), require('../../svg'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('../../taurus'), require('../../underscore'))
+    module.exports = factory(require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('../../taurus'), require('../../underscore'), require('../../svg'))
   }
-}(this, function (Base, Menu, MenuManager, ButtonManager, taurus, _) {
+}(this, function (Base, Menu, MenuManager, ButtonManager, taurus, _, SVG) {
   return Base.extend({
     /*
 	     * @property {Boolean}
@@ -48,13 +48,17 @@
      */
     pressed: false,
     iconBeforeText: false,
+    iconAlign: 'left',
+    _baseIconCls: taurus.baseCSSPrefix + 'btn-icon-el',
+    overCls: taurus.baseCSSPrefix + 'btn-over',
     _hasIconCls: taurus.baseCSSPrefix + 'btn-icon',
 
     tpl: '<%if(split){%><button><%}%><%if(iconBeforeText){%><%=icon%><%}%><%=text%><%if(menu){%> <span class="caret"></span><%}%>',
-    iconTpl: '<i id="<%=id%>-btnIconEl" class="<%=_hasIconCls%> <%=iconCls%>" style="<%if(iconUrl){%>background-image:url(<%=iconUrl%>);<%}%>"></i>',
+    iconTpl: '<i id="<%=id%>-btnIconEl" class="<%=_baseIconCls%> <%=iconCls%>"></i>',
     pressedCls: 'active',
     tagName: 'button',
     className: 'btn',
+    svg: null,
     //uiClass: 'btn-default',
     /**
      * @cfg {String} [baseCls='x-btn']
@@ -143,7 +147,7 @@
           id: me.id,
           iconCls: me.iconCls,
           iconUrl: me.iconUrl,
-          _hasIconCls: me._hasIconCls
+          _baseIconCls: me._baseIconCls
         }),
         iconBeforeText: me.iconBeforeText
       }, Base.prototype.getTplData.apply(me, arguments))
@@ -238,6 +242,14 @@
         this.$el.addClass('btn-' + this.size)
       }
     },
+    getSvgEl: function(){
+      if(!this.svgEl){
+        this.svgEl = new SVG(this.btnIconEl.get(0))
+      }
+      return this.svgEl.size(14, 14).attr({
+        'class':'circle-loader'
+      })
+    },
 
     /**
      * Sets the background image (inline style) of the button. This method also changes the value of the {@link #icon}
@@ -247,14 +259,30 @@
      */
     setIcon: function (icon) {
       icon = icon || ''
-      var me = this,
-        btnIconEl = me.btnIconEl,
-        oldIcon = me.icon || ''
+      var me = this
+      var btnIconEl = me.btnIconEl
+      var oldIcon = me.icon || ''
+      var svgEl
+      if(typeof icon === 'function'){
+        icon = icon.call(this, btnIconEl)
+        return
+      }
 
       me.icon = icon
       if (icon !== oldIcon) {
         if (btnIconEl) {
-          btnIconEl.css('background-image', icon ? 'url(' + icon + ')' : '')
+          if(icon instanceof SVG.Shape){
+            svgEl = this.getSvgEl()
+            svgEl.add(icon)
+          } else {
+            btnIconEl.css('background-image', icon ? 'url(' + icon + ')' : '')
+          }
+          if(!icon){
+            if(oldIcon instanceof SVG.Shape){
+              svgEl = this.getSvgEl()
+              svgEl.clear()
+            }
+          }
           me._syncHasIconCls()
           if (me.didIconStateChange(oldIcon, icon)) {
             me.updateLayout()
@@ -372,17 +400,20 @@
       events[this.clickEvent] = 'onClick'
       Base.prototype.delegateEvents.call(this, events)
     },
+    _hasIcon: function () {
+      return !!(this.icon || this.iconCls || this.glyph)
+    },
 
     _syncHasIconCls: function () {
       var me = this,
-        btnEl = me.btnEl,
+        btnEl = me.$el,
         hasIconCls = me._hasIconCls
 
       if (btnEl) {
-        btnEl[me._hasIcon() ? 'addCls' : 'removeCls']([
+        btnEl[me._hasIcon() ? 'addClass' : 'removeClass']([
           hasIconCls,
           hasIconCls + '-' + me.iconAlign
-        ])
+        ].join(' '))
       }
     }
   })

@@ -97,10 +97,10 @@
 	    isValid: function() {
 	        var me = this,
 	            invalid;
-	        invalid = _.filter(me.getFields(),function(field) {
+	        invalid = _.find(me.getFields(),function(field) {
 	            return !field.validate();
 	        });
-	        return invalid.length < 1;
+	        return _.isUndefined(invalid);
 	    },
 	    /**
 	     * Resets all fields in this form. By default, any record bound by {@link #loadRecord}
