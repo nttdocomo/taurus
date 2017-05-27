@@ -28,13 +28,7 @@
     var child = inherits(this, protoProps, classProps)
     child.extend = this.extend
     child.getConfigurator()
-    child.config()
-    return child
-  }
-  Base.config = function (data) {
-    var child = inherits(this, protoProps, classProps)
-    child.extend = this.extend
-    child.getConfigurator()
+    child.config(protoProps)
     return child
   }
   _.extend(Base, {

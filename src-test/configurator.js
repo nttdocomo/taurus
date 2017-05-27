@@ -24,8 +24,12 @@
     root.Class = factory();
   }
 }(this, function(Base, Configurator) {
-  var A = Base.extend()
-  console.log(A.$config instanceof Configurator)
+  var A = Base.extend({
+    config:{
+      a:'1'
+    }
+  })
+  //console.log(A.$config instanceof Configurator)
   var run = function() {
     QUnit.test("Configurator", function( assert ) {
       assert.strictEqual(A.$config instanceof Configurator, true, "类的$config是Configurator的实例" );
