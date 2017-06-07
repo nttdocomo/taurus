@@ -4,17 +4,17 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../panel/panel','./base','underscore'], factory);
+			define(['../panel/panel', '../button/button','./base','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../panel/panel'),require('./base'),require('underscore'));
+				return factory(require('../panel/panel'),require('../button/button'),require('./base'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../panel/panel'),require('./base'),require('underscore'));
+		module.exports = factory(require('../panel/panel'),require('../button/button'),require('./base'),require('underscore'));
 	}
-}(this, function(Panel,BaseForm,_){
+}(this, function(Panel,Button,BaseForm,_){
 	return Panel.extend({
 		disabled:false,
 		childEls:{
@@ -59,28 +59,28 @@
 			};
 			return false;
 		},
-		delegateEvents:function(events){
-			var events = events || {};
-			_.each(this.buttons,function(button,i){
-				events['click .panel-footer > button:eq('+i+')'] = button.handler;
-			});
-			Panel.prototype.delegateEvents.call(this, events);
-		},
-		renderHtml:function(){
-			this.tpl += '<div class="panel-footer"><%=buttons%></div>';
-			return Panel.prototype.renderHtml.apply(this,arguments);
-		},
-		getTplData:function(){
-			return $.extend(Panel.prototype.getTplData.apply(this,arguments),{
-				buttons:this.renderButttons()
-			});
+		afterRender : function() {
+			this._super.apply(this, arguments);
+			this.footer = $('<div class="panel-footer"></div>').appendTo(this.$el)
 		},
 		renderButttons:function(){
-			return _.template('<%_.each(buttons,function(button){%><button class="btn<%if(button){%> <%=button.className%><%}%>"<%if(disabled){%> disabled="disabled"<%}%>><%=button.text%></button>\n<%})%>')($.extend({
+      var me = this
+      var footer = me.footer
+      me.buttons = _.map(me.buttons, function(button){
+      	if(typeof(button.handler) === 'string'){
+      		button.handler = me[button.handler]
+      	}
+      	if(button.handler){
+      		button.handler = _.bind(button.handler, me)
+      	}
+      	
+        var btn = new Button(button)
+        btn.render(footer)
+        return btn
+      })
+			/*return _.template('<%_.each(buttons,function(button){%><<%if(button.href){%>a href="<%=button.href%>"<%}else{%>button<%}%> class="btn<%if(button){%> <%=button.className%><%}%>"<%if(button.disabled){%> disabled="disabled"<%}%>><%=button.text%></<%if(button.href){%>a<%}else{%>button<%}%>><%})%>')({
 				buttons:this.buttons
-			}, {
-				disabled : this.disabled
-			}));
+			});*/
 		},
 
 	    /**
