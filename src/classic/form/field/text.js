@@ -1,17 +1,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./base', '../../../taurus', 'underscore', 'modernizr'], factory)
+      define(['./base', '../trigger/trigger', 'taurus', 'underscore', 'modernizr'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./base'), require('../../../taurus'), require('underscore'), require('modernizr'))
+        return factory(require('./base'), require('../trigger/trigger'), require('taurus'), require('underscore'), require('modernizr'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./base'), require('../../../taurus'), require('underscore'), require('modernizr'))
+    module.exports = factory(require('./base'), require('../trigger/trigger'), require('taurus'), require('underscore'), require('modernizr'))
   }
-}(this, function (Base, taurus, _, Modernizr) {
+}(this, function (Base, Trigger, taurus, _, Modernizr) {
   /**
    * A basic text field
    *
@@ -89,6 +89,7 @@
      * @memberof Text#
      */
     regexText : '',
+    hideTrigger: false,
     valueContainsPlaceholder: false,
     /**
      * Sets the default text to place into an empty field
@@ -167,6 +168,7 @@
       var me = this
       var emptyCls = me.emptyCls
       me.emptyUICls = emptyCls + ' ' + emptyCls + '-' + me.ui
+      me.applyTriggers(me.triggers)
       me._super.apply(me, arguments)
       me.fieldFocusCls = me.baseCls + '-focus'
     },
@@ -217,6 +219,12 @@
       }
       return v
     },
+    getSubTplMarkup:function(){
+      var me = this;
+      me.fieldSubTpl = (me.triggers ? '<div class="input-group">' : '') + me.fieldSubTpl + '<%_.each(triggers, function(trigger){%><%=trigger.renderTrigger()%><%})%>' + (me.triggers ? '</div>' : '');
+      return me._super.apply(me,arguments);
+      //return this.getFieldHtml();
+    },
     getSubTplData: function () {
       var me = this, value = me.getRawValue(), isEmpty = me.emptyText && value.length < 1, placeholder,
         maxLength = me.maxLength
@@ -240,6 +248,7 @@
       return $.extend(me._super.apply(this, arguments), {
         placeholder: placeholder,
         maxLength: maxLength,
+        triggers: me.orderedTriggers,
         value: value,
         fieldCls: me.fieldCls + ((isEmpty && (placeholder || value)) ? ' ' + me.emptyUICls : '') + (me.allowBlank ? '' : ' ' + me.requiredCls)
       })
@@ -274,10 +283,32 @@
     onKeyPress: function (e) {
       this.trigger('keypress', e)
     },
-    onRender: function(){
+    render: function(){
       var me = this
-      me._super()
-      me.emptyClsElements = [me.inputEl];
+      me._super.apply(me, arguments)
+      me.emptyClsElements = [me.inputEl]
+    },
+
+    afterRender: function() {
+      var me = this
+      var triggers = me.triggers
+      if (triggers) {
+          me.invokeTriggers('onFieldRender');
+
+          /**
+           * @property {Ext.CompositeElement} triggerEl
+           * @deprecated 5.0
+           * A composite of all the trigger button elements. Only set after the field has
+           * been rendered.
+           */
+          /*for(id in triggers) {
+              elements.push(triggers[id].el);
+          }
+          // for 4.x compat, also set triggerCell
+          me.triggerEl = me.triggerCell = new Ext.CompositeElement(elements, true);*/
+      }
+      this._super();
+      this.invokeTriggers('afterFieldRender');
     },
     processRawValue: function (value) {
       var me = this, stripRe = me.stripCharsRe, newValue
@@ -317,6 +348,50 @@
 
       me.applyEmptyText()
       return me
+    },
+    applyTriggers: function(triggers){
+      var me = this
+      var orderedTriggers = me.orderedTriggers = []
+      var hideAllTriggers = me.hideTrigger
+      var repeatTriggerClick = me.repeatTriggerClick
+      var id, triggerCfg, readOnly, trigger
+      if(triggers){
+        for(id in triggers) {
+          if (triggers.hasOwnProperty(id)) {
+            triggerCfg = triggers[id];
+            triggerCfg.field = me;
+            triggerCfg.id = id;
+
+            /*
+             * An explicitly-configured 'triggerConfig.hideOnReadOnly : false' allows {@link #hideTrigger} analysis
+             */
+            if ((readOnly && triggerCfg.hideOnReadOnly !== false) || (hideAllTriggers && triggerCfg.hidden !== false)) {
+              triggerCfg.hidden = true;
+            }
+            if (repeatTriggerClick && (triggerCfg.repeatClick !== false)) {
+              triggerCfg.repeatClick = true;
+            }
+
+            trigger = triggers[id] = new Trigger(triggerCfg);
+            orderedTriggers.push(trigger);
+          }
+        }
+      }
+    },
+    invokeTriggers: function(methodName, args){
+      var me = this
+      var triggers = me.triggers
+      var id, trigger;
+
+      if (triggers) {
+        for (id in triggers) {
+          if (triggers.hasOwnProperty(id)) {
+            trigger = triggers[id];
+            // IE8 needs "|| []" if args is undefined
+            trigger[methodName].apply(trigger, args || []);
+          }
+        }
+      }
     }
   })
 }))

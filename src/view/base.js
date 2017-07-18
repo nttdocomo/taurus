@@ -21,6 +21,21 @@
    * @constructor Base
    * @param {Object} config
    */
+  function setDisable(silent) {
+    var me = this
+    if (!me.disabled) {
+      me.$el.attr('disabled', true)
+      if (me.rendered) {
+        me.onDisable()
+      } else {
+        me.disableOnRender = true
+      }
+      me.disabled = true
+      if (silent !== true) {
+        me.trigger('disable', me);
+      }
+    }
+  }
   return Backbone.View.extend({
     isRendered: false,
     doc: taurus.$doc,
@@ -100,6 +115,11 @@
         if (silent !== true) {
           me.trigger('disable', me);
         }
+      }
+    },
+    setDisable: function(value){
+      if(value){
+        this.disable()
       }
     },
 
@@ -459,6 +479,16 @@
       me.$el.hide()
       me.trigger('hide')
       return me
+    },
+    toggle: function(){
+      var me = this
+      var hidden = me.hidden
+      if(hidden){
+        me.show()
+      } else {
+        me.hide()
+      }
+      me.hidden = !hidden
     },
     beforeRender: function () {
       var me = this

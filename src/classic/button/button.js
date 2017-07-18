@@ -52,8 +52,9 @@
     _baseIconCls: taurus.baseCSSPrefix + 'btn-icon-el',
     overCls: taurus.baseCSSPrefix + 'btn-over',
     _hasIconCls: taurus.baseCSSPrefix + 'btn-icon',
+    _innerCls: taurus.baseCSSPrefix + 'btn-inner',
 
-    tpl: '<%if(split){%><button><%}%><%if(iconBeforeText){%><%=icon%><%}%><%=text%><%if(menu){%> <span class="caret"></span><%}%>',
+    tpl: '<%if(iconBeforeText){%><%=icon%><%}%><span class="<%=innerCls%> <%=innerCls%>-<%=ui%>"><%=text%></span><%if(split){%> <span class="caret"></span><%}%>',
     iconTpl: '<i id="<%=id%>-btnIconEl" class="<%=_baseIconCls%> <%=iconCls%>"></i>',
     pressedCls: 'active',
     tagName: 'button',
@@ -76,7 +77,8 @@
     },
     defaultBindProperty: 'text',
     childEls: {
-      'btnIconEl': '[id$="btnIconEl"]'
+      'btnIconEl': '[id$="btnIconEl"]',
+      'btnInnerEl': '.btn-inner'
     },
     constructor: function (options) {
       if (options.href) {
@@ -138,9 +140,11 @@
       var me = this
       return $.extend({
         text: me.text || '',
-        split: me.isSplitButton,
+        split: me.isSplitButton || me.menu,
         menu: !_.isUndefined(me.menu),
         comp: me,
+        innerCls: me._innerCls,
+        ui: me.ui,
         icon: me.renderIcon({
           id: me.id,
           iconCls: me.iconCls,
@@ -301,8 +305,10 @@
     },
 
     setText: function (text) {
+      var me = this
+      var btnInnerEl = me.btnInnerEl
       this.text = text
-      this.$el.text(text)
+      btnInnerEl.html(text || '&#160;')
     },
 
     setUI: function (ui) {
