@@ -160,7 +160,7 @@
 
       if (me.trigger('click', me, e) !== false) {
         if (handler) {
-          handler.call(me, e)
+          handler.apply(me, [e, me])
         }
       // me.blur()
       }
