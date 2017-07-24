@@ -94,10 +94,6 @@
         var hasAttach = !!widget.onWidgetAttach
         widget.$widgetRecord = record
         widget.$widgetColumn = me
-        // Call the appropriate setter with this column's data field
-        if (widget.defaultBindProperty && dataIndex) {
-          widget.setConfig(widget.defaultBindProperty, record.get(dataIndex));
-        }
         var el = widget.el
         var rendered = widget.rendered
         if (el && rendered) {
@@ -116,6 +112,10 @@
           }
           //$(cell).empty()
           widget.render(cell)
+        }
+        // Call the appropriate setter with this column's data field
+        if (widget.defaultBindProperty && dataIndex) {
+          widget.setConfig(widget.defaultBindProperty, record.get(dataIndex));
         }
         // back to the document body. Otherwise widget's layout may fail
         // because there are no dimensions to measure when the callback is fired!
