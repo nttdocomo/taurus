@@ -4,20 +4,21 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../view/base','./item','./manager','backbone','underscore'], factory);
+			define(['../../view/base','./item','./manager','taurus','backbone','underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../../view/base'),require('./item'),require('./manager'),require('backbone'),require('underscore'));
+				return factory(require('../../view/base'),require('./item'),require('./manager'),require('taurus'),require('backbone'),require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../view/base'),require('./item'),require('./manager'),require('backbone'),require('underscore'));
+		module.exports = factory(require('../../view/base'),require('./item'),require('./manager'),require('taurus'),require('backbone'),require('underscore'));
 	}
-}(this, function(Base,MenuItem,Manager,Backbone,_) {
+}(this, function(Base,MenuItem,Manager,taurus,Backbone,_) {
 	return taurus.augmentString('taurus.menu.Menu',Base.extend({
 		isMenu: true,
 		tagName:'ul',
+		baseCls: taurus.baseCSSPrefix + 'menu',
 		className:'dropdown-menu',
 		events:{
 			'mouseleave':'onMouseLeave',
