@@ -96,6 +96,7 @@
 			var me = this
 			var rawValue = me.getRawValue()
 			var lastRecords = me.lastSelectedRecords
+			var preventChange = false
 			var rec
 			if (me.forceSelection) {
 				if (me.multiSelect) {} else {
@@ -137,7 +138,7 @@
 				});
 			}
 			//Backbone.View.prototype.delegateEvents.call(this, events);
-			Picker.prototype.delegateEvents.call(me, events);
+			me._super.call(me, events);
 		},
 
 		doTypeAhead : function() {
@@ -251,11 +252,25 @@
 			}*/
 		},
 		findRecordByDisplay: function(value) {
+    	var me = this
 			var result = this.collection.find(function(model){
-				return model.get(this.displayValue) === value
+				return model.get(me.displayValue) === value
 			})
 			return result;
 		},
+
+    /**
+     * Finds the record by searching values in the {@link #valueField}.
+     * @param {Object} value The value to match the field against.
+     * @return {Ext.data.Model} The matched record or `false`.
+     */
+    findRecordByValue: function(value) {
+    	var me = this
+			var result = this.collection.find(function(model){
+				return model.get(me.valueField) === value
+			})
+			return result;
+    },
 		getParams : function(queryString) {
 			var params = {}, param = this.queryParam;
 

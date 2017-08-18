@@ -1,16 +1,16 @@
 (function (root, factory) {
-    if(typeof define === "function" && define.amd) {
-        // Now we're wrapping the factory and assigning the return
-        // value to the root (window) and returning it as well to
-        // the AMD loader.
-        define(['../panel/table','./navigationModel', './view','./column','../panel/mixins','../model/tree','underscore','backbone'],function(Table){
-          return (root.Class = factory(Table));
-        });
-    }
-    if(define.cmd){
-        define(function(require, exports, module){
-            return (root.Class = factory(require('../panel/table'),require('./navigationModel'),require('./view'),require('./column'),require('../panel/mixins'),require('../model/tree'),require('underscore'),require('backbone')));
-        })
+    if(typeof define === "function") {
+        if(define.amd){
+            // Now we're wrapping the factory and assigning the return
+            // value to the root (window) and returning it as well to
+            // the AMD loader.
+            define(['../panel/table','./navigationModel', './view','./column','../panel/mixins','../model/tree','underscore','backbone'], factory)
+        }
+        if(define.cmd){
+            define(function(require, exports, module){
+                return (root.Class = factory(require('../panel/table'),require('./navigationModel'),require('./view'),require('./column'),require('../panel/mixins'),require('../model/tree'),require('underscore'),require('backbone')));
+            })
+        }
     } else if(typeof module === "object" && module.exports) {
         // I've not encountered a need for this yet, since I haven't
         // run into a scenario where plain modules depend on CommonJS

@@ -32,7 +32,7 @@
       me.$el.css('top', 0)
       Base.prototype.initialize.apply(me, arguments)
       me.collection.on('sync', _.bind(me.refresh, me))
-      //me.collection.on('reset', _.bind(me.refresh, me))
+      me.collection.on('reset', _.bind(me.refresh, me))
     },
     indexOf: function (node) {
       return this.$el.find('.boundlist-item').index(node)

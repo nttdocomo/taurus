@@ -33,7 +33,7 @@
 			var events = $.extend(events || {}, this.events, {
 				'click .form-trigger' : 'onTriggerClick'
 			});
-			Text.prototype.delegateEvents.call(this, events);
+			this._super.call(this, events);
 		},
 		getSubTplMarkup:function(){
 			var me = this;
