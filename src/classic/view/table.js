@@ -16,7 +16,6 @@
     module.exports = factory(require('./view'), require('../grid/cellContext'), require('../../selection/rowModel'), require('backbone'), require('underscore'), require('jquery'), require('../../taurus'))
   }
 }(this, function (Base, CellContext, RowModel, Backbone, _, $, taurus) {
-  var escapeEl = $('<div></div>')
   return Base.extend({
     header: true,
     tpl: '<div class="grid-item-container"><table><%=rows%></table></div>',
@@ -507,7 +506,7 @@
       }
       classes.length = clsInsertPoint
       cellValues.tdCls = classes.join(' ')
-      cellValues.value = (value == null || value === '') ? column.emptyCellText : escapeEl.text(value).html()
+      cellValues.value = (value == null || value === '') ? column.emptyCellText : value
       return _.template(this.cellTpl)(_.extend(cellValues))
     },
     renderTHead: function () {
