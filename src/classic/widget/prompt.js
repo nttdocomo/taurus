@@ -20,12 +20,11 @@
 		buttons:[{
 			text:i18n.__('Cancel'),
 			handler:'cancel',
-			className:'btn-default',
 			disabled:false
 		},{
 			text:i18n.__('Confirm'),
 			handler:'confirm',
-			className:'btn-primary',
+			ui:'primary',
 			disabled:false
 		}],
 		getItemContainer:function(){

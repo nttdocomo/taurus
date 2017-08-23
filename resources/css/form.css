@@ -182,11 +182,6 @@ input.trigger-noedit, input.trigger-noedit:focus {
 .form-fieldcontainer-column .form-group,.form-fieldcontainer-column .splitter {
 	display: table-cell;
 }
-.form-fieldcontainer-column .form-group+.form-group > div:first-child > .form-control {
-  border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    border-left:none;
-}
 .form-fieldcontainer-column .form-group:first-child .input-group-btn:last-child>.btn {
 	border-top-right-radius: 0;
     border-bottom-right-radius: 0;

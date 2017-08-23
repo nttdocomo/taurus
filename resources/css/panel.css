@@ -20,14 +20,14 @@
 	text-decoration:none;
 }
 .tool-collapse-top:before,.tool-expand-bottom:before {
-    font-family: 'Glyphicons Halflings';
+    font-family: FontAwesome;
     color: grey; 
 }
 .tool-collapse-top:before{
-    content: "\e113";
+    content: "\f107";
 }
 .tool-expand-bottom:before {
-    content: "\e114";
+    content: "\f106";
 }
 .collapsed .panel-heading{
 	border-bottom:none;

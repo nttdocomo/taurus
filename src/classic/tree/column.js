@@ -31,7 +31,7 @@
         cellTpl: ['<%for(var i = 0; i < lines.length;i++){%><div class="<%=childCls%> <%=elbowCls%>-img <%=elbowCls%>-line" role="presentation"></div><%}%>',
         '<div class="<%=childCls%> <%=elbowCls%>-img <%=elbowCls%><%if(expandable){%>-plus <%=expanderCls%><%}%>" role="presentation"></div>',
         '<%if(icon){%><%}else{%><div class="<%=childCls%> <%=baseIconCls%> <%=customIconCls%> <%=baseIconCls%>-<%if(leaf){%>leaf<%}else{if(expanded){%>parent-expanded<%}else{%>parent<%}%><%}%>"></div><%}%>',
-        '<span class="<%=textCls%> <%=childCls%>"><%=value%></span>'].join(''),
+        '<%if(href){%><a href="<%=href%>" class="<%=textCls%> <%=childCls%>"><%=value%></a><%}else{%><span class="<%=textCls%> <%=childCls%>"><%=value%></span><%}%>'].join(''),
         initComponent: function() {
             var me = this;
 
