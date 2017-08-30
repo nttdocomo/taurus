@@ -478,6 +478,9 @@
       me.hidden = true
       me.$el.hide()
       me.trigger('hide')
+      _.each(me.items, function(item){
+        item.hide && item.hide()
+      })
       return me
     },
     toggle: function(){
@@ -905,7 +908,7 @@
       return this.add(index, comp)
     },
     remove: function () {
-      this.components && _.each(this.components, function (item, i) {
+      this.items && _.each(this.items, function (item, i) {
         item.remove()
       })
       this.trigger('remove')
