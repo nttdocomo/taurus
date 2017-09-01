@@ -409,10 +409,13 @@
     show: function () {
       var me = this
       // me.beforeShow()
-      me.$el.show()
+      me.$el.removeClass('hide')
       me.trigger('show', this)
       me.hidden = false
       me.onShow()
+      this.items && _.each(this.items, function (item, i) {
+        item.show && item.show()
+      })
       return me
     },
     showAt: function (x, y, animate) {
@@ -476,7 +479,7 @@
     hide: function () {
       var me = this
       me.hidden = true
-      me.$el.hide()
+      me.$el.addClass('hide')
       me.trigger('hide')
       _.each(me.items, function(item){
         item.hide && item.hide()
@@ -909,7 +912,7 @@
     },
     remove: function () {
       this.items && _.each(this.items, function (item, i) {
-        item.remove()
+        item.remove && item.remove()
       })
       this.trigger('remove')
       return Backbone.View.prototype.remove.apply(this, arguments)

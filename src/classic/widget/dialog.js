@@ -44,7 +44,7 @@
 			if(!me.rendered){
 				me.render(renderTo || $(document.body));
 			}
-			me.$el.addClass('in');
+			me.$el.addClass('in').addClass('hide');
 			$(document.body).addClass('modal-open');
 			me._super();
 			if(!me.headerElHeight){

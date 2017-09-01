@@ -20,6 +20,7 @@
 		initialize:function(){
 			Base.prototype.initialize.apply(this,arguments);
 			this.$el.addClass('hide')
-		}
+		},
+		show: function(){}
 	})
 }));

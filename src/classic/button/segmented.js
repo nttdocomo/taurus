@@ -4,17 +4,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../../view/base', '../../manager', '../../backbone', './button', '../../underscore'], factory)
+      define(['../../view/base', '../../manager', '../../backbone', './button', 'underscore', 'jquery'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../../view/base'), require('../../manager'), require('../../backbone'), require('./button'), require('../../underscore'))
+        return factory(require('../../view/base'), require('../../manager'), require('../../backbone'), require('./button'), require('underscore'), require('jquery'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../../view/base'), require('../../manager'), require('../../backbone'), require('./button'), require('../../underscore'))
+    module.exports = factory(require('../../view/base'), require('../../manager'), require('../../backbone'), require('./button'), require('underscore'), require('jquery'))
   }
-}(this, function (Base, Manager, Backbone, Button, _) {
+}(this, function (Base, Manager, Backbone, Button, _, $) {
 	return Base.extend({
 		xtype: 'segmentedbutton',
 		className:'segmented-button btn-group',
@@ -195,6 +195,7 @@
       if (pressed) {
         if (allowMultiple) {
           if (valueIndex === -1) {
+          	value = $.makeArray(value);
             value.push(buttonValue);
           }
         } else {
