@@ -20,10 +20,11 @@
 		inputType : 'checkbox',
 		checked : false,
 		/**
-	     * @cfg {String} [boxLabelCls='x-form-cb-label']
-	     * The CSS class to be applied to the {@link #boxLabel} element
-	     */
-	    boxLabelCls: taurus.baseCSSPrefix + 'form-cb-label',
+     * @cfg {String} [boxLabelCls='x-form-cb-label']
+     * The CSS class to be applied to the {@link #boxLabel} element
+     */
+    boxLabelCls: taurus.baseCSSPrefix + 'form-cb-label',
+    inputCls: taurus.baseCSSPrefix + 'form-cb',
 		checkedCls : taurus.baseCSSPrefix + 'form-cb-checked',
 		onRe : /^on$/i,
 

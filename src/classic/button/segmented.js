@@ -17,7 +17,8 @@
 }(this, function (Base, Manager, Backbone, Button, _, $) {
 	return Base.extend({
 		xtype: 'segmentedbutton',
-		className:'segmented-button btn-group',
+		baseCls: 'segmented-button',
+		className:'btn-group',
 		defaultType: Button,
 		itemsCount:0,
 		allowToggle:true,
@@ -27,7 +28,7 @@
 			this._super.apply(this, arguments)
 			this.applyValue(this.value)
 		},
-		add : function() {
+		/*add : function() {
 			var me = this, args = Array.prototype.slice.apply(arguments), index = ( typeof args[0] == 'number') ? args.shift() : -1, layout = me.getLayout(),addingArray, items, i, length, item, pos, ret;
 
 			if (args.length == 1 && _.isArray(args[0])) {
@@ -37,12 +38,7 @@
 				items = args;
 			};
 			ret = items = me.prepareItems(items, true, me.afterAdd);
-			/*var me = this, len = this.items.length;
-			 _.each(this.items, function(item, i) {
-			 me.getItemContainer().append(item.render().$el);
-			 });
-			 this.afterRender();*/
-		},
+		},*/
 		afterAdd:function(){
 			var me = this,items = me.items,
 			//layout = me.getLayout(),
@@ -106,17 +102,17 @@
 		},
 		getValue: function(){
 			return this.value
-		},
+		}/*,
 		lookupComponent: function(comp,callback) {
 	        if (!(comp instanceof Backbone.View)) {
 	            if (typeof comp === 'string') {
 	                //comp = Ext.ComponentManager.get(comp);
 	            } else {
-	                /*comp = */Manager.create(comp, this.defaultType,callback);       
+	                comp = Manager.create(comp, this.defaultType,callback);       
 	            }
 	        }
 	        //return comp;
-	    },
+	    }*/,
 		onAdd : function(item, pos, len) {
 			var me = this;
 			me.itemsCount++;
@@ -125,14 +121,14 @@
 				'toggle': me._onItemToggle
 			}, me);
 			if (me.allowToggle) {
-	            item.enableToggle = true;
-	            if (!me.allowMultiple) {
-	                item.toggleGroup = me.getId();
-	                item.allowDepress = me.allowDepress;
-	            }
-	        }
+          item.enableToggle = true;
+          if (!me.allowMultiple) {
+              item.toggleGroup = me.getId();
+              item.allowDepress = me.allowDepress;
+          }
+      }
 			return this.itemsCount === len;
-		},
+		}/*,
 		prepareItems : function(items, applyDefaults, cb) {
 			if (_.isArray(items)) {
 				items = items.slice();
@@ -158,16 +154,16 @@
 								}
 							}
 						})(i));
-						/*if (item) {
+						if (item) {
 							items[i] = item;
 						}
-						delete item.initOwnerCt;*/
+						delete item.initOwnerCt;
 					}
 				}
 			}
 			me.items = items;
 			return items;
-		},
+		}*/,
 		setValue: function(value){
 			this.value = value
 		},

@@ -295,6 +295,7 @@
 				'itemclick': me.onItemClick,
 				'refresh': _.bind(me.onListRefresh,me)
 			}, me);
+			picker.hide()
 			//this.doAutoSelect();
 			return picker;
 		},

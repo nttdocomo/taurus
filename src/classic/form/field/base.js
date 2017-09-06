@@ -59,7 +59,7 @@
      * @memberof field.Base#
      */
     checkChangeBuffer: 50,
-    fieldSubTpl: '<input id="<%=id%>" type="<%=type%>" class="form-control <%=fieldCls%>"<%if(typeof(placeholder) !== "undefined"){%> placeholder="<%=placeholder%>"<%}%><%if(typeof(value) !== "undefined"){%> value="<%=value%>"<%}%><%if(typeof(checked) !== "undefined"){%> checked="<%=checked%>"<%}%><%if(readOnly){%> readonly="readonly"<%}%> name="<%=name%>"<%if(typeof(maxLength) !== "undefined"){%> maxlength="<%=maxLength%>"<%}%><%if(disabled){%> disabled="<%=disabled%>"<%}%> autocomplete="off" />',
+    fieldSubTpl: '<input id="<%=id%>" type="<%=type%>" class="form-control <%=fieldCls%> <%=inputCls%>"<%if(typeof(placeholder) !== "undefined"){%> placeholder="<%=placeholder%>"<%}%><%if(typeof(value) !== "undefined"){%> value="<%=value%>"<%}%><%if(typeof(checked) !== "undefined"){%> checked="<%=checked%>"<%}%><%if(readOnly){%> readonly="readonly"<%}%> name="<%=name%>"<%if(typeof(maxLength) !== "undefined"){%> maxlength="<%=maxLength%>"<%}%><%if(disabled){%> disabled="<%=disabled%>"<%}%> autocomplete="off" />',
     checkChangeEvents: !Modernizr.hasEvent('dragdrop', document.createElement('input')) && (!document.documentMode || document.documentMode < 9) ? ['change', 'propertychange', 'keyup'] : ['change', 'input', 'textInput', 'keyup', 'dragdrop'],
     /**
      * @private
@@ -244,6 +244,7 @@
         value: format.htmlEncode(me.getRawValue()),
         type: type,
         fieldCls: me.fieldCls,
+        inputCls: me.inputCls || '',
         fieldStyle: me.getInputStyle(),
         tabIdx: me.tabIndex,
         typeCls: 'form-' + (type === 'password' ? 'text' : type)

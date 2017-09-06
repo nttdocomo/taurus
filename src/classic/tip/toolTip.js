@@ -28,6 +28,7 @@
 	    renderTo:$(document.body),
 	    disabled:false,
 	    hideAction: 'hide',
+	  quickShowInterval: 250,
 		initialize:function(){
 	        var me = this;
 	        Tip.prototype.initialize.apply(this,arguments);
@@ -72,7 +73,7 @@
 	        // See EXTJSIV-11292.
 	        var me = this,
 	            xy = me.el && (trackMouse === false || !me.trackMouse) && me.getTargetXY();
-
+	        me.clearTimer('hide');
 	        if (me.hidden && !me.showTimer) {
 	            if (DateUtil.getElapsed(me.lastActive) < me.quickShowInterval) {
 	                me.show();
@@ -102,30 +103,30 @@
 
 	    // @private
 	    getAnchorAlign: function() {
-	        switch (this.anchor) {
-		        case 'top':
-		            return {
-		            	"my" : "center top",
-						"at" : "center bottom",
-		            };
-		        case 'left':
-		            return {
-		            	"my" : "right center",
-						"at" : "left center",
-						"collision" : "none none"
-		            };
-		        case 'right':
-		            return {
-		            	"my" : "left center",
-						"at" : "right center",
-		            };
-		        default:
-		            return {
-		            	"my" : "center bottom-10",
-						"at" : "center top",
-						"collision" : "none none"
-		            };
-	        }
+        switch (this.anchor) {
+	        case 'top':
+	          return {
+	          	"my" : "center top",
+	          	"at" : "center bottom",
+	          };
+	        case 'left':
+	          return {
+	          	"my" : "right center",
+	          	"at" : "left center",
+	          	"collision" : "none none"
+	          };
+	        case 'right':
+	          return {
+	          	"my" : "left center",
+	          	"at" : "right center",
+	          };
+	        default:
+	        	return {
+	        		"my" : "center bottom-10",
+	        		"at" : "center top",
+	        		"collision" : "none none"
+	          };
+        }
 	    },
 
 	    getAlignToXY:function(el, position, offsets, local){
@@ -148,7 +149,7 @@
 	    onDisable: function() {
 	        Tip.prototype.onDisable.apply(this,arguments);
 	        this.clearTimers();
-	        this.hide();
+	        //this.hide();
 	    },
 
 	    /**
@@ -214,16 +215,19 @@
 
 	        // If disabled, moving within the current target, ignore the mouseout
 	        // e.within is the only correct way to determine this.
-	        if (me.disabled || !triggerEl || (target.has(e.target).length && target.is(e.target))) {
+	        if (this.currentTarget && (!$.contains(this.currentTarget.get(0), e.relatedTarget) && !this.currentTarget.is(e.relatedTarget))) {
+	           
+		        if (me.showTimer) {
+		            me.clearTimer('show');
+		            me.triggerElement = null;
+		        }
+		        if (me.autoHide !== false) {
+		            me.delayHide();
+		        }
+	        }
+	        /*if (me.disabled || !triggerEl || (target.has(e.target).length && target.is(e.target))) {
 	            return;
-	        }
-	        if (me.showTimer) {
-	            me.clearTimer('show');
-	            me.triggerElement = null;
-	        }
-	        if (me.autoHide !== false) {
-	            me.delayHide();
-	        }
+	        }*/
 	    },
 
 	    /**
@@ -239,13 +243,13 @@
 	            tg = taurus.get(target);
 	            if(typeof(tg) === 'string'){
 		            taurus.$doc.off({
-		            	mouseenter: _.bind(me.onTargetEnter,me),
-		            	mouseleave: _.bind(me.onTargetOut,me)
+		            	mouseover: _.bind(me.onTargetEnter,me),
+		            	mouseout: _.bind(me.onTargetOut,me)
 		            }, tg)
 	            } else {
 		            tg.off({
-		            	mouseenter: _.bind(me.onTargetEnter,me),
-		            	mouseleave: _.bind(me.onTargetOut,me)
+		            	mouseover: _.bind(me.onTargetEnter,me),
+		            	mouseout: _.bind(me.onTargetOut,me)
 		            })
 	            }
 	        }
@@ -254,13 +258,13 @@
 	        if (t) {
 	        	if(typeof(tg) === 'string'){
 	            taurus.$doc.on({
-	            	mouseenter: _.bind(me.onTargetEnter,me),
-	            	mouseleave: _.bind(me.onTargetOut,me)
+	            	mouseover: _.bind(me.onTargetEnter,me),
+	            	mouseout: _.bind(me.onTargetOut,me)
 	            }, t)
 	        	} else {
 	            t.on({
-	            	mouseenter: _.bind(me.onTargetEnter,me),
-	            	mouseleave: _.bind(me.onTargetOut,me)
+	            	mouseover: _.bind(me.onTargetEnter,me),
+	            	mouseout: _.bind(me.onTargetOut,me)
 	            })
 	        	}
 	        }
@@ -302,6 +306,16 @@
 	            }
 	        }*/
 	        me.realignToTarget()
+	        this._super.apply(this, arguments);
+	    },
+	    hide: function(){
+	    	var me = this
+	    	me.clearTimer('dismiss');
+	    	this._super()
+	    },
+	    render: function(){
+	    	this._super.apply(this, arguments)
+	    	this.hide()
 	    },
 	    realignToTarget: function(){
 	    	var me = this

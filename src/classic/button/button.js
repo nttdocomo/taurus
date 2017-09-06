@@ -4,17 +4,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../../view/base', '../menu/menu', '../menu/manager', './manager', '../../taurus', '../../underscore', '../../svg'], factory)
+      define(['../../view/base', '../menu/menu', '../menu/manager', './manager', '../tip/quickTipManager', 'taurus', 'underscore', '../../svg'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('../../taurus'), require('../../underscore'), require('../../svg'))
+        return factory(require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('../tip/quickTipManager'), require('taurus'), require('underscore'), require('../../svg'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('../../taurus'), require('../../underscore'), require('../../svg'))
+    module.exports = factory(require('../../view/base'), require('../menu/menu'), require('../menu/manager'), require('./manager'), require('../tip/quickTipManager'), require('taurus'), require('underscore'), require('../../svg'))
   }
-}(this, function (Base, Menu, MenuManager, ButtonManager, taurus, _, SVG) {
+}(this, function (Base, Menu, MenuManager, ButtonManager, quickTipManager, taurus, _, SVG) {
   return Base.extend({
     /*
 	     * @property {Boolean}
@@ -42,6 +42,11 @@
      */
     enableToggle: false,
     /**
+     * @cfg {Number/String} glyph
+     * @inheritdoc Ext.panel.Header#glyph
+     */
+    glyph: null,
+    /**
      * @property {Boolean} pressed
      * True if this button is pressed (only if enableToggle = true).
      * @readonly
@@ -50,12 +55,13 @@
     iconBeforeText: false,
     iconAlign: 'left',
     _baseIconCls: taurus.baseCSSPrefix + 'btn-icon-el',
+    _glyphCls: taurus.baseCSSPrefix + 'btn-glyph',
     overCls: taurus.baseCSSPrefix + 'btn-over',
     _hasIconCls: taurus.baseCSSPrefix + 'btn-icon',
     _innerCls: taurus.baseCSSPrefix + 'btn-inner',
 
     tpl: '<%if(iconBeforeText){%><%=icon%><%}%><span class="<%=innerCls%> <%=innerCls%>-<%=ui%>"><%=text%></span><%if(split){%> <span class="caret"></span><%}%>',
-    iconTpl: '<i id="<%=id%>-btnIconEl" class="<%=_baseIconCls%> <%=iconCls%>"></i>',
+    iconTpl: '<i id="<%=id%>-btnIconEl" class="<%=_baseIconCls%> <%=iconCls%>" style="<%if(glyph){if(glyphFontFamily){%>font-family:<%=glyphFontFamily%>;<%}}%>"></i>',
     pressedCls: 'active',
     tagName: 'button',
     className: 'btn',
@@ -101,7 +107,7 @@
     doToggle: function (e) {
       var me = this
       if (me.enableToggle && (me.allowDepress !== false || !me.pressed)) {
-        me.toggle($(e.target))
+        me.toggle()
       }
     },
 
@@ -138,6 +144,8 @@
     },
     getTplData: function () {
       var me = this
+      var glyph = me.glyph
+      var glyphFontFamily = me.glyphFontFamily
       return $.extend({
         text: me.text || '',
         split: me.isSplitButton || me.menu,
@@ -149,7 +157,10 @@
           id: me.id,
           iconCls: me.iconCls,
           iconUrl: me.iconUrl,
-          _baseIconCls: me._baseIconCls
+          _baseIconCls: me._baseIconCls,
+          glyph: glyph,
+          glyphCls: glyph ? me._glyphCls : '',
+          glyphFontFamily: glyphFontFamily
         }),
         iconBeforeText: me.iconBeforeText
       }, Base.prototype.getTplData.apply(me, arguments))
@@ -214,11 +225,11 @@
     onMouseDown: function (e) {
       var me = this, target = $(e.target)
       if (!me.disabled) {
-        target.addClass(me.pressedCls)
+        me.$el.addClass(me.pressedCls)
         var onMouseUp = _.bind(function (e) {
           var me = this
           if (!this.pressed) {
-            target.removeClass(me.pressedCls)
+            me.$el.removeClass(me.pressedCls)
           }
           this.doc.off('mouseup', onMouseUp)
         }, me)
@@ -238,10 +249,14 @@
       me._super.apply(me, arguments)
     },
     render: function () {
-      Base.prototype.render.apply(this, arguments)
-      ButtonManager.register(this)
-      if (this.size) {
-        this.$el.addClass('btn-' + this.size)
+      var me = this
+      Base.prototype.render.apply(me, arguments)
+      ButtonManager.register(me)
+      if (me.size) {
+        me.$el.addClass('btn-' + me.size)
+      }
+      if (me.tooltip) {
+        me.setTooltip(me.tooltip, true);
       }
     },
     getSvgEl: function(){
@@ -309,6 +324,39 @@
       var btnInnerEl = me.btnInnerEl
       this.text = text
       btnInnerEl.html(text || '&#160;')
+    },
+
+    /**
+     * Sets the tooltip for this Button.
+     *
+     * @param {String/Object} tooltip This may be:
+     *
+     *   - **String** : A string to be used as innerHTML (html tags are accepted) to show in a tooltip
+     *   - **Object** : A configuration object for {@link Ext.tip.QuickTipManager#register}.
+     *
+     * @return {Ext.button.Button} this
+     */
+    setTooltip: function(tooltip, initial) {
+      var me = this;
+
+      if (me.rendered) {
+        if (!initial || !tooltip) {
+          me.clearTip();
+        }
+        if (tooltip) {
+          if (taurus.quickTipsActive && _.isObject(tooltip)) {
+            quickTipManager.register(_.extend({
+                target: me.el.id
+            }, tooltip));
+            me.tooltip = tooltip;
+          } else {
+            me.el.dom.setAttribute(me.getTipAttr(), tooltip);
+          }
+        }
+      } else {
+        me.tooltip = tooltip;
+      }
+      return me;
     },
 
     setUI: function (ui) {

@@ -38,6 +38,7 @@
   }
   return Backbone.View.extend({
     isRendered: false,
+    rendered: false,
     doc: taurus.$doc,
     baseCls: taurus.baseCSSPrefix + 'component',
     ui: 'default',
@@ -406,18 +407,24 @@
       me.setLocalXY(x, y)
       return me
     },
-    show: function () {
+    show: function (showChild) {
       var me = this
       // me.beforeShow()
       me.$el.removeClass('hide')
       me.trigger('show', this)
       me.hidden = false
       me.onShow()
-      this.items && _.each(this.items, function (item, i) {
-        item.show && item.show()
-      })
+      if(showChild === true){
+        this.items && _.each(this.items, function (item, i) {
+          item.show && item.show()
+        })
+      }
+      if (me.rendered) {
+        me.beforeShow()
+      }
       return me
     },
+    beforeShow: function(){},
     showAt: function (x, y, animate) {
       var me = this
 
@@ -476,14 +483,16 @@
 
       return me
     },
-    hide: function () {
+    hide: function (hideChild) {
       var me = this
       me.hidden = true
       me.$el.addClass('hide')
       me.trigger('hide')
-      _.each(me.items, function(item){
-        item.hide && item.hide()
-      })
+      if(hideChild === true){
+        _.each(me.items, function(item){
+          item.hide && item.hide()
+        })
+      }
       return me
     },
     toggle: function(){
