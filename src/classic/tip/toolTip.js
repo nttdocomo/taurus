@@ -179,6 +179,7 @@
 
 	    // @private
 	    onTargetEnter: function(e) {
+	    	console.log('mouseenter')
 	        var me = this,
 	            t;
 	        var newTarget
@@ -207,27 +208,59 @@
 
 	    // @private
 	    onTargetOut: function(e) {
-	        var me = this,
-	            triggerEl = me.triggerElement,
-	            // If we don't have a delegate, then the target is set
-	            // to true, so set it to the main target.
-	            target = triggerEl === true ? me.target : triggerEl;
+	    	var me = this
+	    	var triggerEl = me.triggerElement
+	    	var target = e.target
+        var related = e.relatedTarget
+        var currentTarget = me.currentTarget
+        var match;
+        if(!currentTarget){
+        	return
+        }
+		    // search for a parent node matching the delegation selector
+		    while ( target && target != document && !( match = currentTarget.is(target) ) ) {
+		      target = target.parentNode;
+		    }
 
-	        // If disabled, moving within the current target, ignore the mouseout
-	        // e.within is the only correct way to determine this.
-	        if (this.currentTarget && (!$.contains(this.currentTarget.get(0), e.relatedTarget) && !this.currentTarget.is(e.relatedTarget))) {
-	           
-		        if (me.showTimer) {
-		            me.clearTimer('show');
-		            me.triggerElement = null;
-		        }
-		        if (me.autoHide !== false) {
-		            me.delayHide();
-		        }
+		    // exit if no matching node has been found
+		    if ( !match ) { return; }
+
+		    // loop through the parent of the related target to make sure that it's not a child of the target
+		    while ( related && related != target && related != document ) {
+		      related = related.parentNode;
+		    }
+
+		    // exit if this is the case
+		    if ( related == target ) { return; }
+	    	console.log('onTargetOut')
+		    if (me.showTimer) {
+          me.clearTimer('show');
+          me.triggerElement = null;
+        }
+        if (me.autoHide !== false) {
+          me.delayHide();
+        }
+        /*var me = this,
+            triggerEl = me.triggerElement,
+            // If we don't have a delegate, then the target is set
+            // to true, so set it to the main target.
+            target = triggerEl === true ? me.target : triggerEl;
+
+        // If disabled, moving within the current target, ignore the mouseout
+        // e.within is the only correct way to determine this.
+        if (this.currentTarget && (!$.contains(this.currentTarget.get(0), e.relatedTarget) && !this.currentTarget.is(e.relatedTarget))) {
+           
+	        if (me.showTimer) {
+	            me.clearTimer('show');
+	            me.triggerElement = null;
 	        }
-	        /*if (me.disabled || !triggerEl || (target.has(e.target).length && target.is(e.target))) {
-	            return;
-	        }*/
+	        if (me.autoHide !== false) {
+	            me.delayHide();
+	        }
+        }
+        /*if (me.disabled || !triggerEl || (target.has(e.target).length && target.is(e.target))) {
+            return;
+        }*/
 	    },
 
 	    /**

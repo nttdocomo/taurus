@@ -81,28 +81,43 @@
     onTargetEnter: function(e){
       var me = this
       var currentTarget = me.currentTarget
-      var target = event.target
-      if (!target || target.nodeType !== 1 || target === document.documentElement || target === document.body){
+      var target
+      var related = e.relatedTarget
+      var match, $target
+      /*if (!target || target.nodeType !== 1 || target === document.documentElement || target === document.body){
         return;
-      }
+      }*/
       var targets = me.targets
       for (key in targets) {
         if (targets.hasOwnProperty(key)) {
           registeredTarget = targets[key];
+          target = e.target
+          $target = $('#'+registeredTarget.target)
+          while ( target && target != document && !( match = $target.is(target) ) ) {
+            target = target.parentNode;
+          }
 
+          // exit if no matching node has been found
+          if ( !match ) { continue; }
+          // loop through the parent of the related target to make sure that it's not a child of the target
+          while ( related && related != target && related != document ) {
+            related = related.parentNode;
+          }
+
+          // exit if this is the case
+          if ( related == target ) { continue; }
           // If we moved over a registered target from outside of it, activate it.
-          if (registeredTarget.target && $('#'+registeredTarget.target).length && ($('#'+registeredTarget.target).is(target) || ($.contains($('#'+registeredTarget.target).get(0), target) && !$.contains($('#'+registeredTarget.target).get(0), event.relatedTarget)))) {
-            target = $('#'+registeredTarget.target);
+          //if (registeredTarget.target && $target.length && ($target.is(target) || ($.contains($target.get(0), target) && !$.contains($target.get(0), event.relatedTarget)))) {
 
             //currentTarget.attach(target);
-            me.currentTarget = target
+            me.currentTarget = $target
             me.activeTarget = registeredTarget;
             registeredTarget.el = currentTarget;
             me.anchor = me.updateAnchor(registeredTarget.anchor);
             me.activateTarget();
             me._super(e)
             return;
-          }
+          //}
         }
       }
     },
