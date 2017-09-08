@@ -116,7 +116,7 @@
 		onAdd : function(item, pos, len) {
 			var me = this;
 			me.itemsCount++;
-			me.items.splice(pos,1,item);
+			me.items.push(item);
 			item.on({
 				'toggle': me._onItemToggle
 			}, me);
