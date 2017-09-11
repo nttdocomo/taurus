@@ -83,7 +83,8 @@
 		},
 		close:function(){
 			var me = this;
-			me.$el.removeClass('in').hide();
+			me.$el.removeClass('in')
+			me.hide()
 			$(document.body).removeClass('modal-open');
 			me.doClose();
 			return false;
