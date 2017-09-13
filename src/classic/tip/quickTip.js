@@ -19,6 +19,11 @@
     return obj;
   }
   return ToolTip.extend({
+    /**
+     * @cfg {Boolean} interceptTitles
+     * `true` to automatically use the element's DOM title value if available.
+     */
+    interceptTitles : false,
     tagConfig : {
       namespace : 'data-',
       attribute : 'qtip',
@@ -34,13 +39,13 @@
       anchorTarget: 'anchorTarget'
     },
     initComponent : function(){
-      var me = this,
-          cfg = me.tagConfig,
-          attr = cfg.attr || (cfg.attr = cfg.namespace + cfg.attribute);
+      var me = this
+      var cfg = me.tagConfig
+      var attr = cfg.attr || (cfg.attr = cfg.namespace + cfg.attribute)
 
       // delegate selector is a function which detects presence
       // of attributes which provide QuickTip text.
-      //me.delegate = Ext.Function.bind(me.delegate, me);
+      me.delegate = _.bind(me.delegate, me);
 
       me.target = me.target || taurus.$doc;
       me.targets = me.targets || {};
@@ -76,6 +81,26 @@
         } else {
             me.hideAction = hideAction;
         }
+      }
+    },
+
+    /**
+     * @private
+     * Reads the tip text from the target.
+     */
+    getTipText: function (target) {
+      var titleText = target.title
+      var cfg = this.tagConfig
+      var attr = cfg.attr || (cfg.attr = cfg.namespace + cfg.attribute)
+      var text;
+
+      if (this.interceptTitles && titleText) {
+        target.attr(attr, titleText);
+        target.removeAttr('title');
+        return titleText;
+      }
+      else {
+        return target.attr(attr);
       }
     },
     onTargetEnter: function(e){
@@ -115,10 +140,48 @@
             registeredTarget.el = currentTarget;
             me.anchor = me.updateAnchor(registeredTarget.anchor);
             me.activateTarget();
-            me._super(e)
-            return;
+            //return;
           //}
         }
+        me._super(e)
+      }
+    },
+    handleTargetOver: function(target, event){
+      var me = this
+      var currentTarget = me.currentTarget
+      var cfg = me.tagConfig
+      var ns = cfg.namespace
+      var tipText = me.getTipText(target, event)
+      var autoHide
+
+      if (tipText) {
+
+        autoHide = currentTarget.attr(ns + cfg.hide);
+
+        me.activeTarget = {
+          el: currentTarget,
+          text: tipText/*,
+          width: +currentTarget.getAttribute(ns + cfg.width) || null,
+          autoHide: autoHide !== "user" && autoHide !== 'false',
+          title: currentTarget.getAttribute(ns + cfg.title),
+          cls: currentTarget.getAttribute(ns + cfg.cls),
+          align: currentTarget.getAttribute(ns + cfg.align),
+          showDelay: currentTarget.getAttribute(ns + cfg.showDelay),
+          hideAction: currentTarget.getAttribute(ns + cfg.hideAction),
+          alignTarget: currentTarget.getAttribute(ns + cfg.anchorTarget)*/
+        };
+
+        // If we were not configured with an anchor, allow it to be set by the target's properties
+        if (!me.initialConfig.hasOwnProperty('anchor')) {
+            me.anchor = currentTarget.attr(ns + cfg.anchor);
+        }
+
+        // If we are anchored, and not configured with an anchorTarget, anchor to the target element, or whatever its 'data-anchortarget' points to
+        if (me.anchor && !me.initialConfig.hasOwnProperty('anchorTarget')) {
+            me.alignTarget = me.activeTarget.alignTarget || target;
+        }
+
+        me.activateTarget();
       }
     },
     updateAnchor: function(anchor){
@@ -173,6 +236,15 @@
     },
 
     /**
+     * Removes this quick tip from its element and destroys it.
+     * @param {String/HTMLElement/Ext.dom.Element} el The element from which the quick tip
+     * is to be removed or ID of the element.
+     */
+    unregister : function(id){
+      delete this.targets[id];
+    },
+
+    /**
      * @private
      */
     updateContent : function() {
@@ -221,6 +293,17 @@
     beforeShow : function() {
       this.updateContent();
       this._super.apply(this, arguments);
+    },
+    
+    delegate: function(target) {
+      var me = this
+      var cfg = me.tagConfig
+      var attr = cfg.attr || (cfg.attr = cfg.namespace + cfg.attribute)
+      var text;
+
+      // We can now only activate on elements which have the required attributes
+      text = target.attr(attr) || (me.interceptTitles && target.attr(title))
+      return !!text;
     }
   })
 }))

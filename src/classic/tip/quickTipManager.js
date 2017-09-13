@@ -77,6 +77,17 @@
       var tip = this.tip;
 
       tip.register.apply(tip, arguments);
+    },
+
+    /**
+     * Removes any registered quick tip from the target element and destroys it.
+     * @param {String/HTMLElement/Ext.dom.Element} el The element from which the quick tip
+     * is to be removed or ID of the element.
+     */
+    unregister : function(){
+        var tip = this.tip;
+
+        tip.unregister.apply(tip, arguments);
     }
 	});
 	return new QuickTipManager()

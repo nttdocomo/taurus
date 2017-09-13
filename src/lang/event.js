@@ -232,7 +232,7 @@
 			(k >= 44 && k <= 46);
 			// Print Screen, Insert, Delete
 		},
-		getTarget:function(selector,maxDepth){
+		getTarget:function(selector,maxDepth, returnEl){
 			return selector ? $(this.target).closest(selector) :
             (returnEl ? $(this.target) : this.target);
 		},

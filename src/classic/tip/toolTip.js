@@ -180,10 +180,13 @@
 	    // @private
 	    onTargetEnter: function(e) {
 	    	console.log('mouseenter')
-	        var me = this,
-	            t;
-	        var newTarget
-
+        var me = this,
+            t;
+        var newTarget
+        var delegate = me.delegate
+        if (delegate) {
+          newTarget = e.getTarget(me.currentTarget);
+        } else {
 	        if (me.target.length > 1) {
 	        	me.target.each(function () {
 	        		if ($(this).is(e.target)) {
@@ -192,20 +195,23 @@
 	        		}
 	        	})
 	        } else {
-	        	if (me.target.is(e.target)) {
-        			newTarget = $(e.target)
-        		}
+	        	if (!me.target.is(e.target)) {
+	      			newTarget = $(e.target)
+	      		}
 	        }
-	        if(newTarget){
-	        	me.currentTarget = newTarget
-	        }
+        }
+        if(newTarget){
+        	me.currentTarget = newTarget
 	        me.triggerElement = true;
           me.triggerEvent = e;
-          me.clearTimer('hide');
-          //me.targetXY = e.getXY();
-          me.delayShow();
+        	me.handleTargetOver(newTarget, e);
+        }
+        //me.targetXY = e.getXY();
 	    },
-
+	    handleTargetOver: function(){
+	    	var me = this
+        me.delayShow()
+	    },
 	    // @private
 	    onTargetOut: function(e) {
 	    	var me = this
@@ -352,6 +358,7 @@
 	    },
 	    realignToTarget: function(){
 	    	var me = this
+        me.clearTimers()
 	    	if (!me.calledFromShowAt) {
 	    		if(me.target){
 	    			me.alignTo(me.currentTarget, me.getAnchorAlign());
