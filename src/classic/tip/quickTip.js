@@ -45,7 +45,7 @@
 
       // delegate selector is a function which detects presence
       // of attributes which provide QuickTip text.
-      me.delegate = _.bind(me.delegate, me);
+      me.delegated = _.bind(me.delegated, me);
 
       me.target = me.target || taurus.$doc;
       me.targets = me.targets || {};
@@ -295,7 +295,7 @@
       this._super.apply(this, arguments);
     },
     
-    delegate: function(target) {
+    delegated: function(target) {
       var me = this
       var cfg = me.tagConfig
       var attr = cfg.attr || (cfg.attr = cfg.namespace + cfg.attribute)

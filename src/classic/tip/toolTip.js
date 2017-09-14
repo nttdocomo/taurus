@@ -183,11 +183,12 @@
         var me = this,
             t;
         var newTarget
-        var delegate = me.delegate
-        if (delegate) {
+        var delegated = me.delegated
+        if (delegated) {
           newTarget = e.getTarget(me.currentTarget);
         } else {
-	        if (me.target.length > 1) {
+        	newTarget = me.target
+	        /*if (me.target.length > 1) {
 	        	me.target.each(function () {
 	        		if ($(this).is(e.target)) {
 	        			newTarget = $(this)
@@ -198,7 +199,7 @@
 	        	if (!me.target.is(e.target)) {
 	      			newTarget = $(e.target)
 	      		}
-	        }
+	        }*/
         }
         if(newTarget){
         	me.currentTarget = newTarget
