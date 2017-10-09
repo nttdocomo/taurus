@@ -5,15 +5,15 @@
 (function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./tip','../../lang/date', '../../taurus', 'underscore'], factory)
+      define(['./tip','../../lang/date', 'taurus', 'underscore' , '../../lang/event'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./tip'), require('../../lang/date'), require('../../taurus'),require('underscore'));
+        return factory(require('./tip'), require('../../lang/date'), require('taurus'),require('underscore'), require('../../lang/event'));
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./tip'), require('../../lang/date'), require('../../taurus'),require('underscore'));
+    module.exports = factory(require('./tip'), require('../../lang/date'), require('taurus'),require('underscore'), require('../../lang/event'));
   }
 }(this, function (Tip, DateUtil, taurus, _) {
   return Tip.extend({
