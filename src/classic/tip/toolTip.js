@@ -16,6 +16,7 @@
     module.exports = factory(require('./tip'), require('../../lang/date'), require('taurus'),require('underscore'), require('../../lang/event'));
   }
 }(this, function (Tip, DateUtil, taurus, _) {
+	var onDocMouseDown
   return Tip.extend({
 
 	    /**
@@ -166,15 +167,17 @@
 	    onDocMouseDown: function(e) {
 	        var me = this;
 	        if (!me.closable && !me.$el.has(e.target).length) {
-	            me.disable();
-	            _.delay(_.bind(me.doEnable,me), 100);
+	        	me.delayHide();
+	            /*me.disable();
+	            _.delay(_.bind(me.doEnable,me), 100);*/
 	        }
 	    },
 
 	    onShow: function() {
 	        var me = this;
-	        Tip.prototype.onShow.apply(this,arguments);
-	        taurus.$doc.on('mousedown', _.bind(me.onDocMouseDown,me));
+	        me._super.apply(this,arguments)
+	        onDocMouseDown = _.bind(me.onDocMouseDown,me)
+	        taurus.$doc.on('mousedown', onDocMouseDown);
 	    },
 
 	    // @private
@@ -244,10 +247,11 @@
           me.clearTimer('show');
           me.triggerElement = null;
         }
-        if (me.autoHide !== false) {
+        me.handleTargetOut()
+        /*if (me.autoHide !== false) {
           me.delayHide();
         }
-        /*var me = this,
+        var me = this,
             triggerEl = me.triggerElement,
             // If we don't have a delegate, then the target is set
             // to true, so set it to the main target.
@@ -268,6 +272,13 @@
         /*if (me.disabled || !triggerEl || (target.has(e.target).length && target.is(e.target))) {
             return;
         }*/
+	    },
+
+	    handleTargetOut: function() {
+	        var me = this;
+	        if (me.isVisible() && me.autoHide) {
+	            me.delayHide();
+	        }
 	    },
 
 	    /**
@@ -324,7 +335,8 @@
 
 	        // Show this Component first, so that sizing can be calculated
 	        // pre-show it off screen so that the el will have dimensions
-	        Tip.prototype.show.apply(this,arguments);
+	        //Tip.prototype.show.apply(this,arguments);
+	        me._super.apply(this, arguments);
 	        me.$el.css('opacity',1);
 	        /*if (this.hidden === false) {
 	            if (me.anchor) {
@@ -346,12 +358,12 @@
 	            }
 	        }*/
 	        me.realignToTarget()
-	        this._super.apply(this, arguments);
 	    },
 	    hide: function(){
 	    	var me = this
 	    	me.clearTimer('dismiss');
 	    	this._super()
+	        taurus.$doc.off('mousedown', onDocMouseDown);
 	    },
 	    render: function(){
 	    	this._super.apply(this, arguments)

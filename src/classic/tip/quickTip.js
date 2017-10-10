@@ -82,6 +82,11 @@
             me.hideAction = hideAction;
         }
       }
+      if(_.isBoolean(activeTarget.autoHide)){
+        me.autoHide = activeTarget.autoHide;
+      } else {
+        me.autoHide = true;
+      }
     },
 
     /**
@@ -182,6 +187,26 @@
         }
 
         me.activateTarget();
+      }
+    },
+
+    /**
+     * @private
+     */
+    handleTargetOut : function(e){
+      var me = this
+      var active = me.activeTarget
+      var autoHide = me.autoHide
+      var hideDelay = me.hideDelay
+      console.log(autoHide)
+      if (active && autoHide !== false) {
+        me.autoHide = true;
+        if (active.hideDelay) {
+          me.hideDelay = parseInt(active.hideDelay, 10);
+        }
+        me._super(e);
+        me.autoHide = autoHide;
+        me.hideDelay = hideDelay;
       }
     },
     updateAnchor: function(anchor){
