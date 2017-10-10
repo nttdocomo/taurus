@@ -122,7 +122,7 @@
         if (targets.hasOwnProperty(key)) {
           registeredTarget = targets[key];
           target = e.target
-          $target = $('#'+registeredTarget.target)
+          $target = $(registeredTarget.target)
           while ( target && target != document && !( match = $target.is(target) ) ) {
             target = target.parentNode;
           }
