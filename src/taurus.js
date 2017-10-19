@@ -28,6 +28,7 @@
 		return (!$.support.borderRadius)
 	});
 	var doc = document, win = window;
+	var encodeEl = document.createElement('div')
 	var subfixs = ['s', 'm', 'h', '天', '年'];
 	var divisors = [1000, 60, 60, 24, 365];
 	function d(a, b) {
@@ -85,6 +86,10 @@
 				}
 				return h;
 			}
+		},
+		htmlEncode: function(v){
+			encodeEl.innerText = v
+			return encodeEl.innerHTML
 		},
 		outerHtml : function(el) {
 			var div = document.createElement("div");

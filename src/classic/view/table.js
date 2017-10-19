@@ -25,7 +25,7 @@
     cellTpl: [
       '<td class="<%=tdCls%>" <%=tdAttr%> style="<%if(tdStyle){%><%=tdStyle%><%}%>" tabindex="-1" data-column-id="<%=column.cid%>">',
       '<div class="grid-cell-inner" ',
-      'style="<%if(style){%><%=style%><%}%>"><%=value%></div>',
+      'style="<%if(style){%><%=style%><%}%>" <%if(typeof(cellInnerAttr)!=="undefined"){%><%=cellInnerAttr.attributes%><%}%>><%=value%></div>',
       '</td>'].join(''),
     className: 'grid-view',
     itemCls: 'grid-item',
