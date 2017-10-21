@@ -6,18 +6,20 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if(define.amd){
-      define(factory)
+      define(['underscore'], factory)
     }
     if(define.cmd){
-      define(factory)
+      define(function(require){
+        return factory(require('underscore'))
+      })
     }
   }
-}(this, function () {
+}(this, function (_) {
 	var MixinBuilder = function(superclass){
     this.superclass = superclass
   }
   MixinBuilder.prototype.with = function(){
-    return Array.prototype.slice.call(arguments).reduce(function (c, mixin) {
+    return _.reduce(Array.prototype.slice.call(arguments), function (c, mixin) {
       return mixin(c)
     }, this.superclass)
   }
