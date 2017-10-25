@@ -106,7 +106,6 @@
 	                // Update the active tab in the tab bar and resume layouts.
 	                me.tabBar.setActiveTab(card.tab);
 	                me.trigger('tabchange', me, card, previous);
-	                //Ext.resumeLayouts(true);
 	            }
 				return card;
 			}
