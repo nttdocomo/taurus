@@ -4,20 +4,20 @@
 (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['underscore'], factory);
+			define(['./mixin', 'underscore'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('underscore'));
+				return factory(require('./mixin'), require('underscore'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('underscore'));
+		module.exports = factory(require('./mixin'), require('underscore'));
 	}
-}(this, function(_){
+}(this, function(mixin, _){
 	var arrayProto = Array.prototype
   var arraySlice = arrayProto.slice
-	return {
+	return mixin({
 		relayEvents: function(origin, events, prefix) {
       var me = this
       var len = events.length
@@ -63,5 +63,5 @@
         return me.trigger.apply(me, arg);
       };
     }
-	}
+	})
 }))

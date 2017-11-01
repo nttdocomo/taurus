@@ -4,7 +4,7 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../container/container', '../view/activeErrors'], factory)
+      define(['../container/container', 'require'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
@@ -14,7 +14,7 @@
   } else if (typeof module === 'object' && module.exports) {
     module.exports = factory(require('../container/container'), require('../view/activeErrors'))
   }
-}(this, function (Base, ActiveErrors) {
+}(this, function (Base, require) {
   /**
    * Produces a standalone `<label />` element which can be inserted into a form and be associated with a field
    * in that form using the {@link #forId} property.
@@ -110,20 +110,23 @@
     unsetActiveError: function () {
       var me = this
       if (me.hasActiveError()) {
-        delete this.activeError
-        delete this.activeErrors
-        this.renderActiveError()
+        delete me.activeError
+        delete me.activeErrors
+        me.renderActiveError()
       }
     },
     setActiveError: function (msg) {
       this.setActiveErrors(msg)
     },
     setActiveErrors: function (errors) {
+      var me = this
       errors = $.makeArray(errors)
-      this.activeError = errors[0]
-      this.activeErrors = errors
-      this.activeError = (new ActiveErrors({})).renderHtml(errors.length ? [errors[0]] : [])
-      this.renderActiveError()
+      me.activeError = errors[0]
+      me.activeErrors = errors
+      require(['../view/activeErrors'], function(ActiveErrors){
+        me.activeError = (new ActiveErrors({})).renderHtml(errors.length ? [errors[0]] : [])
+        me.renderActiveError()
+      })
     },
 
     /**

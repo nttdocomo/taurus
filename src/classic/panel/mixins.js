@@ -5,22 +5,20 @@
 (function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../../taurus'], factory)
+      define(['../../mixin/mixin'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../../taurus'))
+        return factory(require('../../mixin/mixin'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../../taurus'))
+    module.exports = factory(require('../../mixin/mixin'))
   }
-}(this, function (taurus) {
-  var Panel = function () {}
-  Panel.prototype = {
+}(this, function (mixin) {
+  return mixin({
     addRowTpl: function (newTpl) {
       return this.insertTpl('rowTpl', newTpl)
     }
-  }
-  return Panel
+  })
 }))

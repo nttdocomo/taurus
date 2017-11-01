@@ -1,28 +1,27 @@
 (function (root, factory) {
-    if(typeof define === "function" && define.amd) {
-        // Now we're wrapping the factory and assigning the return
-        // value to the root (window) and returning it as well to
-        // the AMD loader.
-        define(function(){
-          return (root.Class = factory());
-        });
-    }
-    if(define.cmd){
-        define(function(require, exports, module){
-            return (root.Class = factory());
-        })
-    } else if(typeof module === "object" && module.exports) {
+    if(typeof define === "function") {
+        if(define.amd){
+            // Now we're wrapping the factory and assigning the return
+            // value to the root (window) and returning it as well to
+            // the AMD loader.
+            define(['../mixin/mixin'], factory);
+        }
+        if(define.cmd){
+            define(function(require, exports, module){
+                return factory(require('../mixin/mixin'))
+            })
+        } 
+    }else if(typeof module === "object" && module.exports) {
         // I've not encountered a need for this yet, since I haven't
         // run into a scenario where plain modules depend on CommonJS
         // *and* I happen to be loading in a CJS browser environment
         // but I'm including it for the sake of being thorough
-        module.exports = (root.Class = factory());
+        module.exports = factory(require('../mixin/mixin'))
     } else {
         root.Class = factory();
     }
-}(this, function() {
-    var StoreHolder = function(){};
-    StoreHolder.prototype = {
+}(this, function(mixin) {
+    return mixin({
         bindStore:function(store, initial, propertyName){
             var me = this
             propertyName = propertyName || 'store'
@@ -55,6 +54,5 @@
                 collection.on(listeners,this);
             }
         }
-    }
-    return StoreHolder;
+    })
 }))

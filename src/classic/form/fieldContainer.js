@@ -13,20 +13,20 @@
 (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(["./label","./fieldAncestor"], factory);
+			define(['../../mixin/mix', "./label","./fieldAncestor"], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-		        return factory(require('./label'),require('./fieldAncestor'));
+		        return factory(require('../../mixin/mix'),require('./label'),require('./fieldAncestor'));
 		     })
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require("./label"),require('./fieldAncestor'));
+		module.exports = factory(require('../../mixin/mix'),require("./label"),require('./fieldAncestor'));
 	} else {
 		root.myModule = factory();
 	}
-}(this, function(Base,FieldAncestor) {
-	return Base.extend({
+}(this, function(mix, Base,FieldAncestor) {
+	return mix(Base).with(FieldAncestor).extend({
 		fieldSubTpl:'',
 		uiClass:'form-fieldcontainer',
 		direction:'row',
@@ -173,5 +173,5 @@
 
 	        return errors;
 	    }
-	}).mixins(FieldAncestor);
+	})
 }));

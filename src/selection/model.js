@@ -4,11 +4,11 @@
     // value to the root (window) and returning it as well to
     // the AMD loader.
     if (define.amd) {
-      define(['class', '../util/storeHolder', 'backbone', 'underscore'], factory)
+      define(['../mixin/mix', 'class', '../util/storeHolder', 'backbone', 'underscore'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return (root.Class = factory(require('class'), require('../util/storeHolder'), require('backbone'), require('underscore')))
+        return (root.Class = factory(require('../mixin/mix'), require('class'), require('../util/storeHolder'), require('backbone'), require('underscore')))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
@@ -16,12 +16,12 @@
     // run into a scenario where plain modules depend on CommonJS
     // *and* I happen to be loading in a CJS browser environment
     // but I'm including it for the sake of being thorough
-    module.exports = (root.Class = factory(require('class'), require('../util/storeHolder'), require('backbone'), require('underscore')))
+    module.exports = (root.Class = factory(require('../mixin/mix'), require('class'), require('../util/storeHolder'), require('backbone'), require('underscore')))
   } else {
     root.Class = factory()
   }
-}(this, function (Class, StoreHolder, Backbone, _) {
-  var Model = Class.extend({
+}(this, function (mix, Class, StoreHolder, Backbone, _) {
+  var Model = mix(Class).with(StoreHolder).extend({
     selected: null,
     config: {
       selected: []
@@ -432,6 +432,6 @@
       }
       return selected
     }
-  }).extend(Backbone.Events).extend(StoreHolder.prototype)
+  }).extend(Backbone.Events)
   return Model
 }))

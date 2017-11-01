@@ -4,19 +4,18 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../taurus'], factory);
+			define(['../../mixin/mixin', '../../taurus'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../../taurus'));
+				return factory(require('../../mixin/mixin'), require('../../taurus'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../taurus'));
+		module.exports = factory(require('../../mixin/mixin'), require('../../taurus'));
 	}
-}(this, function(taurus){
-	var FieldAncestor = function(){};
-	FieldAncestor.prototype = {
+}(this, function(mixin, taurus){
+	return mixin({
 		/**
 	     * @private Handle bubbled errorchange events from descendants; invoke the aggregated event and method
 	     */
@@ -51,6 +50,5 @@
 	        field.on('errorchange', me.handleFieldErrorChange, me);
 	        field.on('validitychange', me.handleFieldValidityChange, me);
 	    }
-	}
-	return FieldAncestor;
+	})
 }));

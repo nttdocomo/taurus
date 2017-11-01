@@ -4,13 +4,11 @@
       // Now we're wrapping the factory and assigning the return
       // value to the root (window) and returning it as well to
       // the AMD loader.
-      define(['../../view/base', '../../util/storeHolder', '../../selection/dataViewModel', '../grid/navigationModel', 'backbone', 'underscore'], function (Base, StoreHolder, DataViewModel, NavigationModel, Backbone, _) {
-        return (root.Class = factory(Base, StoreHolder, DataViewModel, NavigationModel, Backbone, _))
-      })
+      define(['../../mixin/mix', '../../view/base', '../../util/storeHolder', '../../selection/dataViewModel', '../grid/navigationModel', 'backbone', 'underscore'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return (root.Class = factory(require('../../view/base'), require('../../util/storeHolder'), require('../../selection/dataViewModel'), require('../grid/navigationModel'), require('backbone'), require('underscore')))
+        return factory(require('../../mixin/mix'), require('../../view/base'), require('../../util/storeHolder'), require('../../selection/dataViewModel'), require('../grid/navigationModel'), require('backbone'), require('underscore'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
@@ -18,12 +16,12 @@
     // run into a scenario where plain modules depend on CommonJS
     // *and* I happen to be loading in a CJS browser environment
     // but I'm including it for the sake of being thorough
-    module.exports = (root.Class = factory(require('../../view/base'), require('../../util/storeHolder'), require('../../selection/dataViewModel'), require('../grid/navigationModel'), require('backbone'), require('underscore')))
+    module.exports = factory(require('../../mixin/mix'), require('../../view/base'), require('../../util/storeHolder'), require('../../selection/dataViewModel'), require('../grid/navigationModel'), require('backbone'), require('underscore'))
   } else {
     root.Class = factory()
   }
-}(this, function (Base, StoreHolder, DataViewModel, NavigationModel, Backbone, _) {
-  return Base.extend({
+}(this, function (mix, Base, StoreHolder, DataViewModel, NavigationModel, Backbone, _) {
+  return mix(Base).with(StoreHolder).extend({
     config: {
       selectionModel: {
         type: DataViewModel
@@ -66,7 +64,7 @@
       var selModel = me.getSelectionModel()
       selModel.bindStore(store, initial)
       selModel.bindComponent(store ? me : null)
-      StoreHolder.prototype.bindStore.apply(me, arguments)
+      me._super.apply(me, arguments)
       // If we have already achieved our first layout, refresh immediately.
       // If we bind to the Store before the first layout, then beforeLayout will
       // call doFirstRefresh
@@ -208,5 +206,5 @@
       var SelModel = selModel.type
       return new SelModel
     }
-  }).mixins(StoreHolder)
+  })
 }))

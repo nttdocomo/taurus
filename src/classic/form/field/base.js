@@ -4,17 +4,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../label', './field', '../../../underscore', '../../../backbone', '../../../modernizr', '../../../i18n', '../../../taurus', '../../../util/format'], factory)
+      define(['../../../mixin/mix', '../label', './field', '../../../underscore', '../../../backbone', 'modernizr', '../../../i18n', '../../../taurus', '../../../util/format'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../label'), require('./field'), require('../../../underscore'), require('../../../backbone'), require('../../../modernizr'), require('../../../i18n'), require('../../../taurus'), require('../../../util/format'))
+        return factory(require('../../../mixin/mix'), require('../label'), require('./field'), require('../../../underscore'), require('../../../backbone'), require('modernizr'), require('../../../i18n'), require('../../../taurus'), require('../../../util/format'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../label'), require('./field'), require('../../../underscore'), require('../../../backbone'), require('../../../modernizr'), require('../../../i18n'), require('../../../taurus'), require('../../../util/format'))
+    module.exports = factory(require('../../../mixin/mix'), require('../label'), require('./field'), require('../../../underscore'), require('../../../backbone'), require('modernizr'), require('../../../i18n'), require('../../../taurus'), require('../../../util/format'))
   }
-}(this, function (Label, Field, _, Backbone, Modernizr, i18n, taurus, format) {
+}(this, function (mix, Label, Field, _, Backbone, Modernizr, i18n, taurus, format) {
   /**
    * A namespace.
    * @namespace form
@@ -34,7 +34,7 @@
    * @memberof field
    * @toc form.field.Base
    */
-  return Label.extend({
+  return mix(Label).with(Field).extend({
     inputType: 'text',
     readOnly: false,
     editable: true,
@@ -156,7 +156,7 @@
     setValue: function (value) {
       var me = this
       me.setRawValue(me.valueToRaw(value))
-      return Field.prototype.setValue.call(me, value)
+      return me._super.call(me, value)
     },
     /**
      * Resets the current field value to the originally loaded value and clears any validation messages. See {@link
@@ -328,5 +328,5 @@
       }
       return isValid
     }
-  }).mixins(Field)
+  })
 }))

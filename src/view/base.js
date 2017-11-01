@@ -4,17 +4,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../state/stateful', '../util/focusable', '../mixin/observable', '../util/itemCollection', 'underscore', 'taurus', 'backbone', 'backbone-super', '../lang/number', '../mixins', '../jquery.ui.position'], factory)
+      define(['../mixin/mix', '../mixin/observable', '../util/itemCollection', 'underscore', 'taurus', 'backbone', 'backbone-super', '../lang/number', '../jquery.ui.position'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../state/stateful'), require('../util/focusable'), require('../mixin/observable'), require('../util/itemCollection'), require('underscore'), require('taurus'), require('backbone'), require('backbone-super'), require('../lang/number'), require('../mixins'), require('../jquery.ui.position'))
+        return factory(require('../mixin/mix'), require('../mixin/observable'), require('../util/itemCollection'), require('underscore'), require('taurus'), require('backbone'), require('backbone-super'), require('../lang/number'), require('../jquery.ui.position'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../state/stateful'), require('../util/focusable'), require('../mixin/observable'), require('../util/itemCollection'), require('underscore'), require('taurus'), require('backbone'), require('backbone-super'), require('../lang/number'), require('../mixins'), require('../jquery.ui.position'))
+    module.exports = factory(require('../mixin/mix'), require('../mixin/observable'), require('../util/itemCollection'), require('underscore'), require('taurus'), require('backbone'), require('backbone-super'), require('../lang/number'), require('../jquery.ui.position'))
   }
-}(this, function (Stateful, Focusable, observable, ItemCollection, _, taurus, Backbone) {
+}(this, function (mix, observable, ItemCollection, _, taurus, Backbone) {
   /**
    * A basic class
    *
@@ -36,7 +36,7 @@
       }
     }
   }
-  return Backbone.View.extend({
+  return mix(Backbone.View).with(observable).extend({
     isRendered: false,
     rendered: false,
     doc: taurus.$doc,
@@ -983,5 +983,5 @@
         return newobj
       }
     }
-  }).mixins(Stateful).mixins(Focusable).extend(observable)
+  })
 }))
