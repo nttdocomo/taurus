@@ -10,15 +10,12 @@
  */
 (function(factory) {
 	if (typeof define === 'function') {
-		if(define.cmd){
-			define(function(require, exports, module){
-		      var $ = require('jquery');
-		      factory($);
-		    })
-		}
 		if(define.amd){
-			define(['jquery'],function($){
-		      factory($);
+			define(['jquery'],factory)
+		}
+		if(define.cmd){
+			define(function(require){
+		      factory(require('jquery'));
 		    })
 		}
 
