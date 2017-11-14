@@ -26,7 +26,7 @@
 		allowDepress:false,
 		updateItems: function(){
 			this._super.apply(this, arguments)
-			//this.applyValue(this.value)
+			this.applyValue(this.value)
 		},
 		/*add : function() {
 			var me = this, args = Array.prototype.slice.apply(arguments), index = ( typeof args[0] == 'number') ? args.shift() : -1, layout = me.getLayout(),addingArray, items, i, length, item, pos, ret;
