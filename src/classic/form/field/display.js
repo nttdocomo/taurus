@@ -17,7 +17,7 @@
 }(this, function(Base,taurus) {
 	return Base.extend({
 		allowBlank : true,
-		fieldSubTpl:'<p class="form-control-static"><%=value%></p>',
+		fieldSubTpl:'<div class="form-control-static"><%=value%></div>',
 		getRawValue:function(){
 			return this.rawValue;
 		},

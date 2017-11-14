@@ -26,7 +26,7 @@
 		allowDepress:false,
 		updateItems: function(){
 			this._super.apply(this, arguments)
-			this.applyValue(this.value)
+			//this.applyValue(this.value)
 		},
 		/*add : function() {
 			var me = this, args = Array.prototype.slice.apply(arguments), index = ( typeof args[0] == 'number') ? args.shift() : -1, layout = me.getLayout(),addingArray, items, i, length, item, pos, ret;
@@ -67,30 +67,53 @@
 		applyValue: function (value, oldValue) {
 			console.log('applyValue')
 			var me = this
+			var allowMultiple = me.allowMultiple
 			var values = _.isArray(value) ? value : (value == null) ? [] : [value]
+			oldValues = _.isArray(oldValue) ? oldValue : (oldValue == null) ? [] : [oldValue];
 			var ln = values.length
 			me._isApplyingValue = true;
 			for (i = 0; i < ln; i++) {
         value = values[i];
-        button = me._lookupButtonByValue(value);
+        //button = me._lookupButtonByValue(value);
+        ln = values.length;
 
-        if (button) {
-          buttonValue = button.value;
-
-          if ((buttonValue != null) && buttonValue !== value) {
-            // button has a value, but it was matched by index.
-            // transform the index into the button value
-            values[i] = buttonValue;
-          }
-
-          if (!button.pressed) {
-            button.setPressed(true);
-          }
-        }
         //<debug>
-        else {
-          // no matched button. fail.
-          Ext.raise("Invalid value '" + value + "' for segmented button: '" + me.id + "'");
+        if (ln > 1 && !allowMultiple) {
+            Ext.raise('Cannot set multiple values when allowMultiple is false');
+        }
+        //</debug>
+
+        for (i = 0; i < ln; i++) {
+            value = values[i];
+            button = me._lookupButtonByValue(value);
+
+            if (button) {
+	          buttonValue = button.value;
+
+	          if ((buttonValue != null) && buttonValue !== value) {
+	            // button has a value, but it was matched by index.
+	            // transform the index into the button value
+	            values[i] = buttonValue;
+	          }
+
+	          if (!button.pressed) {
+	            button.setPressed(true);
+	          }
+	        }
+	        //<debug>
+	        else {
+	          // no matched button. fail.
+	          Ext.raise("Invalid value '" + value + "' for segmented button: '" + me.id + "'");
+	        }
+            //</debug>
+        }
+
+        
+        for (i = 0, ln = oldValues.length; i < ln; i++) {
+            oldValue = oldValues[i];
+            if (!_.contains(values, oldValue)) {
+                me._lookupButtonByValue(oldValue).setPressed(false);
+            }
         }
         //</debug>
       }
@@ -116,7 +139,7 @@
 		onAdd : function(item, pos, len) {
 			var me = this;
 			me.itemsCount++;
-			me.items.push(item);
+			//me.items.push(item);
 			item.on({
 				'toggle': me._onItemToggle
 			}, me);
@@ -165,7 +188,11 @@
 			return items;
 		}*/,
 		setValue: function(value){
+			var oldValue = this.value
 			this.value = value
+			console.log(value)
+			console.log(oldValue)
+			this.applyValue(value, oldValue)
 		},
 
     /**
