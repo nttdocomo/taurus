@@ -102,10 +102,10 @@
       if (this.interceptTitles && titleText) {
         target.attr(attr, titleText);
         target.removeAttr('title');
-        return taurus.htmlEncode(titleText)
+        return titleText
       }
       else {
-        return taurus.htmlEncode(target.attr(attr))
+        return target.attr(attr)
       }
     },
     onTargetEnter: function(e){
