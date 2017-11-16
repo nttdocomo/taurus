@@ -88,6 +88,9 @@
 			}
 		},
 		htmlEncode: function(v){
+			if(typeof(v) === 'undefined'){
+				return v
+			}
 			encodeEl.innerText = v
 			return encodeEl.innerHTML
 		},
