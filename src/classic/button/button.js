@@ -346,7 +346,7 @@
         if (tooltip) {
           if (taurus.quickTipsActive && _.isObject(tooltip)) {
             quickTipManager.register(_.extend({
-                target: me.el.id
+                target: '#' + me.el.id
             }, tooltip));
             me.tooltip = tooltip;
           } else {
