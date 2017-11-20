@@ -42,10 +42,16 @@
           endpoint: '/uploads'
         },
         callbacks: {
+          onValidate: function (data, buttonContainer) {
+            me.trigger('validate', data, buttonContainer)
+            return me.onValidate(data, buttonContainer)
+          },
           onComplete: function (id, name, responseJSON, xhr) {
             me.trigger('complete', id, name, responseJSON, xhr)
+            me.onComplete(id, name, responseJSON, xhr)
           },
           onProgress: function (id, name, uploadedBytes, totalBytes) {
+            me.trigger('progress', id, name, uploadedBytes, totalBytes)
             console.log(arguments)
             me.onProgress(id, name, uploadedBytes, totalBytes)
           }
