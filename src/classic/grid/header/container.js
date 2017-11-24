@@ -144,15 +144,21 @@
 	        rootHeader = me.getRootHeaderCt();
 	        result = [];
 	        len = allColumns.length;
+	        if(allColumns.length === 0){
+	        	return
+	        }
 
 	        // Use an inline check instead of ComponentQuery filtering for better performance for
 	        // repeated grid row rendering - as in buffered rendering.
 	        for (i = 0; i < len; i++) {
 	            column = allColumns[i];
-
 	            if (!column.hidden && !column.isColumnHidden(rootHeader)) {
 	                result[result.length] = column;
 	            }
+
+	            /*if (!column.hidden && !column.isColumnHidden(rootHeader)) {
+	                result[result.length] = column;
+	            }*/
 	        }
 
 	        me.gridVisibleColumns = result;
@@ -269,7 +275,10 @@
 		getGridColumns:function(){
 			var result = [];
 			this.$el.find('.column-header').each(function(i,item){
-				result.push($(this).data('component'));
+				var component = $(this).data('component')
+				if(component){
+					result.push(component);
+				}
 			});
 			return result;
 		},

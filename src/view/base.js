@@ -924,6 +924,7 @@
         item.remove && item.remove()
       })
       this.trigger('remove')
+      this.rendered = false
       return Backbone.View.prototype.remove.apply(this, arguments)
     },
 

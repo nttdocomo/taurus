@@ -132,8 +132,12 @@
       var isFixedSize = me.isFixedSize
       records.each(function (record, i) {
         var itemIndex = i
+        var cell = rows.get(itemIndex).cells[me.getVisibleIndex()]
+        if(!cell){
+          return
+        }
         var recordId = record.cid
-        var cell = rows.get(itemIndex).cells[me.getVisibleIndex()].firstChild
+        cell = cell.firstChild
         var widgets = me.liveWidgets[recordId] = /*oldWidgetMap[recordId] || */me.getFreeWidget()//TODO make the widget can reuse
         me.updateWidget(widgets, cell, record, isFixedSize)
         // We have to run the callback *after* reattaching the Widget
