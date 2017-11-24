@@ -195,9 +195,19 @@
     },
 
     setSortState: function (state, skipClear, initial) {
-      var me = this, ascCls = me.ascSortCls, descCls = me.descSortCls, ownerHeaderCt = me.getOwnerHeaderCt(), oldSortState = me.sortState,oldDirection = me.direction,
-        grid = me.ownerCt.grid,
-        collection = grid.collection,direction = collection.state.sortKey == me.dataIndex ? collection.state.order : null
+      var me = this
+      var ascCls = me.ascSortCls
+      var descCls = me.descSortCls
+      var ownerHeaderCt = me.getOwnerHeaderCt()
+      var oldSortState = me.sortState,oldDirection = me.direction
+      var grid = me.ownerCt.grid
+      var collection = grid.collection
+      //adapt to no state collection
+      var direction = null
+      if(collection.state){
+        direction = collection.state.sortKey == me.dataIndex ? collection.state.order : null
+      }
+      //var direction = collection.state.sortKey == me.dataIndex ? collection.state.order : null
 
       switch (direction) {
         case -1:
