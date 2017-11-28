@@ -72,52 +72,52 @@
 			oldValues = _.isArray(oldValue) ? oldValue : (oldValue == null) ? [] : [oldValue];
 			var ln = values.length
 			me._isApplyingValue = true;
-			for (i = 0; i < ln; i++) {
-        value = values[i];
-        //button = me._lookupButtonByValue(value);
-        ln = values.length;
+			/*for (i = 0; i < ln; i++) {
+	        value = values[i];*/
+	        //button = me._lookupButtonByValue(value);
+	        ln = values.length;
 
-        //<debug>
-        if (ln > 1 && !allowMultiple) {
-            Ext.raise('Cannot set multiple values when allowMultiple is false');
-        }
-        //</debug>
-
-        for (i = 0; i < ln; i++) {
-            value = values[i];
-            button = me._lookupButtonByValue(value);
-
-            if (button) {
-	          buttonValue = button.value;
-
-	          if ((buttonValue != null) && buttonValue !== value) {
-	            // button has a value, but it was matched by index.
-	            // transform the index into the button value
-	            values[i] = buttonValue;
-	          }
-
-	          if (!button.pressed) {
-	            button.setPressed(true);
-	          }
-	        }
 	        //<debug>
-	        else {
-	          // no matched button. fail.
-	          Ext.raise("Invalid value '" + value + "' for segmented button: '" + me.id + "'");
+	        if (ln > 1 && !allowMultiple) {
+	            Ext.raise('Cannot set multiple values when allowMultiple is false');
 	        }
-            //</debug>
-        }
+	        //</debug>
 
-        
-        for (i = 0, ln = oldValues.length; i < ln; i++) {
-            oldValue = oldValues[i];
-            if (!_.contains(values, oldValue)) {
-                me._lookupButtonByValue(oldValue).setPressed(false);
-            }
-        }
-        //</debug>
-      }
-      me._isApplyingValue = false;
+	        for (i = 0; i < ln; i++) {
+	            value = values[i];
+	            button = me._lookupButtonByValue(value);
+
+	            if (button) {
+		          buttonValue = button.value;
+
+		          if ((buttonValue != null) && buttonValue !== value) {
+		            // button has a value, but it was matched by index.
+		            // transform the index into the button value
+		            values[i] = buttonValue;
+		          }
+
+		          if (!button.pressed) {
+		            button.setPressed(true);
+		          }
+		        }
+		        //<debug>
+		        else {
+		          // no matched button. fail.
+		          Ext.raise("Invalid value '" + value + "' for segmented button: '" + me.id + "'");
+		        }
+	            //</debug>
+	        }
+
+	        
+	        for (i = 0, ln = oldValues.length; i < ln; i++) {
+	            oldValue = oldValues[i];
+	            if (!_.contains(values, oldValue)) {
+	                me._lookupButtonByValue(oldValue).setPressed(false);
+	            }
+	        }
+	        //</debug>
+	      //}
+	      	me._isApplyingValue = false;
 		},
 		getAllowToggle:function(){
 			var internalName = this.$configPrefixed ? prefixedName : name;
