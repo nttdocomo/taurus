@@ -4,15 +4,15 @@
  (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../mixin/mixin', '../../taurus'], factory);
+			define(['../../mixin/mixin', 'taurus'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../../mixin/mixin'), require('../../taurus'));
+				return factory(require('../../mixin/mixin'), require('taurus'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../mixin/mixin'), require('../../taurus'));
+		module.exports = factory(require('../../mixin/mixin'), require('taurus'));
 	}
 }(this, function(mixin, taurus){
 	return mixin({

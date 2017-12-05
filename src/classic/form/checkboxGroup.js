@@ -4,15 +4,15 @@
 (function (root, factory) {
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['../../mixin/mix', './fieldContainer','./field/field','underscore','./field/checkbox','../../taurus'], factory);
+			define(['../../mixin/mix', './fieldContainer','./field/field','underscore','./field/checkbox','taurus'], factory);
 		}
 		if(define.cmd){
 			define(function(require, exports, module){
-				return factory(require('../../mixin/mix'),require('./fieldContainer'),require('./field/field'),require('underscore'),require('./field/checkbox'), require('../../taurus'));
+				return factory(require('../../mixin/mix'),require('./fieldContainer'),require('./field/field'),require('underscore'),require('./field/checkbox'), require('taurus'));
 			})
 		}
 	} else if(typeof module === "object" && module.exports) {
-		module.exports = factory(require('../../mixin/mix'),require('./fieldContainer'),require('./field/field'),require('underscore'),require('./field/checkbox'), require('../../taurus'));
+		module.exports = factory(require('../../mixin/mix'),require('./fieldContainer'),require('./field/field'),require('underscore'),require('./field/checkbox'), require('taurus'));
 	}
 }(this, function(mix, Base,Field,_,Checkbox, taurus) {
 	return mix(Base).with(Field).extend({

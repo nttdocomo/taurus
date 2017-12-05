@@ -5,15 +5,15 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./view', '../grid/cellContext', '../../selection/rowModel', 'backbone', 'underscore', 'jquery', '../../taurus'], factory)
+      define(['./view', '../grid/cellContext', '../../selection/rowModel', 'backbone', 'underscore', 'jquery', 'taurus'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./view'), require('../grid/cellContext'), require('../../selection/rowModel'), require('backbone'), require('underscore'), require('jquery'), require('../../taurus'))
+        return factory(require('./view'), require('../grid/cellContext'), require('../../selection/rowModel'), require('backbone'), require('underscore'), require('jquery'), require('taurus'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./view'), require('../grid/cellContext'), require('../../selection/rowModel'), require('backbone'), require('underscore'), require('jquery'), require('../../taurus'))
+    module.exports = factory(require('./view'), require('../grid/cellContext'), require('../../selection/rowModel'), require('backbone'), require('underscore'), require('jquery'), require('taurus'))
   }
 }(this, function (Base, CellContext, RowModel, Backbone, _, $, taurus) {
   return Base.extend({

@@ -4,15 +4,15 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../../../mixin/mix', '../label', './field', '../../../underscore', '../../../backbone', 'modernizr', '../../../i18n', '../../../taurus', '../../../util/format'], factory)
+      define(['../../../mixin/mix', '../label', './field', 'underscore', 'backbone', 'modernizr', '../../../i18n', 'taurus', '../../../util/format'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../../../mixin/mix'), require('../label'), require('./field'), require('../../../underscore'), require('../../../backbone'), require('modernizr'), require('../../../i18n'), require('../../../taurus'), require('../../../util/format'))
+        return factory(require('../../../mixin/mix'), require('../label'), require('./field'), require('underscore'), require('backbone'), require('modernizr'), require('../../../i18n'), require('taurus'), require('../../../util/format'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../../../mixin/mix'), require('../label'), require('./field'), require('../../../underscore'), require('../../../backbone'), require('modernizr'), require('../../../i18n'), require('../../../taurus'), require('../../../util/format'))
+    module.exports = factory(require('../../../mixin/mix'), require('../label'), require('./field'), require('underscore'), require('backbone'), require('modernizr'), require('../../../i18n'), require('taurus'), require('../../../util/format'))
   }
 }(this, function (mix, Label, Field, _, Backbone, Modernizr, i18n, taurus, format) {
   /**
