@@ -4,17 +4,17 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./view', './boundListItem', 'underscore', 'backbone', '../../taurus', 'jquery.lazyload'], factory)
+      define(['./view', 'underscore', 'backbone', 'taurus'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./view'), require('./boundListItem'), require('underscore'), require('backbone'), require('../../taurus'), require('jquery.lazyload'))
+        return factory(require('./view'), require('underscore'), require('backbone'), require('taurus'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./view'), require('./boundListItem'), require('underscore'), require('backbone'), require('../../taurus'), require('jquery.lazyload'))
+    module.exports = factory(require('./view'), require('underscore'), require('backbone'), require('taurus'))
   }
-}(this, function (Base, BoundListItem, _, Backbone, taurus) {
+}(this, function (Base, _, Backbone, taurus) {
   return Base.extend({
     // tpl:'<%=content%>',
     id: 'listEl',
@@ -136,11 +136,11 @@
     alignTo: function (element, position, offsets) {
       var me = this
       //this.$el.css('z-index', '1051')
-      if (this.lazyload) {
+      /*if (this.lazyload) {
         me.$el.find('img.lazy').lazyload({
           container: me.$el
         })
-      }
+      }*/
       return Base.prototype.alignTo.apply(this, arguments)
     },
     setHeight: function (height) {
