@@ -90,6 +90,9 @@
 	     * @return {Number} The index of the specified column header
 	     */
 	    getHeaderIndex: function (header) {
+	    	if(header === null){
+	    		return -1
+	    	}
 	        if (header.isGroupHeader) {
 	            // Get the first header for the particular group header. The .getHeaderColumns API
 	            // will sort out if it's to be just visible columns or all columns.

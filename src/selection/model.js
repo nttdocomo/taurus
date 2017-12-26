@@ -407,7 +407,7 @@
           me.doSelect(record, true)
         }
       } else {
-        me.callParent([record, e, isSelected])
+        me._super(record, e, isSelected)
       }
     },
 
