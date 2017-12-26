@@ -227,6 +227,9 @@
         if(!currentTarget){
         	return
         }
+        if(currentTarget.$el){
+        	currentTarget = currentTarget.$el
+        }
 		    // search for a parent node matching the delegation selector
 		    while ( target && target != document && !( match = currentTarget.is(target) ) ) {
 		      target = target.parentNode;

@@ -50,7 +50,7 @@
 			if(!me.headerElHeight){
 				me.headerElHeight = me.headerEl.outerHeight()
 			}
-			me.content.css({
+			me.contentCt.css({
 				'padding-top':me.headerElHeight
 			})
 			me.headerEl.css({
@@ -111,7 +111,7 @@
 		applyChildEls:function(childEls){
 			childEls = $.extend(childEls || {},{
 				'modal':'.modal',
-				'content':'.modal-content',
+				'contentCt':'.modal-content',
 				'headerEl':'.modal-header',
 				'header':'.modal-title',
                 'dialog':'.modal-dialog',

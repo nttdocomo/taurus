@@ -56,7 +56,7 @@
 		},
 		afterRender : function() {
 			Dialog.prototype.afterRender.apply(this, arguments);
-			this.footer = $('<div class="modal-footer"></div>').appendTo(this.content);
+			this.footer = $('<div class="modal-footer"></div>').appendTo(this.contentCt);
 			this.renderButttons()
 		},
 		renderButttons:function(){
@@ -91,7 +91,7 @@
 			me._super.apply(me, arguments)
 			if(!me.footerElHeight){
 				me.footerElHeight = me.footer.outerHeight()
-				me.content.css({
+				me.contentCt.css({
 					'padding-bottom':me.footerElHeight
 				})
 				me.footer.css({
