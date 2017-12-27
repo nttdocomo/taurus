@@ -399,16 +399,17 @@
     },
     selectWithEventMulti: function (record, e, isSelected) {
       var me = this
+      // TODO:增加对ctrl和shift的支持
 
-      if (!e.shiftKey && !e.ctrlKey && e.getTarget(me.checkSelector)) {
+      //if (!e.shiftKey && !e.ctrlKey && e.getTarget(me.checkSelector)) {
         if (isSelected) {
           me.doDeselect(record)
         } else {
           me.doSelect(record, true)
         }
-      } else {
+      /*} else {
         me._super(record, e, isSelected)
-      }
+      }*/
     },
 
     suspendChanges: function() {
