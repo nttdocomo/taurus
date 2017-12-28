@@ -1054,7 +1054,18 @@
     */
     parse: function (resp, options) {
       var newState = this.parseState(resp, _clone(this.queryParams), _clone(this.state), options);
-      if (newState) this.state = this._checkState(_extend({}, this.state, newState));
+      //if (newState) this.state = this._checkState(_extend({}, this.state, newState));
+      if (newState) {
+        try {
+          this.state = this._checkState(_extend({}, this.state, newState));
+        } catch(e){
+          require(['raven'], function(Raven){
+            Raven.setUserContext({
+              resp: resp
+            })
+          })
+        }
+      }
       return this.parseRecords(resp, options);
     },
 
