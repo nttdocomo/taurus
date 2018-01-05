@@ -180,20 +180,6 @@
 			// Filter the Store according to the updated filter
 			if(queryString){
 				collection = me.collection.filter(function(model) {
-					try{
-						return model.get(me.displayField).indexOf(me.getRawValue()) > -1;
-					} catch(e){
-						require(['raven'], function(Raven){
-				          Raven.captureException(e, {
-				            extra: {
-				              model: model.toJSON(),
-				              displayField: me.displayField,
-				              getRawValue: me.getRawValue()
-				            }
-				          });
-				        })
-						return false;
-					}
 					return model.get(me.displayField).indexOf(me.getRawValue()) > -1;
 				});
 			} else {
