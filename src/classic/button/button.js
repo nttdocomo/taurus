@@ -259,14 +259,6 @@
         me.setTooltip(me.tooltip, true);
       }
     },
-    getSvgEl: function(){
-      if(!this.svgEl){
-        this.svgEl = new SVG(this.btnIconEl.get(0))
-      }
-      return this.svgEl.size(14, 14).attr({
-        'class':'circle-loader'
-      })
-    },
 
     /**
      * Sets the background image (inline style) of the button. This method also changes the value of the {@link #icon}
@@ -288,18 +280,7 @@
       me.icon = icon
       if (icon !== oldIcon) {
         if (btnIconEl) {
-          if(icon instanceof SVG.Shape){
-            svgEl = this.getSvgEl()
-            svgEl.add(icon)
-          } else {
-            btnIconEl.css('background-image', icon ? 'url(' + icon + ')' : '')
-          }
-          if(!icon){
-            if(oldIcon instanceof SVG.Shape){
-              svgEl = this.getSvgEl()
-              svgEl.clear()
-            }
-          }
+          btnIconEl.css('background-image', icon ? 'url(' + icon + ')' : '')
           me._syncHasIconCls()
           if (me.didIconStateChange(oldIcon, icon)) {
             me.updateLayout()

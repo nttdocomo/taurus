@@ -180,7 +180,21 @@
 			// Filter the Store according to the updated filter
 			if(queryString){
 				collection = me.collection.filter(function(model) {
-					return model.get(me.displayField).indexOf(me.getRawValue()) > -1;
+					try{
+						return model.get(me.displayField).indexOf(me.getRawValue()) > -1;
+					} catch(e){
+						require(['raven'], function(Raven){
+				            Raven.captureException(e, {
+				                extra: {
+				                    queryString: queryString,
+				                    value: model.get(me.displayField),
+				                    displayField: me.displayField
+				                }
+				            });
+				        })
+				        return -1
+					}
+					return -1
 				});
 			} else {
 				collection = me.collection.clone().models;
