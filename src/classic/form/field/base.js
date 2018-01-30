@@ -278,9 +278,9 @@
     },
     getControlsStyle: function () {
       var controlsStyle = Label.prototype.getControlsStyle.apply(this, arguments)
-      if (this.width) {
+      /*if (this.width) {
         controlsStyle += 'width:' + this.width + 'px;'
-      }
+      }*/
       return controlsStyle
     },
     isValid: function () {
