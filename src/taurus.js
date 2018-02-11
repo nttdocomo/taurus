@@ -242,6 +242,18 @@
 			return jQuery.browser.msie && jQuery.browser.version == "8.0"
 		}(), isWebKit = check(/webkit/), isGecko = !isWebKit && check(/gecko/);
 	})()*/
+	taurus.augmentString = function(L, J, force) {
+		var K = window
+		var I = L.split(".")
+		for (var H = 0, G = I.length; H < G; ++H) {
+			if(force){
+				K = K[I[H]] = ( typeof I[H + 1] !== "undefined") ? {} : J
+			} else {
+				K = K[I[H]] = K[I[H]] || (( typeof I[H + 1] !== "undefined") ? {} : J)
+			}
+		}
+		return K
+	};
 	taurus.augmentObject = function(H, I) {
 		var K;
 		if ($.type(H) !== 'string') {
@@ -256,18 +268,6 @@
 	};
 	taurus.aug = function() {
 		return taurus.augmentObject.apply({}, arguments)
-	};
-	taurus.augmentString = function(L, J, force) {
-		var K = window
-		var I = L.split(".")
-		for (var H = 0, G = I.length; H < G; ++H) {
-			if(force){
-				K = K[I[H]] = ( typeof I[H + 1] !== "undefined") ? {} : J
-			} else {
-				K = K[I[H]] = K[I[H]] || (( typeof I[H + 1] !== "undefined") ? {} : J)
-			}
-		}
-		return K
 	};
 	/*taurus.klass = function(name, prop) {
 		var K = prop || Class.extend();

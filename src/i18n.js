@@ -2,10 +2,20 @@
  * @author nttdocomo
  */
  (function (root, factory) {
- 	var locale = (navigator.language || navigator.browserLanguage).toLowerCase();
+ 	var language = (navigator.language || navigator.browserLanguage).toLowerCase()
+ 	var locale = language
+ 	if(taurus.locale instanceof Array){
+		if(_.indexOf(language, taurus.locale) > -1){
+			locale = language
+		} else {
+			locale = taurus.locale[0]
+		}
+	} else {
+		locale = taurus.locale
+	}
 	if(typeof define === "function") {
 		if(define.amd){
-			define(['./util/sprintf','i18n/'+locale], function(sprintf,locales){
+			define(['taurus', './util/sprintf','i18n/'+locale], function(taurus, sprintf,locales){
 				return factory(sprintf,locales,locale)
 			});
 		}
