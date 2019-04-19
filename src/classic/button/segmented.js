@@ -4,7 +4,7 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['../../view/base', '../../manager', '../../backbone', './button', 'underscore', 'jquery'], factory)
+      define(['../../view/base', '../../manager', 'backbone', './button', 'underscore', 'jquery'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {

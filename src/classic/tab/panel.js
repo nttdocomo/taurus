@@ -105,7 +105,8 @@
 
 	                // Update the active tab in the tab bar and resume layouts.
 	                me.tabBar.setActiveTab(card.tab);
-	                me.trigger('tabchange', me, card, previous);
+	                me.trigger('tabchange', me, card, previous.card);
+	                me.activeTab = card.tab;
 	            }
 				return card;
 			}
@@ -116,7 +117,7 @@
 		 * @return {Ext.Component} The currently active item.
 		 */
 		getActiveTab : function() {
-			var me = this,
+			var me = this
 			// Ensure the calculated result references a Component
 			result = me.tabBar.getComponent(me.activeTab);
 

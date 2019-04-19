@@ -1,7 +1,7 @@
 ;(function (root, factory) {
   if (typeof define === 'function') {
     if (define.amd) {
-      define(['./class', './backbone'], factory)
+      define(['./class', 'backbone'], factory)
     }
     if (define.cmd) {
       define(function (require, exports, module) {

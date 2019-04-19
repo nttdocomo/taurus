@@ -44,6 +44,9 @@
                 this.setActiveTab(tab);
             }
         },
+        getActiveTab:function(){
+        	return this.activeTab
+        },
 
 		/**
 		 * @private
