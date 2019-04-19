@@ -50,6 +50,7 @@
 	     * @param {Number[]} xy An array containing the x and y coordinates
 	     */
 	    showAt : function(xy){
+	    	console.log(xy)
 	        var me = this;
 	        Base.prototype.showAt.apply(this,arguments);
 	        // Show may have been vetoed.
