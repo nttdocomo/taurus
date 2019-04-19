@@ -5,11 +5,11 @@
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('./class'), require('./backbone'))
+        return factory(require('./class'), require('backbone'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('./class'), require('./backbone'))
+    module.exports = factory(require('./class'), require('backbone'))
   }
 }(this, function(Class, Backbone){
 	return new (Class.extend({

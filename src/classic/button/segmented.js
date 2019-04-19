@@ -8,11 +8,11 @@
     }
     if (define.cmd) {
       define(function (require, exports, module) {
-        return factory(require('../../view/base'), require('../../manager'), require('../../backbone'), require('./button'), require('underscore'), require('jquery'))
+        return factory(require('../../view/base'), require('../../manager'), require('ackbone'), require('./button'), require('underscore'), require('jquery'))
       })
     }
   } else if (typeof module === 'object' && module.exports) {
-    module.exports = factory(require('../../view/base'), require('../../manager'), require('../../backbone'), require('./button'), require('underscore'), require('jquery'))
+    module.exports = factory(require('../../view/base'), require('../../manager'), require('backbone'), require('./button'), require('underscore'), require('jquery'))
   }
 }(this, function (Base, Manager, Backbone, Button, _, $) {
 	return Base.extend({
